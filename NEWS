@@ -1,0 +1,8 @@
+Package: progressr
+==================
+
+Version: 0.0.0-9000 [2019-04-11]
+
+ * Add progress() to create and signal progression condition.
+
+ * Add progression() to create progression condition.
