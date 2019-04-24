@@ -4,12 +4,13 @@
 \alias{with_progress}
 \title{Evaluate Expression while Handling Progress Updates}
 \usage{
-with_progress(expr, renderer = renderer_txtprogressbar())
+with_progress(expr, handler = getOption("progressr.handler",
+  txtprogressbar_handler()))
 }
 \arguments{
 \item{expr}{An \R expression to evaluate.}
 
-\item{renderer}{(function) A progression renderer.
+\item{handler}{(function) A progression handler.
 If @NULL, progress updates are ignored.}
 }
 \description{

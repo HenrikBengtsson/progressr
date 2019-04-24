@@ -1,5 +1,7 @@
 library(progressr)
 
+options(progressr.handler = NULL)
+
 message("with_progress() ...")
 
 ## Function that takes time to run
@@ -24,7 +26,7 @@ message("with_progress() - void ...")
 ## Mute progress updates
 with_progress({
   sum <- my_sum(1:10)
-}, renderer = NULL)
+}, handler = NULL)
 print(sum)
 stopifnot(sum == 55L)
 
@@ -34,16 +36,16 @@ message("with_progress() - void ... done")
 message("with_progress() - utils::txtProgressBar() ...")
 
 if (requireNamespace("utils")) {
-  ## Display progress using default renderer
+  ## Display progress using default handler
   with_progress({
     sum <- my_sum(1:10)
   })
   print(sum)
   
-  ## Display progress using default renderer
+  ## Display progress using default handler
   with_progress({
     sum <- my_sum(1:10)
-  }, renderer = renderer_txtprogressbar)
+  }, handler = txtprogressbar_handler)
   print(sum)
 }
 
@@ -53,10 +55,10 @@ message("with_progress() - utils::txtProgressBar() ... done")
 message("with_progress() - progress::progress_bar() ...")
 
 if (requireNamespace("progress")) {
-  ## Display progress using default renderer
+  ## Display progress using default handler
   with_progress({
     sum <- my_sum(1:10)
-  }, renderer = renderer_progress(clear = FALSE))
+  }, handler = progress_handler(clear = FALSE))
   print(sum)
 }
 

@@ -1,5 +1,5 @@
 #' @export
-renderer_txtprogressbar <- function(..., file = stderr()) {
+txtprogressbar_handler <- function(..., file = stderr()) {
   pb <- NULL
 
   ## Import functions
@@ -7,7 +7,7 @@ renderer_txtprogressbar <- function(..., file = stderr()) {
   getTxtProgressBar <- utils::getTxtProgressBar
   setTxtProgressBar <- utils::setTxtProgressBar
   
-  renderer <- function(p) {
+  handler <- function(p) {
     stopifnot(inherits(p, "progression"))
     type <- p$type
     if (type == "setup") {
@@ -20,19 +20,19 @@ renderer_txtprogressbar <- function(..., file = stderr()) {
       warning("Unknown 'progression' type: ", sQuote(type))
     }
   }
-  class(renderer) <- c("progression_renderer", class(renderer))
-  renderer
+  class(handler) <- c("progression_handler", class(handler))
+  handler
 }
 
 
 #' @export
-renderer_progress <- function(...) {
+progress_handler <- function(...) {
   pb <- NULL
 
   ## Import functions
   progress_bar <- progress::progress_bar
   
-  renderer <- function(p) {
+  handler <- function(p) {
     stopifnot(inherits(p, "progression"))
     type <- p$type
     if (type == "setup") {
@@ -44,6 +44,6 @@ renderer_progress <- function(...) {
       warning("Unknown 'progression' type: ", sQuote(type))
     }
   }
-  class(renderer) <- c("progression_renderer", class(renderer))
-  renderer
+  class(handler) <- c("progression_handler", class(handler))
+  handler
 }
