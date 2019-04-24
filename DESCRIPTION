@@ -8,6 +8,7 @@ Authors@R: c(
 License: GPL (>= 3)
 Suggests:
   utils,
-  progress
+  progress,
+  beepr
 RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)

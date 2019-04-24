@@ -47,3 +47,33 @@ progress_handler <- function(...) {
   class(handler) <- c("progression_handler", class(handler))
   handler
 }
+
+
+
+#' @export
+beepr_handler <- function(setup = 2L, update = 10L,  done = 11L, enable = interactive(), ...) {
+  pb <- NULL
+
+  ## Import functions
+  if (enable) {
+    beep <- beepr::beep
+  } else {
+    beep <- function(...) NULL
+  }
+  
+  handler <- function(p) {
+    stopifnot(inherits(p, "progression"))
+    type <- p$type
+    if (type == "setup") {
+      beep(setup)
+    } else if (type == "done") {
+      beep(done)
+    } else if (type == "update") {
+      beep(update)
+    } else {
+      warning("Unknown 'progression' type: ", sQuote(type))
+    }
+  }
+  class(handler) <- c("progression_handler", class(handler))
+  handler
+}

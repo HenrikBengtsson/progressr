@@ -5,7 +5,8 @@ Version: 0.0.0-9001 [2019-04-23]
 
  * Add with_progress().
 
- * Add txtprogressbar_handler() and progress_handler().
+ * Add progress update handlers based on utils::txtProgressBar(),
+   progress::progress_bar(), and beepr::beep().
  
 
 Version: 0.0.0-9000 [2019-04-11]
