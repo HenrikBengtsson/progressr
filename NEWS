@@ -9,7 +9,13 @@ Version: 0.0.0-9001 [2019-04-23]
    tcltk::tkProgressBar(), cat("\a"), progress::progress_bar(), and
    beepr::beep().
 
- * Add options 'progressr.handler' and 'progressr.times'.
+ * Add options 'progressr.handlers' for settings default progress handlers.
+
+ * Add 'progressr.times' for controlling the number of times progress
+   updates are rendered.
+
+ * Add 'progressr.interval' for controlling the minimum number of seconds
+   that needs to ellapse before reporting on the next update.
  
 
 Version: 0.0.0-9000 [2019-04-11]

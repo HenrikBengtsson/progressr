@@ -20,6 +20,7 @@ slow_sum <- function(x, delay = getOption("delay", 0.05)) {
     progress()
   }
   
+  Sys.sleep(delay)
   progress(type = "done")
   
   res
