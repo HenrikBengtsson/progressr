@@ -9,7 +9,7 @@
 #'
 #' @export
 with_progress <- function(expr, handlers = getOption("progressr.handlers", txtprogressbar_handler())) {
-  if (is.null(handlers)) return(expr)
+  if (length(handlers) == 0L) return(expr)
   if (!is.list(handlers)) handlers <- list(handlers)
   
   for (kk in seq_along(handlers)) {
