@@ -1,7 +1,8 @@
 library(progressr)
 
+options(pause = 0.01)
 options(progressr.handler = NULL)
-options(progressr.times = 5L)
+options(progressr.times = Inf)
 
 message("with_progress() ...")
 
@@ -11,7 +12,7 @@ my_sum <- function(x = 1:10) {
   progress(type = "setup", steps = length(x))
   
   for (kk in seq_along(x)) {
-    Sys.sleep(0.05)
+    Sys.sleep(getOption("pause", 0.05))
     res <- res + x[kk]
     progress()
   }
