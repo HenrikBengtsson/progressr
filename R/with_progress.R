@@ -5,6 +5,8 @@
 #' @param handler (function) A progression handler.
 #' If @NULL, progress updates are ignored.
 #'
+#' @example incl/with_progress.R
+#'
 #' @export
 with_progress <- function(expr, handler = getOption("progressr.handler", txtprogressbar_handler())) {
   if (is.null(handler)) return(expr)
