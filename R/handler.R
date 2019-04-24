@@ -283,3 +283,65 @@ beepr_handler <- function(setup = 2L, update = 10L,  done = 11L, times = getOpti
   class(handler) <- c("progression_handler", class(handler))
   handler
 }
+
+
+
+#' @export
+notifier_handler <- function(setup = 2L, update = 10L,  done = 11L, times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 5), enable = interactive(), ...) {
+  pb <- NULL
+  
+  if (!enable) times <- 0
+  if (times > 0L) {  
+    at <- NULL
+    step <- 0L
+    max <- 0L
+    t0 <- Sys.time()
+
+    notify <- function(p) {
+      msg <- paste(c("", p$message), collapse = "")
+      ratio <- switch(p$type, setup = "STARTED", done = "DONE", sprintf("%.0f%%", 100*step/max))
+      notifier::notify(sprintf("[%s] %s (at %s)", ratio, msg, p$time))
+    }
+    
+    handler <- function(p) {
+      stopifnot(inherits(p, "progression"))
+      type <- p$type
+      if (type == "setup") {
+        max <<- p$steps
+        if (is.finite(times) && times >= max) times <- +Inf
+        if (is.finite(times)) {
+	  at <<- seq(from = 1L, to = p$steps, length.out = times)
+	}
+        if (times > 1) {
+          if (interval > 0) t0 <<- Sys.time()
+          notify(p)
+	}
+      } else if (type == "done") {
+        notify(p)
+      } else if (type == "update") {
+        step <<- step + p$amount
+#        str(list(type = type, step = step, at = at))
+        if (is.infinite(times) || step >= at[1]) {
+	  at <<- at[-1]
+	  skip <- FALSE
+          if (is.infinite(times) || (length(at) > 0L && interval > 0)) {
+	    t <- Sys.time()
+	    if (difftime(t, t0, units = "secs") > interval) {
+	      t0 <<- t
+	    } else {
+              skip <- TRUE
+	    }
+	  }
+          if (!skip) notify(p)
+	}
+      } else {
+        warning("Unknown 'progression' type: ", sQuote(type))
+      }
+      times <<- times - 1
+    }
+  } else {
+    handler <- function(p) NULL
+  }
+  class(handler) <- c("progression_handler", class(handler))
+  handler
+}

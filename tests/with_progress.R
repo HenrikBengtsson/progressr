@@ -62,7 +62,6 @@ message("with_progress() - progress::progress_bar() ... done")
 
 message("with_progress() - alert ...")
 
-## Mute progress updates
 with_progress({
   sum <- slow_sum(x)
 }, ascii_alert_handler)
@@ -74,14 +73,29 @@ message("with_progress() - alert ... done")
 
 message("with_progress() - beepr::beep() ...")
 
-## Mute progress updates
-with_progress({
-  sum <- slow_sum(x)
-}, beepr_handler)
-print(sum)
-stopifnot(sum == truth)
+if (requireNamespace("beepr")) {
+  with_progress({
+    sum <- slow_sum(x)
+  }, beepr_handler)
+  print(sum)
+  stopifnot(sum == truth)
+}
 
 message("with_progress() - beepr::beep() ... done")
+
+
+message("with_progress() - notifier::notify() ...")
+
+if (requireNamespace("notifier")) {
+  with_progress({
+    sum <- slow_sum(x)
+  }, notifier_handler)
+  print(sum)
+  stopifnot(sum == truth)
+}
+
+message("with_progress() - notifier::notify() ... done")
+
 
 
 message("with_progress() - void ...")

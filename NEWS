@@ -1,13 +1,13 @@
 Package: progressr
 ==================
 
-Version: 0.0.0-9001 [2019-04-23]
-
- * Add with_progress().
+Version: 0.0.0-9001 [2019-04-24]
 
  * Add progress update handlers based on utils::txtProgressBar(),
-   tcltk::tkProgressBar(), cat("\a"), progress::progress_bar(), and
-   beepr::beep().
+   tcltk::tkProgressBar(), cat("\a"), progress::progress_bar(), beepr::beep(),
+   and notifier::notify().
+
+ * Add with_progress().
 
  * Add options 'progressr.handlers' for settings default progress handlers.
 

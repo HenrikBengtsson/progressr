@@ -32,8 +32,24 @@ if (requireNamespace("utils", quietly = TRUE) && requireNamespace("beepr", quiet
       y <- slow_sum(x)
     }, txtprogressbar_handler(style = 3L))
   }, beepr_handler)
-
-  with_progress({
-    y <- slow_sum(x)
-  }, list(txtprogressbar_handler(style = 1L), beepr_handler))
 }
+
+## Progress reported via txtProgressBar, beepr::beep, notifier::notify,
+## if available.
+handlers <- list()
+if (requireNamespace("utils", quietly = TRUE)) {
+  handlers <- c(handlers, list(txtprogressbar_handler()))
+}
+if (requireNamespace("beepr", quietly = TRUE)) {
+  handlers <- c(handlers, list(beepr_handler()))
+}
+if (requireNamespace("notifier", quietly = TRUE)) {
+  handlers <- c(handlers, list(notifier_handler(times = 3L, interval = 0.1)))
+}
+oopts <- options(progressr.handlers = handlers)
+
+with_progress({
+  y <- slow_sum(1:50)
+})
+
+options(oopts)

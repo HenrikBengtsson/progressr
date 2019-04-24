@@ -10,6 +10,9 @@ Suggests:
   utils,
   tcltk,
   progress,
-  beepr
+  beepr,
+  notifier
+Remotes:
+  gaborcsardi/notifier@d92b1b6
 RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
