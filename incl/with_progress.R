@@ -32,4 +32,8 @@ if (requireNamespace("utils", quietly = TRUE) && requireNamespace("beepr", quiet
       y <- slow_sum(x)
     }, txtprogressbar_handler(style = 3L))
   }, beepr_handler)
+
+  with_progress({
+    y <- slow_sum(x)
+  }, list(txtprogressbar_handler(style = 1L), beepr_handler))
 }

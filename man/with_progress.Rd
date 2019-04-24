@@ -4,14 +4,14 @@
 \alias{with_progress}
 \title{Evaluate Expression while Handling Progress Updates}
 \usage{
-with_progress(expr, handler = getOption("progressr.handler",
+with_progress(expr, handlers = getOption("progressr.handlers",
   txtprogressbar_handler()))
 }
 \arguments{
 \item{expr}{An \R expression to evaluate.}
 
-\item{handler}{(function) A progression handler.
-If @NULL, progress updates are ignored.}
+\item{handlers}{A progression handler or a list of them.
+If @NULL or an empty list, progress updates are ignored.}
 }
 \description{
 Evaluate Expression while Handling Progress Updates

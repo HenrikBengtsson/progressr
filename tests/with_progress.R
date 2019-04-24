@@ -1,7 +1,6 @@
 library(progressr)
 
 options(delay = 0.01)
-options(progressr.handler = NULL)
 options(progressr.times = Inf)
 
 message("with_progress() ...")
@@ -14,7 +13,7 @@ message("with_progress() - utils::txtProgressBar() ...")
 if (requireNamespace("utils")) {
   with_progress({
     sum <- slow_sum(x)
-  }, handler = txtprogressbar_handler)
+  }, txtprogressbar_handler)
   print(sum)
   stopifnot(sum == truth)
 }
@@ -39,7 +38,7 @@ message("with_progress() - tcltk::tkProgressBar() ...")
 if (requireNamespace("tcltk")) {
   with_progress({
     sum <- slow_sum(x)
-  }, handler = tkprogressbar_handler)
+  }, tkprogressbar_handler)
 }
 
 message("with_progress() - tcltk::tkProgressBar() ... done")
@@ -51,7 +50,7 @@ if (requireNamespace("progress")) {
   ## Display progress using default handler
   with_progress({
     sum <- slow_sum(x)
-  }, handler = progress_handler(clear = FALSE))
+  }, progress_handler(clear = FALSE))
   print(sum)
   stopifnot(sum == truth)
 }
@@ -64,7 +63,7 @@ message("with_progress() - alert ...")
 ## Mute progress updates
 with_progress({
   sum <- slow_sum(x)
-}, handler = ascii_alert_handler)
+}, ascii_alert_handler)
 print(sum)
 stopifnot(sum == truth)
 
@@ -76,7 +75,7 @@ message("with_progress() - beepr::beep() ...")
 ## Mute progress updates
 with_progress({
   sum <- slow_sum(x)
-}, handler = beepr_handler)
+}, beepr_handler)
 print(sum)
 stopifnot(sum == truth)
 
@@ -88,7 +87,7 @@ message("with_progress() - void ...")
 ## Mute progress updates
 with_progress({
   sum <- slow_sum(x)
-}, handler = NULL)
+}, NULL)
 print(sum)
 stopifnot(sum == truth)
 
