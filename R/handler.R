@@ -1,4 +1,30 @@
 #' @export
+ascii_alert_handler <- function(symbol = "\a", ..., file = stderr(), enable = interactive()) {
+  pb <- NULL
+
+  if (enable) {
+    handler <- function(p) {
+      stopifnot(inherits(p, "progression"))
+      type <- p$type
+      if (type == "setup") {
+        cat(file = file, symbol)
+      } else if (type == "done") {
+        cat(file = file, symbol)
+      } else if (type == "update") {
+        cat(file = file, symbol)
+      } else {
+        warning("Unknown 'progression' type: ", sQuote(type))
+      }
+    }
+  } else {
+    handler <- function(p) NULL
+  }
+  class(handler) <- c("progression_handler", class(handler))
+  handler
+}
+
+
+#' @export
 txtprogressbar_handler <- function(..., file = stderr()) {
   pb <- NULL
 

@@ -35,6 +35,17 @@ stopifnot(sum == truth)
 
 message("with_progress() - void ... done")
 
+message("with_progress() - alert ...")
+
+## Mute progress updates
+with_progress({
+  sum <- my_sum(x)
+}, handler = ascii_alert_handler)
+print(sum)
+stopifnot(sum == truth)
+
+message("with_progress() - alert ... done")
+
 
 message("with_progress() - utils::txtProgressBar() ...")
 
