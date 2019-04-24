@@ -133,7 +133,7 @@ tkprogressbar_handler <- function(..., times = getOption("progressr.times", +Inf
 
 
 #' @export
-progress_handler <- function(..., show_after = 0, times = getOption("progressr.times", +Inf)) {
+progress_handler <- function(..., clear = FALSE, show_after = 0, times = getOption("progressr.times", +Inf)) {
   pb <- NULL
 
   ## Import functions
@@ -155,7 +155,7 @@ progress_handler <- function(..., show_after = 0, times = getOption("progressr.t
 	  at <<- c(seq(from = 1L, to = p$steps, length.out = times), p$steps)
 	  delta <<- p$steps / times
 	}
-        pb <<- progress_bar$new(total = max, show_after = show_after, ...)
+        pb <<- progress_bar$new(total = max, clear = clear, show_after = show_after, ...)
         if (is.finite(times)) pb$tick(0)
 	at <<- at[-1]
       } else if (type == "done") {

@@ -2,13 +2,15 @@
 #'
 #' @param x Numeric vector to sum
 #'
+#' @param delay Delay in seconds after each addition.
+#'
 #' @return The sum of all elements in `x`.
 #'
 #' @section Progress updates:
 #' This function signals [progression] conditions as it progresses.
 #'
 #' @export
-slow_sum <- function(x, delay = getOption("delay", 0.1)) {
+slow_sum <- function(x, delay = getOption("delay", 0.05)) {
   progress(type = "setup", steps = length(x))
   
   res <- 0
