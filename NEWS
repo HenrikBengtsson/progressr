@@ -8,6 +8,8 @@ Version: 0.0.0-9001 [2019-04-23]
  * Add progress update handlers based on utils::txtProgressBar(),
    tcltk::tkProgressBar(), cat("\a"), progress::progress_bar(), and
    beepr::beep().
+
+ * Add options 'progressr.handler' and 'progressr.times'.
  
 
 Version: 0.0.0-9000 [2019-04-11]
