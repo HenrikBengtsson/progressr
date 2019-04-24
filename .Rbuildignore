@@ -1,3 +1,4 @@
 ^README[.]md$
 ^.(git|svn)
 ^([.]travis|appveyor)[.]yml$
+^[.]local

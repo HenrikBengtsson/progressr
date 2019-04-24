@@ -1,6 +1,13 @@
 Package: progressr
 ==================
 
+Version: 0.0.0-9001 [2019-04-23]
+
+ * Add with_progress().
+
+ * Add renderer_txtprogressbar() and renderer_progress().
+ 
+
 Version: 0.0.0-9000 [2019-04-11]
 
  * Add progress() to create and signal progression condition.

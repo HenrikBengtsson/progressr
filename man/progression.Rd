@@ -5,7 +5,8 @@
 \title{A Progression Condition}
 \usage{
 progression(message = character(0L), amount = 1, step = NULL,
-  time = Sys.time(), ..., class = NULL, call = NULL)
+  time = Sys.time(), ..., type = c("update", "setup", "done"),
+  class = NULL, call = NULL)
 }
 \arguments{
 \item{message}{(character) A progress message.}
@@ -15,6 +16,8 @@ progression(message = character(0L), amount = 1, step = NULL,
 \item{step}{(character or integer) The step completed.}
 
 \item{time}{(POSIXct) A timestamp.}
+
+\item{type}{Type of progression made.}
 
 \item{class}{(character) Zero or more class names to prepend.}
 

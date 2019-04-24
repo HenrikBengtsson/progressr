@@ -10,6 +10,8 @@
 #'
 #' @param \ldots Additional named elements.
 #'
+#' @param type Type of progression made.
+#'
 #' @param class (character) Zero or more class names to prepend.
 #'
 #' @param call (expression) A call expression.
@@ -21,10 +23,11 @@
 #' To create and signal a progression condition at once, use [progress()].
 #'
 #' @export
-progression <- function(message = character(0L), amount = 1.0, step = NULL, time = Sys.time(), ..., class = NULL, call = NULL) {
+progression <- function(message = character(0L), amount = 1.0, step = NULL, time = Sys.time(), ..., type = c("update", "setup", "done"), class = NULL, call = NULL) {
   message <- as.character(message)
   amount <- as.numeric(amount)
   time <- as.POSIXct(time)
+  type <- match.arg(type, choices = c("update", "setup", "done"))
   class <- as.character(class)
   args <- list(...)
   nargs <- length(args)
@@ -36,6 +39,7 @@ progression <- function(message = character(0L), amount = 1.0, step = NULL, time
   
   structure(
     list(
+      type = type,
       message = message,
       amount = amount,
       step = step,
