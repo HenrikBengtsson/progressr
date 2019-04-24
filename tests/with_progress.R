@@ -24,7 +24,6 @@ my_sum <- function(x = 1:10) {
 x <- 1:20
 truth <- sum(x)
 
-
 message("with_progress() - void ...")
 
 ## Mute progress updates
@@ -57,7 +56,17 @@ if (requireNamespace("utils")) {
 
 message("with_progress() - utils::txtProgressBar() ... done")
 
-  
+message("with_progress() - tcltk::tkProgressBar() ...")
+
+if (requireNamespace("tcltk")) {
+  with_progress({
+    sum <- my_sum(x)
+  }, handler = tkprogressbar_handler)
+}
+
+message("with_progress() - tcltk::tkProgressBar() ... done")
+
+
 message("with_progress() - progress::progress_bar() ...")
 
 if (requireNamespace("progress")) {

@@ -8,6 +8,7 @@ Authors@R: c(
 License: GPL (>= 3)
 Suggests:
   utils,
+  tcltk,
   progress,
   beepr
 RoxygenNote: 6.1.1
