@@ -22,4 +22,3 @@ progress <- function(..., call = sys.call()) {
   signalCondition(cond)
   invisible(cond)
 }
-

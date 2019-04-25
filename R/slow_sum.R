@@ -12,7 +12,7 @@
 #' @export
 slow_sum <- function(x, delay = getOption("delay", 0.05)) {
 ##  progress <- new_progress(length(x))
-  progress(type = "setup", steps = length(x))
+  progress <- progressor(steps = length(x))
   
   res <- 0
   for (kk in seq_along(x)) {

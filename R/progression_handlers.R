@@ -1,4 +1,19 @@
 #' @export
+progression_handler <- function(name, handler) {
+  name <- as.character(name)
+  stop_if_not(length(name) == 1L, !is.na(name), nzchar(name))
+  stop_if_not(is.function(handler))
+  formals <- formals(handler)
+  stop_if_not(length(formals) == 1L)
+
+  class(handler) <- c(sprintf("%s_progression_handler", name),
+                      "progression_handler", class(handler))
+
+  handler
+}
+
+
+#' @export
 ascii_alert_handler <- function(symbol = "\a", ..., times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0.5), file = stderr(), enable = interactive()) {
   pb <- NULL
   
@@ -42,9 +57,10 @@ ascii_alert_handler <- function(symbol = "\a", ..., times = getOption("progressr
   } else {
     handler <- function(p) NULL
   }
-  class(handler) <- c("progression_handler", class(handler))
-  handler
+
+  progression_handler("ascii_alert", handler)
 }
+
 
 
 #' @export
@@ -97,8 +113,8 @@ txtprogressbar_handler <- function(..., times = getOption("progressr.times", +In
   } else {
     handler <- function(p) NULL
   }
-  class(handler) <- c("progression_handler", class(handler))
-  handler
+
+  progression_handler("txtprogressbar", handler)
 }
 
 
@@ -157,8 +173,7 @@ tkprogressbar_handler <- function(..., times = getOption("progressr.times", +Inf
     handler <- function(p) NULL
   }
 
-  class(handler) <- c("progression_handler", class(handler))
-  handler
+  progression_handler("tkprogressbar", handler)
 }
 
 
@@ -222,8 +237,8 @@ progress_handler <- function(..., clear = FALSE, show_after = 0, times = getOpti
   } else {
     handler <- function(p) NULL
   }
-  class(handler) <- c("progression_handler", class(handler))
-  handler
+
+  progression_handler("progress", handler)
 }
 
 
@@ -280,8 +295,8 @@ beepr_handler <- function(setup = 2L, update = 10L,  done = 11L, times = getOpti
   } else {
     handler <- function(p) NULL
   }
-  class(handler) <- c("progression_handler", class(handler))
-  handler
+
+  progression_handler("beepr", handler)
 }
 
 
@@ -342,6 +357,6 @@ notifier_handler <- function(setup = 2L, update = 10L,  done = 11L, times = getO
   } else {
     handler <- function(p) NULL
   }
-  class(handler) <- c("progression_handler", class(handler))
-  handler
+
+  progression_handler("notifier", handler)
 }

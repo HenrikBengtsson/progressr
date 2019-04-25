@@ -1,6 +1,11 @@
 Package: progressr
 ==================
 
+Version: 0.0.0-9002 [2019-04-25]
+
+ * Add progressor().
+ 
+
 Version: 0.0.0-9001 [2019-04-24]
 
  * Add progress update handlers based on utils::txtProgressBar(),
