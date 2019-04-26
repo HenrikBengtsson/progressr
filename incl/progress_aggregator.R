@@ -9,6 +9,7 @@ with_progress({
   relay_progress(slow_sum(1:3))
   relay_progress(slow_sum(1:10))
   progress()
+  progress(type = "done")
 })
 
 message("progress_aggregator() ... done")
