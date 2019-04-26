@@ -23,4 +23,3 @@ progressor <- function(steps, label = NA_character_, setup = TRUE) {
   
   fcn
 }
-

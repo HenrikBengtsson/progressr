@@ -4,7 +4,9 @@ Package: progressr
 Version: 0.0.0-9002 [2019-04-25]
 
  * Add progressor().
- 
+
+ * Add progress_aggregator().
+
 
 Version: 0.0.0-9001 [2019-04-24]
 

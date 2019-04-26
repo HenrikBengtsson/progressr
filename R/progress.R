@@ -19,6 +19,11 @@ progress <- function(..., call = sys.call()) {
   } else {
     cond <- progression(..., call = call)
   }
-  signalCondition(cond)
+  
+  withRestarts(
+    signalCondition(cond),
+    consume_progression = function(p) NULL
+  )
+  
   invisible(cond)
 }
