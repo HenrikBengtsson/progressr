@@ -1,3 +1,5 @@
+#' Auditory Progression Feedback
+#'
 #' @export
 ascii_alert_handler <- function(symbol = "\a", ..., times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0.5), file = stderr(), enable = interactive()) {
   pb <- NULL
@@ -48,6 +50,8 @@ ascii_alert_handler <- function(symbol = "\a", ..., times = getOption("progressr
 
 
 
+#' Visual Progression Feedback
+#'
 #' @export
 txtprogressbar_handler <- function(..., times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0), file = stderr()) {
   pb <- NULL
@@ -104,6 +108,8 @@ txtprogressbar_handler <- function(..., times = getOption("progressr.times", +In
 
 
 
+#' Visual Progression Feedback
+#'
 #' @export
 tkprogressbar_handler <- function(..., times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0), enable = interactive()) {
   pb <- NULL
@@ -163,6 +169,8 @@ tkprogressbar_handler <- function(..., times = getOption("progressr.times", +Inf
 
 
 
+#' Visual Progression Feedback
+#'
 #' @export
 progress_handler <- function(..., clear = FALSE, show_after = 0, times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0)) {
   pb <- NULL
@@ -228,6 +236,8 @@ progress_handler <- function(..., clear = FALSE, show_after = 0, times = getOpti
 
 
 
+#' Auditory Progression Feedback
+#'
 #' @export
 beepr_handler <- function(setup = 2L, update = 10L,  done = 11L, times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0.5), enable = interactive(), ...) {
   pb <- NULL
@@ -286,6 +296,8 @@ beepr_handler <- function(setup = 2L, update = 10L,  done = 11L, times = getOpti
 
 
 
+#' Operating-System Specific Progression Feedback
+#'
 #' @export
 notifier_handler <- function(setup = 2L, update = 10L,  done = 11L, times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 5), enable = interactive(), ...) {
   pb <- NULL
