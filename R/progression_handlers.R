@@ -5,43 +5,42 @@ ascii_alert_handler <- function(symbol = "\a", ..., times = getOption("progressr
   pb <- NULL
   
   if (!enable) times <- 0
-  if (times > 0) {
-    at <- NULL
-    step <- 0L
-    t0 <- Sys.time()
-    
-    handler <- function(p) {
-      stopifnot(inherits(p, "progression"))
-      type <- p$type
-      if (type == "setup") {
-        max <- p$steps
-        if (is.finite(times) && times >= max) times <- +Inf
-        if (is.finite(times)) {
-	  at <<- seq(from = 1L, to = max, length.out = times)
-	}
-      } else if (type == "done") {
-      } else if (type == "update") {
-        step <<- step + p$amount
-##        str(list(type = type, step = step, at = at, times = times))
-        if (is.infinite(times) || step >= at[1]) {
-	  at <<- at[-1]
-	  skip <- FALSE
-          if (is.infinite(times) || (length(at) > 0L && interval > 0)) {
-	    t <- Sys.time()
-	    if (difftime(t, t0, units = "secs") > interval) {
-	      t0 <<- t
-	    } else {
-              skip <- TRUE
-	    }
-	  }
-          if (!skip) cat(file = file, symbol)
-	}
-      } else {
-        warning("Unknown 'progression' type: ", sQuote(type))
+
+  at <- NULL
+  step <- 0L
+  t0 <- Sys.time()
+  
+  handler <- function(p) {
+    stopifnot(inherits(p, "progression"))
+    type <- p$type
+    if (type == "setup") {
+      max <- p$steps
+      if (is.finite(times) && times >= max) times <- +Inf
+      if (is.finite(times)) {
+        at <<- seq(from = 1L, to = max, length.out = times)
       }
-      times <<- times - 1
+    } else if (type == "done") {
+    } else if (type == "update") {
+      step <<- step + p$amount
+      str(list(type = type, step = step, at = at, times = times))
+      if (is.infinite(times) || step >= at[1]) {
+        at <<- at[-1]
+        skip <- FALSE
+        if (is.infinite(times) || (length(at) > 0L && interval > 0)) {
+          t <- Sys.time()
+          if (difftime(t, t0, units = "secs") > interval) {
+            t0 <<- t
+          } else {
+            skip <- TRUE
+          }
+        }
+        if (!skip) cat(file = file, symbol)
+      }
+    } else {
+      warning("Unknown 'progression' type: ", sQuote(type))
     }
-  } else {
+    times <<- times - 1
+  }
     handler <- function(p) NULL
   }
 
@@ -73,27 +72,27 @@ txtprogressbar_handler <- function(..., times = getOption("progressr.times", +In
         max <- p$steps
         if (is.finite(times) && times >= max) times <- +Inf
         if (is.finite(times)) {
-	  at <<- seq(from = 1L, to = p$steps, length.out = times)
-	}
-	pb <<- txtProgressBar(max = p$steps, ..., file = file)
+          at <<- seq(from = 1L, to = p$steps, length.out = times)
+        }
+        pb <<- txtProgressBar(max = p$steps, ..., file = file)
       } else if (type == "done") {
         close(pb)
       } else if (type == "update") {
         step <<- step + p$amount
 #        str(list(type = type, step = step, at = at))
         if (is.infinite(times) || step >= at[1]) {
-	  at <<- at[-1]
-	  skip <- FALSE
+          at <<- at[-1]
+          skip <- FALSE
           if (is.infinite(times) || (length(at) > 0L && interval > 0)) {
-	    t <- Sys.time()
-	    if (difftime(t, t0, units = "secs") > interval) {
-	      t0 <<- t
-	    } else {
+            t <- Sys.time()
+            if (difftime(t, t0, units = "secs") > interval) {
+              t0 <<- t
+            } else {
               skip <- TRUE
-	    }
-	  }
+            }
+          }
           if (!skip) setTxtProgressBar(pb, value = step)
-	}
+        }
       } else {
         warning("Unknown 'progression' type: ", sQuote(type))
       }
@@ -132,8 +131,8 @@ tkprogressbar_handler <- function(..., times = getOption("progressr.times", +Inf
         max <- p$steps
         if (is.finite(times) && times >= max) times <- +Inf
         if (is.finite(times)) {
-	  at <<- seq(from = 1L, to = p$steps, length.out = times)
-	}
+          at <<- seq(from = 1L, to = p$steps, length.out = times)
+        }
         pb <<- tkProgressBar(max = p$steps, ...)
         if (interval > 0) t0 <<- Sys.time()
 #        str(list(type = type, step = step, at = at))
@@ -143,18 +142,18 @@ tkprogressbar_handler <- function(..., times = getOption("progressr.times", +Inf
         step <<- step + p$amount
 #        str(list(type = type, step = step, at = at))
         if (is.infinite(times) || step >= at[1]) {
-	  at <<- at[-1]
-	  skip <- FALSE
+          at <<- at[-1]
+          skip <- FALSE
           if (is.infinite(times) || (length(at) > 0L && interval > 0)) {
-	    t <- Sys.time()
-	    if (difftime(t, t0, units = "secs") > interval) {
-	      t0 <<- t
-	    } else {
+            t <- Sys.time()
+            if (difftime(t, t0, units = "secs") > interval) {
+              t0 <<- t
+            } else {
               skip <- TRUE
-	    }
-	  }
+            }
+          }
           if (!skip) setTkProgressBar(pb, value = step)
-	}
+        }
       } else {
         warning("Unknown 'progression' type: ", sQuote(type))
       }
@@ -192,36 +191,36 @@ progress_handler <- function(..., clear = FALSE, show_after = 0, times = getOpti
         max <<- p$steps
         if (is.finite(times) && times >= max) times <- +Inf
         if (is.finite(times)) {
-	  at <<- seq(from = 1L, to = p$steps, length.out = times)
-	  delta <<- p$steps / times
-	}
+          at <<- seq(from = 1L, to = p$steps, length.out = times)
+          delta <<- p$steps / times
+        }
         pb <<- progress_bar$new(total = max, clear = clear, show_after = show_after, ...)
         if (is.finite(times)) {
           if (interval > 0) t0 <<- Sys.time()
-	  pb$tick(0)
-	}
-	at <<- at[-1]
+          pb$tick(0)
+        }
+        at <<- at[-1]
       } else if (type == "done") {
         ## May give an error, e.g. times = 1L
         if (is.finite(times)) {
           tryCatch(pb$tick(delta), error = identity)
-	}
+        }
       } else if (type == "update") {
         step <<- step + p$amount
 #        str(list(type = type, step = step, at = at, delta = delta))
         if (is.infinite(times) || step >= at[1]) {
-	  at <<- at[-1]
-	  skip <- FALSE
+          at <<- at[-1]
+          skip <- FALSE
           if (is.infinite(times) || (length(at) > 0L && interval > 0)) {
-	    t <- Sys.time()
-	    if (difftime(t, t0, units = "secs") > interval) {
-	      t0 <<- t
-	    } else {
+            t <- Sys.time()
+            if (difftime(t, t0, units = "secs") > interval) {
+              t0 <<- t
+            } else {
               skip <- TRUE
-	    }
-	  }
+            }
+          }
           pb$tick(delta)
-	}
+        }
       } else {
         warning("Unknown 'progression' type: ", sQuote(type))
       }
@@ -258,30 +257,30 @@ beepr_handler <- function(setup = 2L, update = 10L,  done = 11L, times = getOpti
         max <- p$steps
         if (is.finite(times) && times >= max) times <- +Inf
         if (is.finite(times)) {
-	  at <<- seq(from = 1L, to = p$steps, length.out = times)
-	}
+          at <<- seq(from = 1L, to = p$steps, length.out = times)
+        }
         if (times > 1) {
           if (interval > 0) t0 <<- Sys.time()
-	  beep(setup)
-	}
+          beep(setup)
+        }
       } else if (type == "done") {
         beep(done)
       } else if (type == "update") {
         step <<- step + p$amount
 #        str(list(type = type, step = step, at = at))
         if (is.infinite(times) || step >= at[1]) {
-	  at <<- at[-1]
-	  skip <- FALSE
+          at <<- at[-1]
+          skip <- FALSE
           if (is.infinite(times) || (length(at) > 0L && interval > 0)) {
-	    t <- Sys.time()
-	    if (difftime(t, t0, units = "secs") > interval) {
-	      t0 <<- t
-	    } else {
+            t <- Sys.time()
+            if (difftime(t, t0, units = "secs") > interval) {
+              t0 <<- t
+            } else {
               skip <- TRUE
-	    }
-	  }
+            }
+          }
           if (!skip) beep(update)
-	}
+        }
       } else {
         warning("Unknown 'progression' type: ", sQuote(type))
       }
@@ -322,30 +321,30 @@ notifier_handler <- function(setup = 2L, update = 10L,  done = 11L, times = getO
         max <<- p$steps
         if (is.finite(times) && times >= max) times <- +Inf
         if (is.finite(times)) {
-	  at <<- seq(from = 1L, to = p$steps, length.out = times)
-	}
+          at <<- seq(from = 1L, to = p$steps, length.out = times)
+        }
         if (times > 1) {
           if (interval > 0) t0 <<- Sys.time()
           notify(p)
-	}
+        }
       } else if (type == "done") {
         notify(p)
       } else if (type == "update") {
         step <<- step + p$amount
 #        str(list(type = type, step = step, at = at))
         if (is.infinite(times) || step >= at[1]) {
-	  at <<- at[-1]
-	  skip <- FALSE
+          at <<- at[-1]
+          skip <- FALSE
           if (is.infinite(times) || (length(at) > 0L && interval > 0)) {
-	    t <- Sys.time()
-	    if (difftime(t, t0, units = "secs") > interval) {
-	      t0 <<- t
-	    } else {
+            t <- Sys.time()
+            if (difftime(t, t0, units = "secs") > interval) {
+              t0 <<- t
+            } else {
               skip <- TRUE
-	    }
-	  }
+            }
+          }
           if (!skip) notify(p)
-	}
+        }
       } else {
         warning("Unknown 'progression' type: ", sQuote(type))
       }
