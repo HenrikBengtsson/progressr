@@ -1,19 +1,4 @@
 #' @export
-progression_handler <- function(name, handler) {
-  name <- as.character(name)
-  stop_if_not(length(name) == 1L, !is.na(name), nzchar(name))
-  stop_if_not(is.function(handler))
-  formals <- formals(handler)
-  stop_if_not(length(formals) == 1L)
-
-  class(handler) <- c(sprintf("%s_progression_handler", name),
-                      "progression_handler", class(handler))
-
-  handler
-}
-
-
-#' @export
 ascii_alert_handler <- function(symbol = "\a", ..., times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0.5), file = stderr(), enable = interactive()) {
   pb <- NULL
   
