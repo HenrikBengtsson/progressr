@@ -4,9 +4,9 @@
 \alias{tkprogressbar_handler}
 \title{Visual Progression Feedback}
 \usage{
-tkprogressbar_handler(..., enable = interactive(),
-  times = getOption("progressr.times", +Inf),
-  interval = getOption("progressr.interval", 0))
+
+  tkprogressbar_handler(intrusiveness = getOption("progressr.intrusiveness.gui",
+  10), ...)
 }
 \description{
 Visual Progression Feedback

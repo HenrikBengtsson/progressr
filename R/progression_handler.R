@@ -7,8 +7,14 @@
 #' @param handler (function) Function take a `progression` condition
 #'   as the first argument.
 #'
+#' @param intrusiveness (numeric) A positive scalar on how intrusive
+#'   (disruptive) the reporter to the user.
+#'
+#' @param enable (logical) If FALSE, then progress is not reported.
+#'
 #' @param times (integer) The maximum number of times this handler
 #'   should report progression updates.
+#'   If zero, then progress is not reported.
 #'
 #' @param interval (numeric) The minimum time (in seconds) between
 #'   successive progression updates from this handler.
@@ -16,7 +22,8 @@
 #' @return A function of class `progression_handler`.
 #'
 #' @export
-progression_handler <- function(name, reporter = list(), handler = NULL, times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0)) {
+progression_handler <- function(name, reporter = list(), handler = NULL, enable = interactive(), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0), intrusiveness = 1.0) {
+  if (!enable) times <- 0L
   name <- as.character(name)
   stop_if_not(length(name) == 1L, !is.na(name), nzchar(name))
 #  stop_if_not(is.function(handler))
@@ -29,7 +36,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, times =
               !is.na(interval), interval >= 0)
 
   ## Disable progress updates?
-  if (times == 0 || is.infinite(interval)) {
+  if (times == 0 || is.infinite(interval) || is.infinite(intrusiveness)) {
     handler <- function(p) NULL
   }
 
@@ -52,6 +59,11 @@ progression_handler <- function(name, reporter = list(), handler = NULL, times =
       if (type == "setup") {
         max_steps <<- p$steps
         times <- min(times, max_steps)
+	
+        ## Adjust 'times' and 'interval' according to 'intrusiveness'
+        times <- times / intrusiveness
+        interval <- interval * intrusiveness
+	
         milestones <<- seq(from = 1L, to = max_steps, length.out = times)
         step <<- 0L
         reporter$setup(max_steps = max_steps, step = step, delta = step - prev_milestone, message = p$message)

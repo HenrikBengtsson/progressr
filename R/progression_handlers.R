@@ -1,9 +1,7 @@
 #' Auditory Progression Feedback
 #'
 #' @export
-ascii_alert_handler <- function(symbol = "\a", ..., enable = interactive(), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0.5), file = stderr()) {
-  if (!enable) times <- 0
-
+ascii_alert_handler <- function(symbol = "\a", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.auditory", 10), ...) {
   reporter <- local({
     list(
       update = function(step, max_steps, delta, message) {
@@ -12,7 +10,7 @@ ascii_alert_handler <- function(symbol = "\a", ..., enable = interactive(), time
     )
   })
 
-  progression_handler("ascii_alert", reporter, times = times, interval = interval)
+  progression_handler("ascii_alert", reporter, intrusiveness = intrusiveness, ...)
 }
 
 
@@ -20,9 +18,7 @@ ascii_alert_handler <- function(symbol = "\a", ..., enable = interactive(), time
 #' Visual Progression Feedback
 #'
 #' @export
-txtprogressbar_handler <- function(..., enable = interactive(), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0), file = stderr()) {
-  if (!enable) times <- 0
-  
+txtprogressbar_handler <- function(file = stderr(), style = 3L, intrusiveness = getOption("progressr.intrusiveness.terminal", 10), ...) {
   reporter <- local({
     ## Import functions
     txtProgressBar <- utils::txtProgressBar
@@ -33,7 +29,7 @@ txtprogressbar_handler <- function(..., enable = interactive(), times = getOptio
 
     list(
       setup = function(step, max_steps, delta, message) {
-        pb <<- txtProgressBar(max = max_steps, ..., file = file)
+        pb <<- txtProgressBar(max = max_steps, style = style, file = file)
       },
         
       update = function(step, max_steps, delta, message) {
@@ -46,7 +42,7 @@ txtprogressbar_handler <- function(..., enable = interactive(), times = getOptio
     )
   })
   
-  progression_handler("txtprogressbar", reporter, times = times, interval = interval)
+  progression_handler("txtprogressbar", reporter, intrusiveness = intrusiveness, ...)
 }
 
 
@@ -54,9 +50,7 @@ txtprogressbar_handler <- function(..., enable = interactive(), times = getOptio
 #' Visual Progression Feedback
 #'
 #' @export
-tkprogressbar_handler <- function(..., enable = interactive(), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0)) {
-  if (!enable) times <- 0
-
+tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 10), ...) {
   reporter <- local({
     ## Import functions
     tkProgressBar <- tcltk::tkProgressBar
@@ -67,7 +61,7 @@ tkprogressbar_handler <- function(..., enable = interactive(), times = getOption
     
     list(
       setup = function(step, max_steps, delta, message) {
-        pb <<- tkProgressBar(max = max_steps, ...)
+        pb <<- tkProgressBar(max = max_steps)
       },
         
       update = function(step, max_steps, delta, message) {
@@ -80,7 +74,7 @@ tkprogressbar_handler <- function(..., enable = interactive(), times = getOption
     )
   })
   
-  progression_handler("tkprogressbar", reporter, times = times, interval = interval)
+  progression_handler("tkprogressbar", reporter, intrusiveness = intrusiveness, ...)
 }
 
 
@@ -88,9 +82,7 @@ tkprogressbar_handler <- function(..., enable = interactive(), times = getOption
 #' Visual Progression Feedback
 #'
 #' @export
-progress_handler <- function(..., clear = FALSE, show_after = 0, enable = interactive(), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0)) {
-  if (!enable) times <- 0
-  
+progress_handler <- function(clear = FALSE, show_after = 0, intrusiveness = getOption("progressr.intrusiveness.terminal", 10), ...) {
   reporter <- local({
     ## Import functions
     progress_bar <- progress::progress_bar
@@ -100,7 +92,7 @@ progress_handler <- function(..., clear = FALSE, show_after = 0, enable = intera
     list(
       setup = function(step, max_steps, delta, message) {
         pb <<- progress_bar$new(total = max_steps,
-                                clear = clear, show_after = show_after, ...)
+                                clear = clear, show_after = show_after)
         pb$tick(0)
       },
         
@@ -114,7 +106,7 @@ progress_handler <- function(..., clear = FALSE, show_after = 0, enable = intera
     )
   })
 
-  progression_handler("progress", reporter, times = times, interval = interval)
+  progression_handler("progress", reporter, intrusiveness = intrusiveness, ...)
 }
 
 
@@ -122,9 +114,7 @@ progress_handler <- function(..., clear = FALSE, show_after = 0, enable = intera
 #' Auditory Progression Feedback
 #'
 #' @export
-beepr_handler <- function(setup_sound = 2L, update_sound = 10L,  done_sound = 11L, enable = interactive(), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0.5), ...) {
-  if (!enable) times <- 0
-
+beepr_handler <- function(setup = 2L, update = 10L,  done = 11L, intrusiveness = getOption("progressr.intrusiveness.auditory", 10), ...) {
   ## Reporter state
   reporter <- local({
     ## Import functions
@@ -132,20 +122,20 @@ beepr_handler <- function(setup_sound = 2L, update_sound = 10L,  done_sound = 11
 
     list(
       setup = function(step, max_steps, delta, message) {
-        beep(setup_sound)
+        beep(setup)
       },
         
       update = function(step, max_steps, delta, message) {
-        beep(update_sound)
+        beep(update)
       },
         
       done = function(step, max_steps, delta, message) {
-        beep(done_sound)
+        beep(done)
       }
     )
   })
   
-  progression_handler("beepr", reporter, times = times, interval = interval)
+  progression_handler("beepr", reporter, intrusiveness = intrusiveness, ...)
 }
 
 
@@ -153,9 +143,7 @@ beepr_handler <- function(setup_sound = 2L, update_sound = 10L,  done_sound = 11
 #' Operating-System Specific Progression Feedback
 #'
 #' @export
-notifier_handler <- function(setup = 2L, update = 10L,  done = 11L, enable = interactive(), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 5), ...) {
-  if (!enable) times <- 0
-  
+notifier_handler <- function(setup = 2L, update = 10L,  done = 11L, intrusiveness = getOption("progressr.intrusiveness.notifier", 10), ...) {
   reporter <- local({
     notify_ideally <- function(step, max_steps, message, p) {
       msg <- paste(c("", message), collapse = "")
@@ -184,5 +172,5 @@ notifier_handler <- function(setup = 2L, update = 10L,  done = 11L, enable = int
     )
   })
   
-  progression_handler("notifier", reporter, times = times, interval = interval)
+  progression_handler("notifier", reporter, intrusiveness = intrusiveness, ...)
 }

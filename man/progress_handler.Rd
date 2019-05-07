@@ -4,9 +4,8 @@
 \alias{progress_handler}
 \title{Visual Progression Feedback}
 \usage{
-progress_handler(..., clear = FALSE, show_after = 0,
-  enable = interactive(), times = getOption("progressr.times", +Inf),
-  interval = getOption("progressr.interval", 0))
+progress_handler(clear = FALSE, show_after = 0,
+  intrusiveness = getOption("progressr.intrusiveness.terminal", 10), ...)
 }
 \description{
 Visual Progression Feedback
