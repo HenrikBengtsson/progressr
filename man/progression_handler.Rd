@@ -11,16 +11,16 @@ progression_handler(name, reporter = environment(), handler = NULL,
 \arguments{
 \item{name}{(character) Name of progression handler.}
 
-\item{handler}{(environment) A reporter environment.}
+\item{reporter}{(environment) A reporter environment.}
+
+\item{handler}{(function) Function take a \code{progression} condition
+as the first argument.}
 
 \item{times}{(integer) The maximum number of times this handler
 should report progression updates.}
 
 \item{interval}{(numeric) The minimum time (in seconds) between
 successive progression updates from this handler.}
-
-\item{handler}{(function) Function take a \code{progression} condition
-as the first argument.}
 }
 \value{
 A function of class \code{progression_handler}.

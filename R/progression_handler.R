@@ -2,7 +2,7 @@
 #'
 #' @param name (character) Name of progression handler.
 #'
-#' @param handler (environment) A reporter environment.
+#' @param reporter (environment) A reporter environment.
 #'
 #' @param handler (function) Function take a `progression` condition
 #'   as the first argument.
@@ -45,25 +45,17 @@ progression_handler <- function(name, reporter = environment(), handler = NULL, 
   prev_milestone <- 0L
   prev_milestone_time <- Sys.time()
 
-  set_max_steps <- function(value) {
-    max_steps <<- value
-    reporter$max_steps <- value
-  }
-
-  set_step <- function(value) {
-    step <<- value
-    reporter$step <- value
-  }
-
   if (is.null(handler)) {
     handler <- function(p) {
       stopifnot(inherits(p, "progression"))
       type <- p$type
       if (type == "setup") {
-        set_max_steps(p$steps)
+        max_steps <<- p$steps
+        reporter$max_steps <- max_steps
         times <- min(times, max_steps)
         milestones <<- seq(from = 1L, to = max_steps, length.out = times)
-        set_step(0L)
+        step <<- 0L
+        reporter$step <- 0L
         reporter$setup()
         prev_milestone <<- step
         milestones <<- milestones[-1]
@@ -73,7 +65,8 @@ progression_handler <- function(name, reporter = environment(), handler = NULL, 
         prev_milestone <<- max_steps
         prev_milestone_time <<- Sys.time()
       } else if (type == "update") {
-        set_step(step + p$amount)
+        step <<- step + p$amount
+        reporter$step <- step
         if (length(milestones) > 0L && step >= milestones[1]) {
           skip <- FALSE
           if (interval > 0) {
