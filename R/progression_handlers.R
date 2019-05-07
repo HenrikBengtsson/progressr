@@ -3,42 +3,63 @@
 #' @export
 ascii_alert_handler <- function(symbol = "\a", ..., times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0.5), file = stderr(), enable = interactive()) {
   if (!enable) times <- 0
-  
-  pb <- NULL
-  at <- NULL
-  step <- 0L
-  t0 <- Sys.time()
 
+  ## Progress state
+  max_steps <- NULL
+  step <- 0L
+  milestones <- NULL
+  prev_milestone <- 0L
+  prev_milestone_time <- Sys.time()
+
+  ## Reporter state
+  reporter <- local({
+    list(
+      setup = function() {
+      },
+      
+      update = function(delta) {
+        cat(file = file, symbol)
+      },
+      
+      done = function(delta) {
+      }
+    )
+  })
+  
   handler <- function(p) {
     stopifnot(inherits(p, "progression"))
     type <- p$type
     if (type == "setup") {
-      max <- p$steps
-      if (is.finite(times) && times >= max) times <- +Inf
-      if (is.finite(times)) {
-        at <<- seq(from = 1L, to = max, length.out = times)
-      }
+      max_steps <<- p$steps
+      times <- min(times, max_steps)
+      milestones <<- seq(from = 1L, to = max_steps, length.out = times)
+      step <<- 0L
+      reporter$setup()
+      prev_milestone <<- step
+      milestones <<- milestones[-1]
+      prev_milestone_time <<- Sys.time()
     } else if (type == "done") {
+      reporter$done(max_steps - prev_milestone)
+      prev_milestone <<- max_steps
+      prev_milestone_time <<- Sys.time()
     } else if (type == "update") {
       step <<- step + p$amount
-      str(list(type = type, step = step, at = at, times = times))
-      if (is.infinite(times) || step >= at[1]) {
-        at <<- at[-1]
+      if (length(milestones) > 0L && step >= milestones[1]) {
         skip <- FALSE
-        if (is.infinite(times) || (length(at) > 0L && interval > 0)) {
-          t <- Sys.time()
-          if (difftime(t, t0, units = "secs") > interval) {
-            t0 <<- t
-          } else {
-            skip <- TRUE
-          }
+        if (interval > 0) {
+	  dt <- difftime(Sys.time(), prev_milestone_time, units = "secs")
+          skip <- (dt < interval)
         }
-        if (!skip) cat(file = file, symbol)
+	if (!skip) {
+          reporter$update(step - prev_milestone)
+          milestones <<- milestones[-1]
+          prev_milestone <<- step
+          prev_milestone_time <<- Sys.time()
+	}
       }
     } else {
       warning("Unknown 'progression' type: ", sQuote(type))
     }
-    times <<- times - 1
   }
 
   progression_handler("ascii_alert", handler, times = times, interval = interval)
@@ -50,49 +71,71 @@ ascii_alert_handler <- function(symbol = "\a", ..., times = getOption("progressr
 #'
 #' @export
 txtprogressbar_handler <- function(..., times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0), file = stderr()) {
-  pb <- NULL
-
   ## Import functions
   txtProgressBar <- utils::txtProgressBar
   getTxtProgressBar <- utils::getTxtProgressBar
   setTxtProgressBar <- utils::setTxtProgressBar
 
-  at <- NULL
+  ## Progress state
+  max_steps <- NULL
   step <- 0L
-  t0 <- Sys.time()
+  milestones <- NULL
+  prev_milestone <- 0L
+  prev_milestone_time <- Sys.time()
+
+  ## Reporter state
+  reporter <- local({
+    pb <- NULL
+    
+    list(
+      setup = function() {
+        pb <<- txtProgressBar(max = max_steps, ..., file = file)
+      },
+      
+      update = function(delta) {
+        setTxtProgressBar(pb, value = step)
+      },
+      
+      done = function(delta) {
+        close(pb)
+      }
+    )
+  })
   
   handler <- function(p) {
     stopifnot(inherits(p, "progression"))
     type <- p$type
     if (type == "setup") {
-      max <- p$steps
-      if (is.finite(times) && times >= max) times <- +Inf
-      if (is.finite(times)) {
-        at <<- seq(from = 1L, to = p$steps, length.out = times)
-      }
-      pb <<- txtProgressBar(max = p$steps, ..., file = file)
+      max_steps <<- p$steps
+      times <- min(times, max_steps)
+      milestones <<- seq(from = 1L, to = max_steps, length.out = times)
+      step <<- 0L
+      reporter$setup()
+      prev_milestone <<- step
+      milestones <<- milestones[-1]
+      prev_milestone_time <<- Sys.time()
     } else if (type == "done") {
-      close(pb)
+      reporter$done(max_steps - prev_milestone)
+      prev_milestone <<- max_steps
+      prev_milestone_time <<- Sys.time()
     } else if (type == "update") {
       step <<- step + p$amount
-       str(list(type = type, step = step, at = at))
-      if (is.infinite(times) || step >= at[1]) {
-        at <<- at[-1]
+      if (length(milestones) > 0L && step >= milestones[1]) {
         skip <- FALSE
-        if (is.infinite(times) || (length(at) > 0L && interval > 0)) {
-          t <- Sys.time()
-          if (difftime(t, t0, units = "secs") > interval) {
-            t0 <<- t
-          } else {
-            skip <- TRUE
-          }
+        if (interval > 0) {
+	  dt <- difftime(Sys.time(), prev_milestone_time, units = "secs")
+          skip <- (dt < interval)
         }
-        if (!skip) setTxtProgressBar(pb, value = step)
+	if (!skip) {
+          reporter$update(step - prev_milestone)
+          milestones <<- milestones[-1]
+          prev_milestone <<- step
+          prev_milestone_time <<- Sys.time()
+	}
       }
     } else {
       warning("Unknown 'progression' type: ", sQuote(type))
     }
-    times <<- times - 1
   }
 
   progression_handler("txtprogressbar", handler, times = times, interval = interval)
@@ -104,53 +147,73 @@ txtprogressbar_handler <- function(..., times = getOption("progressr.times", +In
 #'
 #' @export
 tkprogressbar_handler <- function(..., times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0), enable = interactive()) {
-  if (!enable) times <- 0
-  
-  pb <- NULL
-
   ## Import functions
   tkProgressBar <- tcltk::tkProgressBar
   getTkProgressBar <- tcltk::getTkProgressBar
   setTkProgressBar <- tcltk::setTkProgressBar
 
-  at <- NULL
-  step <- 0L
-  t0 <- Sys.time()
+  if (!enable) times <- 0
 
+  ## Progress state
+  max_steps <- NULL
+  step <- 0L
+  milestones <- NULL
+  prev_milestone <- 0L
+  prev_milestone_time <- Sys.time()
+
+  ## Reporter state
+  reporter <- local({
+    pb <- NULL
+    
+    list(
+      setup = function() {
+        pb <<- tkProgressBar(max = max_steps, ...)
+      },
+      
+      update = function(delta) {
+        setTkProgressBar(pb, value = step)
+      },
+      
+      done = function(delta) {
+        close(pb)
+      }
+    )
+  })
+  
   handler <- function(p) {
     stopifnot(inherits(p, "progression"))
     type <- p$type
     if (type == "setup") {
-      max <- p$steps
-      if (is.finite(times) && times >= max) times <- +Inf
-      if (is.finite(times)) {
-        at <<- seq(from = 1L, to = p$steps, length.out = times)
-      }
-      pb <<- tkProgressBar(max = p$steps, ...)
-      if (interval > 0) t0 <<- Sys.time()
-       str(list(type = type, step = step, at = at))
+      max_steps <<- p$steps
+      times <- min(times, max_steps)
+      milestones <<- seq(from = 1L, to = max_steps, length.out = times)
+      step <<- 0L
+      reporter$setup()
+      prev_milestone <<- step
+      milestones <<- milestones[-1]
+      prev_milestone_time <<- Sys.time()
     } else if (type == "done") {
-      close(pb)
+      reporter$done(max_steps - prev_milestone)
+      prev_milestone <<- max_steps
+      prev_milestone_time <<- Sys.time()
     } else if (type == "update") {
       step <<- step + p$amount
-       str(list(type = type, step = step, at = at))
-      if (is.infinite(times) || step >= at[1]) {
-        at <<- at[-1]
+      if (length(milestones) > 0L && step >= milestones[1]) {
         skip <- FALSE
-        if (is.infinite(times) || (length(at) > 0L && interval > 0)) {
-          t <- Sys.time()
-          if (difftime(t, t0, units = "secs") > interval) {
-            t0 <<- t
-          } else {
-            skip <- TRUE
-          }
+        if (interval > 0) {
+	  dt <- difftime(Sys.time(), prev_milestone_time, units = "secs")
+          skip <- (dt < interval)
         }
-        if (!skip) setTkProgressBar(pb, value = step)
+	if (!skip) {
+          reporter$update(step - prev_milestone)
+          milestones <<- milestones[-1]
+          prev_milestone <<- step
+          prev_milestone_time <<- Sys.time()
+	}
       }
     } else {
       warning("Unknown 'progression' type: ", sQuote(type))
     }
-    times <<- times - 1
   }
 
   progression_handler("tkprogressbar", handler, times = times, interval = interval)
@@ -162,58 +225,71 @@ tkprogressbar_handler <- function(..., times = getOption("progressr.times", +Inf
 #'
 #' @export
 progress_handler <- function(..., clear = FALSE, show_after = 0, times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0)) {
-  pb <- NULL
-
   ## Import functions
   progress_bar <- progress::progress_bar
-  
-  at <- NULL
+
+  ## Progress state
+  max_steps <- NULL
   step <- 0L
-  t0 <- Sys.time()
-  delta <- 1L
-  max <- NULL
+  milestones <- NULL
+  prev_milestone <- 0L
+  prev_milestone_time <- Sys.time()
+
+  ## Reporter state
+  reporter <- local({
+    pb <- NULL
+    
+    list(
+      setup = function() {
+        pb <<- progress_bar$new(total = max_steps,
+	                        clear = clear, show_after = show_after, ...)
+        pb$tick(0)
+      },
+      
+      update = function(delta) {
+        if (delta > 0) pb$tick(delta)
+      },
+      
+      done = function(delta) {
+        if (delta > 0) pb$tick(delta)
+      }
+    )
+  })
   
   handler <- function(p) {
     stopifnot(inherits(p, "progression"))
     type <- p$type
     if (type == "setup") {
-      max <<- p$steps
-      if (is.finite(times) && times >= max) times <- +Inf
-      if (is.finite(times)) {
-        at <<- seq(from = 1L, to = p$steps, length.out = times)
-        delta <<- p$steps / times
-      }
-      pb <<- progress_bar$new(total = max, clear = clear, show_after = show_after, ...)
-      if (is.finite(times)) {
-        if (interval > 0) t0 <<- Sys.time()
-        pb$tick(0)
-      }
-      at <<- at[-1]
+      max_steps <<- p$steps
+      times <- min(times, max_steps)
+      milestones <<- seq(from = 1L, to = max_steps, length.out = times)
+      step <<- 0L
+      reporter$setup()
+      prev_milestone <<- step
+      milestones <<- milestones[-1]
+      prev_milestone_time <<- Sys.time()
     } else if (type == "done") {
-      ## May give an error, e.g. times = 1L
-      if (is.finite(times)) {
-        tryCatch(pb$tick(delta), error = identity)
-      }
+      reporter$done(max_steps - prev_milestone)
+      prev_milestone <<- max_steps
+      prev_milestone_time <<- Sys.time()
     } else if (type == "update") {
       step <<- step + p$amount
-       str(list(type = type, step = step, at = at, delta = delta))
-      if (is.infinite(times) || step >= at[1]) {
-        at <<- at[-1]
+      if (length(milestones) > 0L && step >= milestones[1]) {
         skip <- FALSE
-        if (is.infinite(times) || (length(at) > 0L && interval > 0)) {
-          t <- Sys.time()
-          if (difftime(t, t0, units = "secs") > interval) {
-            t0 <<- t
-          } else {
-            skip <- TRUE
-          }
+        if (interval > 0) {
+	  dt <- difftime(Sys.time(), prev_milestone_time, units = "secs")
+          skip <- (dt < interval)
         }
-        pb$tick(delta)
+	if (!skip) {
+          reporter$update(step - prev_milestone)
+          milestones <<- milestones[-1]
+          prev_milestone <<- step
+          prev_milestone_time <<- Sys.time()
+	}
       }
     } else {
       warning("Unknown 'progression' type: ", sQuote(type))
     }
-    times <<- times - 1
   }
 
   progression_handler("progress", handler, times = times, interval = interval)
@@ -225,52 +301,69 @@ progress_handler <- function(..., clear = FALSE, show_after = 0, times = getOpti
 #'
 #' @export
 beepr_handler <- function(setup = 2L, update = 10L,  done = 11L, times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0.5), enable = interactive(), ...) {
-  if (!enable) times <- 0
-  
-  pb <- NULL
-  
   ## Import functions
   beep <- beepr::beep
   
-  at <- NULL
+  if (!enable) times <- 0
+  
+  ## Progress state
+  max_steps <- NULL
   step <- 0L
-  t0 <- Sys.time()
+  milestones <- NULL
+  prev_milestone <- 0L
+  prev_milestone_time <- Sys.time()
+
+  ## Reporter state
+  reporter <- local({
+    list(
+      setup = function() {
+        beep(setup)
+      },
+      
+      update = function(delta) {
+        beep(update)
+      },
+      
+      done = function(delta) {
+        beep(done)
+      }
+    )
+  })
   
   handler <- function(p) {
     stopifnot(inherits(p, "progression"))
     type <- p$type
     if (type == "setup") {
-      max <- p$steps
-      if (is.finite(times) && times >= max) times <- +Inf
-      if (is.finite(times)) {
-        at <<- seq(from = 1L, to = p$steps, length.out = times)
-      }
-      if (times > 1) {
-        if (interval > 0) t0 <<- Sys.time()
-        beep(setup)
-      }
+      max_steps <<- p$steps
+      times <- min(times, max_steps)
+      milestones <<- seq(from = 1L, to = max_steps, length.out = times)
+      step <<- 0L
+      reporter$setup()
+      prev_milestone <<- step
+      milestones <<- milestones[-1]
+      prev_milestone_time <<- Sys.time()
     } else if (type == "done") {
-      beep(done)
+      reporter$done(max_steps - prev_milestone)
+      prev_milestone <<- max_steps
+      prev_milestone_time <<- Sys.time()
     } else if (type == "update") {
       step <<- step + p$amount
-       str(list(type = type, step = step, at = at))
-      if (is.infinite(times) || step >= at[1]) {
-        at <<- at[-1]
+      if (length(milestones) > 0L && step >= milestones[1]) {
         skip <- FALSE
-        if (is.infinite(times) || (length(at) > 0L && interval > 0)) {
-          t <- Sys.time()
-          if (difftime(t, t0, units = "secs") > interval) {
-            t0 <<- t
-          } else {
-            skip <- TRUE
-          }
+        if (interval > 0) {
+	  dt <- difftime(Sys.time(), prev_milestone_time, units = "secs")
+          skip <- (dt < interval)
         }
-        if (!skip) beep(update)
+	if (!skip) {
+          reporter$update(step - prev_milestone)
+          milestones <<- milestones[-1]
+          prev_milestone <<- step
+          prev_milestone_time <<- Sys.time()
+	}
       }
     } else {
       warning("Unknown 'progression' type: ", sQuote(type))
     }
-    times <<- times - 1
   }
 
   progression_handler("beepr", handler, times = times, interval = interval)
@@ -284,54 +377,74 @@ beepr_handler <- function(setup = 2L, update = 10L,  done = 11L, times = getOpti
 notifier_handler <- function(setup = 2L, update = 10L,  done = 11L, times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 5), enable = interactive(), ...) {
   if (!enable) times <- 0
   
-  pb <- NULL
-  
-  at <- NULL
+  ## Progress state
+  max_steps <- NULL
   step <- 0L
-  max <- 0L
-  t0 <- Sys.time()
+  milestones <- NULL
+  prev_milestone <- 0L
+  prev_milestone_time <- Sys.time()
 
-  notify <- function(p) {
-    msg <- paste(c("", p$message), collapse = "")
-    ratio <- switch(p$type, setup = "STARTED", done = "DONE", sprintf("%.0f%%", 100*step/max))
-    notifier::notify(sprintf("[%s] %s (at %s)", ratio, msg, p$time))
-  }
+  ## Reporter state
+  reporter <- local({
+    notify_ideally <- function(p) {
+      msg <- paste(c("", p$message), collapse = "")
+      ratio <- switch(p$type, setup = "STARTED", done = "DONE", sprintf("%.0f%%", 100*step/max))
+      notifier::notify(sprintf("[%s] %s (at %s)", ratio, msg, p$time))
+    }
+
+    notify <- function(step) {
+      notifier::notify(sprintf("[%.1f%%] Step %d of %d", 100*step/max_steps, step, max_steps))
+    }
+
+    list(
+      setup = function() {
+        notify(step)
+      },
+      
+      update = function(delta) {
+        notify(step)
+      },
+      
+      done = function(delta) {
+        notify(step)
+      }
+    )
+  })
   
   handler <- function(p) {
     stopifnot(inherits(p, "progression"))
     type <- p$type
     if (type == "setup") {
-      max <<- p$steps
-      if (is.finite(times) && times >= max) times <- +Inf
-      if (is.finite(times)) {
-        at <<- seq(from = 1L, to = p$steps, length.out = times)
-      }
-      if (times > 1) {
-        if (interval > 0) t0 <<- Sys.time()
-        notify(p)
-      }
+      max_steps <<- p$steps
+      times <- min(times, max_steps)
+      milestones <<- seq(from = 1L, to = max_steps, length.out = times)
+      step <<- 0L
+      reporter$setup()
+      prev_milestone <<- step
+      milestones <<- milestones[-1]
+      prev_milestone_time <<- Sys.time()
     } else if (type == "done") {
-      notify(p)
+      reporter$done(max_steps - prev_milestone)
+      prev_milestone <<- max_steps
+      prev_milestone_time <<- Sys.time()
     } else if (type == "update") {
       step <<- step + p$amount
-       str(list(type = type, step = step, at = at))
-      if (is.infinite(times) || step >= at[1]) {
-        at <<- at[-1]
+      if (length(milestones) > 0L && step >= milestones[1]) {
         skip <- FALSE
-        if (is.infinite(times) || (length(at) > 0L && interval > 0)) {
-          t <- Sys.time()
-          if (difftime(t, t0, units = "secs") > interval) {
-            t0 <<- t
-          } else {
-            skip <- TRUE
-          }
+        if (interval > 0) {
+	  dt <- difftime(Sys.time(), prev_milestone_time, units = "secs")
+          skip <- (dt < interval)
         }
-        if (!skip) notify(p)
+	if (!skip) {
+          reporter$update(step - prev_milestone)
+          milestones <<- milestones[-1]
+          prev_milestone <<- step
+          prev_milestone_time <<- Sys.time()
+	}
       }
     } else {
       warning("Unknown 'progression' type: ", sQuote(type))
     }
-    times <<- times - 1
   }
 
   progression_handler("notifier", handler, times = times, interval = interval)
