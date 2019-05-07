@@ -5,9 +5,8 @@
 \title{Operating-System Specific Progression Feedback}
 \usage{
 notifier_handler(setup = 2L, update = 10L, done = 11L,
-  times = getOption("progressr.times", +Inf),
-  interval = getOption("progressr.interval", 5),
-  enable = interactive(), ...)
+  enable = interactive(), times = getOption("progressr.times", +Inf),
+  interval = getOption("progressr.interval", 5), ...)
 }
 \description{
 Operating-System Specific Progression Feedback

@@ -4,10 +4,9 @@
 \alias{beepr_handler}
 \title{Auditory Progression Feedback}
 \usage{
-beepr_handler(setup = 2L, update = 10L, done = 11L,
-  times = getOption("progressr.times", +Inf),
-  interval = getOption("progressr.interval", 0.5),
-  enable = interactive(), ...)
+beepr_handler(setup_sound = 2L, update_sound = 10L, done_sound = 11L,
+  enable = interactive(), times = getOption("progressr.times", +Inf),
+  interval = getOption("progressr.interval", 0.5), ...)
 }
 \description{
 Auditory Progression Feedback

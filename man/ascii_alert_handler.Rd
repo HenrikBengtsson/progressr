@@ -4,10 +4,9 @@
 \alias{ascii_alert_handler}
 \title{Auditory Progression Feedback}
 \usage{
-ascii_alert_handler(symbol = "\\a", ...,
+ascii_alert_handler(symbol = "\\a", ..., enable = interactive(),
   times = getOption("progressr.times", +Inf),
-  interval = getOption("progressr.interval", 0.5), file = stderr(),
-  enable = interactive())
+  interval = getOption("progressr.interval", 0.5), file = stderr())
 }
 \description{
 Auditory Progression Feedback

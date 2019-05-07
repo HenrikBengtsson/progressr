@@ -4,7 +4,8 @@
 \alias{txtprogressbar_handler}
 \title{Visual Progression Feedback}
 \usage{
-txtprogressbar_handler(..., times = getOption("progressr.times", +Inf),
+txtprogressbar_handler(..., enable = interactive(),
+  times = getOption("progressr.times", +Inf),
   interval = getOption("progressr.interval", 0), file = stderr())
 }
 \description{

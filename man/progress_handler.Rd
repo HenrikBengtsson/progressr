@@ -5,7 +5,7 @@
 \title{Visual Progression Feedback}
 \usage{
 progress_handler(..., clear = FALSE, show_after = 0,
-  times = getOption("progressr.times", +Inf),
+  enable = interactive(), times = getOption("progressr.times", +Inf),
   interval = getOption("progressr.interval", 0))
 }
 \description{
