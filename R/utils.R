@@ -74,10 +74,3 @@ stop_if_not <- function(...) {
     }
   }
 }
-
-
-env <- function(..., hash = FALSE, parent = parent.frame(), size = 29L) {
-  envir <- new.env(hash = hash, parent = parent, size = size)
-  evalq(..., envir = envir)
-  envir
-}

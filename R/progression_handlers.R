@@ -4,10 +4,12 @@
 ascii_alert_handler <- function(symbol = "\a", ..., enable = interactive(), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0.5), file = stderr()) {
   if (!enable) times <- 0
 
-  reporter <- env({
-    update <- function(delta) {
-      cat(file = file, symbol)
-    }
+  reporter <- local({
+    list(
+      update = function(step, max_steps, delta, message) {
+        cat(file = file, symbol)
+      }
+    )
   })
 
   progression_handler("ascii_alert", reporter, times = times, interval = interval)
@@ -21,28 +23,27 @@ ascii_alert_handler <- function(symbol = "\a", ..., enable = interactive(), time
 txtprogressbar_handler <- function(..., enable = interactive(), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0), file = stderr()) {
   if (!enable) times <- 0
   
-  reporter <- env({
+  reporter <- local({
     ## Import functions
     txtProgressBar <- utils::txtProgressBar
     getTxtProgressBar <- utils::getTxtProgressBar
     setTxtProgressBar <- utils::setTxtProgressBar
 
-    ## To please R CMD check
-    max_steps <- step <- NULL
-    
     pb <- NULL
-    
-    setup <- function() {
-      pb <<- txtProgressBar(max = max_steps, ..., file = file)
-    }
-      
-    update <- function(delta) {
-      setTxtProgressBar(pb, value = step)
-    }
-      
-    done <- function(delta) {
-      close(pb)
-    }
+
+    list(
+      setup = function(step, max_steps, delta, message) {
+        pb <<- txtProgressBar(max = max_steps, ..., file = file)
+      },
+        
+      update = function(step, max_steps, delta, message) {
+        setTxtProgressBar(pb, value = step)
+      },
+        
+      done = function(step, max_steps, delta, message) {
+        close(pb)
+      }
+    )
   })
   
   progression_handler("txtprogressbar", reporter, times = times, interval = interval)
@@ -56,28 +57,27 @@ txtprogressbar_handler <- function(..., enable = interactive(), times = getOptio
 tkprogressbar_handler <- function(..., enable = interactive(), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0)) {
   if (!enable) times <- 0
 
-  reporter <- env({
+  reporter <- local({
     ## Import functions
     tkProgressBar <- tcltk::tkProgressBar
     getTkProgressBar <- tcltk::getTkProgressBar
     setTkProgressBar <- tcltk::setTkProgressBar
 
-    ## To please R CMD check
-    max_steps <- step <- NULL
-    
     pb <- NULL
     
-    setup <- function() {
-      pb <<- tkProgressBar(max = max_steps, ...)
-    }
-      
-    update <- function(delta) {
-      setTkProgressBar(pb, value = step)
-    }
-      
-    done <- function(delta) {
-      close(pb)
-    }
+    list(
+      setup = function(step, max_steps, delta, message) {
+        pb <<- tkProgressBar(max = max_steps, ...)
+      },
+        
+      update = function(step, max_steps, delta, message) {
+        setTkProgressBar(pb, value = step)
+      },
+        
+      done = function(step, max_steps, delta, message) {
+        close(pb)
+      }
+    )
   })
   
   progression_handler("tkprogressbar", reporter, times = times, interval = interval)
@@ -91,28 +91,27 @@ tkprogressbar_handler <- function(..., enable = interactive(), times = getOption
 progress_handler <- function(..., clear = FALSE, show_after = 0, enable = interactive(), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0)) {
   if (!enable) times <- 0
   
-  reporter <- env({
+  reporter <- local({
     ## Import functions
     progress_bar <- progress::progress_bar
 
-    ## To please R CMD check
-    max_steps <- NULL
-    
     pb <- NULL
     
-    setup <- function() {
-      pb <<- progress_bar$new(total = max_steps,
-                              clear = clear, show_after = show_after, ...)
-      pb$tick(0)
-    }
-      
-    update <- function(delta) {
-      if (delta > 0) pb$tick(delta)
-    }
-      
-    done <- function(delta) {
-      if (delta > 0) pb$tick(delta)
-    }
+    list(
+      setup = function(step, max_steps, delta, message) {
+        pb <<- progress_bar$new(total = max_steps,
+                                clear = clear, show_after = show_after, ...)
+        pb$tick(0)
+      },
+        
+      update = function(step, max_steps, delta, message) {
+        if (delta > 0) pb$tick(delta)
+      },
+        
+      done = function(step, max_steps, delta, message) {
+        if (delta > 0) pb$tick(delta)
+      }
+    )
   })
 
   progression_handler("progress", reporter, times = times, interval = interval)
@@ -127,21 +126,23 @@ beepr_handler <- function(setup_sound = 2L, update_sound = 10L,  done_sound = 11
   if (!enable) times <- 0
 
   ## Reporter state
-  reporter <- env({
+  reporter <- local({
     ## Import functions
     beep <- beepr::beep
-  
-    setup <- function() {
-      beep(setup_sound)
-    }
-      
-    update <- function(delta) {
-      beep(update_sound)
-    }
-      
-    done <- function(delta) {
-      beep(done_sound)
-    }
+
+    list(
+      setup = function(step, max_steps, delta, message) {
+        beep(setup_sound)
+      },
+        
+      update = function(step, max_steps, delta, message) {
+        beep(update_sound)
+      },
+        
+      done = function(step, max_steps, delta, message) {
+        beep(done_sound)
+      }
+    )
   })
   
   progression_handler("beepr", reporter, times = times, interval = interval)
@@ -155,31 +156,32 @@ beepr_handler <- function(setup_sound = 2L, update_sound = 10L,  done_sound = 11
 notifier_handler <- function(setup = 2L, update = 10L,  done = 11L, enable = interactive(), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 5), ...) {
   if (!enable) times <- 0
   
-  reporter <- env({
-    ## To please R CMD check
-    max_steps <- step <- NULL
-    
-    notify_ideally <- function(p) {
-      msg <- paste(c("", p$message), collapse = "")
-      ratio <- switch(p$type, setup = "STARTED", done = "DONE", sprintf("%.0f%%", 100*step/max))
+  reporter <- local({
+    notify_ideally <- function(step, max_steps, message, p) {
+      msg <- paste(c("", message), collapse = "")
+      ratio <- if (step == 0L) "STARTED" else if (step == max_steps) "DONE" else sprintf("%.0f%%", 100*step/max_steps)
       notifier::notify(sprintf("[%s] %s (at %s)", ratio, msg, p$time))
     }
 
-    notify <- function(step) {
-      notifier::notify(sprintf("[%.1f%%] Step %d of %d", 100*step/max_steps, step, max_steps))
+    notify <- function(step, max_steps, message) {
+      msg <- paste(c("", message), collapse = "")
+      ratio <- if (step == 0L) "STARTED" else if (step == max_steps) "DONE" else sprintf("%.1f%%", 100*step/max_steps)
+      notifier::notify(sprintf("[%s] %s (Step %d of %d)", ratio, msg, step, max_steps))
     }
 
-    setup <- function() {
-      notify(step)
-    }
-      
-    update <- function(delta) {
-      notify(step)
-    }
-      
-    done <- function(delta) {
-      notify(step)
-    }
+    list(
+      setup = function(step, max_steps, delta, message) {
+        notify(step = step, max_steps = max_steps, message = message)
+      },
+        
+      update = function(step, max_steps, delta, message) {
+        notify(step = step, max_steps = max_steps, message = message)
+      },
+        
+      done = function(step, max_steps, delta, message) {
+        notify(step = step, max_steps = max_steps, message = message)
+      }
+    )
   })
   
   progression_handler("notifier", reporter, times = times, interval = interval)

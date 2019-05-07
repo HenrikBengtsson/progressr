@@ -4,7 +4,7 @@
 \alias{progression_handler}
 \title{Creates a Progression Handler}
 \usage{
-progression_handler(name, reporter = environment(), handler = NULL,
+progression_handler(name, reporter = list(), handler = NULL,
   times = getOption("progressr.times", +Inf),
   interval = getOption("progressr.interval", 0))
 }

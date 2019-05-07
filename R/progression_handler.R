@@ -16,13 +16,13 @@
 #' @return A function of class `progression_handler`.
 #'
 #' @export
-progression_handler <- function(name, reporter = environment(), handler = NULL, times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0)) {
+progression_handler <- function(name, reporter = list(), handler = NULL, times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0)) {
   name <- as.character(name)
   stop_if_not(length(name) == 1L, !is.na(name), nzchar(name))
 #  stop_if_not(is.function(handler))
 #  formals <- formals(handler)
 #  stop_if_not(length(formals) == 1L)
-  stop_if_not(is.environment(reporter))
+  stop_if_not(is.list(reporter))
   stop_if_not(length(times) == 1L, is.numeric(times), !is.na(name),
               times >= 0)
   stop_if_not(length(interval) == 1L, is.numeric(interval),
@@ -51,22 +51,19 @@ progression_handler <- function(name, reporter = environment(), handler = NULL, 
       type <- p$type
       if (type == "setup") {
         max_steps <<- p$steps
-        reporter$max_steps <- max_steps
         times <- min(times, max_steps)
         milestones <<- seq(from = 1L, to = max_steps, length.out = times)
         step <<- 0L
-        reporter$step <- 0L
-        reporter$setup()
+        reporter$setup(max_steps = max_steps, step = step, delta = step - prev_milestone, message = p$message)
         prev_milestone <<- step
         milestones <<- milestones[-1]
         prev_milestone_time <<- Sys.time()
       } else if (type == "done") {
-        reporter$done(max_steps - prev_milestone)
+        reporter$done(max_steps = max_steps, step = step, delta = step - prev_milestone, message = p$message)
         prev_milestone <<- max_steps
         prev_milestone_time <<- Sys.time()
       } else if (type == "update") {
         step <<- step + p$amount
-        reporter$step <- step
         if (length(milestones) > 0L && step >= milestones[1]) {
           skip <- FALSE
           if (interval > 0) {
@@ -74,7 +71,7 @@ progression_handler <- function(name, reporter = environment(), handler = NULL, 
             skip <- (dt < interval)
           }
   	if (!skip) {
-            reporter$update(step - prev_milestone)
+            reporter$update(max_steps = max_steps, step = step, delta = step - prev_milestone, message = p$message)
             milestones <<- milestones[-1]
             prev_milestone <<- step
             prev_milestone_time <<- Sys.time()
