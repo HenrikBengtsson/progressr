@@ -9,9 +9,10 @@ License: GPL (>= 3)
 Suggests:
   utils,
   tcltk,
-  progress,
   beepr,
-  notifier
+  notifier,
+  pbmcapply,
+  progress
 Remotes:
   gaborcsardi/notifier@d92b1b6
 RoxygenNote: 6.1.1

@@ -23,7 +23,6 @@ txtprogressbar_handler <- function(file = stderr(), style = 3L, intrusiveness = 
   reporter <- local({
     ## Import functions
     txtProgressBar <- utils::txtProgressBar
-    getTxtProgressBar <- utils::getTxtProgressBar
     setTxtProgressBar <- utils::setTxtProgressBar
     eraseTxtProgressBar <- function(pb) {
       pb_env <- environment(pb$getVal)
@@ -99,6 +98,67 @@ tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusive
   })
   
   progression_handler("tkprogressbar", reporter, intrusiveness = intrusiveness, ...)
+}
+
+
+
+#' Visual Progression Feedback
+#'
+#' @importFrom utils flush.console
+#' @export
+pbmcapply_handler <- function(file = stderr(), style = "ETA", substyle = 3L, intrusiveness = getOption("progressr.intrusiveness.terminal", 10), ...) {
+  reporter <- local({
+    ## Import functions
+    progressBar <- pbmcapply::progressBar
+    setTxtProgressBar <- utils::setTxtProgressBar
+    eraseTxtProgressBar <- function(pb) {
+      pb_env <- environment(pb$getVal)
+      with(pb_env, {
+        style_eta <- exists(".time0", inherits = FALSE)
+        if (!style_eta) {
+          if (style == 1L || style == 2L) {
+            n <- .nb
+          } else if (style == 3L) {
+            n <- 3L + nw * width + 6L
+          }
+	} else {
+	  ## FIXME: Seems to work; if not, see pbmcapply:::txtProgressBarETA()
+          n <- width
+	}
+        cat("\r", strrep(" ", times = n), "\r", sep = "", file = file)
+	flush.console()
+      })
+    }
+
+    pb <- NULL
+
+    list(
+      setup = function(step, max_steps, delta, message, clear) {
+        pb <<- progressBar(max = max_steps, style = style, substyle = substyle, file = file)
+      },
+        
+      update = function(step, max_steps, delta, message, clear) {
+        setTxtProgressBar(pb, value = step)
+      },
+        
+      done = function(step, max_steps, delta, message, clear) {
+        if (clear) {
+	  eraseTxtProgressBar(pb)
+	  ## Suppress newline outputted by close()
+          pb_env <- environment(pb$getVal)
+	  file <- pb_env$file
+	  pb_env$file <- tempfile()
+	  on.exit({
+	    file.remove(pb_env$file)
+	    pb_env$file <- file
+	  })
+        }
+        close(pb)
+      }
+    )
+  })
+  
+  progression_handler("pbmcapply", reporter, intrusiveness = intrusiveness, ...)
 }
 
 
