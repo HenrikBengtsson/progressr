@@ -42,19 +42,19 @@ now <- function(x = Sys.time(), format = "[%H:%M:%OS3] ") {
   format(as.POSIXlt(x, tz = ""), format = format)
 }
 
-mdebug <- function(..., debug = getOption("history.debug", FALSE)) {
+mdebug <- function(..., debug = getOption("progressr.debug", FALSE)) {
   if (!debug) return()
   message(now(), ...)
 }
 
 #' @importFrom utils capture.output
-mprint <- function(..., appendLF = TRUE, debug = getOption("history.debug", FALSE)) {
+mprint <- function(..., appendLF = TRUE, debug = getOption("progressr.debug", FALSE)) {
   if (!debug) return()
   message(paste(now(), capture.output(print(...)), sep = "", collapse = "\n"), appendLF = appendLF)
 }
 
 #' @importFrom utils capture.output str
-mstr <- function(..., appendLF = TRUE, debug = getOption("history.debug", FALSE)) {
+mstr <- function(..., appendLF = TRUE, debug = getOption("progressr.debug", FALSE)) {
   if (!debug) return()
   message(paste(now(), capture.output(str(...)), sep = "", collapse = "\n"), appendLF = appendLF)
 }

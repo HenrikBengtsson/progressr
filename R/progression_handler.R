@@ -51,46 +51,55 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
   ## Progress state
   max_steps <- NULL
   step <- 0L
+  timestamps <- NULL
   milestones <- NULL
   prev_milestone <- 0L
-  prev_milestone_time <- Sys.time()
 
   if (is.null(handler)) {
     handler <- function(p) {
       stopifnot(inherits(p, "progression"))
       type <- p$type
+      debug <- getOption("progressr.debug", FALSE)
       if (type == "setup") {
         max_steps <<- p$steps
         times <- min(times, max_steps)
+	if (debug) mstr(list(type = type, times = times, interval = interval, intrusiveness = intrusiveness))
 	
         ## Adjust 'times' and 'interval' according to 'intrusiveness'
         times <- times / intrusiveness
         interval <- interval * intrusiveness
 	
         milestones <<- seq(from = 1L, to = max_steps, length.out = times)
+	timestamps <<- rep(as.POSIXct(NA), times = max_steps)
+	timestamps[1] <<- Sys.time()
         step <<- 0L
-        reporter$setup(max_steps = max_steps, step = step, delta = step - prev_milestone, message = p$message, clear = clear)
+	args <- list(max_steps = max_steps, step = step, delta = step - prev_milestone, message = p$message, clear = clear, timestamps = timestamps)
+	if (debug) mstr(list(type = type, args = args))
+        do.call(reporter$setup, args = args)
         prev_milestone <<- step
         milestones <<- milestones[-1]
-        prev_milestone_time <<- Sys.time()
       } else if (type == "done") {
-        reporter$done(max_steps = max_steps, step = step, delta = step - prev_milestone, message = p$message, clear = clear)
+	args <- list(max_steps = max_steps, step = step, delta = step - prev_milestone, message = p$message, clear = clear, timestamps = timestamps)
+	if (debug) mstr(list(type = type, args = args))
+        do.call(reporter$done, args = args)
+	timestamps[max_steps] <<- Sys.time()
         prev_milestone <<- max_steps
-        prev_milestone_time <<- Sys.time()
       } else if (type == "update") {
         step <<- step + p$amount
+	timestamps[step] <<- Sys.time()
         if (length(milestones) > 0L && step >= milestones[1]) {
           skip <- FALSE
           if (interval > 0) {
-  	  dt <- difftime(Sys.time(), prev_milestone_time, units = "secs")
+            dt <- difftime(timestamps[step], timestamps[prev_milestone], units = "secs")
             skip <- (dt < interval)
           }
-  	if (!skip) {
-            reporter$update(max_steps = max_steps, step = step, delta = step - prev_milestone, message = p$message, clear = clear)
+          if (!skip) {
+            args <- list(max_steps = max_steps, step = step, delta = step - prev_milestone, message = p$message, clear = clear, timestamps = timestamps)
+            if (debug) mstr(list(type = type, args = args))
+            do.call(reporter$update, args = args)
             milestones <<- milestones[-1]
             prev_milestone <<- step
-            prev_milestone_time <<- Sys.time()
-  	}
+  	  }
         }
       } else {
         warning("Unknown 'progression' type: ", sQuote(type))

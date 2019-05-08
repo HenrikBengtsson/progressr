@@ -5,7 +5,7 @@
 \title{Visual Progression Feedback}
 \usage{
 txtprogressbar_handler(file = stderr(), style = 3L,
-  intrusiveness = getOption("progressr.intrusiveness.terminal", 10), ...)
+  intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...)
 }
 \description{
 Visual Progression Feedback

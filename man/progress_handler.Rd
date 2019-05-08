@@ -5,7 +5,7 @@
 \title{Visual Progression Feedback}
 \usage{
 progress_handler(show_after = 0,
-  intrusiveness = getOption("progressr.intrusiveness.terminal", 10), ...)
+  intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...)
 }
 \description{
 Visual Progression Feedback

@@ -5,7 +5,7 @@
 \title{Visual Progression Feedback}
 \usage{
 pbmcapply_handler(file = stderr(), style = "ETA", substyle = 3L,
-  intrusiveness = getOption("progressr.intrusiveness.terminal", 10), ...)
+  intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...)
 }
 \description{
 Visual Progression Feedback
