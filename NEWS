@@ -1,6 +1,12 @@
 Package: progressr
 ==================
 
+Version: 0.0.0-9004 [2019-05-07]
+
+ o Add argument 'clear' to control whether progress reporter should clear
+   its output upon completion.  The default is to do this, where supported.
+   
+
 Version: 0.0.0-9003 [2019-05-06]
 
  * Add 'intrusiveness' parameter that specifies how intrusive/disruptive a

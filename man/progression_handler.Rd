@@ -6,7 +6,8 @@
 \usage{
 progression_handler(name, reporter = list(), handler = NULL,
   enable = interactive(), times = getOption("progressr.times", +Inf),
-  interval = getOption("progressr.interval", 0), intrusiveness = 1)
+  interval = getOption("progressr.interval", 0), intrusiveness = 1,
+  clear = TRUE)
 }
 \arguments{
 \item{name}{(character) Name of progression handler.}
@@ -27,6 +28,9 @@ successive progression updates from this handler.}
 
 \item{intrusiveness}{(numeric) A positive scalar on how intrusive
 (disruptive) the reporter to the user.}
+
+\item{clear}{(logical) If TRUE, any output, typically visual, produced
+by a reporter will be cleared/removed upon completion, if possible.}
 }
 \value{
 A function of class \code{progression_handler}.

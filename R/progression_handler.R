@@ -19,10 +19,13 @@
 #' @param interval (numeric) The minimum time (in seconds) between
 #'   successive progression updates from this handler.
 #'
+#' @param clear (logical) If TRUE, any output, typically visual, produced
+#'   by a reporter will be cleared/removed upon completion, if possible.
+#'
 #' @return A function of class `progression_handler`.
 #'
 #' @export
-progression_handler <- function(name, reporter = list(), handler = NULL, enable = interactive(), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0), intrusiveness = 1.0) {
+progression_handler <- function(name, reporter = list(), handler = NULL, enable = interactive(), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0), intrusiveness = 1.0, clear = TRUE) {
   if (!enable) times <- 0L
   name <- as.character(name)
   stop_if_not(length(name) == 1L, !is.na(name), nzchar(name))
@@ -66,12 +69,12 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
 	
         milestones <<- seq(from = 1L, to = max_steps, length.out = times)
         step <<- 0L
-        reporter$setup(max_steps = max_steps, step = step, delta = step - prev_milestone, message = p$message)
+        reporter$setup(max_steps = max_steps, step = step, delta = step - prev_milestone, message = p$message, clear = clear)
         prev_milestone <<- step
         milestones <<- milestones[-1]
         prev_milestone_time <<- Sys.time()
       } else if (type == "done") {
-        reporter$done(max_steps = max_steps, step = step, delta = step - prev_milestone, message = p$message)
+        reporter$done(max_steps = max_steps, step = step, delta = step - prev_milestone, message = p$message, clear = clear)
         prev_milestone <<- max_steps
         prev_milestone_time <<- Sys.time()
       } else if (type == "update") {
@@ -83,7 +86,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
             skip <- (dt < interval)
           }
   	if (!skip) {
-            reporter$update(max_steps = max_steps, step = step, delta = step - prev_milestone, message = p$message)
+            reporter$update(max_steps = max_steps, step = step, delta = step - prev_milestone, message = p$message, clear = clear)
             milestones <<- milestones[-1]
             prev_milestone <<- step
             prev_milestone_time <<- Sys.time()
