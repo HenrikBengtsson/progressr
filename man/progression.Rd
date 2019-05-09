@@ -4,14 +4,14 @@
 \alias{progression}
 \title{A Progression Condition}
 \usage{
-progression(message = character(0L), amount = 1, step = NULL,
+progression(amount = 1, message = character(0L), step = NULL,
   time = Sys.time(), ..., type = c("update", "setup", "done"),
   class = NULL, call = NULL)
 }
 \arguments{
-\item{message}{(character) A progress message.}
-
 \item{amount}{(numeric) The total amount of progress made.}
+
+\item{message}{(character) A progress message.}
 
 \item{step}{(character or integer) The step completed.}
 

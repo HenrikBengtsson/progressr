@@ -1,8 +1,8 @@
 #' A Progression Condition
 #'
-#' @param message (character) A progress message.
-#'
 #' @param amount (numeric) The total amount of progress made.
+#'
+#' @param message (character) A progress message.
 #'
 #' @param step (character or integer) The step completed.
 #'
@@ -23,7 +23,7 @@
 #' To create and signal a progression condition at once, use [progress()].
 #'
 #' @export
-progression <- function(message = character(0L), amount = 1.0, step = NULL, time = Sys.time(), ..., type = c("update", "setup", "done"), class = NULL, call = NULL) {
+progression <- function(amount = 1.0, message = character(0L), step = NULL, time = Sys.time(), ..., type = c("update", "setup", "done"), class = NULL, call = NULL) {
   message <- as.character(message)
   amount <- as.numeric(amount)
   time <- as.POSIXct(time)

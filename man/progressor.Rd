@@ -4,7 +4,8 @@
 \alias{progressor}
 \title{Create a Progressor Function}
 \usage{
-progressor(steps, label = NA_character_, setup = TRUE)
+progressor(steps, label = NA_character_, setup = TRUE,
+  auto_done = FALSE)
 }
 \arguments{
 \item{steps}{(integer) Maximum number of steps.}
@@ -13,6 +14,9 @@ progressor(steps, label = NA_character_, setup = TRUE)
 
 \item{setup}{(logical) If TRUE, the progressor will signal a
 \link{progression} 'setup' condition.}
+
+\item{auto_done}{(logical) If TRUE, then the progressor will signal a
+\link{progression} 'done' condition as soon as the last step has been reached.}
 }
 \value{
 A function of class \code{progressor}.

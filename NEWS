@@ -1,6 +1,15 @@
 Package: progressr
 ==================
 
+Version: 0.0.0-9004 [2019-05-08]
+
+ * Add argument 'auto_done' to automatically have progress updates also
+   signal "done" as soon as the last step has been reached.
+
+ * Made 'amount' the first argument of progressors to avoid having to specify
+   it by name if progressing with an amount than the default `amount = 1.0`.
+ 
+
 Version: 0.0.0-9004 [2019-05-07]
 
  * Add argument 'clear' to control whether progress reporter should clear
