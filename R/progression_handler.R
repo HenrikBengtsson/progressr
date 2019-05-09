@@ -68,7 +68,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
 	if (debug) mstr(list(type = type, auto_done = auto_done, times = times, interval = interval, intrusiveness = intrusiveness))
 	
         ## Adjust 'times' and 'interval' according to 'intrusiveness'
-        times <- times / intrusiveness
+        times <- max(times / intrusiveness, 2L)
         interval <- interval * intrusiveness
 	
         milestones <<- seq(from = 1L, to = max_steps, length.out = times)

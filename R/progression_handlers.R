@@ -92,7 +92,7 @@ tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusive
       },
         
       done = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        if (close) close(pb)
+        if (clear) close(pb)
       }
     )
   })
