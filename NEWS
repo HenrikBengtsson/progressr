@@ -1,16 +1,27 @@
 Package: progressr
 ==================
 
+Version: 0.0.0-9005 [2019-05-08]
+
+SIGNIFICANT CHANGES:
+
+ * Make 'auto_done = TRUE' the default.
+ 
+
 Version: 0.0.0-9004 [2019-05-08]
+
+NEW FEATURES:
 
  * Add argument 'auto_done' to automatically have progress updates also
    signal "done" as soon as the last step has been reached.
 
  * Made 'amount' the first argument of progressors to avoid having to specify
    it by name if progressing with an amount than the default `amount = 1.0`.
- 
+
 
 Version: 0.0.0-9004 [2019-05-07]
+
+NEW FEATURES:
 
  * Add argument 'clear' to control whether progress reporter should clear
    its output upon completion.  The default is to do this, where supported.
@@ -24,6 +35,8 @@ Version: 0.0.0-9004 [2019-05-07]
 
 Version: 0.0.0-9003 [2019-05-06]
 
+NEW FEATURES:
+
  * Add 'intrusiveness' parameter that specifies how intrusive/disruptive a
    certain progress reporter is.  For instance, an auditory reporter is
    relatively more distruptive than a visual progress bar part of the
@@ -34,12 +47,16 @@ Version: 0.0.0-9003 [2019-05-06]
 
 Version: 0.0.0-9002 [2019-04-25]
 
+NEW FEATURES:
+
  * Add progressor().
 
  * Add progress_aggregator().
 
 
 Version: 0.0.0-9001 [2019-04-24]
+
+NEW FEATURES:
 
  * Add progress update handlers based on utils::txtProgressBar(),
    tcltk::tkProgressBar(), cat("\a"), progress::progress_bar(), beepr::beep(),
@@ -57,6 +74,8 @@ Version: 0.0.0-9001 [2019-04-24]
  
 
 Version: 0.0.0-9000 [2019-04-11]
+
+NEW FEATURES:
 
  * Add progress() to create and signal progression condition.
 

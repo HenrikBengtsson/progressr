@@ -13,7 +13,7 @@
 #' @return A function of class `progressor`.
 #'
 #' @export
-progressor <- function(steps, label = NA_character_, setup = TRUE, auto_done = FALSE) {
+progressor <- function(steps, label = NA_character_, setup = TRUE, auto_done = TRUE) {
   label <- as.character(label)
   stop_if_not(length(label) == 1L)
   

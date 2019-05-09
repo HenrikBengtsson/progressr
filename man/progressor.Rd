@@ -5,7 +5,7 @@
 \title{Create a Progressor Function}
 \usage{
 progressor(steps, label = NA_character_, setup = TRUE,
-  auto_done = FALSE)
+  auto_done = TRUE)
 }
 \arguments{
 \item{steps}{(integer) Maximum number of steps.}

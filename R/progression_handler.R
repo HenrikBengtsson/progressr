@@ -51,7 +51,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
   ## Progress state
   max_steps <- NULL
   step <- NULL
-  auto_done <- FALSE
+  auto_done <- TRUE
   timestamps <- NULL
   milestones <- NULL
   prev_milestone <- NULL
