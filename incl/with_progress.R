@@ -49,7 +49,7 @@ if (requireNamespace("notifier", quietly = TRUE)) {
 oopts <- options(progressr.handlers = handlers)
 
 with_progress({
-  y <- slow_sum(1:50)
+  y <- slow_sum(1:30)
 })
 
 options(oopts)

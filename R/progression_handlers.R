@@ -1,5 +1,16 @@
 #' Auditory Progression Feedback
 #'
+#' A progression handler based on `cat("\a", file=stderr())`.
+#'
+#' @inheritParams progression_handler
+#'
+#' @param symbol (character string) The character symbol to be outputted,
+#' which by default is the ASCII BEL character (`'\a'` = `'\007') character.
+#'
+#' @param file (connection) A [base::connection] to where output should be sent.
+#'
+#' @param \ldots Additional arguments passed to [progression_handler()].
+#'
 #' @export
 ascii_alert_handler <- function(symbol = "\a", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.auditory", 10), ...) {
   reporter <- local({
@@ -17,9 +28,19 @@ ascii_alert_handler <- function(symbol = "\a", file = stderr(), intrusiveness = 
 
 #' Visual Progression Feedback
 #'
+#' A progression handler for [utils::txtProgressBar()].
+#'
+#' @inheritParams progression_handler
+#'
+#' @param style (integer) The progress-bar style according to [utils::txtProgressBar()].
+#'
+#' @param file (connection) A [base::connection] to where output should be sent.
+#'
+#' @param \ldots Additional arguments passed to [progression_handler()].
+#'
 #' @importFrom utils flush.console
 #' @export
-txtprogressbar_handler <- function(file = stderr(), style = 3L, intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...) {
+txtprogressbar_handler <- function(style = 3L, file = stderr(), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...) {
   reporter <- local({
     ## Import functions
     txtProgressBar <- utils::txtProgressBar
@@ -72,6 +93,12 @@ txtprogressbar_handler <- function(file = stderr(), style = 3L, intrusiveness = 
 
 #' Visual Progression Feedback
 #'
+#' A progression handler for [tcltk::tkProgressBar()].
+#'
+#' @inheritParams progression_handler
+#'
+#' @param \ldots Additional arguments passed to [progression_handler()].
+#'
 #' @export
 tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 10), ...) {
   reporter <- local({
@@ -104,9 +131,21 @@ tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusive
 
 #' Visual Progression Feedback
 #'
+#' A progression handler for [pbmcapply::progressBar()].
+#'
+#' @inheritParams progression_handler
+#'
+#' @param substyle (integer) The progress-bar substyle according to [pbmcapply::progressBar()].
+#'
+#' @param style (character) The progress-bar style according to [pbmcapply::progressBar()].
+#'
+#' @param file (connection) A [base::connection] to where output should be sent.
+#'
+#' @param \ldots Additional arguments passed to [progression_handler()].
+#'
 #' @importFrom utils flush.console
 #' @export
-pbmcapply_handler <- function(file = stderr(), style = "ETA", substyle = 3L, intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...) {
+pbmcapply_handler <- function(substyle = 3L, style = "ETA", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...) {
   reporter <- local({
     ## Import functions
     progressBar <- pbmcapply::progressBar
@@ -165,8 +204,16 @@ pbmcapply_handler <- function(file = stderr(), style = "ETA", substyle = 3L, int
 
 #' Visual Progression Feedback
 #'
+#' A progression handler for [progress::progress_bar()].
+#'
+#' @inheritParams progression_handler
+#'
+#' @param show_after (numeric) Number of seconds to wait before displaying the progress bar.
+#'
+#' @param \ldots Additional arguments passed to [progression_handler()].
+#'
 #' @export
-progress_handler <- function(show_after = 0, intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...) {
+progress_handler <- function(show_after = 0.0, intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...) {
   reporter <- local({
     ## Import functions
     progress_bar <- progress::progress_bar
@@ -197,6 +244,15 @@ progress_handler <- function(show_after = 0, intrusiveness = getOption("progress
 
 #' Auditory Progression Feedback
 #'
+#' A progression handler for [beepr::beep()].
+#'
+#' @inheritParams progression_handler
+#'
+#' @param setup,update,done (integer) Indices of [beepr::beep()] sounds to
+#'  play when progress starts, is updated, and completes.
+#'
+#' @param \ldots Additional arguments passed to [progression_handler()].
+#'
 #' @export
 beepr_handler <- function(setup = 2L, update = 10L,  done = 11L, intrusiveness = getOption("progressr.intrusiveness.auditory", 10), ...) {
   ## Reporter state
@@ -226,8 +282,12 @@ beepr_handler <- function(setup = 2L, update = 10L,  done = 11L, intrusiveness =
 
 #' Operating-System Specific Progression Feedback
 #'
+#' @inheritParams progression_handler
+#'
+#' @param \ldots Additional arguments passed to [progression_handler()].
+#'
 #' @export
-notifier_handler <- function(setup = 2L, update = 10L,  done = 11L, intrusiveness = getOption("progressr.intrusiveness.notifier", 10), ...) {
+notifier_handler <- function(intrusiveness = getOption("progressr.intrusiveness.notifier", 10), ...) {
   reporter <- local({
     notify_ideally <- function(step, max_steps, message, p) {
       msg <- paste(c("", message), collapse = "")

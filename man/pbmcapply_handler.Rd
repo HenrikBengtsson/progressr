@@ -4,9 +4,21 @@
 \alias{pbmcapply_handler}
 \title{Visual Progression Feedback}
 \usage{
-pbmcapply_handler(file = stderr(), style = "ETA", substyle = 3L,
+pbmcapply_handler(substyle = 3L, style = "ETA", file = stderr(),
   intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...)
 }
+\arguments{
+\item{substyle}{(integer) The progress-bar substyle according to \code{\link[pbmcapply:progressBar]{pbmcapply::progressBar()}}.}
+
+\item{style}{(character) The progress-bar style according to \code{\link[pbmcapply:progressBar]{pbmcapply::progressBar()}}.}
+
+\item{file}{(connection) A \link[base:connection]{base::connection} to where output should be sent.}
+
+\item{intrusiveness}{(numeric) A positive scalar on how intrusive
+(disruptive) the reporter to the user.}
+
+\item{\ldots}{Additional arguments passed to \code{\link[=progression_handler]{progression_handler()}}.}
+}
 \description{
-Visual Progression Feedback
+A progression handler for \code{\link[pbmcapply:progressBar]{pbmcapply::progressBar()}}.
 }

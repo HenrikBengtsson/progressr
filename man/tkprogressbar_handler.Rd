@@ -8,6 +8,12 @@
   tkprogressbar_handler(intrusiveness = getOption("progressr.intrusiveness.gui",
   10), ...)
 }
+\arguments{
+\item{intrusiveness}{(numeric) A positive scalar on how intrusive
+(disruptive) the reporter to the user.}
+
+\item{\ldots}{Additional arguments passed to \code{\link[=progression_handler]{progression_handler()}}.}
+}
 \description{
-Visual Progression Feedback
+A progression handler for \code{\link[tcltk:tkProgressBar]{tcltk::tkProgressBar()}}.
 }

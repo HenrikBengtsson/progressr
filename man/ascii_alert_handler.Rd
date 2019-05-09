@@ -7,6 +7,17 @@
 ascii_alert_handler(symbol = "\\a", file = stderr(),
   intrusiveness = getOption("progressr.intrusiveness.auditory", 10), ...)
 }
+\arguments{
+\item{symbol}{(character string) The character symbol to be outputted,
+which by default is the ASCII BEL character (\code{'\a'} = `'\007') character.}
+
+\item{file}{(connection) A \link[base:connection]{base::connection} to where output should be sent.}
+
+\item{intrusiveness}{(numeric) A positive scalar on how intrusive
+(disruptive) the reporter to the user.}
+
+\item{\ldots}{Additional arguments passed to \code{\link[=progression_handler]{progression_handler()}}.}
+}
 \description{
-Auditory Progression Feedback
+A progression handler based on \code{cat("\a", file=stderr())}.
 }

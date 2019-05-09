@@ -4,9 +4,19 @@
 \alias{txtprogressbar_handler}
 \title{Visual Progression Feedback}
 \usage{
-txtprogressbar_handler(file = stderr(), style = 3L,
+txtprogressbar_handler(style = 3L, file = stderr(),
   intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...)
 }
+\arguments{
+\item{style}{(integer) The progress-bar style according to \code{\link[utils:txtProgressBar]{utils::txtProgressBar()}}.}
+
+\item{file}{(connection) A \link[base:connection]{base::connection} to where output should be sent.}
+
+\item{intrusiveness}{(numeric) A positive scalar on how intrusive
+(disruptive) the reporter to the user.}
+
+\item{\ldots}{Additional arguments passed to \code{\link[=progression_handler]{progression_handler()}}.}
+}
 \description{
-Visual Progression Feedback
+A progression handler for \code{\link[utils:txtProgressBar]{utils::txtProgressBar()}}.
 }

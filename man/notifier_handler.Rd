@@ -4,8 +4,15 @@
 \alias{notifier_handler}
 \title{Operating-System Specific Progression Feedback}
 \usage{
-notifier_handler(setup = 2L, update = 10L, done = 11L,
-  intrusiveness = getOption("progressr.intrusiveness.notifier", 10), ...)
+
+  notifier_handler(intrusiveness = getOption("progressr.intrusiveness.notifier",
+  10), ...)
+}
+\arguments{
+\item{intrusiveness}{(numeric) A positive scalar on how intrusive
+(disruptive) the reporter to the user.}
+
+\item{\ldots}{Additional arguments passed to \code{\link[=progression_handler]{progression_handler()}}.}
 }
 \description{
 Operating-System Specific Progression Feedback
