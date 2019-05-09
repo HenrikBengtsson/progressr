@@ -1,7 +1,6 @@
 library(progressr)
 
 options(delay = 0.01)
-#options(progressr.handlers = list())
 options(progressr.times = +Inf)
 options(progressr.interval = 0.2)
 
