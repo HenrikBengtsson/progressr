@@ -50,11 +50,11 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
 
   ## Progress state
   max_steps <- NULL
-  step <- 0L
+  step <- NULL
   auto_done <- FALSE
   timestamps <- NULL
   milestones <- NULL
-  prev_milestone <- 0L
+  prev_milestone <- NULL
 
   if (is.null(handler)) {
     handler <- function(p) {
@@ -93,8 +93,9 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
         if (length(milestones) > 0L && step >= milestones[1]) {
           skip <- FALSE
           if (interval > 0) {
-            dt <- difftime(timestamps[step], timestamps[prev_milestone], units = "secs")
+            dt <- difftime(timestamps[step], timestamps[max(prev_milestone, 1L)], units = "secs")
             skip <- (dt < interval)
+            if (debug) mstr(list(type = type, step = step, milestones = milestones, prev_milestone = prev_milestone, interval = interval, dt = dt, timestamps[step], timestamps[prev_milestone], skip = skip))
           }
           if (!skip) {
             args <- list(max_steps = max_steps, step = step, delta = step - prev_milestone, message = p$message, clear = clear, timestamps = timestamps)
