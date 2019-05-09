@@ -15,5 +15,5 @@
 \item{\ldots}{Additional arguments passed to \code{\link[=progression_handler]{progression_handler()}}.}
 }
 \description{
-Operating-System Specific Progression Feedback
+A progression handler for \code{\link[notifier:notify]{notifier::notify()}}.
 }

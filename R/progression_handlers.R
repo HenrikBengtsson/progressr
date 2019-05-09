@@ -5,7 +5,7 @@
 #' @inheritParams progression_handler
 #'
 #' @param symbol (character string) The character symbol to be outputted,
-#' which by default is the ASCII BEL character (`'\a'` = `'\007') character.
+#' which by default is the ASCII BEL character (`'\a'` = `'\007'`) character.
 #'
 #' @param file (connection) A [base::connection] to where output should be sent.
 #'
@@ -281,6 +281,8 @@ beepr_handler <- function(setup = 2L, update = 10L,  done = 11L, intrusiveness =
 
 
 #' Operating-System Specific Progression Feedback
+#'
+#' A progression handler for [notifier::notify()].
 #'
 #' @inheritParams progression_handler
 #'
