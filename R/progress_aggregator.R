@@ -25,7 +25,7 @@ progress_aggregator <- function(progress) {
     }
     
     ## Prevent upstream calling handlers to receive progression 'p'
-    invokeRestart("consume_progression")
+    invokeRestart("muffleProgression")
   }
 
   handler <- progression_handler("progress_aggregator", handler = handler)

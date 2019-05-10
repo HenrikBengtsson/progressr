@@ -22,7 +22,7 @@ progress <- function(..., call = sys.call()) {
   
   withRestarts(
     signalCondition(cond),
-    consume_progression = function(p) NULL
+    muffleProgression = function(p) NULL
   )
   
   invisible(cond)

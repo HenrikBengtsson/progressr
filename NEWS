@@ -3,6 +3,11 @@ Package: progressr
 
 Version: 0.0.1-9000 [2019-05-09]
 
+SIGNIFICANT CHANGES:
+
+ * Renamed restart 'consume_progression' to 'muffleProgression' to align
+   with restarts 'muffleMessage' and 'muffleWarning' in base R.
+
 NEW FEATURES:
 
  * Add a plyr-compatible "progress bar" named progress_progressr().

@@ -14,7 +14,7 @@ A named \link[base:list]{base::list} that can be passed as argument \code{.progr
 to any of \pkg{plyr} function accepting that argument.
 }
 \description{
-A \pkg{plyr} progress "bar" that signals \link{progression} conditions.
+A \pkg{plyr} "progress bar" that signals \link{progression} conditions.
 }
 \examples{
 with_progress({
