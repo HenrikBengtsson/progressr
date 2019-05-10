@@ -11,7 +11,9 @@ SIGNIFICANT CHANGES:
 NEW FEATURES:
 
  * Add a plyr-compatible "progress bar" named progress_progressr().
- 
+
+ * Now 'progression' conditions are also of class 'instant_relay_condition'.
+
 
 Version: 0.0.1 [2019-05-08]
 
