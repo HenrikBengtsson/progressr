@@ -12,6 +12,7 @@ Suggests:
   beepr,
   notifier,
   pbmcapply,
+  plyr,
   progress
 Remotes:
   gaborcsardi/notifier@d92b1b6

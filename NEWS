@@ -1,9 +1,11 @@
 Package: progressr
 ==================
 
-Version: 0.0.1-9000 [2019-05-08]
+Version: 0.0.1-9000 [2019-05-09]
 
- * ...
+NEW FEATURES:
+
+ * Add a plyr-compatible "progress bar" named progress_progressr().
  
 
 Version: 0.0.1 [2019-05-08]
