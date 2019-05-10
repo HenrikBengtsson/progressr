@@ -38,7 +38,7 @@ ascii_alert_handler <- function(symbol = "\a", file = stderr(), intrusiveness = 
 #'
 #' @param \ldots Additional arguments passed to [progression_handler()].
 #'
-#' @importFrom utils flush.console
+#' @importFrom utils file_test flush.console
 #' @export
 txtprogressbar_handler <- function(style = 3L, file = stderr(), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...) {
   reporter <- local({
@@ -77,7 +77,7 @@ txtprogressbar_handler <- function(style = 3L, file = stderr(), intrusiveness = 
 	  file <- pb_env$file
 	  pb_env$file <- tempfile()
 	  on.exit({
-	    file.remove(pb_env$file)
+	    if (file_test("-f", pb_env$file)) file.remove(pb_env$file)
 	    pb_env$file <- file
 	  })
         }
@@ -143,7 +143,7 @@ tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusive
 #'
 #' @param \ldots Additional arguments passed to [progression_handler()].
 #'
-#' @importFrom utils flush.console
+#' @importFrom utils file_test flush.console
 #' @export
 pbmcapply_handler <- function(substyle = 3L, style = "ETA", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...) {
   reporter <- local({
@@ -188,7 +188,7 @@ pbmcapply_handler <- function(substyle = 3L, style = "ETA", file = stderr(), int
 	  file <- pb_env$file
 	  pb_env$file <- tempfile()
 	  on.exit({
-	    file.remove(pb_env$file)
+	    if (file_test("-f", pb_env$file)) file.remove(pb_env$file)
 	    pb_env$file <- file
 	  })
         }
