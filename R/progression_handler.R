@@ -75,6 +75,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
       mprintf("initiate_reporter() ...")
       mstr(args)
     }
+    stop_if_not(is.null(prev_milestone), length(milestones) > 0L)
     do.call(reporter$initiate, args = args)
     if (debug) mprintf("initiate_reporter() ... done")
   }
@@ -86,6 +87,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
       mprintf("update_reporter() ...")
       mstr(args)
     }
+    stop_if_not(!is.null(step), length(milestones) > 0L)
     do.call(reporter$update, args = args)
     if (debug) mprintf("update_reporter() ... done")
   }
@@ -97,6 +99,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
       mprintf("finish_reporter() ...")
       mstr(args)
     }
+    stop_if_not(!is.null(step), length(milestones) == 0L)
     do.call(reporter$finish, args = args)
     if (debug) mprintf("finish_reporter() ... done")
   }
