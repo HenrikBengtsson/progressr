@@ -5,7 +5,7 @@
 \title{A Progression Condition}
 \usage{
 progression(amount = 1, message = character(0L), step = NULL,
-  time = Sys.time(), ..., type = c("update", "setup", "done"),
+  time = Sys.time(), ..., type = c("update", "initiate", "finish"),
   class = NULL, call = NULL)
 }
 \arguments{

@@ -4,19 +4,19 @@
 \alias{progressor}
 \title{Create a Progressor Function}
 \usage{
-progressor(steps, label = NA_character_, setup = TRUE,
-  auto_done = TRUE)
+progressor(steps, label = NA_character_, initiate = TRUE,
+  auto_finish = TRUE)
 }
 \arguments{
 \item{steps}{(integer) Maximum number of steps.}
 
 \item{label}{(character) A label.}
 
-\item{setup}{(logical) If TRUE, the progressor will signal a
-\link{progression} 'setup' condition.}
+\item{initiate}{(logical) If TRUE, the progressor will signal a
+\link{progression} 'initiate' condition.}
 
-\item{auto_done}{(logical) If TRUE, then the progressor will signal a
-\link{progression} 'done' condition as soon as the last step has been reached.}
+\item{auto_finish}{(logical) If TRUE, then the progressor will signal a
+\link{progression} 'finish' condition as soon as the last step has been reached.}
 }
 \value{
 A function of class \code{progressor}.

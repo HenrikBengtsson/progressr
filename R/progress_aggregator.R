@@ -16,8 +16,8 @@ progress_aggregator <- function(progress) {
   handler <- function(p) {
     stopifnot(inherits(p, "progression"))
     type <- p$type
-    if (type == "setup") {
-    } else if (type == "done") {
+    if (type == "initiate") {
+    } else if (type == "finish") {
     } else if (type == "update") {
       progress()
     } else {
