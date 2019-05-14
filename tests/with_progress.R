@@ -1,6 +1,7 @@
 library(progressr)
 
 options(delay = 0.01)
+
 options(progressr.times = +Inf)
 options(progressr.interval = 0.2)
 
@@ -8,6 +9,18 @@ message("with_progress() ...")
 
 x <- 1:100
 truth <- sum(x)
+
+message("with_progress() - default ...")
+
+if (requireNamespace("utils")) {
+  with_progress({
+    sum <- slow_sum(x)
+  })
+  print(sum)
+  stopifnot(sum == truth)
+}
+
+message("with_progress() - default ... done")
 
 message("with_progress() - utils::txtProgressBar() ...")
 
@@ -21,18 +34,6 @@ if (requireNamespace("utils")) {
 
 message("with_progress() - utils::txtProgressBar() ... done")
 
-
-message("with_progress() - default ...")
-
-if (requireNamespace("utils")) {
-  with_progress({
-    sum <- slow_sum(x)
-  })
-  print(sum)
-  stopifnot(sum == truth)
-}
-
-message("with_progress() - default ... done")
 
 message("with_progress() - tcltk::tkProgressBar() ...")
 
