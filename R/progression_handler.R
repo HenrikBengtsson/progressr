@@ -25,7 +25,7 @@
 #' @return A function of class `progression_handler`.
 #'
 #' @export
-progression_handler <- function(name, reporter = list(), handler = NULL, enable = interactive(), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0), intrusiveness = 1.0, clear = TRUE) {
+progression_handler <- function(name, reporter = list(), handler = NULL, enable = interactive(), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0), intrusiveness = 1.0, clear = getOption("progressr.clear", TRUE)) {
   if (!enable) times <- 0L
   name <- as.character(name)
   stop_if_not(length(name) == 1L, !is.na(name), nzchar(name))
@@ -56,63 +56,107 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
   milestones <- NULL
   prev_milestone <- NULL
 
+  reporter_args <- function(message) {
+    args <- list(
+      max_steps = max_steps,
+      step = step,
+      message = message,
+      timestamps = timestamps,
+      delta = step - prev_milestone,
+      clear = clear
+    )
+    args
+  }
+
+  initiate_reporter <- function(p) {
+    args <- reporter_args(message = p$message)
+    debug <- getOption("progressr.debug", FALSE)
+    if (debug) {
+      mprintf("initiate_reporter() ...")
+      mstr(args)
+    }
+    do.call(reporter$initiate, args = args)
+    if (debug) mprintf("initiate_reporter() ... done")
+  }
+
+  update_reporter <- function(p) {
+    args <- reporter_args(message = p$message)
+    debug <- getOption("progressr.debug", FALSE)
+    if (debug) {
+      mprintf("update_reporter() ...")
+      mstr(args)
+    }
+    do.call(reporter$update, args = args)
+    if (debug) mprintf("update_reporter() ... done")
+  }
+
+  finish_reporter <- function(p) {
+    args <- reporter_args(message = p$message)
+    debug <- getOption("progressr.debug", FALSE)
+    if (debug) {
+      mprintf("finish_reporter() ...")
+      mstr(args)
+    }
+    do.call(reporter$finish, args = args)
+    if (debug) mprintf("finish_reporter() ... done")
+  }
+
   if (is.null(handler)) {
     handler <- function(p) {
       stopifnot(inherits(p, "progression"))
       type <- p$type
       debug <- getOption("progressr.debug", FALSE)
+      if (debug) mprintf("Progression handler %s ...", sQuote(type))
+      
       if (type == "initiate") {
         max_steps <<- p$steps
         auto_finish <<- p$auto_finish
         times <- min(times, max_steps)
-	if (debug) mstr(list(type = type, auto_finish = auto_finish, times = times, interval = interval, intrusiveness = intrusiveness))
-	
+        if (debug) mstr(list(auto_finish = auto_finish, times = times, interval = interval, intrusiveness = intrusiveness))
+        
         ## Adjust 'times' and 'interval' according to 'intrusiveness'
         times <- max(times / intrusiveness, 2L)
         interval <- interval * intrusiveness
-	
+        
         milestones <<- seq(from = 1L, to = max_steps, length.out = times)
-	timestamps <<- rep(as.POSIXct(NA), times = max_steps)
-	timestamps[1] <<- Sys.time()
+        timestamps <<- rep(as.POSIXct(NA), times = max_steps)
+        timestamps[1] <<- Sys.time()
         step <<- 0L
-	args <- list(max_steps = max_steps, step = step, delta = step - prev_milestone, message = p$message, clear = clear, timestamps = timestamps)
-	if (debug) mstr(list(type = type, args = args, milestones = milestones))
-        do.call(reporter$initiate, args = args)
+        if (debug) mstr(list(milestones = milestones))
+        initiate_reporter(p)
         prev_milestone <<- step
-        milestones <<- milestones[-1]
       } else if (type == "finish") {
-	args <- list(max_steps = max_steps, step = step, delta = step - prev_milestone, message = p$message, clear = clear, timestamps = timestamps)
-	if (debug) mstr(list(type = type, args = args, milestones = milestones))
-        do.call(reporter$finish, args = args)
-	timestamps[max_steps] <<- Sys.time()
+        if (debug) mstr(list(milestones = milestones))
+        finish_reporter(p)
+        timestamps[max_steps] <<- Sys.time()
         prev_milestone <<- max_steps
       } else if (type == "update") {
         step <<- step + p$amount
-	timestamps[step] <<- Sys.time()
-        if (debug) mstr(list(type = type, step = step, milestones = milestones))
+        timestamps[step] <<- Sys.time()
+        if (debug) mstr(list(step = step, milestones = milestones, prev_milestone = prev_milestone, interval = interval))
         if (length(milestones) > 0L && step >= milestones[1]) {
           skip <- FALSE
           if (interval > 0) {
             dt <- difftime(timestamps[step], timestamps[max(prev_milestone, 1L)], units = "secs")
             skip <- (dt < interval)
-            if (debug) mstr(list(type = type, step = step, milestones = milestones, prev_milestone = prev_milestone, interval = interval, dt = dt, timestamps[step], timestamps[prev_milestone], skip = skip))
+            if (debug) mstr(list(dt = dt, timestamps[step], timestamps[prev_milestone], skip = skip))
           }
           if (!skip) {
-            args <- list(max_steps = max_steps, step = step, delta = step - prev_milestone, message = p$message, clear = clear, timestamps = timestamps)
-            if (debug) mstr(list(type = type, args = args, milestones = milestones))
-            do.call(reporter$update, args = args)
-            milestones <<- milestones[-1]
+            if (debug) mstr(list(milestones = milestones))
+            update_reporter(p)
             prev_milestone <<- step
-	    if (auto_finish && step == max_steps) {
-              args <- list(max_steps = max_steps, step = max_steps, delta = 0L, message = p$message, clear = clear, timestamps = timestamps)
-              if (debug) mstr(list(type = "finish (auto)", args = args, milestones = milestones))
-              do.call(reporter$finish, args = args)
-	    }
-  	  }
+          }
+          milestones <<- milestones[-1]
+          if (auto_finish && step == max_steps) {
+            if (debug) mstr(list(type = "finish (auto)", milestones = milestones))
+            finish_reporter(p)
+          }
         }
       } else {
-        warning("Unknown 'progression' type: ", sQuote(type))
+        stop("Unknown 'progression' type: ", sQuote(type))
       }
+      
+      if (debug) mprintf("Progression handler %s ... done", sQuote(type))
     }
   }
 

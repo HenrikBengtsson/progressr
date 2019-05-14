@@ -4,6 +4,7 @@ options(delay = 0.01)
 
 options(progressr.times = +Inf)
 options(progressr.interval = 0.2)
+options(progressr.clear = FALSE)
 
 message("with_progress() ...")
 

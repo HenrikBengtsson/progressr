@@ -7,7 +7,7 @@
 progression_handler(name, reporter = list(), handler = NULL,
   enable = interactive(), times = getOption("progressr.times", +Inf),
   interval = getOption("progressr.interval", 0), intrusiveness = 1,
-  clear = TRUE)
+  clear = getOption("progressr.clear", TRUE))
 }
 \arguments{
 \item{name}{(character) Name of progression handler.}

@@ -47,6 +47,11 @@ mdebug <- function(..., debug = getOption("progressr.debug", FALSE)) {
   message(now(), ...)
 }
 
+mprintf <- function(..., appendLF = TRUE, debug = getOption("progressr.debug", FALSE)) {
+  if (!debug) return()
+  message(now(), sprintf(...), appendLF = appendLF)
+}
+
 #' @importFrom utils capture.output
 mprint <- function(..., appendLF = TRUE, debug = getOption("progressr.debug", FALSE)) {
   if (!debug) return()

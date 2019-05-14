@@ -54,7 +54,7 @@ txtprogressbar_handler <- function(style = 3L, file = stderr(), intrusiveness = 
           n <- 3L + nw * width + 6L
         }
         cat("\r", strrep(" ", times = n), "\r", sep = "", file = file)
-	flush.console()
+        flush.console()
       })
     }
 
@@ -71,15 +71,17 @@ txtprogressbar_handler <- function(style = 3L, file = stderr(), intrusiveness = 
         
       finish = function(step, max_steps, delta, message, clear, timestamps, ...) {
         if (clear) {
-	  eraseTxtProgressBar(pb)
-	  ## Suppress newline outputted by close()
+          eraseTxtProgressBar(pb)
+          ## Suppress newline outputted by close()
           pb_env <- environment(pb$getVal)
-	  file <- pb_env$file
-	  pb_env$file <- tempfile()
-	  on.exit({
-	    if (file_test("-f", pb_env$file)) file.remove(pb_env$file)
-	    pb_env$file <- file
-	  })
+          file <- pb_env$file
+          pb_env$file <- tempfile()
+          on.exit({
+            if (file_test("-f", pb_env$file)) file.remove(pb_env$file)
+            pb_env$file <- file
+          })
+        } else {
+          setTxtProgressBar(pb, value = max_steps)
         }
         close(pb)
       }
@@ -100,7 +102,7 @@ txtprogressbar_handler <- function(style = 3L, file = stderr(), intrusiveness = 
 #' @param \ldots Additional arguments passed to [progression_handler()].
 #'
 #' @export
-tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 10), ...) {
+tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), ...) {
   reporter <- local({
     ## Import functions
     tkProgressBar <- tcltk::tkProgressBar
@@ -119,7 +121,11 @@ tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusive
       },
         
       finish = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        if (clear) close(pb)
+        if (clear) {
+          close(pb)
+        } else {
+          setTkProgressBar(pb, value = step)
+        }
       }
     )
   })
@@ -160,12 +166,12 @@ pbmcapply_handler <- function(substyle = 3L, style = "ETA", file = stderr(), int
           } else if (style == 3L) {
             n <- 3L + nw * width + 6L
           }
-	} else {
-	  ## FIXME: Seems to work; if not, see pbmcapply:::txtProgressBarETA()
+        } else {
+          ## FIXME: Seems to work; if not, see pbmcapply:::txtProgressBarETA()
           n <- width
-	}
+        }
         cat("\r", strrep(" ", times = n), "\r", sep = "", file = file)
-	flush.console()
+        flush.console()
       })
     }
 
@@ -182,15 +188,17 @@ pbmcapply_handler <- function(substyle = 3L, style = "ETA", file = stderr(), int
         
       finish = function(step, max_steps, delta, message, clear, timestamps, ...) {
         if (clear) {
-	  eraseTxtProgressBar(pb)
-	  ## Suppress newline outputted by close()
+          eraseTxtProgressBar(pb)
+          ## Suppress newline outputted by close()
           pb_env <- environment(pb$getVal)
-	  file <- pb_env$file
-	  pb_env$file <- tempfile()
-	  on.exit({
-	    if (file_test("-f", pb_env$file)) file.remove(pb_env$file)
-	    pb_env$file <- file
-	  })
+          file <- pb_env$file
+          pb_env$file <- tempfile()
+          on.exit({
+            if (file_test("-f", pb_env$file)) file.remove(pb_env$file)
+            pb_env$file <- file
+          })
+        } else {
+          setTxtProgressBar(pb, value = step)
         }
         close(pb)
       }

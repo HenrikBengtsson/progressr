@@ -6,7 +6,7 @@
 \usage{
 
   tkprogressbar_handler(intrusiveness = getOption("progressr.intrusiveness.gui",
-  10), ...)
+  1), ...)
 }
 \arguments{
 \item{intrusiveness}{(numeric) A positive scalar on how intrusive
