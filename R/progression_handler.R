@@ -104,19 +104,41 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
     if (debug) mprintf("finish_reporter() ... done")
   }
 
+  is_duplicated <- local({
+    done <- list()
+    function(p) {
+      progressor_uuid <- p$progressor_uuid
+      db <- done[[progressor_uuid]]
+      progression_index <- p$progression_index
+      res <- is.element(progression_index, db)
+      if (!res) {
+        db <- c(db, progression_index)
+        done[[progressor_uuid]] <<- db
+      }
+      res
+    }
+  })
+  
   if (is.null(handler)) {
     handler <- function(p) {
       stopifnot(inherits(p, "progression"))
-      progressor_uuid <- p$progressor_uuid
-      progression_index <- p$progression_index
+      duplicated <- is_duplicated(p)
+      
       type <- p$type
       debug <- getOption("progressr.debug", FALSE)
       if (debug) {
         mprintf("Progression handler %s ...", sQuote(type))
-        mprintf("- progressor_uuid: %s", progressor_uuid)
-        mprintf("- progression_index: %d", progression_index)
+        mprintf("- progressor_uuid: %s", p$progressor_uuid)
+        mprintf("- progression_index: %d", p$progression_index)
+        mprintf("- duplicated: %s", duplicated)
       }
-      
+
+      if (duplicated) {
+        mprintf("Progression handler %s ... already done", sQuote(type))
+        return(invisible())
+      }
+
+
       if (type == "initiate") {
         max_steps <<- p$steps
         auto_finish <<- p$auto_finish

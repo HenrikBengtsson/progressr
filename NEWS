@@ -19,6 +19,9 @@ NEW FEATURES:
  * Visual progression handler will now always render the complete update state
    when 'clear' is FALSE.
 
+ * Now progression handlers ignore a re-signalled progression condition if it
+   has already been processed previously.
+ 
  * Now each progression condition holds unique identifiers for the R session
    and for the progressor that produced the condition.  It also contains an
    unique index per progressor that is incremented whenever a new progression
