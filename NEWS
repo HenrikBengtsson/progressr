@@ -1,6 +1,33 @@
 Package: progressr
 ==================
 
+Version: 0.0.2 [2019-05-15]
+
+SIGNIFICANT CHANGES:
+
+ * Renamed restart 'consume_progression' to 'muffleProgression' to align
+   with restarts 'muffleMessage' and 'muffleWarning' in base R.
+
+NEW FEATURES:
+
+ * Add a plyr-compatible "progress bar" named progress_progressr().
+
+ * Now 'progression' conditions are also of class 'instant_relay_condition'.
+
+ * Add option 'progressr.clear'.
+
+ * Visual progression handler will now always render the complete update state
+   when 'clear' is FALSE.
+
+ * Now progression handlers ignore a re-signalled progression condition if it
+   has already been processed previously.
+ 
+ * Now each progression condition holds unique identifiers for the R session
+   and for the progressor that produced the condition.  It also contains an
+   unique index per progressor that is incremented whenever a new progression
+   condition is created.
+
+
 Version: 0.0.1 [2019-05-08]
 
 SIGNIFICANT CHANGES:

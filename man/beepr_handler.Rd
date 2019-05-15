@@ -4,11 +4,11 @@
 \alias{beepr_handler}
 \title{Auditory Progression Feedback}
 \usage{
-beepr_handler(setup = 2L, update = 10L, done = 11L,
+beepr_handler(initiate = 2L, update = 10L, finish = 11L,
   intrusiveness = getOption("progressr.intrusiveness.auditory", 10), ...)
 }
 \arguments{
-\item{setup, update, done}{(integer) Indices of \code{\link[beepr:beep]{beepr::beep()}} sounds to
+\item{initiate, update, finish}{(integer) Indices of \code{\link[beepr:beep]{beepr::beep()}} sounds to
 play when progress starts, is updated, and completes.}
 
 \item{intrusiveness}{(numeric) A positive scalar on how intrusive
