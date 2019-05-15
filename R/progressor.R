@@ -13,16 +13,30 @@
 #' @return A function of class `progressor`.
 #'
 #' @export
-progressor <- function(steps, label = NA_character_, initiate = TRUE, auto_finish = TRUE) {
-  label <- as.character(label)
-  stop_if_not(length(label) == 1L)
+progressor <- local({
+  progressor_count <- 0L
   
-  fcn <- function(..., type = "update") {
-    progress(type = type, ...)
-  }
-  class(fcn) <- c("progressor", class(fcn))
+  function(steps, label = NA_character_, initiate = TRUE, auto_finish = TRUE) {
+    label <- as.character(label)
+    stop_if_not(length(label) == 1L)
 
-  if (initiate) fcn(type = "initiate", steps = steps, auto_finish = auto_finish)
+    session_uuid <- session_uuid()
+    progressor_count <<- progressor_count + 1L
+    progressor_uuid <- progressor_uuid(progressor_count)
+    progression_index <- 0L
+    
+    fcn <- function(..., type = "update") {
+      progression_index <<- progression_index + 1L
+      progress(type = type,
+               ...,
+               progressor_uuid = progressor_uuid,
+               progression_index = progression_index,
+               session_uuid = session_uuid)
+    }
+    class(fcn) <- c("progressor", class(fcn))
   
-  fcn
-}
+    if (initiate) fcn(type = "initiate", steps = steps, auto_finish = auto_finish)
+    
+    fcn
+  }
+})

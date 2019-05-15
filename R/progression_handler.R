@@ -107,9 +107,15 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
   if (is.null(handler)) {
     handler <- function(p) {
       stopifnot(inherits(p, "progression"))
+      progressor_uuid <- p$progressor_uuid
+      progression_index <- p$progression_index
       type <- p$type
       debug <- getOption("progressr.debug", FALSE)
-      if (debug) mprintf("Progression handler %s ...", sQuote(type))
+      if (debug) {
+        mprintf("Progression handler %s ...", sQuote(type))
+        mprintf("- progressor_uuid: %s", progressor_uuid)
+        mprintf("- progression_index: %d", progression_index)
+      }
       
       if (type == "initiate") {
         max_steps <<- p$steps

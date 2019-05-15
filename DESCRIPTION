@@ -6,6 +6,8 @@ Authors@R: c(
   person("Henrik", "Bengtsson", role=c("aut", "cre", "cph"),
          email = "henrikb@braju.com"))
 License: GPL (>= 3)
+Imports:
+  digest
 Suggests:
   utils,
   tcltk,

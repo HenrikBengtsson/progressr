@@ -1,7 +1,7 @@
 Package: progressr
 ==================
 
-Version: 0.0.1-9000 [2019-05-12]
+Version: 0.0.1-9000 [2019-05-15]
 
 SIGNIFICANT CHANGES:
 
@@ -18,7 +18,12 @@ NEW FEATURES:
 
  * Visual progression handler will now always render the complete update state
    when 'clear' is FALSE.
-   
+
+ * Now each progression condition holds unique identifiers for the R session
+   and for the progressor that produced the condition.  It also contains an
+   unique index per progressor that is incremented whenever a new progression
+   condition is created.
+
 
 Version: 0.0.1 [2019-05-08]
 

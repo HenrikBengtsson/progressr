@@ -6,7 +6,8 @@
 \usage{
 progression(amount = 1, message = character(0L), step = NULL,
   time = Sys.time(), ..., type = c("update", "initiate", "finish"),
-  class = NULL, call = NULL)
+  class = NULL, progressor_uuid = NULL, progression_index = NULL,
+  session_uuid = NULL, call = NULL)
 }
 \arguments{
 \item{amount}{(numeric) The total amount of progress made.}
@@ -20,6 +21,14 @@ progression(amount = 1, message = character(0L), step = NULL,
 \item{type}{Type of progression made.}
 
 \item{class}{(character) Zero or more class names to prepend.}
+
+\item{progressor_uuid}{(character string) A character string that is unique
+for the current progressor and the current \R session.}
+
+\item{progression_index}{(integer) A non-negative integer that is}
+
+\item{session_uuid}{(character string) A character string that is unique
+for the current \R session.}
 
 \item{call}{(expression) A call expression.}
 
