@@ -57,21 +57,22 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
   prev_milestone <- NULL
   finished <- FALSE
   
-  reporter_args <- function(message) {
+  reporter_args <- function(message, progression) {
     args <- list(
       max_steps = max_steps,
       step = step,
       message = message,
       timestamps = timestamps,
       delta = step - prev_milestone,
-      clear = clear
+      clear = clear,
+      progression = progression
     )
     if (length(args$delta) == 0L) args$delta <- 0L
     args
   }
 
   initiate_reporter <- function(p) {
-    args <- reporter_args(message = p$message)
+    args <- reporter_args(message = p$message, progression = p)
     debug <- getOption("progressr.debug", FALSE)
     if (debug) {
       mprintf("initiate_reporter() ...")
@@ -84,7 +85,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
   }
 
   update_reporter <- function(p) {
-    args <- reporter_args(message = p$message)
+    args <- reporter_args(message = p$message, progression = p)
     debug <- getOption("progressr.debug", FALSE)
     if (debug) {
       mprintf("update_reporter() ...")
@@ -96,7 +97,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
   }
 
   finish_reporter <- function(p) {
-    args <- reporter_args(message = p$message)
+    args <- reporter_args(message = p$message, progression = p)
     debug <- getOption("progressr.debug", FALSE)
     if (debug) {
       mprintf("finish_reporter() ...")

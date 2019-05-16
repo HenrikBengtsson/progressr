@@ -5,6 +5,9 @@ Version: 0.0.2-9000 [2019-05-16]
 
 NEW FEATURES:
 
+ * Now the progression condition itself is passed to the progression
+   reporter functions.
+   
  * Add debug_handler for prototyping and debugging purposes.
 
  * Argument 'intrusiveness' may now be zero. Previously it had to be
