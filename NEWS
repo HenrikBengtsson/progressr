@@ -1,8 +1,15 @@
 Package: progressr
 ==================
 
-Version: 0.0.2-9000 [2019-05-15]
+Version: 0.0.2-9000 [2019-05-16]
 
+NEW FEATURES:
+
+ * Add debug_handler for prototyping and debugging purposes.
+
+ * Argument 'intrusiveness' may now be zero. Previously it had to be
+   a strictly positive value.
+ 
 BUG FIXES:
 
  * Progressor functions could produce progression conditions that had

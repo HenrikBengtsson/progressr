@@ -328,3 +328,42 @@ notifier_handler <- function(intrusiveness = getOption("progressr.intrusiveness.
   
   progression_handler("notifier", reporter, intrusiveness = intrusiveness, ...)
 }
+
+
+
+
+#' Textual Progression Feedback for Debug Purposes
+#'
+#' @inheritParams progression_handler
+#'
+#' @param \ldots Additional arguments passed to [progression_handler()].
+#'
+#' @export
+debug_handler <- function(intrusiveness = getOption("progressr.intrusiveness.debug", 0), ...) {
+  reporter <- local({
+    add_to_log <- function(type, step, max_steps, delta, message, clear, timestamps, ...) {
+      if (missing(step)) step <- NA_integer_
+      message <- paste(c(message, ""), collapse = "")
+      entry <- list(now(), type, step, max_steps, delta, message, clear)
+      msg <- do.call(sprintf, args = c(list("%s %s: %d/%d (%+d) '%s' {clear=%s}"), entry))
+      message(msg)
+    }
+
+    list(
+      initiate = function(...) {
+      str(list("initiate", ...))
+        add_to_log("initiate", ...)
+      },
+        
+      update = function(...) {
+        add_to_log("update", ...)
+      },
+        
+      finish = function(...) {
+        add_to_log("finish", ...)
+      }
+    )
+  })
+  
+  progression_handler("debug", reporter, intrusiveness = intrusiveness, ...)
+}
