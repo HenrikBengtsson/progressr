@@ -182,7 +182,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
             update_reporter(p)
             prev_milestone <<- step
           }
-          milestones <<- milestones[-1]
+          milestones <<- milestones[milestones > step]
           if (auto_finish && step == max_steps) {
             if (debug) mstr(list(type = "finish (auto)", milestones = milestones))
             finish_reporter(p)

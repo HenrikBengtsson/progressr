@@ -5,6 +5,9 @@ Version: 0.0.2-9000 [2019-05-15]
 
 BUG FIXES:
 
+ * It was an error if a progression took a step big enough to skip more
+   than the next milestone.
+
  * Progression handlers now keep the internal 'step' field within
    [0, max_steps] in case of a too big progression step is taken.
 
