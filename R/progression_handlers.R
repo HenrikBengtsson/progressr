@@ -341,11 +341,14 @@ notifier_handler <- function(intrusiveness = getOption("progressr.intrusiveness.
 #' @export
 debug_handler <- function(intrusiveness = getOption("progressr.intrusiveness.debug", 0), ...) {
   reporter <- local({
-    add_to_log <- function(type, step, max_steps, delta, message, clear, timestamps, ...) {
+    add_to_log <- function(type, step, max_steps, delta, message, clear, timestamps, ..., progression) {
+      t <- Sys.time()
+      dt <- difftime(t, progression$time, units = "secs")
+#      print(list(progression = progression, timestamps=timestamps))
       if (missing(step)) step <- NA_integer_
       message <- paste(c(message, ""), collapse = "")
-      entry <- list(now(), type, step, max_steps, delta, message, clear)
-      msg <- do.call(sprintf, args = c(list("%s %s: %d/%d (%+d) '%s' {clear=%s}"), entry))
+      entry <- list(now(t), type, step, max_steps, delta, message, clear)
+      msg <- do.call(sprintf, args = c(list("%s %s: %d/%d (%+d) '%s' {clear=%s} [latency=%.3fs]"), entry, dt))
       message(msg)
     }
 
