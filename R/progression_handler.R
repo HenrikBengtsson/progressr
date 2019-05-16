@@ -7,12 +7,12 @@
 #' @param handler (function) Function take a `progression` condition
 #'   as the first argument.
 #'
-#' @param intrusiveness (numeric) A positive scalar on how intrusive
+#' @param intrusiveness (numeric) A non-negative scalar on how intrusive
 #'   (disruptive) the reporter to the user.
 #'
 #' @param enable (logical) If FALSE, then progress is not reported.
 #'
-#' @param times (integer) The maximum number of times this handler
+#' @param times (numeric) The maximum number of times this handler
 #'   should report progression updates.
 #'   If zero, then progress is not reported.
 #'
@@ -26,7 +26,7 @@
 #'
 #' @export
 progression_handler <- function(name, reporter = list(), handler = NULL, enable = interactive(), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0), intrusiveness = 1.0, clear = getOption("progressr.clear", TRUE)) {
-  if (!enable) times <- 0L
+  if (!enable) times <- 0
   name <- as.character(name)
   stop_if_not(length(name) == 1L, !is.na(name), nzchar(name))
 #  stop_if_not(is.function(handler))

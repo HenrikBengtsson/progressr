@@ -12,7 +12,7 @@ txtprogressbar_handler(style = 3L, file = stderr(),
 
 \item{file}{(connection) A \link[base:connection]{base::connection} to where output should be sent.}
 
-\item{intrusiveness}{(numeric) A positive scalar on how intrusive
+\item{intrusiveness}{(numeric) A non-negative scalar on how intrusive
 (disruptive) the reporter to the user.}
 
 \item{\ldots}{Additional arguments passed to \code{\link[=progression_handler]{progression_handler()}}.}

@@ -10,7 +10,7 @@ progress_handler(show_after = 0,
 \arguments{
 \item{show_after}{(numeric) Number of seconds to wait before displaying the progress bar.}
 
-\item{intrusiveness}{(numeric) A positive scalar on how intrusive
+\item{intrusiveness}{(numeric) A non-negative scalar on how intrusive
 (disruptive) the reporter to the user.}
 
 \item{\ldots}{Additional arguments passed to \code{\link[=progression_handler]{progression_handler()}}.}

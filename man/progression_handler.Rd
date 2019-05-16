@@ -19,14 +19,14 @@ as the first argument.}
 
 \item{enable}{(logical) If FALSE, then progress is not reported.}
 
-\item{times}{(integer) The maximum number of times this handler
+\item{times}{(numeric) The maximum number of times this handler
 should report progression updates.
 If zero, then progress is not reported.}
 
 \item{interval}{(numeric) The minimum time (in seconds) between
 successive progression updates from this handler.}
 
-\item{intrusiveness}{(numeric) A positive scalar on how intrusive
+\item{intrusiveness}{(numeric) A non-negative scalar on how intrusive
 (disruptive) the reporter to the user.}
 
 \item{clear}{(logical) If TRUE, any output, typically visual, produced

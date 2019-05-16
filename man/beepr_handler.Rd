@@ -11,7 +11,7 @@ beepr_handler(initiate = 2L, update = 10L, finish = 11L,
 \item{initiate, update, finish}{(integer) Indices of \code{\link[beepr:beep]{beepr::beep()}} sounds to
 play when progress starts, is updated, and completes.}
 
-\item{intrusiveness}{(numeric) A positive scalar on how intrusive
+\item{intrusiveness}{(numeric) A non-negative scalar on how intrusive
 (disruptive) the reporter to the user.}
 
 \item{\ldots}{Additional arguments passed to \code{\link[=progression_handler]{progression_handler()}}.}
