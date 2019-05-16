@@ -55,7 +55,8 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
   timestamps <- NULL
   milestones <- NULL
   prev_milestone <- NULL
-
+  finished <- FALSE
+  
   reporter_args <- function(message) {
     args <- list(
       max_steps = max_steps,
@@ -77,6 +78,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
     }
     stop_if_not(is.null(prev_milestone), length(milestones) > 0L)
     do.call(reporter$initiate, args = args)
+    finished <<- FALSE
     if (debug) mprintf("initiate_reporter() ... done")
   }
 
@@ -101,6 +103,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
     }
     stop_if_not(!is.null(step), length(milestones) == 0L)
     do.call(reporter$finish, args = args)
+    finished <<- TRUE
     if (debug) mprintf("finish_reporter() ... done")
   }
 
@@ -136,8 +139,10 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
       if (duplicated) {
         mprintf("Progression handler %s ... already done", sQuote(type))
         return(invisible())
+      } else if (finished) {
+        mprintf("Progression handler %s ... already finished", sQuote(type))
+        return(invisible())
       }
-
 
       if (type == "initiate") {
         max_steps <<- p$steps
@@ -153,18 +158,18 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
         timestamps <<- rep(as.POSIXct(NA), times = max_steps)
         timestamps[1] <<- Sys.time()
         step <<- 0L
-        if (debug) mstr(list(milestones = milestones))
+        if (debug) mstr(list(finished = finished, milestones = milestones))
         initiate_reporter(p)
         prev_milestone <<- step
       } else if (type == "finish") {
-        if (debug) mstr(list(milestones = milestones))
+        if (debug) mstr(list(finished = finished, milestones = milestones))
         finish_reporter(p)
         timestamps[max_steps] <<- Sys.time()
         prev_milestone <<- max_steps
       } else if (type == "update") {
         step <<- step + p$amount
         timestamps[step] <<- Sys.time()
-        if (debug) mstr(list(step = step, milestones = milestones, prev_milestone = prev_milestone, interval = interval))
+        if (debug) mstr(list(finished = finished, step = step, milestones = milestones, prev_milestone = prev_milestone, interval = interval))
         if (length(milestones) > 0L && step >= milestones[1]) {
           skip <- FALSE
           if (interval > 0) {

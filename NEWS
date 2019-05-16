@@ -3,7 +3,10 @@ Package: progressr
 
 Version: 0.0.2-9000 [2019-05-15]
 
- * ...
+BUG FIXES:
+
+ * Progression updates received after progression handler is finished
+   would keep increasing the internal step field.
  
 
 Version: 0.0.2 [2019-05-15]
