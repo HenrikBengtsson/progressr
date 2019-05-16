@@ -111,11 +111,13 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
     done <- list()
     function(p) {
       progressor_uuid <- p$progressor_uuid
-      db <- done[[progressor_uuid]]
+      session_uuid <- p$session_uuid
       progression_index <- p$progression_index
-      res <- is.element(progression_index, db)
+      progression_id <- sprintf("%s-%d", session_uuid, progression_index)
+      db <- done[[progressor_uuid]]
+      res <- is.element(progression_id, db)
       if (!res) {
-        db <- c(db, progression_index)
+        db <- c(db, progression_id)
         done[[progressor_uuid]] <<- db
       }
       res
@@ -131,8 +133,10 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
       debug <- getOption("progressr.debug", FALSE)
       if (debug) {
         mprintf("Progression handler %s ...", sQuote(type))
+        mprintf("- progression:")
+        mstr(p)
         mprintf("- progressor_uuid: %s", p$progressor_uuid)
-        mprintf("- progression_index: %d", p$progression_index)
+        mprintf("- progression_index: %s", p$progression_index)
         mprintf("- duplicated: %s", duplicated)
       }
 

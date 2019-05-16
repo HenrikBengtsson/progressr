@@ -20,7 +20,7 @@ progressor <- local({
     label <- as.character(label)
     stop_if_not(length(label) == 1L)
 
-    session_uuid <- session_uuid()
+    owner_session_uuid <- session_uuid()
     progressor_count <<- progressor_count + 1L
     progressor_uuid <- progressor_uuid(progressor_count)
     progression_index <- 0L
@@ -31,7 +31,7 @@ progressor <- local({
                ...,
                progressor_uuid = progressor_uuid,
                progression_index = progression_index,
-               session_uuid = session_uuid)
+               owner_session_uuid = owner_session_uuid)
     }
     class(fcn) <- c("progressor", class(fcn))
   
