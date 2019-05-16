@@ -167,7 +167,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
         timestamps[max_steps] <<- Sys.time()
         prev_milestone <<- max_steps
       } else if (type == "update") {
-        step <<- step + p$amount
+        step <<- min(max(step + p$amount, 0L), max_steps)
         timestamps[step] <<- Sys.time()
         if (debug) mstr(list(finished = finished, step = step, milestones = milestones, prev_milestone = prev_milestone, interval = interval))
         if (length(milestones) > 0L && step >= milestones[1]) {
