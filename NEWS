@@ -1,7 +1,7 @@
 Package: progressr
 ==================
 
-Version: 0.0.2-9000 [2019-05-16]
+Version: 0.0.2-9000 [2019-05-17]
 
 NEW FEATURES:
 
@@ -21,6 +21,9 @@ NEW FEATURES:
  * Argument 'intrusiveness' may now be zero. Previously it had to be
    a strictly positive value.
 
+ * Add without_progress() - which causes all progression conditions to
+   be muffled and ignored.
+   
 BUG FIXES:
 
  * Progressor functions could produce progression conditions that had
