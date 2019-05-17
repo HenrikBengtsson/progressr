@@ -5,6 +5,9 @@ Version: 0.0.2-9000 [2019-05-16]
 
 NEW FEATURES:
 
+ * The default output format of the progress::progress_bar() progression
+   handler is now ":percent :bar :message".
+
  * Now the progression condition itself is passed to the progression
    reporter functions.
    

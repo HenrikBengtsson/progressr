@@ -4,11 +4,14 @@
 \alias{progress_handler}
 \title{Visual Progression Feedback}
 \usage{
-progress_handler(show_after = 0,
+progress_handler(format = "[:bar] :percent :message", show_after = 0,
   intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...)
 }
 \arguments{
-\item{show_after}{(numeric) Number of seconds to wait before displaying the progress bar.}
+\item{format}{(character string) The format of the progress bar.}
+
+\item{show_after}{(numeric) Number of seconds to wait before displaying
+the progress bar.}
 
 \item{intrusiveness}{(numeric) A non-negative scalar on how intrusive
 (disruptive) the reporter to the user.}

@@ -216,12 +216,15 @@ pbmcapply_handler <- function(substyle = 3L, style = "ETA", file = stderr(), int
 #'
 #' @inheritParams progression_handler
 #'
-#' @param show_after (numeric) Number of seconds to wait before displaying the progress bar.
+#' @param format (character string) The format of the progress bar.
+#'
+#' @param show_after (numeric) Number of seconds to wait before displaying
+#' the progress bar.
 #'
 #' @param \ldots Additional arguments passed to [progression_handler()].
 #'
 #' @export
-progress_handler <- function(show_after = 0.0, intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...) {
+progress_handler <- function(format = "[:bar] :percent :message", show_after = 0.0, intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...) {
   reporter <- local({
     ## Import functions
     progress_bar <- progress::progress_bar
@@ -230,17 +233,25 @@ progress_handler <- function(show_after = 0.0, intrusiveness = getOption("progre
     
     list(
       initiate = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        pb <<- progress_bar$new(total = max_steps,
+        pb <<- progress_bar$new(format = format,
+	                        total = max_steps,
                                 clear = clear, show_after = show_after)
-        pb$tick(0)
+        tokens <- list(message = message)		
+        pb$tick(0, tokens = tokens)
       },
         
       update = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        if (delta > 0) pb$tick(delta)
+        if (delta > 0) {
+          tokens <- list(message = message)		
+          pb$tick(delta, tokens = tokens)
+	}
       },
         
       finish = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        if (delta > 0) pb$tick(delta)
+        if (delta > 0) {
+          tokens <- list(message = message)		
+          pb$tick(delta, tokens = tokens)
+	}
       }
     )
   })
