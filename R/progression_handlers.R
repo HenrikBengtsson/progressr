@@ -344,17 +344,15 @@ debug_handler <- function(intrusiveness = getOption("progressr.intrusiveness.deb
     add_to_log <- function(type, step, max_steps, delta, message, clear, timestamps, ..., progression) {
       t <- Sys.time()
       dt <- difftime(t, progression$time, units = "secs")
-#      print(list(progression = progression, timestamps=timestamps))
       if (missing(step)) step <- NA_integer_
       message <- paste(c(message, ""), collapse = "")
-      entry <- list(now(t), type, step, max_steps, delta, message, clear)
-      msg <- do.call(sprintf, args = c(list("%s %s: %d/%d (%+d) '%s' {clear=%s} [latency=%.3fs]"), entry, dt))
+      entry <- list(now(t), dt, type, step, max_steps, delta, message, clear)
+      msg <- do.call(sprintf, args = c(list("%s(+%.3fs) %s: %d/%d (%+d) '%s' {clear=%s}"), entry))
       message(msg)
     }
 
     list(
       initiate = function(...) {
-      str(list("initiate", ...))
         add_to_log("initiate", ...)
       },
         
