@@ -5,6 +5,8 @@ Version: 0.0.2-9000 [2019-05-16]
 
 NEW FEATURES:
 
+ * Now progressions originating from an unknown source are ignore.
+ 
  * The default output format of the progress::progress_bar() progression
    handler is now ":percent :bar :message".
 

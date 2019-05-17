@@ -109,6 +109,15 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
     if (debug) mprintf("finish_reporter() ... done")
   }
 
+  is_owner <- local({
+    owner <- NULL
+    function(p) {
+      progressor_uuid <- p$progressor_uuid
+      if (is.null(owner)) owner <<- progressor_uuid
+      (owner == progressor_uuid)
+    }
+  })
+
   is_duplicated <- local({
     done <- list()
     function(p) {
@@ -129,6 +138,11 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
   if (is.null(handler)) {
     handler <- function(p) {
       stopifnot(inherits(p, "progression"))
+      
+      ## Ignore stray progressions coming from other sources, e.g.
+      ## a function of a package that started to report on progression.
+      if (!is_owner(p)) return(FALSE)
+      
       duplicated <- is_duplicated(p)
       
       type <- p$type

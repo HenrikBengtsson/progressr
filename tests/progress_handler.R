@@ -14,6 +14,7 @@ if (requireNamespace("progress", quietly = TRUE)) {
 x <- 1:10
 
 message("progress_handler() ...")
+
 with_progress({
   progress <- progressor(length(x))
   for (ii in x) {
@@ -21,4 +22,5 @@ with_progress({
     progress(message = sprintf("(%s)", paste(letters[1:ii], collapse="")))
   }
 })
+
 message("progress_handler() ... done")
