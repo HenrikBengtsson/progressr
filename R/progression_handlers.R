@@ -234,24 +234,24 @@ progress_handler <- function(format = "[:bar] :percent :message", show_after = 0
     list(
       initiate = function(step, max_steps, delta, message, clear, timestamps, ...) {
         pb <<- progress_bar$new(format = format,
-	                        total = max_steps,
+                                total = max_steps,
                                 clear = clear, show_after = show_after)
-        tokens <- list(message = message)		
+        tokens <- list(message = paste0(message, ""))
         pb$tick(0, tokens = tokens)
       },
         
       update = function(step, max_steps, delta, message, clear, timestamps, ...) {
         if (delta > 0) {
-          tokens <- list(message = message)		
+          tokens <- list(message = paste0(message, ""))
           pb$tick(delta, tokens = tokens)
-	}
+        }
       },
         
       finish = function(step, max_steps, delta, message, clear, timestamps, ...) {
         if (delta > 0) {
-          tokens <- list(message = message)		
+          tokens <- list(message = paste0(message, ""))
           pb$tick(delta, tokens = tokens)
-	}
+        }
       }
     )
   })
