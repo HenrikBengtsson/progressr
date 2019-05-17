@@ -11,6 +11,8 @@
 #'
 #' @param \ldots Additional arguments passed to [progression_handler()].
 #'
+#' @example incl/ascii_alert_handler.R
+#'
 #' @export
 ascii_alert_handler <- function(symbol = "\a", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.auditory", 10), ...) {
   reporter <- local({
@@ -37,6 +39,8 @@ ascii_alert_handler <- function(symbol = "\a", file = stderr(), intrusiveness = 
 #' @param file (connection) A [base::connection] to where output should be sent.
 #'
 #' @param \ldots Additional arguments passed to [progression_handler()].
+#'
+#' @example incl/txtprogressbar_handler.R
 #'
 #' @importFrom utils file_test flush.console
 #' @export
@@ -101,6 +105,8 @@ txtprogressbar_handler <- function(style = 3L, file = stderr(), intrusiveness = 
 #'
 #' @param \ldots Additional arguments passed to [progression_handler()].
 #'
+#' @example incl/tkprogressbar_handler.R
+#'
 #' @export
 tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), ...) {
   reporter <- local({
@@ -148,6 +154,8 @@ tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusive
 #' @param file (connection) A [base::connection] to where output should be sent.
 #'
 #' @param \ldots Additional arguments passed to [progression_handler()].
+#'
+#' @example incl/pbmcapply_handler.R
 #'
 #' @importFrom utils file_test flush.console
 #' @export
@@ -223,6 +231,8 @@ pbmcapply_handler <- function(substyle = 3L, style = "ETA", file = stderr(), int
 #'
 #' @param \ldots Additional arguments passed to [progression_handler()].
 #'
+#' @example incl/progress_handler.R
+#'
 #' @export
 progress_handler <- function(format = "[:bar] :percent :message", show_after = 0.0, intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...) {
   reporter <- local({
@@ -272,6 +282,8 @@ progress_handler <- function(format = "[:bar] :percent :message", show_after = 0
 #'
 #' @param \ldots Additional arguments passed to [progression_handler()].
 #'
+#' @example incl/beepr_handler.R
+#'
 #' @export
 beepr_handler <- function(initiate = 2L, update = 10L,  finish = 11L, intrusiveness = getOption("progressr.intrusiveness.auditory", 10), ...) {
   ## Reporter state
@@ -307,6 +319,8 @@ beepr_handler <- function(initiate = 2L, update = 10L,  finish = 11L, intrusiven
 #'
 #' @param \ldots Additional arguments passed to [progression_handler()].
 #'
+#' @example incl/notifier_handler.R
+#'
 #' @export
 notifier_handler <- function(intrusiveness = getOption("progressr.intrusiveness.notifier", 10), ...) {
   reporter <- local({
@@ -319,7 +333,7 @@ notifier_handler <- function(intrusiveness = getOption("progressr.intrusiveness.
     notify <- function(step, max_steps, message) {
       msg <- paste(c("", message), collapse = "")
       ratio <- if (step == 0L) "STARTED" else if (step == max_steps) "DONE" else sprintf("%.1f%%", 100*step/max_steps)
-      notifier::notify(sprintf("[%s] %s (Step %d of %d)", ratio, msg, step, max_steps))
+      notifier::notify(sprintf("[%s] %s (%d/%d)", ratio, msg, step, max_steps))
     }
 
     list(
@@ -348,6 +362,8 @@ notifier_handler <- function(intrusiveness = getOption("progressr.intrusiveness.
 #' @inheritParams progression_handler
 #'
 #' @param \ldots Additional arguments passed to [progression_handler()].
+#'
+#' @example incl/debug_handler.R
 #'
 #' @export
 debug_handler <- function(intrusiveness = getOption("progressr.intrusiveness.debug", 0), ...) {

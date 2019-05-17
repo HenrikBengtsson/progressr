@@ -19,3 +19,15 @@ play when progress starts, is updated, and completes.}
 \description{
 A progression handler for \code{\link[beepr:beep]{beepr::beep()}}.
 }
+\examples{
+if (requireNamespace("utils", quietly = TRUE)) local({
+  oopts <- options(progressr.clear = FALSE,
+                   progressr.handlers = beepr_handler)
+  on.exit(oopts)
+
+  x <- 1:10
+  with_progress({ y <- slow_sum(x) })
+  
+  print(y)
+})
+}

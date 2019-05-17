@@ -18,7 +18,7 @@ NEW FEATURES:
 
  * Argument 'intrusiveness' may now be zero. Previously it had to be
    a strictly positive value.
- 
+
 BUG FIXES:
 
  * Progressor functions could produce progression conditions that had

@@ -21,3 +21,15 @@ which by default is the ASCII BEL character (\code{'\a'} = \code{'\007'}) charac
 \description{
 A progression handler based on \code{cat("\a", file=stderr())}.
 }
+\examples{
+if (requireNamespace("utils", quietly = TRUE)) local({
+  oopts <- options(progressr.clear = FALSE,
+                   progressr.handlers = ascii_alert_handler)
+  on.exit(oopts)
+
+  x <- 1:10
+  with_progress({ y <- slow_sum(x) })
+  
+  print(y)
+})
+}
