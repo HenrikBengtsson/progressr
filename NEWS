@@ -8,6 +8,9 @@ NEW FEATURES:
  * The default output format of the progress::progress_bar() progression
    handler is now ":percent :bar :message".
 
+ * The tcltk::tkProgressBar() progression handler now displays the
+   progression message.
+
  * Now the progression condition itself is passed to the progression
    reporter functions.
    

@@ -113,18 +113,18 @@ tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusive
     
     list(
       initiate = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        pb <<- tkProgressBar(max = max_steps)
+        pb <<- tkProgressBar(max = max_steps, label = message)
       },
         
       update = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        setTkProgressBar(pb, value = step)
+        setTkProgressBar(pb, value = step, label = message)
       },
         
       finish = function(step, max_steps, delta, message, clear, timestamps, ...) {
         if (clear) {
           close(pb)
         } else {
-          setTkProgressBar(pb, value = step)
+          setTkProgressBar(pb, value = step, label = message)
         }
       }
     )

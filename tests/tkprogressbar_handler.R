@@ -7,8 +7,8 @@ options(progressr.interval = 0.2)
 options(progressr.clear = FALSE)
 delay <- getOption("progressr.delay", 0.5)
 
-if (requireNamespace("progress", quietly = TRUE)) {
-  options(progressr.handlers = progress_handler)
+if (requireNamespace("tcltk", quietly = TRUE)) {
+  options(progressr.handlers = tkprogressbar_handler)
 }  
 
 x <- 1:10
