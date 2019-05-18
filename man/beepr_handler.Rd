@@ -9,7 +9,7 @@ beepr_handler(initiate = 2L, update = 10L, finish = 11L,
 }
 \arguments{
 \item{initiate, update, finish}{(integer) Indices of \code{\link[beepr:beep]{beepr::beep()}} sounds to
-play when progress starts, is updated, and completes.}
+play when progress starts, is updated, and completes.  For silence, use \code{NA_integer_}.}
 
 \item{intrusiveness}{(numeric) A non-negative scalar on how intrusive
 (disruptive) the reporter to the user.}

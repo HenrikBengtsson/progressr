@@ -1,6 +1,31 @@
 Package: progressr
 ==================
 
+Version: 0.0.4 [2019-05-18]
+
+NEW FEATURES:
+
+ * Add utils::winProgressBar() progression handler for MS Windows.
+ 
+ * Add support for silent sounds for beepr::beep().
+
+ * Add option 'progressr.enable', which defaults to interactive().
+
+SOFTWARE QUALITY:
+
+ * TESTS: Increased package test coverage of progression handlers by running
+   all code except the last step that calls the backend, which may not be
+   installed or supported on the current platform, e.g. tcltk, beepr,
+   notifier.
+
+BUG FIXES:
+
+ * Precreated progression handlers could only be used once.
+
+ * with_progress(..., cleanup = TRUE) requires a withRestart() such that also
+   "shutdown" progressions can be muffled.
+ 
+
 Version: 0.0.3 [2019-05-17]
 
 NEW FEATURES:

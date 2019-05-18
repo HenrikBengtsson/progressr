@@ -1,43 +1,3 @@
-hpaste <- function(..., sep="", collapse=", ", last_collapse=NULL,
-                   max_head=if (missing(last_collapse)) 3 else Inf,
-                   max_tail=if (is.finite(max_head)) 1 else Inf,
-                   abbreviate="...") {
-  max_head <- as.double(max_head)
-  max_tail <- as.double(max_tail)
-  if (is.null(last_collapse)) last_collapse <- collapse
-
-  # Build vector 'x'
-  x <- paste(..., sep = sep)
-  n <- length(x)
-
-  # Nothing todo?
-  if (n == 0) return(x)
-  if (is.null(collapse)) return(x)
-
-  # Abbreviate?
-  if (n > max_head + max_tail + 1) {
-    head <- x[seq_len(max_head)]
-    tail <- rev(rev(x)[seq_len(max_tail)])
-    x <- c(head, abbreviate, tail)
-    n <- length(x)
-  }
-
-  if (!is.null(collapse) && n > 1) {
-    if (last_collapse == collapse) {
-      x <- paste(x, collapse = collapse)
-    } else {
-      x_head <- paste(x[1:(n - 1)], collapse = collapse)
-      x <- paste(x_head, x[n], sep = last_collapse)
-    }
-  }
-
-  x
-}
-
-trim <- function(s) {
-  sub("[\t\n\f\r ]+$", "", sub("^[\t\n\f\r ]+", "", s))
-} # trim()
-
 now <- function(x = Sys.time(), format = "[%H:%M:%OS3] ") {
   format(as.POSIXlt(x, tz = ""), format = format)
 }
@@ -78,4 +38,27 @@ stop_if_not <- function(...) {
         stop(sQuote(call), " is not TRUE", call. = FALSE, domain = NA)
     }
   }
+}
+
+
+## Used for package testing purposes only when we want to perform
+## everything except the last part where the backend is called
+## This allows us to cover more of the code in package tests
+is_fake <- local({
+  cache <- list()
+  function(name) {
+    fake <- cache[[name]]
+    if (is.null(fake)) {
+      fake <- name %in% getOption("progressr.tests.fake_handlers")
+      cache[[name]] <<- fake
+    }
+    fake
+  }
+})
+
+known_progression_handlers <- function() {
+  ns <- asNamespace(.packageName)
+  handlers <- ls(envir = ns, pattern = "_handler$")
+  handlers <- setdiff(handlers, "progression_handler")
+  mget(handlers, envir = ns, inherits = FALSE)
 }

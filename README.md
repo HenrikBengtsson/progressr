@@ -83,7 +83,7 @@ will present itself as sounds played at the beginning, while progressing, and at
 
 It is possible to have multiple progress handlers presenting progress updates at the same time.  For example, to get both visual and auditory updates, use:
 ```r
-options(progressr.handlers = list(txtprogress_bar_handler, beepr_handler))
+options(progressr.handlers = list(txtprogress_barhandler, beepr_handler))
 ```
 
 <small>

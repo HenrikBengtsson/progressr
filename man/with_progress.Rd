@@ -16,6 +16,9 @@ If @NULL or an empty list, progress updates are ignored.}
 \item{cleanup}{If TRUE, all progression handlers will be shutdown
 at the end regardless of the progression is complete or not.}
 }
+\value{
+Return nothing (reserved for future usage).
+}
 \description{
 Evaluate Expression while Handling Progress Updates
 }

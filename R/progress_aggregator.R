@@ -19,6 +19,7 @@ progress_aggregator <- function(progress) {
     debug <- getOption("progressr.debug", FALSE)
     if (debug) {
       mprintf("Progression handler %s ...", sQuote(type))
+      on.exit(mprintf("Progression handler %s ... done", sQuote(type)))
       mprintf("- progression:")
       mstr(p)
       mprintf("- progressor_uuid: %s", p$progressor_uuid)
@@ -26,15 +27,16 @@ progress_aggregator <- function(progress) {
     }
     if (type == "initiate") {
     } else if (type == "finish") {
+    } else if (type == "reset") {
+    } else if (type == "shutdown") {
     } else if (type == "update") {
       progress(child = p)
     } else {
-      warning("Unknown 'progression' type: ", sQuote(type))
+      stop("Unknown 'progression' type: ", sQuote(type))
     }
     
     ## Prevent upstream calling handlers to receive progression 'p'
     invokeRestart("muffleProgression")
-    if (debug) mprintf("Progression handler %s ... done", sQuote(type))
   }
 
   handler <- progression_handler("progress_aggregator", handler = handler)

@@ -8,6 +8,8 @@
 #' @param cleanup If TRUE, all progression handlers will be shutdown
 #' at the end regardless of the progression is complete or not.
 #'
+#' @return Return nothing (reserved for future usage).
+#'
 #' @example incl/with_progress.R
 #'
 #' @export
@@ -44,11 +46,22 @@ with_progress <- function(expr, handlers = getOption("progressr.handlers", txtpr
   ## Tell all progression handlers to shutdown at the end
   if (cleanup) {
     on.exit(withCallingHandlers({
-      signalCondition(control_progression("shutdown"))
+      withRestarts({
+        signalCondition(control_progression("shutdown"))
+      }, muffleProgression = function(p) NULL)
     }, progression = handler))
   }
 
+  ## Reset all handlers up start
+  withCallingHandlers({
+    withRestarts({
+      signalCondition(control_progression("reset"))
+    }, muffleProgression = function(p) NULL)
+  }, progression = handler)
+
   withCallingHandlers(expr, progression = handler)
+
+  invisible(NULL)
 }
 
 

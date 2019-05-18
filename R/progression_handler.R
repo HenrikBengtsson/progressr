@@ -28,7 +28,7 @@
 #' @return A function of class `progression_handler`.
 #'
 #' @export
-progression_handler <- function(name, reporter = list(), handler = NULL, enable = interactive(), enable_after = 0.0, times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0), intrusiveness = 1.0, clear = getOption("progressr.clear", TRUE)) {
+progression_handler <- function(name, reporter = list(), handler = NULL, enable = getOption("progressr.enable", interactive()), enable_after = getOption("progressr.enable_after", 0.0), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0), intrusiveness = 1.0, clear = getOption("progressr.clear", TRUE)) {
   if (!enable) times <- 0
   name <- as.character(name)
   stop_if_not(length(name) == 1L, !is.na(name), nzchar(name))
@@ -49,7 +49,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
   }
 
   ## Reporter
-  for (name in setdiff(c("initiate", "update", "finish"), names(reporter))) {
+  for (name in setdiff(c("reset", "initiate", "update", "finish"), names(reporter))) {
     reporter[[name]] <- function(...) NULL
   }
 
@@ -62,9 +62,13 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
   prev_milestone <- NULL
   finished <- FALSE
   enabled <- FALSE
+
+  ## Progress cache
+  owner <- NULL
+  done <- list()
   
   reporter_args <- function(message, progression) {
-    if (!enabled) {
+    if (!enabled && !is.null(timestamps)) {
       dt <- difftime(Sys.time(), timestamps[1L], units = "secs")
       enabled <<- (dt >= enable_after)
     }
@@ -89,6 +93,17 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
       state = state,
       progression = progression
     ))
+  }
+
+  reset_reporter <- function(p) {
+    args <- reporter_args(message = p$message, progression = p)
+    debug <- getOption("progressr.debug", FALSE)
+    if (debug) {
+      mprintf("reset_reporter() ...")
+      mstr(args)
+    }
+    do.call(reporter$reset, args = args)
+    if (debug) mprintf("reset_reporter() ... done")
   }
 
   initiate_reporter <- function(p) {
@@ -128,40 +143,51 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
     if (debug) mprintf("finish_reporter() ... done")
   }
 
-  is_owner <- local({
-    owner <- NULL
-    function(p) {
-      progressor_uuid <- p$progressor_uuid
-      if (is.null(owner)) owner <<- progressor_uuid
-      (owner == progressor_uuid)
-    }
-  })
+  is_owner <- function(p) {
+    progressor_uuid <- p$progressor_uuid
+    if (is.null(owner)) owner <<- progressor_uuid
+    (owner == progressor_uuid)
+  }
 
-  is_duplicated <- local({
-    done <- list()
-    function(p) {
-      progressor_uuid <- p$progressor_uuid
-      session_uuid <- p$session_uuid
-      progression_index <- p$progression_index
-      progression_id <- sprintf("%s-%d", session_uuid, progression_index)
-      db <- done[[progressor_uuid]]
-      res <- is.element(progression_id, db)
-      if (!res) {
-        db <- c(db, progression_id)
-        done[[progressor_uuid]] <<- db
-      }
-      res
+  is_duplicated <- function(p) {
+    progressor_uuid <- p$progressor_uuid
+    session_uuid <- p$session_uuid
+    progression_index <- p$progression_index
+    progression_id <- sprintf("%s-%d", session_uuid, progression_index)
+    db <- done[[progressor_uuid]]
+    res <- is.element(progression_id, db)
+    if (!res) {
+      db <- c(db, progression_id)
+      done[[progressor_uuid]] <<- db
     }
-  })
+    res
+  }
   
   if (is.null(handler)) {
     handler <- function(p) {
       stopifnot(inherits(p, "progression"))
 
-      if (inherits(p, "control_progression") && p$type == "shutdown") {
-        finish_reporter(p)
-	return(invisible())
-      }
+      if (inherits(p, "control_progression")) {
+        type <- p$type
+        if (type == "reset") {
+          max_steps <<- NULL
+          step <<- NULL
+          auto_finish <<- TRUE
+          timestamps <<- NULL
+          milestones <<- NULL
+          prev_milestone <<- NULL
+          enabled <<- FALSE
+          finished <<- FALSE
+	  owner <<- NULL
+          done <<- list()
+          reset_reporter(p)
+        } else if (type == "shutdown") {
+          finish_reporter(p)
+        } else {
+	  stop("Unknown control_progression type: ", sQuote(type))
+	}
+        return(invisible())
+      }	
 
       ## Ignore stray progressions coming from other sources, e.g.
       ## a function of a package that started to report on progression.
@@ -181,10 +207,10 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
       }
 
       if (duplicated) {
-        mprintf("Progression handler %s ... already done", sQuote(type))
+        if (debug) mprintf("Progression handler %s ... already done", sQuote(type))
         return(invisible())
       } else if (finished) {
-        mprintf("Progression handler %s ... already finished", sQuote(type))
+        if (debug) mprintf("Progression handler %s ... already finished", sQuote(type))
         return(invisible())
       }
 
