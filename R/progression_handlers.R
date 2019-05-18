@@ -119,10 +119,13 @@ txtprogressbar_handler <- function(style = 3L, file = stderr(), intrusiveness = 
 #'
 #' @export
 tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), ...) {
+  if (!capabilities("tcltk")) {
+    stop("tkprogressbar_handler requires TclTk support")
+  }
+  
   reporter <- local({
     ## Import functions
     tkProgressBar <- tcltk::tkProgressBar
-    getTkProgressBar <- tcltk::getTkProgressBar
     setTkProgressBar <- tcltk::setTkProgressBar
 
     pb <- NULL
@@ -157,6 +160,61 @@ tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusive
   })
   
   progression_handler("tkprogressbar", reporter, intrusiveness = intrusiveness, ...)
+}
+
+
+#' Visual Progression Feedback for MS Windows
+#'
+#' A progression handler for [utils::winProgressBar()].
+#'
+#' @inheritParams progression_handler
+#'
+#' @param \ldots Additional arguments passed to [progression_handler()].
+#'
+#' @export
+winprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), ...) {
+  if (.Platform$OS.type != "windows") {
+    stop("winprogressbar_handler requires MS Windows: ",
+         sQuote(.Platform$OS.type))
+  }
+  
+  reporter <- local({
+    ## Import functions
+    winProgressBar <- utils::winProgressBar
+    setWinProgressBar <- utils::setWinProgressBar
+
+    pb <- NULL
+    
+    make_pb <- function(...) {
+      if (!is.null(pb)) return(pb)
+      pb <<- winProgressBar(...)
+      pb
+    }
+
+    list(
+      initiate = function(config, state, progression, ...) {
+        if (!state$enabled) return()
+        make_pb(max = config$max_steps, label = state$message)
+      },
+        
+      update = function(config, state, progression, ...) {
+        if (!state$enabled) return()
+        make_pb(max = config$max_steps, label = state$message)
+        setWinProgressBar(pb, value = state$step, label = state$message)
+      },
+        
+      finish = function(config, state, progression, ...) {
+        if (!state$enabled) return()
+        if (config$clear) {
+          close(pb)
+        } else {
+          setWinProgressBar(pb, value = state$step, label = state$message)
+        }
+      }
+    )
+  })
+  
+  progression_handler("winprogressbar", reporter, intrusiveness = intrusiveness, ...)
 }
 
 
