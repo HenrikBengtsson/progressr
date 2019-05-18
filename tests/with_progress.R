@@ -1,5 +1,7 @@
 library(progressr)
 
+options(progressr.enable = TRUE)
+
 options(delay = 0.001)
 
 options(progressr.times = +Inf)
@@ -38,7 +40,7 @@ message("with_progress() - utils::txtProgressBar() ... done")
 
 message("with_progress() - tcltk::tkProgressBar() ...")
 
-if (requireNamespace("tcltk")) {
+if (capabilities("tcltk") && requireNamespace("tcltk")) {
   with_progress({
     sum <- slow_sum(x)
   }, tkprogressbar_handler)
@@ -65,7 +67,7 @@ message("with_progress() - alert ...")
 
 with_progress({
   sum <- slow_sum(x)
-}, ascii_alert_handler)
+}, ascii_alert_handler())
 print(sum)
 stopifnot(sum == truth)
 
@@ -77,7 +79,7 @@ message("with_progress() - beepr::beep() ...")
 if (requireNamespace("beepr")) {
   with_progress({
     sum <- slow_sum(x)
-  }, beepr_handler)
+  }, beepr_handler(initiate = NA_integer_, update = NA_integer_, finish = NA_integer_))
   print(sum)
   stopifnot(sum == truth)
 }

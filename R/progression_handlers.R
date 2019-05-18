@@ -366,7 +366,7 @@ progress_handler <- function(format = "[:bar] :percent :message", show_after = 0
 #' @inheritParams progression_handler
 #'
 #' @param initiate,update,finish (integer) Indices of [beepr::beep()] sounds to
-#'  play when progress starts, is updated, and completes.
+#'  play when progress starts, is updated, and completes.  For silence, use `NA_integer_`.
 #'
 #' @param \ldots Additional arguments passed to [progression_handler()].
 #'
@@ -377,7 +377,11 @@ beepr_handler <- function(initiate = 2L, update = 10L,  finish = 11L, intrusiven
   ## Reporter state
   reporter <- local({
     ## Import functions
-    beep <- beepr::beep
+    beep <- function(sound) {
+      ## Silence?
+      if (is.na(sound)) return()
+      beepr::beep(sound)
+    }
 
     list(
       initiate = function(config, state, progression, ...) {
