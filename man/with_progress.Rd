@@ -5,13 +5,16 @@
 \title{Evaluate Expression while Handling Progress Updates}
 \usage{
 with_progress(expr, handlers = getOption("progressr.handlers",
-  txtprogressbar_handler()))
+  txtprogressbar_handler()), cleanup = TRUE)
 }
 \arguments{
 \item{expr}{An \R expression to evaluate.}
 
 \item{handlers}{A progression handler or a list of them.
 If @NULL or an empty list, progress updates are ignored.}
+
+\item{cleanup}{If TRUE, all progression handlers will be shutdown
+at the end regardless of the progression is complete or not.}
 }
 \description{
 Evaluate Expression while Handling Progress Updates

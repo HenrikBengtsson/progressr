@@ -17,8 +17,8 @@ slow_sum <- function(x, delay = getOption("delay", 0.05)) {
   for (kk in seq_along(x)) {
     Sys.sleep(delay)
     res <- res + x[kk]
-    progress()
+    progress(message = sprintf("Adding %g", kk))
   }
-  
+
   res
 }

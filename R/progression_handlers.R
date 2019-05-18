@@ -11,12 +11,14 @@
 #'
 #' @param \ldots Additional arguments passed to [progression_handler()].
 #'
+#' @example incl/ascii_alert_handler.R
+#'
 #' @export
 ascii_alert_handler <- function(symbol = "\a", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.auditory", 10), ...) {
   reporter <- local({
     list(
-      update = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        cat(file = file, symbol)
+      update = function(config, state, progression, ...) {
+        if (state$enabled) cat(file = file, symbol)
       }
     )
   })
@@ -37,6 +39,8 @@ ascii_alert_handler <- function(symbol = "\a", file = stderr(), intrusiveness = 
 #' @param file (connection) A [base::connection] to where output should be sent.
 #'
 #' @param \ldots Additional arguments passed to [progression_handler()].
+#'
+#' @example incl/txtprogressbar_handler.R
 #'
 #' @importFrom utils file_test flush.console
 #' @export
@@ -60,17 +64,27 @@ txtprogressbar_handler <- function(style = 3L, file = stderr(), intrusiveness = 
 
     pb <- NULL
 
+    make_pb <- function(...) {
+      if (!is.null(pb)) return(pb)
+      pb <<- txtProgressBar(...)
+      pb
+    }
+
     list(
-      initiate = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        pb <<- txtProgressBar(max = max_steps, style = style, file = file)
+      initiate = function(config, state, progression, ...) {
+        if (!state$enabled) return()
+        make_pb(max = config$max_steps, style = style, file = file)
       },
         
-      update = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        setTxtProgressBar(pb, value = step)
+      update = function(config, state, progression, ...) {
+        if (!state$enabled) return()
+	make_pb(max = config$max_steps, style = style, file = file)
+        setTxtProgressBar(pb, value = state$step)
       },
         
-      finish = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        if (clear) {
+      finish = function(config, state, progression, ...) {
+        if (!state$enabled) return()
+        if (config$clear) {
           eraseTxtProgressBar(pb)
           ## Suppress newline outputted by close()
           pb_env <- environment(pb$getVal)
@@ -81,7 +95,7 @@ txtprogressbar_handler <- function(style = 3L, file = stderr(), intrusiveness = 
             pb_env$file <- file
           })
         } else {
-          setTxtProgressBar(pb, value = max_steps)
+          setTxtProgressBar(pb, value = config$max_steps)
         }
         close(pb)
       }
@@ -101,6 +115,8 @@ txtprogressbar_handler <- function(style = 3L, file = stderr(), intrusiveness = 
 #'
 #' @param \ldots Additional arguments passed to [progression_handler()].
 #'
+#' @example incl/tkprogressbar_handler.R
+#'
 #' @export
 tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), ...) {
   reporter <- local({
@@ -111,20 +127,30 @@ tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusive
 
     pb <- NULL
     
+    make_pb <- function(...) {
+      if (!is.null(pb)) return(pb)
+      pb <<- tkProgressBar(...)
+      pb
+    }
+
     list(
-      initiate = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        pb <<- tkProgressBar(max = max_steps)
+      initiate = function(config, state, progression, ...) {
+        if (!state$enabled) return()
+        make_pb(max = config$max_steps, label = state$message)
       },
         
-      update = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        setTkProgressBar(pb, value = step)
+      update = function(config, state, progression, ...) {
+        if (!state$enabled) return()
+        make_pb(max = config$max_steps, label = state$message)
+        setTkProgressBar(pb, value = state$step, label = state$message)
       },
         
-      finish = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        if (clear) {
+      finish = function(config, state, progression, ...) {
+        if (!state$enabled) return()
+        if (config$clear) {
           close(pb)
         } else {
-          setTkProgressBar(pb, value = step)
+          setTkProgressBar(pb, value = state$step, label = state$message)
         }
       }
     )
@@ -148,6 +174,8 @@ tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusive
 #' @param file (connection) A [base::connection] to where output should be sent.
 #'
 #' @param \ldots Additional arguments passed to [progression_handler()].
+#'
+#' @example incl/pbmcapply_handler.R
 #'
 #' @importFrom utils file_test flush.console
 #' @export
@@ -177,17 +205,27 @@ pbmcapply_handler <- function(substyle = 3L, style = "ETA", file = stderr(), int
 
     pb <- NULL
 
+    make_pb <- function(...) {
+      if (!is.null(pb)) return(pb)
+      pb <<- progressBar(...)
+      pb
+    }
+
     list(
-      initiate = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        pb <<- progressBar(max = max_steps, style = style, substyle = substyle, file = file)
+      initiate = function(config, state, progression, ...) {
+        if (!state$enabled) return()
+        make_pb(max = config$max_steps, style = style, substyle = substyle, file = file)
       },
         
-      update = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        setTxtProgressBar(pb, value = step)
+      update = function(config, state, progression, ...) {
+        if (!state$enabled) return()
+        make_pb(max = config$max_steps, style = style, substyle = substyle, file = file)
+        setTxtProgressBar(pb, value = state$step)
       },
         
-      finish = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        if (clear) {
+      finish = function(config, state, progression, ...) {
+        if (!state$enabled) return()
+        if (config$clear) {
           eraseTxtProgressBar(pb)
           ## Suppress newline outputted by close()
           pb_env <- environment(pb$getVal)
@@ -198,7 +236,7 @@ pbmcapply_handler <- function(substyle = 3L, style = "ETA", file = stderr(), int
             pb_env$file <- file
           })
         } else {
-          setTxtProgressBar(pb, value = step)
+          setTxtProgressBar(pb, value = state$step)
         }
         close(pb)
       }
@@ -216,12 +254,17 @@ pbmcapply_handler <- function(substyle = 3L, style = "ETA", file = stderr(), int
 #'
 #' @inheritParams progression_handler
 #'
-#' @param show_after (numeric) Number of seconds to wait before displaying the progress bar.
+#' @param format (character string) The format of the progress bar.
+#'
+#' @param show_after (numeric) Number of seconds to wait before displaying
+#' the progress bar.
 #'
 #' @param \ldots Additional arguments passed to [progression_handler()].
 #'
+#' @example incl/progress_handler.R
+#'
 #' @export
-progress_handler <- function(show_after = 0.0, intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...) {
+progress_handler <- function(format = "[:bar] :percent :message", show_after = 0.0, intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...) {
   reporter <- local({
     ## Import functions
     progress_bar <- progress::progress_bar
@@ -229,18 +272,25 @@ progress_handler <- function(show_after = 0.0, intrusiveness = getOption("progre
     pb <- NULL
     
     list(
-      initiate = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        pb <<- progress_bar$new(total = max_steps,
-                                clear = clear, show_after = show_after)
-        pb$tick(0)
+      initiate = function(config, state, progression, ...) {
+        pb <<- progress_bar$new(format = format,
+                                total = config$max_steps,
+                                clear = config$clear,
+				show_after = config$enable_after)
+        tokens <- list(message = paste0(state$message, ""))
+        pb$tick(0, tokens = tokens)
       },
         
-      update = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        if (delta > 0) pb$tick(delta)
+      update = function(config, state, progression, ...) {
+        if (state$delta >= 0) {
+          tokens <- list(message = paste0(state$message, ""))
+          pb$tick(state$delta, tokens = tokens)
+        }
       },
         
-      finish = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        if (delta > 0) pb$tick(delta)
+      finish = function(config, state, progression, ...) {
+        reporter$update(config = config, state = state, progression = progression, ...)
+        if (config$clear) pb$update(1.0)
       }
     )
   })
@@ -261,6 +311,8 @@ progress_handler <- function(show_after = 0.0, intrusiveness = getOption("progre
 #'
 #' @param \ldots Additional arguments passed to [progression_handler()].
 #'
+#' @example incl/beepr_handler.R
+#'
 #' @export
 beepr_handler <- function(initiate = 2L, update = 10L,  finish = 11L, intrusiveness = getOption("progressr.intrusiveness.auditory", 10), ...) {
   ## Reporter state
@@ -269,15 +321,18 @@ beepr_handler <- function(initiate = 2L, update = 10L,  finish = 11L, intrusiven
     beep <- beepr::beep
 
     list(
-      initiate = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        beep(initiate)
+      initiate = function(config, state, progression, ...) {
+        if (!state$enabled) return()
+	beep(initiate)
       },
         
-      update = function(step, max_steps, delta, message, clear, timestamps, ...) {
+      update = function(config, state, progression, ...) {
+        if (!state$enabled) return()
         beep(update)
       },
         
-      finish = function(step, max_steps, delta, message, clear, timestamps, ...) {
+      finish = function(config, state, progression, ...) {
+        if (!state$enabled) return()
         beep(finish)
       }
     )
@@ -296,6 +351,8 @@ beepr_handler <- function(initiate = 2L, update = 10L,  finish = 11L, intrusiven
 #'
 #' @param \ldots Additional arguments passed to [progression_handler()].
 #'
+#' @example incl/notifier_handler.R
+#'
 #' @export
 notifier_handler <- function(intrusiveness = getOption("progressr.intrusiveness.notifier", 10), ...) {
   reporter <- local({
@@ -308,23 +365,96 @@ notifier_handler <- function(intrusiveness = getOption("progressr.intrusiveness.
     notify <- function(step, max_steps, message) {
       msg <- paste(c("", message), collapse = "")
       ratio <- if (step == 0L) "STARTED" else if (step == max_steps) "DONE" else sprintf("%.1f%%", 100*step/max_steps)
-      notifier::notify(sprintf("[%s] %s (Step %d of %d)", ratio, msg, step, max_steps))
+      notifier::notify(sprintf("[%s] %s (%d/%d)", ratio, msg, step, max_steps))
     }
 
     list(
-      initiate = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        notify(step = step, max_steps = max_steps, message = message)
+      initiate = function(config, state, progression, ...) {
+        if (!state$enabled) return()
+        notify(step = state$step, max_steps = config$max_steps, message = state$message)
       },
         
-      update = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        notify(step = step, max_steps = max_steps, message = message)
+      update = function(config, state, progression, ...) {
+        if (!state$enabled) return()
+        notify(step = state$step, max_steps = config$max_steps, message = state$message)
       },
         
-      finish = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        notify(step = step, max_steps = max_steps, message = message)
+      finish = function(config, state, progression, ...) {
+        if (!state$enabled) return()
+        notify(step = state$step, max_steps = config$max_steps, message = state$message)
       }
     )
   })
   
   progression_handler("notifier", reporter, intrusiveness = intrusiveness, ...)
+}
+
+
+
+
+#' Textual Progression Feedback for Debug Purposes
+#'
+#' @inheritParams progression_handler
+#'
+#' @param \ldots Additional arguments passed to [progression_handler()].
+#'
+#' @example incl/debug_handler.R
+#'
+#' @export
+debug_handler <- function(intrusiveness = getOption("progressr.intrusiveness.debug", 0), ...) {
+  reporter <- local({
+    t_init <- NULL
+    add_to_log <- function(config, state, progression, ...) {
+      t <- Sys.time()
+      if (is.null(t_init)) t_init <<- t
+      dt <- difftime(t, t_init, units = "secs")
+      delay <- difftime(t, progression$time, units = "secs")
+      message <- paste(c(state$message, ""), collapse = "")
+      entry <- list(now(t), dt, delay, progression$type, state$step, config$max_steps, state$delta, message, config$clear, state$enabled)
+      msg <- do.call(sprintf, args = c(list("%s(%.3fs => +%.3fs) %s: %d/%d (%+d) '%s' {clear=%s, enabled=%s}"), entry))
+      message(msg)
+    }
+
+    list(
+      initiate = function(...) {
+        add_to_log("initiate", ...)
+      },
+        
+      update = function(...) {
+        add_to_log("update", ...)
+      },
+        
+      finish = function(...) {
+        add_to_log("finish", ...)
+      }
+    )
+  })
+  
+  progression_handler("debug", reporter, intrusiveness = intrusiveness, ...)
+}
+
+
+
+#' Textual Progression Feedback that outputs a Newline
+#'
+#' @inheritParams progression_handler
+#'
+#' @param symbol (character string) The character symbol to be outputted,
+#' which by default is the ASCII NL character (`'\n'` = `'\013'`) character.
+#'
+#' @param file (connection) A [base::connection] to where output should be sent.
+#'
+#' @param \ldots Additional arguments passed to [progression_handler()].
+#'
+#' @export
+newline_handler <- function(symbol = "\n", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.debug", 0), ...) {
+  reporter <- local({
+    list(
+      initiate = function(...) cat(file = file, symbol),
+      update   = function(...) cat(file = file, symbol),
+      finish   = function(...) cat(file = file, symbol)
+    )
+  })
+  
+  progression_handler("newline", reporter, intrusiveness = intrusiveness, ...)
 }

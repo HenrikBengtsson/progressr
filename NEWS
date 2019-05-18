@@ -1,6 +1,53 @@
 Package: progressr
 ==================
 
+Version: 0.0.3 [2019-05-17]
+
+NEW FEATURES:
+
+ * Add argument 'enable_after' for progression handlers.
+ 
+ * Now with_progress(..., cleanup = TRUE) will signal a generic "shutdown"
+   progression at the end that will trigger all progression handlers to
+   finish up regardless of all steps have been take or not.
+
+ * Now progressions originating from an unknown source are ignored.
+ 
+ * The default output format of the progress::progress_bar() progression
+   handler is now ":percent :bar :message".
+
+ * The tcltk::tkProgressBar() progression handler now displays the
+   progression message.
+
+ * Now the progression condition itself is passed to the progression
+   reporter functions.
+   
+ * Add debug_handler for prototyping and debugging purposes.
+
+ * Add newline_handler to add newlines between output of multiple handlers.
+
+ * Argument 'intrusiveness' may now be zero. Previously it had to be
+   a strictly positive value.
+
+ * Add without_progress() - which causes all progression conditions to
+   be muffled and ignored.
+   
+BUG FIXES:
+
+ * Progressor functions could produce progression conditions that had
+   the same identifiers and therefore would be considered duplicates
+   such that progression handlers would ignore them.
+
+ * It was an error if a progression took a step big enough to skip more
+   than the next milestone.
+
+ * Progression handlers now keep the internal 'step' field within
+   [0, max_steps] in case of a too big progression step is taken.
+
+ * Progression updates received after progression handler is finished
+   would keep increasing the internal step field.
+ 
+
 Version: 0.0.2 [2019-05-15]
 
 SIGNIFICANT CHANGES:

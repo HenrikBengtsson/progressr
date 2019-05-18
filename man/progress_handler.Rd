@@ -4,17 +4,32 @@
 \alias{progress_handler}
 \title{Visual Progression Feedback}
 \usage{
-progress_handler(show_after = 0,
+progress_handler(format = "[:bar] :percent :message", show_after = 0,
   intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...)
 }
 \arguments{
-\item{show_after}{(numeric) Number of seconds to wait before displaying the progress bar.}
+\item{format}{(character string) The format of the progress bar.}
 
-\item{intrusiveness}{(numeric) A positive scalar on how intrusive
+\item{show_after}{(numeric) Number of seconds to wait before displaying
+the progress bar.}
+
+\item{intrusiveness}{(numeric) A non-negative scalar on how intrusive
 (disruptive) the reporter to the user.}
 
 \item{\ldots}{Additional arguments passed to \code{\link[=progression_handler]{progression_handler()}}.}
 }
 \description{
 A progression handler for \code{\link[progress:progress_bar]{progress::progress_bar()}}.
+}
+\examples{
+if (requireNamespace("progress", quietly = TRUE)) local({
+  oopts <- options(progressr.clear = FALSE,
+                   progressr.handlers = progress_handler)
+  on.exit(oopts)
+
+  x <- 1:10
+  with_progress({ y <- slow_sum(x) })
+  
+  print(y)
+})
 }
