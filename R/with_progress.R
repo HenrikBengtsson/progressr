@@ -8,6 +8,8 @@
 #' @param cleanup If TRUE, all progression handlers will be shutdown
 #' at the end regardless of the progression is complete or not.
 #'
+#' @return Return nothing (reserved for future usage).
+#'
 #' @example incl/with_progress.R
 #'
 #' @export
@@ -49,6 +51,8 @@ with_progress <- function(expr, handlers = getOption("progressr.handlers", txtpr
   }
 
   withCallingHandlers(expr, progression = handler)
+
+  invisible(NULL)
 }
 
 

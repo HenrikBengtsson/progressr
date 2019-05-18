@@ -9,6 +9,9 @@ without_progress(expr)
 \arguments{
 \item{expr}{An \R expression to evaluate.}
 }
+\value{
+Return nothing (reserved for future usage).
+}
 \description{
 Evaluate Expression while Ignoring All Progress Updates
 }
