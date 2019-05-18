@@ -68,20 +68,27 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
       dt <- difftime(Sys.time(), timestamps[1L], units = "secs")
       enabled <<- (dt >= enable_after)
     }
-    
-    args <- list(
+
+    config <- list(
       max_steps = max_steps,
+      enable_after = enable_after,
+      clear = clear
+    )
+
+    state <- list(
       step = step,
       message = message,
       timestamps = timestamps,
       delta = step - prev_milestone,
-      enable_after = enable_after,
-      enabled = enabled,
-      clear = clear,
-      progression = progression
+      enabled = enabled
     )
-    if (length(args$delta) == 0L) args$delta <- 0L
-    args
+    if (length(state$delta) == 0L) state$delta <- 0L
+
+    c(config, state, list(
+      config = config,
+      state = state,
+      progression = progression
+    ))
   }
 
   initiate_reporter <- function(p) {
