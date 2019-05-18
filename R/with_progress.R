@@ -46,7 +46,9 @@ with_progress <- function(expr, handlers = getOption("progressr.handlers", txtpr
   ## Tell all progression handlers to shutdown at the end
   if (cleanup) {
     on.exit(withCallingHandlers({
-      signalCondition(control_progression("shutdown"))
+      withRestarts({
+        signalCondition(control_progression("shutdown"))
+      }, muffleProgression = function(p) NULL)
     }, progression = handler))
   }
 

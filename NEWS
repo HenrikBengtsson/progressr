@@ -18,6 +18,11 @@ SOFTWARE QUALITY:
    installed or supported on the current platform, e.g. tcltk, beepr,
    notifier.
 
+BUG FIXES:
+
+ * with_progress(..., cleanup = TRUE) requires a withRestart() such that also
+   "shutdown" progressions can be muffled.
+ 
 
 Version: 0.0.3 [2019-05-17]
 

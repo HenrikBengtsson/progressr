@@ -1,6 +1,6 @@
 library(progressr)
 
-options(delay = 0)
+options(delay = 0.0)
 
 message("progress_aggregator() ...")
 

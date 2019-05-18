@@ -181,10 +181,10 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
       }
 
       if (duplicated) {
-        mprintf("Progression handler %s ... already done", sQuote(type))
+        if (debug) mprintf("Progression handler %s ... already done", sQuote(type))
         return(invisible())
       } else if (finished) {
-        mprintf("Progression handler %s ... already finished", sQuote(type))
+        if (debug) mprintf("Progression handler %s ... already finished", sQuote(type))
         return(invisible())
       }
 
