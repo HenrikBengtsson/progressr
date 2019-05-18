@@ -55,3 +55,10 @@ is_fake <- local({
     fake
   }
 })
+
+known_progression_handlers <- function() {
+  ns <- asNamespace(.packageName)
+  handlers <- ls(envir = ns, pattern = "_handler$")
+  handlers <- setdiff(handlers, "progression_handler")
+  mget(handlers, envir = ns, inherits = FALSE)
+}
