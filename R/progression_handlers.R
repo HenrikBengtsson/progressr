@@ -119,15 +119,21 @@ txtprogressbar_handler <- function(style = 3L, file = stderr(), intrusiveness = 
 #'
 #' @export
 tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), ...) {
-  if (!capabilities("tcltk")) {
-    stop("tkprogressbar_handler requires TclTk support")
-  }
-  
-  reporter <- local({
+  ## Used for package testing purposes only when we want to perform
+  ## everything except the last part where the backend is called
+  if (!is_fake("tkprogressbar_handler")) {
+    if (!capabilities("tcltk")) {
+      stop("tkprogressbar_handler requires TclTk support")
+    }
     ## Import functions
     tkProgressBar <- tcltk::tkProgressBar
     setTkProgressBar <- tcltk::setTkProgressBar
-
+  } else {
+    tkProgressBar <- function(...) rawConnection(raw(0L))
+    setTkProgressBar <- function(...) NULL
+  }
+  
+  reporter <- local({
     pb <- NULL
     
     make_pb <- function(...) {
@@ -173,16 +179,22 @@ tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusive
 #'
 #' @export
 winprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), ...) {
-  if (.Platform$OS.type != "windows") {
-    stop("winprogressbar_handler requires MS Windows: ",
-         sQuote(.Platform$OS.type))
-  }
-  
-  reporter <- local({
+  ## Used for package testing purposes only when we want to perform
+  ## everything except the last part where the backend is called
+  if (!is_fake("winprogressbar_handler")) {
+    if (.Platform$OS.type != "windows") {
+      stop("winprogressbar_handler requires MS Windows: ",
+           sQuote(.Platform$OS.type))
+    }
     ## Import functions
     winProgressBar <- utils::winProgressBar
     setWinProgressBar <- utils::setWinProgressBar
-
+  } else {
+    winProgressBar <- function(...) rawConnection(raw(0L))
+    setWinProgressBar <- function(...) NULL
+  }
+  
+  reporter <- local({
     pb <- NULL
     
     make_pb <- function(...) {
@@ -374,15 +386,20 @@ progress_handler <- function(format = "[:bar] :percent :message", show_after = 0
 #'
 #' @export
 beepr_handler <- function(initiate = 2L, update = 10L,  finish = 11L, intrusiveness = getOption("progressr.intrusiveness.auditory", 10), ...) {
-  ## Reporter state
-  reporter <- local({
-    ## Import functions
+  ## Used for package testing purposes only when we want to perform
+  ## everything except the last part where the backend is called
+  if (!is_fake("beepr_handler")) {
     beep <- function(sound) {
       ## Silence?
       if (is.na(sound)) return()
       beepr::beep(sound)
     }
-
+  } else {
+    beep <- function(sound) NULL
+  }
+  
+  ## Reporter state
+  reporter <- local({
     list(
       initiate = function(config, state, progression, ...) {
         if (!state$enabled) return()
@@ -418,7 +435,9 @@ beepr_handler <- function(initiate = 2L, update = 10L,  finish = 11L, intrusiven
 #'
 #' @export
 notifier_handler <- function(intrusiveness = getOption("progressr.intrusiveness.notifier", 10), ...) {
-  reporter <- local({
+  ## Used for package testing purposes only when we want to perform
+  ## everything except the last part where the backend is called
+  if (!is_fake("notifier_handler")) {
     notify_ideally <- function(step, max_steps, message, p) {
       msg <- paste(c("", message), collapse = "")
       ratio <- if (step == 0L) "STARTED" else if (step == max_steps) "DONE" else sprintf("%.0f%%", 100*step/max_steps)
@@ -430,7 +449,11 @@ notifier_handler <- function(intrusiveness = getOption("progressr.intrusiveness.
       ratio <- if (step == 0L) "STARTED" else if (step == max_steps) "DONE" else sprintf("%.1f%%", 100*step/max_steps)
       notifier::notify(sprintf("[%s] %s (%d/%d)", ratio, msg, step, max_steps))
     }
-
+  } else {
+    notify <- function(step, max_steps, message) NULL
+  }
+  
+  reporter <- local({
     list(
       initiate = function(config, state, progression, ...) {
         if (!state$enabled) return()
@@ -521,3 +544,4 @@ newline_handler <- function(symbol = "\n", file = stderr(), intrusiveness = getO
   
   progression_handler("newline", reporter, intrusiveness = intrusiveness, ...)
 }
+

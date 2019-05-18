@@ -1,5 +1,6 @@
 library(progressr)
 
+options(progressr.tests.fake_handlers = c("beepr_handler", "notifier_handler", "tkprogressbar_handler", "winprogressbar_handler"))
 options(progressr.enable = TRUE)
 
 options(delay = 0.001)
@@ -40,13 +41,20 @@ message("with_progress() - utils::txtProgressBar() ... done")
 
 message("with_progress() - tcltk::tkProgressBar() ...")
 
-if (capabilities("tcltk") && requireNamespace("tcltk")) {
-  with_progress({
-    sum <- slow_sum(x)
-  }, tkprogressbar_handler)
-}
+with_progress({
+  sum <- slow_sum(x)
+}, tkprogressbar_handler)
 
 message("with_progress() - tcltk::tkProgressBar() ... done")
+
+
+message("with_progress() - utils::winProgressBar() ...")
+
+with_progress({
+  sum <- slow_sum(x)
+}, winprogressbar_handler)
+
+message("with_progress() - utils::winProgressBar() ... done")
 
 
 message("with_progress() - progress::progress_bar() ...")
@@ -76,29 +84,24 @@ message("with_progress() - alert ... done")
 
 message("with_progress() - beepr::beep() ...")
 
-if (requireNamespace("beepr")) {
-  with_progress({
-    sum <- slow_sum(x)
-  }, beepr_handler(initiate = NA_integer_, update = NA_integer_, finish = NA_integer_))
-  print(sum)
-  stopifnot(sum == truth)
-}
+with_progress({
+  sum <- slow_sum(x)
+}, beepr_handler)
+print(sum)
+stopifnot(sum == truth)
 
 message("with_progress() - beepr::beep() ... done")
 
 
 message("with_progress() - notifier::notify() ...")
 
-if (requireNamespace("notifier")) {
-  with_progress({
-    sum <- slow_sum(x)
-  }, notifier_handler)
-  print(sum)
-  stopifnot(sum == truth)
-}
+with_progress({
+  sum <- slow_sum(x)
+}, notifier_handler)
+print(sum)
+stopifnot(sum == truth)
 
 message("with_progress() - notifier::notify() ... done")
-
 
 
 message("with_progress() - void ...")
@@ -125,21 +128,16 @@ message("with_progress() - void ... done")
 
 message("with_progress() - multiple handlers ...")
 
-handlers <- list()
 if (requireNamespace("utils", quietly = TRUE)) {
-  handlers <- c(handlers, list(txtprogressbar_handler))
-} else {
-  handlers <- c(handlers, list(ascii_alert_handler))
+  handlers <- list(txtprogressbar_handler, newline_handler, debug_handler)
+  options(progressr.handlers = handlers)
+  
+  with_progress({
+    sum <- slow_sum(x)
+  })
+  print(sum)
+  stopifnot(sum == truth)
 }
-handlers <- c(handlers, list(newline_handler, debug_handler))
-
-options(progressr.handlers = handlers)
-
-with_progress({
-  sum <- slow_sum(x)
-})
-print(sum)
-stopifnot(sum == truth)
 
 message("with_progress() - multiple handlers ... done")
 

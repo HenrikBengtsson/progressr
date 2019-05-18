@@ -79,3 +79,19 @@ stop_if_not <- function(...) {
     }
   }
 }
+
+
+## Used for package testing purposes only when we want to perform
+## everything except the last part where the backend is called
+## This allows us to cover more of the code in package tests
+is_fake <- local({
+  cache <- list()
+  function(name) {
+    fake <- cache[[name]]
+    if (is.null(fake)) {
+      fake <- name %in% getOption("progressr.tests.fake_handlers")
+      cache[[name]] <<- fake
+    }
+    fake
+  }
+})
