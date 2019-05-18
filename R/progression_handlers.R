@@ -282,17 +282,15 @@ progress_handler <- function(format = "[:bar] :percent :message", show_after = 0
       },
         
       update = function(config, state, progression, ...) {
-        if (state$delta > 0) {
+        if (state$delta >= 0) {
           tokens <- list(message = paste0(state$message, ""))
           pb$tick(state$delta, tokens = tokens)
         }
       },
         
       finish = function(config, state, progression, ...) {
-        if (state$delta > 0) {
-          tokens <- list(message = paste0(state$message, ""))
-          pb$tick(state$delta, tokens = tokens)
-        }
+        update(config = config, state = state, progression = progression, ...)
+        if (config$clear) pb$update(1.0)
       }
     )
   })
@@ -412,7 +410,7 @@ debug_handler <- function(intrusiveness = getOption("progressr.intrusiveness.deb
       dt <- difftime(t, t_init, units = "secs")
       delay <- difftime(t, progression$time, units = "secs")
       message <- paste(c(state$message, ""), collapse = "")
-      entry <- list(now(t), dt, delay, progression$type, state$step, config$max_steps, state$delta, state$message, config$clear, state$enabled)
+      entry <- list(now(t), dt, delay, progression$type, state$step, config$max_steps, state$delta, message, config$clear, state$enabled)
       msg <- do.call(sprintf, args = c(list("%s(%.3fs => +%.3fs) %s: %d/%d (%+d) '%s' {clear=%s, enabled=%s}"), entry))
       message(msg)
     }
