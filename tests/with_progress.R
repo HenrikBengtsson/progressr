@@ -49,7 +49,7 @@ message("with_progress() - tcltk::tkProgressBar() ... done")
 
 message("with_progress() - progress::progress_bar() ...")
 
-if (FALSE && requireNamespace("progress")) {
+if (requireNamespace("progress")) {
   ## Display progress using default handler
   with_progress({
     sum <- slow_sum(x)
