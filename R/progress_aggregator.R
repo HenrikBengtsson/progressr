@@ -31,7 +31,7 @@ progress_aggregator <- function(progress) {
     } else if (type == "update") {
       progress(child = p)
     } else {
-      warning("Unknown 'progression' type: ", sQuote(type))
+      stop("Unknown 'progression' type: ", sQuote(type))
     }
     
     ## Prevent upstream calling handlers to receive progression 'p'
