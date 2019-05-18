@@ -17,8 +17,8 @@
 ascii_alert_handler <- function(symbol = "\a", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.auditory", 10), ...) {
   reporter <- local({
     list(
-      update = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        cat(file = file, symbol)
+      update = function(step, max_steps, delta, message, clear, timestamps, enabled, ...) {
+        if (enabled) cat(file = file, symbol)
       }
     )
   })
@@ -64,16 +64,26 @@ txtprogressbar_handler <- function(style = 3L, file = stderr(), intrusiveness = 
 
     pb <- NULL
 
+    make_pb <- function(...) {
+      if (!is.null(pb)) return(pb)
+      pb <<- txtProgressBar(...)
+      pb
+    }
+
     list(
-      initiate = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        pb <<- txtProgressBar(max = max_steps, style = style, file = file)
+      initiate = function(step, max_steps, delta, message, clear, timestamps, enabled, ...) {
+        if (!enabled) return()
+        make_pb(max = max_steps, style = style, file = file)
       },
         
-      update = function(step, max_steps, delta, message, clear, timestamps, ...) {
+      update = function(step, max_steps, delta, message, clear, timestamps, enabled, ...) {
+        if (!enabled) return()
+	make_pb(max = max_steps, style = style, file = file)
         setTxtProgressBar(pb, value = step)
       },
         
-      finish = function(step, max_steps, delta, message, clear, timestamps, ...) {
+      finish = function(step, max_steps, delta, message, clear, timestamps, enabled, ...) {
+        if (!enabled) return()
         if (clear) {
           eraseTxtProgressBar(pb)
           ## Suppress newline outputted by close()
@@ -117,16 +127,26 @@ tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusive
 
     pb <- NULL
     
+    make_pb <- function(...) {
+      if (!is.null(pb)) return(pb)
+      pb <<- tkProgressBar(...)
+      pb
+    }
+
     list(
-      initiate = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        pb <<- tkProgressBar(max = max_steps, label = message)
+      initiate = function(step, max_steps, delta, message, clear, timestamps, enabled, ...) {
+        if (!enabled) return()
+        make_pb(max = max_steps, label = message)
       },
         
-      update = function(step, max_steps, delta, message, clear, timestamps, ...) {
+      update = function(step, max_steps, delta, message, clear, timestamps, enabled, ...) {
+        if (!enabled) return()
+        make_pb(max = max_steps, label = message)
         setTkProgressBar(pb, value = step, label = message)
       },
         
-      finish = function(step, max_steps, delta, message, clear, timestamps, ...) {
+      finish = function(step, max_steps, delta, message, clear, timestamps, enabled, ...) {
+        if (!enabled) return()
         if (clear) {
           close(pb)
         } else {
@@ -185,16 +205,26 @@ pbmcapply_handler <- function(substyle = 3L, style = "ETA", file = stderr(), int
 
     pb <- NULL
 
+    make_pb <- function(...) {
+      if (!is.null(pb)) return(pb)
+      pb <<- progressBar(...)
+      pb
+    }
+
     list(
-      initiate = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        pb <<- progressBar(max = max_steps, style = style, substyle = substyle, file = file)
+      initiate = function(step, max_steps, delta, message, clear, timestamps, enabled, ...) {
+        if (!enabled) return()
+        make_pb(max = max_steps, style = style, substyle = substyle, file = file)
       },
         
-      update = function(step, max_steps, delta, message, clear, timestamps, ...) {
+      update = function(step, max_steps, delta, message, clear, timestamps, enabled, ...) {
+        if (!enabled) return()
+        make_pb(max = max_steps, style = style, substyle = substyle, file = file)
         setTxtProgressBar(pb, value = step)
       },
         
-      finish = function(step, max_steps, delta, message, clear, timestamps, ...) {
+      finish = function(step, max_steps, delta, message, clear, timestamps, enabled, ...) {
+        if (!enabled) return()
         if (clear) {
           eraseTxtProgressBar(pb)
           ## Suppress newline outputted by close()
@@ -242,10 +272,11 @@ progress_handler <- function(format = "[:bar] :percent :message", show_after = 0
     pb <- NULL
     
     list(
-      initiate = function(step, max_steps, delta, message, clear, timestamps, ...) {
+      initiate = function(step, max_steps, delta, message, clear, timestamps, enable_after = 0, ...) {
         pb <<- progress_bar$new(format = format,
                                 total = max_steps,
-                                clear = clear, show_after = show_after)
+                                clear = clear,
+				show_after = enable_after)
         tokens <- list(message = paste0(message, ""))
         pb$tick(0, tokens = tokens)
       },
@@ -292,16 +323,16 @@ beepr_handler <- function(initiate = 2L, update = 10L,  finish = 11L, intrusiven
     beep <- beepr::beep
 
     list(
-      initiate = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        beep(initiate)
+      initiate = function(step, max_steps, delta, message, clear, timestamps, enabled, ...) {
+        if (enabled) beep(initiate)
       },
         
-      update = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        beep(update)
+      update = function(step, max_steps, delta, message, clear, timestamps, enabled, ...) {
+        if (enabled) beep(update)
       },
         
-      finish = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        beep(finish)
+      finish = function(step, max_steps, delta, message, clear, timestamps, enabled, ...) {
+        if (enabled) beep(finish)
       }
     )
   })
@@ -337,16 +368,16 @@ notifier_handler <- function(intrusiveness = getOption("progressr.intrusiveness.
     }
 
     list(
-      initiate = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        notify(step = step, max_steps = max_steps, message = message)
+      initiate = function(step, max_steps, delta, message, clear, timestamps, enabled, ...) {
+        if (enabled) notify(step = step, max_steps = max_steps, message = message)
       },
         
-      update = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        notify(step = step, max_steps = max_steps, message = message)
+      update = function(step, max_steps, delta, message, clear, timestamps, enabled, ...) {
+        if (enabled) notify(step = step, max_steps = max_steps, message = message)
       },
         
-      finish = function(step, max_steps, delta, message, clear, timestamps, ...) {
-        notify(step = step, max_steps = max_steps, message = message)
+      finish = function(step, max_steps, delta, message, clear, timestamps, enabled, ...) {
+        if (enabled) notify(step = step, max_steps = max_steps, message = message)
       }
     )
   })
@@ -369,15 +400,15 @@ notifier_handler <- function(intrusiveness = getOption("progressr.intrusiveness.
 debug_handler <- function(intrusiveness = getOption("progressr.intrusiveness.debug", 0), ...) {
   reporter <- local({
     t_init <- NULL
-    add_to_log <- function(type, step, max_steps, delta, message, clear, timestamps, ..., progression) {
+    add_to_log <- function(type, step, max_steps, delta, message, clear, timestamps, enabled, ..., progression) {
       t <- Sys.time()
       if (is.null(t_init)) t_init <<- t
       dt <- difftime(t, t_init, units = "secs")
       delay <- difftime(t, progression$time, units = "secs")
       if (missing(step)) step <- NA_integer_
       message <- paste(c(message, ""), collapse = "")
-      entry <- list(now(t), dt, delay, type, step, max_steps, delta, message, clear)
-      msg <- do.call(sprintf, args = c(list("%s(%.3fs => +%.3fs) %s: %d/%d (%+d) '%s' {clear=%s}"), entry))
+      entry <- list(now(t), dt, delay, type, step, max_steps, delta, message, clear, enabled)
+      msg <- do.call(sprintf, args = c(list("%s(%.3fs => +%.3fs) %s: %d/%d (%+d) '%s' {clear=%s, enabled=%s}"), entry))
       message(msg)
     }
 

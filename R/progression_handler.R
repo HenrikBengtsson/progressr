@@ -12,6 +12,9 @@
 #'
 #' @param enable (logical) If FALSE, then progress is not reported.
 #'
+#' @param enable_after (numeric) Delay (in seconds) before progression
+#'   updates are reported.
+#'
 #' @param times (numeric) The maximum number of times this handler
 #'   should report progression updates.
 #'   If zero, then progress is not reported.
@@ -25,7 +28,7 @@
 #' @return A function of class `progression_handler`.
 #'
 #' @export
-progression_handler <- function(name, reporter = list(), handler = NULL, enable = interactive(), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0), intrusiveness = 1.0, clear = getOption("progressr.clear", TRUE)) {
+progression_handler <- function(name, reporter = list(), handler = NULL, enable = interactive(), enable_after = 0.0, times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0), intrusiveness = 1.0, clear = getOption("progressr.clear", TRUE)) {
   if (!enable) times <- 0
   name <- as.character(name)
   stop_if_not(length(name) == 1L, !is.na(name), nzchar(name))
@@ -33,6 +36,8 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
 #  formals <- formals(handler)
 #  stop_if_not(length(formals) == 1L)
   stop_if_not(is.list(reporter))
+  stop_if_not(is.numeric(enable_after), length(enable_after),
+              !is.na(enable_after), enable_after >= 0)
   stop_if_not(length(times) == 1L, is.numeric(times), !is.na(name),
               times >= 0)
   stop_if_not(length(interval) == 1L, is.numeric(interval),
@@ -56,14 +61,22 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
   milestones <- NULL
   prev_milestone <- NULL
   finished <- FALSE
+  enabled <- FALSE
   
   reporter_args <- function(message, progression) {
+    if (!enabled) {
+      dt <- difftime(Sys.time(), timestamps[1L], units = "secs")
+      enabled <<- (dt >= enable_after)
+    }
+    
     args <- list(
       max_steps = max_steps,
       step = step,
       message = message,
       timestamps = timestamps,
       delta = step - prev_milestone,
+      enable_after = enable_after,
+      enabled = enabled,
       clear = clear,
       progression = progression
     )
