@@ -289,7 +289,7 @@ progress_handler <- function(format = "[:bar] :percent :message", show_after = 0
       },
         
       finish = function(config, state, progression, ...) {
-        update(config = config, state = state, progression = progression, ...)
+        reporter$update(config = config, state = state, progression = progression, ...)
         if (config$clear) pb$update(1.0)
       }
     )
@@ -431,4 +431,30 @@ debug_handler <- function(intrusiveness = getOption("progressr.intrusiveness.deb
   })
   
   progression_handler("debug", reporter, intrusiveness = intrusiveness, ...)
+}
+
+
+
+#' Textual Progression Feedback that outputs a Newline
+#'
+#' @inheritParams progression_handler
+#'
+#' @param symbol (character string) The character symbol to be outputted,
+#' which by default is the ASCII NL character (`'\n'` = `'\013'`) character.
+#'
+#' @param file (connection) A [base::connection] to where output should be sent.
+#'
+#' @param \ldots Additional arguments passed to [progression_handler()].
+#'
+#' @export
+newline_handler <- function(symbol = "\n", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.debug", 0), ...) {
+  reporter <- local({
+    list(
+      initiate = function(...) cat(file = file, symbol),
+      update   = function(...) cat(file = file, symbol),
+      finish   = function(...) cat(file = file, symbol)
+    )
+  })
+  
+  progression_handler("newline", reporter, intrusiveness = intrusiveness, ...)
 }

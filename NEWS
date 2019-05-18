@@ -24,6 +24,8 @@ NEW FEATURES:
    
  * Add debug_handler for prototyping and debugging purposes.
 
+ * Add newline_handler to add newlines between output of multiple handlers.
+
  * Argument 'intrusiveness' may now be zero. Previously it had to be
    a strictly positive value.
 
