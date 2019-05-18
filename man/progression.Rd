@@ -5,9 +5,9 @@
 \title{A Progression Condition}
 \usage{
 progression(amount = 1, message = character(0L), step = NULL,
-  time = Sys.time(), ..., type = c("update", "initiate", "finish"),
-  class = NULL, progressor_uuid = NULL, progression_index = NULL,
-  call = NULL, owner_session_uuid = NULL)
+  time = Sys.time(), ..., type = "update", class = NULL,
+  progressor_uuid = NULL, progression_index = NULL, call = NULL,
+  owner_session_uuid = NULL)
 }
 \arguments{
 \item{amount}{(numeric) The total amount of progress made.}

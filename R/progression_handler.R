@@ -103,7 +103,6 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
       mprintf("finish_reporter() ...")
       mstr(args)
     }
-    stop_if_not(!is.null(step), length(milestones) == 0L)
     do.call(reporter$finish, args = args)
     finished <<- TRUE
     if (debug) mprintf("finish_reporter() ... done")
@@ -138,7 +137,12 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
   if (is.null(handler)) {
     handler <- function(p) {
       stopifnot(inherits(p, "progression"))
-      
+
+      if (inherits(p, "control_progression") && p$type == "shutdown") {
+        finish_reporter(p)
+	return(invisible())
+      }
+
       ## Ignore stray progressions coming from other sources, e.g.
       ## a function of a package that started to report on progression.
       if (!is_owner(p)) return(FALSE)

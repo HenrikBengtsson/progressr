@@ -5,6 +5,10 @@ Version: 0.0.2-9000 [2019-05-17]
 
 NEW FEATURES:
 
+ * Now with_progress(..., cleanup = TRUE) will signal a generic "shutdown"
+   progression at the end that will trigger all progression handlers to
+   finish up regardless of all steps have been take or not.
+
  * Now progressions originating from an unknown source are ignored.
  
  * The default output format of the progress::progress_bar() progression

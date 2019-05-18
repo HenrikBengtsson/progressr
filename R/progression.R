@@ -32,11 +32,11 @@
 #' To create and signal a progression condition at once, use [progress()].
 #'
 #' @export
-progression <- function(amount = 1.0, message = character(0L), step = NULL, time = Sys.time(), ..., type = c("update", "initiate", "finish"), class = NULL, progressor_uuid = NULL, progression_index = NULL, call = NULL, owner_session_uuid = NULL) {
+progression <- function(amount = 1.0, message = character(0L), step = NULL, time = Sys.time(), ..., type = "update", class = NULL, progressor_uuid = NULL, progression_index = NULL, call = NULL, owner_session_uuid = NULL) {
   message <- as.character(message)
   amount <- as.numeric(amount)
   time <- as.POSIXct(time)
-  type <- match.arg(type, choices = c("update", "initiate", "finish"))
+  stop_if_not(is.character(type), length(type) == 1L, !is.na(type))
   class <- as.character(class)
   args <- list(...)
   nargs <- length(args)

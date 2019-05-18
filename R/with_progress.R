@@ -5,10 +5,18 @@
 #' @param handlers A progression handler or a list of them.
 #' If @NULL or an empty list, progress updates are ignored.
 #'
+#' @param cleanup If TRUE, all progression handlers will be shutdown
+#' at the end regardless of the progression is complete or not.
+#'
 #' @example incl/with_progress.R
 #'
 #' @export
-with_progress <- function(expr, handlers = getOption("progressr.handlers", txtprogressbar_handler())) {
+with_progress <- function(expr, handlers = getOption("progressr.handlers", txtprogressbar_handler()), cleanup = TRUE) {
+  stop_if_not(is.logical(cleanup), length(cleanup) == 1L, !is.na(cleanup))
+  
+  ## FIXME: With zero handlers, progression conditions will be
+  ##        passed on upstream just as without with_progress().
+  ##        Is that what we want? /HB 2019-05-17
   if (length(handlers) == 0L) return(expr)
   if (!is.list(handlers)) handlers <- list(handlers)
   
@@ -32,6 +40,19 @@ with_progress <- function(expr, handlers = getOption("progressr.handlers", txtpr
   } else {
     handler <- handlers[[1]]
   }
-  
+
+  ## Tell all progression handlers to shutdown at the end
+  if (cleanup) {
+    on.exit(withCallingHandlers({
+      signalCondition(control_progression("shutdown"))
+    }, progression = handler))
+  }
+
   withCallingHandlers(expr, progression = handler)
+}
+
+
+
+control_progression <- function(type = "shutdown", ...) {
+  progression(type = type, ..., class = "control_progression")  
 }
