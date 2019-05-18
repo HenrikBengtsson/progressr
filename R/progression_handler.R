@@ -64,7 +64,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
   enabled <- FALSE
   
   reporter_args <- function(message, progression) {
-    if (!enabled) {
+    if (!enabled && !is.null(timestamps)) {
       dt <- difftime(Sys.time(), timestamps[1L], units = "secs")
       enabled <<- (dt >= enable_after)
     }
