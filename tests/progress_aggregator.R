@@ -1,5 +1,6 @@
 library(progressr)
 
+options(progressr.enable = TRUE)
 options(delay = 0.0)
 
 message("progress_aggregator() ...")
@@ -54,7 +55,6 @@ with_progress({
     c <- slow_sum(-x)
   })
 })
-
 
 
 message("progress_aggregator() ... done")
