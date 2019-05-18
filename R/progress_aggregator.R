@@ -19,6 +19,7 @@ progress_aggregator <- function(progress) {
     debug <- getOption("progressr.debug", FALSE)
     if (debug) {
       mprintf("Progression handler %s ...", sQuote(type))
+      on.exit(mprintf("Progression handler %s ... done", sQuote(type)))
       mprintf("- progression:")
       mstr(p)
       mprintf("- progressor_uuid: %s", p$progressor_uuid)
@@ -35,7 +36,6 @@ progress_aggregator <- function(progress) {
     
     ## Prevent upstream calling handlers to receive progression 'p'
     invokeRestart("muffleProgression")
-    if (debug) mprintf("Progression handler %s ... done", sQuote(type))
   }
 
   handler <- progression_handler("progress_aggregator", handler = handler)
