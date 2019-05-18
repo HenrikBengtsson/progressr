@@ -83,6 +83,8 @@ txtprogressbar_handler <- function(style = 3L, file = stderr(), intrusiveness = 
       },
         
       finish = function(config, state, progression, ...) {
+        ## Already finished?
+        if (is.null(pb)) return()
         if (!state$enabled) return()
         if (config$clear) {
           eraseTxtProgressBar(pb)
@@ -98,6 +100,7 @@ txtprogressbar_handler <- function(style = 3L, file = stderr(), intrusiveness = 
           setTxtProgressBar(pb, value = config$max_steps)
         }
         close(pb)
+	pb <<- NULL
       }
     )
   })
@@ -155,9 +158,12 @@ tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusive
       },
         
       finish = function(config, state, progression, ...) {
+        ## Already finished?
+        if (is.null(pb)) return()
         if (!state$enabled) return()
         if (config$clear) {
           close(pb)
+          pb <<- NULL
         } else {
           setTkProgressBar(pb, value = state$step, label = state$message)
         }
@@ -216,9 +222,12 @@ winprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiv
       },
         
       finish = function(config, state, progression, ...) {
+        ## Already finished?
+        if (is.null(pb)) return()
         if (!state$enabled) return()
         if (config$clear) {
           close(pb)
+          pb <<- NULL
         } else {
           setWinProgressBar(pb, value = state$step, label = state$message)
         }
@@ -250,8 +259,7 @@ winprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiv
 #' @importFrom utils file_test flush.console
 #' @export
 pbmcapply_handler <- function(substyle = 3L, style = "ETA", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...) {
-  reporter <- local({
-    ## Import functions
+  if (!is_fake("pbmcapply_handler")) {
     progressBar <- pbmcapply::progressBar
     setTxtProgressBar <- utils::setTxtProgressBar
     eraseTxtProgressBar <- function(pb) {
@@ -272,9 +280,17 @@ pbmcapply_handler <- function(substyle = 3L, style = "ETA", file = stderr(), int
         flush.console()
       })
     }
+  } else {
+    progressBar <- function(..., style, substyle) utils::txtProgressBar(..., style = substyle)
+    setTxtProgressBar <- function(...) NULL
+    eraseTxtProgressBar <- function(pb) NULL
+  }
+  
+  reporter <- local({
+    ## Import functions
 
     pb <- NULL
-
+    
     make_pb <- function(...) {
       if (!is.null(pb)) return(pb)
       pb <<- progressBar(...)
@@ -294,6 +310,8 @@ pbmcapply_handler <- function(substyle = 3L, style = "ETA", file = stderr(), int
       },
         
       finish = function(config, state, progression, ...) {
+        ## Already finished?
+        if (is.null(pb)) return()
         if (!state$enabled) return()
         if (config$clear) {
           eraseTxtProgressBar(pb)
@@ -309,6 +327,7 @@ pbmcapply_handler <- function(substyle = 3L, style = "ETA", file = stderr(), int
           setTxtProgressBar(pb, value = state$step)
         }
         close(pb)
+	pb <<- NULL
       }
     )
   })
@@ -335,10 +354,19 @@ pbmcapply_handler <- function(substyle = 3L, style = "ETA", file = stderr(), int
 #'
 #' @export
 progress_handler <- function(format = "[:bar] :percent :message", show_after = 0.0, intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...) {
-  reporter <- local({
-    ## Import functions
+  if (!is_fake("progress_handler")) {
     progress_bar <- progress::progress_bar
-
+  } else {
+    progress_bar <- list(
+      new = function(...) list(
+        finished = FALSE,
+        tick = function(...) NULL,
+        update = function(...) NULL
+      )
+    )
+  }
+  
+  reporter <- local({
     pb <- NULL
     
     list(
@@ -389,15 +417,17 @@ beepr_handler <- function(initiate = 2L, update = 10L,  finish = 11L, intrusiven
   ## Used for package testing purposes only when we want to perform
   ## everything except the last part where the backend is called
   if (!is_fake("beepr_handler")) {
-    beep <- function(sound) {
-      ## Silence?
-      if (is.na(sound)) return()
-      beepr::beep(sound)
-    }
+    beepr_beep <- beepr::beep
   } else {
-    beep <- function(sound) NULL
+    beepr_beep <- function(sound, expr) NULL
   }
-  
+
+  beep <- function(sound) {
+    ## Silence?
+    if (is.na(sound)) return()
+    beepr_beep(sound)
+  }
+
   ## Reporter state
   reporter <- local({
     list(
@@ -438,21 +468,23 @@ notifier_handler <- function(intrusiveness = getOption("progressr.intrusiveness.
   ## Used for package testing purposes only when we want to perform
   ## everything except the last part where the backend is called
   if (!is_fake("notifier_handler")) {
-    notify_ideally <- function(step, max_steps, message, p) {
-      msg <- paste(c("", message), collapse = "")
-      ratio <- if (step == 0L) "STARTED" else if (step == max_steps) "DONE" else sprintf("%.0f%%", 100*step/max_steps)
-      notifier::notify(sprintf("[%s] %s (at %s)", ratio, msg, p$time))
-    }
-
-    notify <- function(step, max_steps, message) {
-      msg <- paste(c("", message), collapse = "")
-      ratio <- if (step == 0L) "STARTED" else if (step == max_steps) "DONE" else sprintf("%.1f%%", 100*step/max_steps)
-      notifier::notify(sprintf("[%s] %s (%d/%d)", ratio, msg, step, max_steps))
-    }
+    notifier_notify <- function(...) notifier::notify(...)
   } else {
-    notify <- function(step, max_steps, message) NULL
+    notifier_notify <- function(...) NULL
   }
-  
+
+  notify_ideally <- function(step, max_steps, message, p) {
+    msg <- paste(c("", message), collapse = "")
+    ratio <- if (step == 0L) "STARTED" else if (step == max_steps) "DONE" else sprintf("%.0f%%", 100*step/max_steps)
+    notifier_notify(sprintf("[%s] %s (at %s)", ratio, msg, p$time))
+  }
+
+  notify <- function(step, max_steps, message) {
+    msg <- paste(c("", message), collapse = "")
+    ratio <- if (step == 0L) "STARTED" else if (step == max_steps) "DONE" else sprintf("%.1f%%", 100*step/max_steps)
+    notifier_notify(sprintf("[%s] %s (%d/%d)", ratio, msg, step, max_steps))
+  }
+
   reporter <- local({
     list(
       initiate = function(config, state, progression, ...) {
@@ -544,4 +576,3 @@ newline_handler <- function(symbol = "\n", file = stderr(), intrusiveness = getO
   
   progression_handler("newline", reporter, intrusiveness = intrusiveness, ...)
 }
-

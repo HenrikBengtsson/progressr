@@ -1,6 +1,6 @@
 library(progressr)
 
-options(progressr.tests.fake_handlers = c("beepr_handler", "notifier_handler", "tkprogressbar_handler", "winprogressbar_handler"))
+options(progressr.tests.fake_handlers = c("beepr_handler", "notifier_handler", "pbmcapply_handler", "tkprogressbar_handler", "winprogressbar_handler"))
 options(progressr.enable = TRUE)
 
 options(delay = 0.001)
@@ -31,7 +31,7 @@ message("with_progress() - utils::txtProgressBar() ...")
 if (requireNamespace("utils")) {
   with_progress({
     sum <- slow_sum(x)
-  }, txtprogressbar_handler)
+  }, txtprogressbar_handler(style = 2L))
   print(sum)
   stopifnot(sum == truth)
 }
@@ -71,7 +71,16 @@ if (requireNamespace("progress")) {
 message("with_progress() - progress::progress_bar() ... done")
 
 
-message("with_progress() - alert ...")
+message("with_progress() - pbmcapply::progressBar() ...")
+
+with_progress({
+  sum <- slow_sum(x)
+}, pbmcapply_handler)
+
+message("with_progress() - pbmcapply::progressBar() ... done")
+
+
+message("with_progress() - ascii_alert ...")
 
 with_progress({
   sum <- slow_sum(x)
@@ -79,7 +88,7 @@ with_progress({
 print(sum)
 stopifnot(sum == truth)
 
-message("with_progress() - alert ... done")
+message("with_progress() - ascii_alert ... done")
 
 
 message("with_progress() - beepr::beep() ...")
