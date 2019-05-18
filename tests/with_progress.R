@@ -1,9 +1,9 @@
 library(progressr)
 
-options(delay = 0.01)
+options(delay = 0.001)
 
 options(progressr.times = +Inf)
-options(progressr.interval = 0.2)
+options(progressr.interval = 0)
 options(progressr.clear = FALSE)
 
 message("with_progress() ...")
@@ -49,7 +49,7 @@ message("with_progress() - tcltk::tkProgressBar() ... done")
 
 message("with_progress() - progress::progress_bar() ...")
 
-if (requireNamespace("progress")) {
+if (FALSE && requireNamespace("progress")) {
   ## Display progress using default handler
   with_progress({
     sum <- slow_sum(x)
@@ -108,7 +108,38 @@ with_progress({
 print(sum)
 stopifnot(sum == truth)
 
+message(" - via option")
+
+## NOTE: Set it to NULL, will use the default utils::txtProgressBar()
+options(progressr.handlers = list())
+with_progress({
+  sum <- slow_sum(x)
+})
+print(sum)
+stopifnot(sum == truth)
+
 message("with_progress() - void ... done")
+
+
+message("with_progress() - multiple handlers ...")
+
+handlers <- list()
+if (requireNamespace("utils", quietly = TRUE)) {
+  handlers <- c(handlers, list(txtprogressbar_handler))
+} else {
+  handlers <- c(handlers, list(ascii_alert_handler))
+}
+handlers <- c(handlers, list(newline_handler, debug_handler))
+
+options(progressr.handlers = handlers)
+
+with_progress({
+  sum <- slow_sum(x)
+})
+print(sum)
+stopifnot(sum == truth)
+
+message("with_progress() - multiple handlers ... done")
 
 
 message("with_progress() ... done")
