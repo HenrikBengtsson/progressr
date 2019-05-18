@@ -20,6 +20,8 @@ SOFTWARE QUALITY:
 
 BUG FIXES:
 
+ * Precreated progression handlers could only be used once.
+
  * with_progress(..., cleanup = TRUE) requires a withRestart() such that also
    "shutdown" progressions can be muffled.
  

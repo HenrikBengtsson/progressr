@@ -52,6 +52,13 @@ with_progress <- function(expr, handlers = getOption("progressr.handlers", txtpr
     }, progression = handler))
   }
 
+  ## Reset all handlers up start
+  withCallingHandlers({
+    withRestarts({
+      signalCondition(control_progression("reset"))
+    }, muffleProgression = function(p) NULL)
+  }, progression = handler)
+
   withCallingHandlers(expr, progression = handler)
 
   invisible(NULL)

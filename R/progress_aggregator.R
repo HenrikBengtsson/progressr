@@ -27,6 +27,7 @@ progress_aggregator <- function(progress) {
     }
     if (type == "initiate") {
     } else if (type == "finish") {
+    } else if (type == "reset") {
     } else if (type == "shutdown") {
     } else if (type == "update") {
       progress(child = p)

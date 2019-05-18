@@ -71,6 +71,10 @@ txtprogressbar_handler <- function(style = 3L, file = stderr(), intrusiveness = 
     }
 
     list(
+      reset = function(...) {
+        pb <<- NULL
+      },
+      
       initiate = function(config, state, progression, ...) {
         if (!state$enabled) return()
         make_pb(max = config$max_steps, style = style, file = file)
@@ -146,6 +150,10 @@ tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusive
     }
 
     list(
+      reset = function(...) {
+        pb <<- NULL
+      },
+      
       initiate = function(config, state, progression, ...) {
         if (!state$enabled) return()
         make_pb(max = config$max_steps, label = state$message)
@@ -210,6 +218,10 @@ winprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiv
     }
 
     list(
+      reset = function(...) {
+        pb <<- NULL
+      },
+      
       initiate = function(config, state, progression, ...) {
         if (!state$enabled) return()
         make_pb(max = config$max_steps, label = state$message)
@@ -298,6 +310,10 @@ pbmcapply_handler <- function(substyle = 3L, style = "ETA", file = stderr(), int
     }
 
     list(
+      reset = function(...) {
+        pb <<- NULL
+      },
+      
       initiate = function(config, state, progression, ...) {
         if (!state$enabled) return()
         make_pb(max = config$max_steps, style = style, substyle = substyle, file = file)
@@ -370,6 +386,10 @@ progress_handler <- function(format = "[:bar] :percent :message", show_after = 0
     pb <- NULL
     
     list(
+      reset = function(...) {
+        pb <<- NULL
+      },
+      
       initiate = function(config, state, progression, ...) {
         pb <<- progress_bar$new(format = format,
                                 total = config$max_steps,
@@ -522,6 +542,7 @@ notifier_handler <- function(intrusiveness = getOption("progressr.intrusiveness.
 debug_handler <- function(intrusiveness = getOption("progressr.intrusiveness.debug", 0), ...) {
   reporter <- local({
     t_init <- NULL
+    
     add_to_log <- function(config, state, progression, ...) {
       t <- Sys.time()
       if (is.null(t_init)) t_init <<- t
@@ -534,6 +555,10 @@ debug_handler <- function(intrusiveness = getOption("progressr.intrusiveness.deb
     }
 
     list(
+      reset = function(...) {
+        t_init <<- NULL
+      },
+      
       initiate = function(...) {
         add_to_log("initiate", ...)
       },
