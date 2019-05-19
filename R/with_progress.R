@@ -43,13 +43,20 @@ with_progress <- function(expr, handlers = getOption("progressr.handlers", txtpr
     handler <- handlers[[1]]
   }
 
-  ## Tell all progression handlers to shutdown at the end
+  ## Flag indicating whether with_progress() exited due to
+  ## an error or not.
+  status <- "incomplete"
+
+  ## Tell all progression handlers to shutdown at the end and
+  ## the status of the evaluation.
   if (cleanup) {
-    on.exit(withCallingHandlers({
-      withRestarts({
-        signalCondition(control_progression("shutdown"))
-      }, muffleProgression = function(p) NULL)
-    }, progression = handler))
+    on.exit({
+      withCallingHandlers({
+        withRestarts({
+          signalCondition(control_progression("shutdown", status = status))
+        }, muffleProgression = function(p) NULL)
+      }, progression = handler)
+    })
   }
 
   ## Reset all handlers up start
@@ -59,8 +66,12 @@ with_progress <- function(expr, handlers = getOption("progressr.handlers", txtpr
     }, muffleProgression = function(p) NULL)
   }, progression = handler)
 
+  ## Evaluate expression
   withCallingHandlers(expr, progression = handler)
 
+  ## Success
+  status <- "ok"
+  
   invisible(NULL)
 }
 
