@@ -3,7 +3,10 @@ Package: progressr
 
 Version: 0.0.4-9000 [2019-05-18]
 
- * ...
+NEW FEATURES:
+
+ * Add support for times = 1L for progression handlers which when used will
+   cause the progression to only be presented upon completion (= last step).
  
 
 Version: 0.0.4 [2019-05-18]

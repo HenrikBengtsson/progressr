@@ -75,6 +75,8 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
 
     config <- list(
       max_steps = max_steps,
+      times = times,
+      interval = interval,
       enable_after = enable_after,
       clear = clear
     )
@@ -221,10 +223,15 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
         if (debug) mstr(list(auto_finish = auto_finish, times = times, interval = interval, intrusiveness = intrusiveness))
         
         ## Adjust 'times' and 'interval' according to 'intrusiveness'
-        times <- max(min(times / intrusiveness, max_steps), 2L)
+        times <- min(times / intrusiveness, max_steps)
+        times <- max(times, 1L)
         interval <- interval * intrusiveness
-        
-        milestones <<- seq(from = 1L, to = max_steps, length.out = times)
+
+        milestones <<- if (times == 1L) {
+	  max_steps
+	} else {
+	  seq(from = 1L, to = max_steps, length.out = times)
+	}
         timestamps <<- rep(as.POSIXct(NA), times = max_steps)
         timestamps[1] <<- Sys.time()
         step <<- 0L

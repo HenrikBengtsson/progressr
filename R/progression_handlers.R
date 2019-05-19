@@ -76,7 +76,7 @@ txtprogressbar_handler <- function(style = 3L, file = stderr(), intrusiveness = 
       },
       
       initiate = function(config, state, progression, ...) {
-        if (!state$enabled) return()
+        if (!state$enabled || config$times == 1L) return()
         make_pb(max = config$max_steps, style = style, file = file)
       },
         
@@ -155,7 +155,7 @@ tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusive
       },
       
       initiate = function(config, state, progression, ...) {
-        if (!state$enabled) return()
+        if (!state$enabled || config$times == 1L) return()
         make_pb(max = config$max_steps, label = state$message)
       },
         
@@ -223,7 +223,7 @@ winprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiv
       },
       
       initiate = function(config, state, progression, ...) {
-        if (!state$enabled) return()
+        if (!state$enabled || config$times == 1L) return()
         make_pb(max = config$max_steps, label = state$message)
       },
         
@@ -315,7 +315,7 @@ pbmcapply_handler <- function(substyle = 3L, style = "ETA", file = stderr(), int
       },
       
       initiate = function(config, state, progression, ...) {
-        if (!state$enabled) return()
+        if (!state$enabled || config$times == 1L) return()
         make_pb(max = config$max_steps, style = style, substyle = substyle, file = file)
       },
         
@@ -384,23 +384,30 @@ progress_handler <- function(format = "[:bar] :percent :message", show_after = 0
   
   reporter <- local({
     pb <- NULL
-    
+
+    make_pb <- function(...) {
+      if (!is.null(pb)) return(pb)
+      pb <<- progress_bar$new(...)
+      pb
+    }
+
     list(
       reset = function(...) {
         pb <<- NULL
       },
       
       initiate = function(config, state, progression, ...) {
-        pb <<- progress_bar$new(format = format,
-                                total = config$max_steps,
-                                clear = config$clear,
-				show_after = config$enable_after)
+        if (!state$enabled || config$times == 1L) return()
+        make_pb(format = format, total = config$max_steps,
+                clear = config$clear, show_after = config$enable_after)
         tokens <- list(message = paste0(state$message, ""))
         pb$tick(0, tokens = tokens)
       },
         
       update = function(config, state, progression, ...) {
         if (state$delta >= 0) {
+          make_pb(format = format, total = config$max_steps,
+                  clear = config$clear, show_after = config$enable_after)
           tokens <- list(message = paste0(state$message, ""))
           pb$tick(state$delta, tokens = tokens)
         }
@@ -408,6 +415,8 @@ progress_handler <- function(format = "[:bar] :percent :message", show_after = 0
         
       finish = function(config, state, progression, ...) {
         if (pb$finished) return()
+        make_pb(format = format, total = config$max_steps,
+                clear = config$clear, show_after = config$enable_after)
         reporter$update(config = config, state = state, progression = progression, ...)
         if (config$clear) pb$update(1.0)
       }
@@ -452,7 +461,7 @@ beepr_handler <- function(initiate = 2L, update = 10L,  finish = 11L, intrusiven
   reporter <- local({
     list(
       initiate = function(config, state, progression, ...) {
-        if (!state$enabled) return()
+        if (!state$enabled || config$times == 1L) return()
 	beep(initiate)
       },
         
@@ -506,20 +515,28 @@ notifier_handler <- function(intrusiveness = getOption("progressr.intrusiveness.
   }
 
   reporter <- local({
+    finished <- FALSE
+    
     list(
+      reset = function(...) {
+        finished <<- FALSE
+      },
+      
       initiate = function(config, state, progression, ...) {
-        if (!state$enabled) return()
+        if (!state$enabled || config$times == 1L) return()
         notify(step = state$step, max_steps = config$max_steps, message = state$message)
       },
         
       update = function(config, state, progression, ...) {
-        if (!state$enabled) return()
+        if (!state$enabled || config$times == 1L) return()
         notify(step = state$step, max_steps = config$max_steps, message = state$message)
       },
         
       finish = function(config, state, progression, ...) {
+        if (finished) return()
         if (!state$enabled) return()
         notify(step = state$step, max_steps = config$max_steps, message = state$message)
+	finished <<- TRUE
       }
     )
   })
