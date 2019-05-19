@@ -81,7 +81,7 @@ txtprogressbar_handler <- function(style = 3L, file = stderr(), intrusiveness = 
       },
         
       update = function(config, state, progression, ...) {
-        if (!state$enabled) return()
+        if (!state$enabled || config$times == 1L) return()
 	make_pb(max = config$max_steps, style = style, file = file)
         setTxtProgressBar(pb, value = state$step)
       },
@@ -160,7 +160,7 @@ tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusive
       },
         
       update = function(config, state, progression, ...) {
-        if (!state$enabled) return()
+        if (!state$enabled || config$times <= 2L) return()
         make_pb(max = config$max_steps, label = progression$message)
         setTkProgressBar(pb, value = state$step, label = progression$message)
       },
@@ -228,7 +228,7 @@ winprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiv
       },
         
       update = function(config, state, progression, ...) {
-        if (!state$enabled) return()
+        if (!state$enabled || config$times <= 2L) return()
         make_pb(max = config$max_steps, label = progression$message)
         setWinProgressBar(pb, value = state$step, label = progression$message)
       },
@@ -320,7 +320,7 @@ pbmcapply_handler <- function(substyle = 3L, style = "ETA", file = stderr(), int
       },
         
       update = function(config, state, progression, ...) {
-        if (!state$enabled) return()
+        if (!state$enabled || config$times <= 2L) return()
         make_pb(max = config$max_steps, style = style, substyle = substyle, file = file)
         setTxtProgressBar(pb, value = state$step)
       },
@@ -405,6 +405,7 @@ progress_handler <- function(format = "[:bar] :percent :message", show_after = 0
       },
         
       update = function(config, state, progression, ...) {
+        if (!state$enabled || config$times <= 2L) return()
         if (state$delta >= 0) {
           make_pb(format = format, total = config$max_steps,
                   clear = config$clear, show_after = config$enable_after)
@@ -466,7 +467,7 @@ beepr_handler <- function(initiate = 2L, update = 10L,  finish = 11L, intrusiven
       },
         
       update = function(config, state, progression, ...) {
-        if (!state$enabled) return()
+        if (!state$enabled || config$times <= 2L) return()
         beep(update)
       },
         
@@ -528,7 +529,7 @@ notifier_handler <- function(intrusiveness = getOption("progressr.intrusiveness.
       },
         
       update = function(config, state, progression, ...) {
-        if (!state$enabled || config$times == 1L) return()
+        if (!state$enabled || config$times <= 2L) return()
         notify(step = state$step, max_steps = config$max_steps, message = progression$message)
       },
         
