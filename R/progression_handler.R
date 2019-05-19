@@ -78,6 +78,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
       times = times,
       interval = interval,
       enable_after = enable_after,
+      auto_finish = auto_finish,
       clear = clear
     )
 

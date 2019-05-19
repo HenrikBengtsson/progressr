@@ -503,16 +503,10 @@ notifier_handler <- function(intrusiveness = getOption("progressr.intrusiveness.
     notifier_notify <- function(...) NULL
   }
 
-  notify_ideally <- function(step, max_steps, message, p) {
-    msg <- paste(c("", message), collapse = "")
-    ratio <- if (step == 0L) "STARTED" else if (step == max_steps) "DONE" else sprintf("%.0f%%", 100*step/max_steps)
-    notifier_notify(sprintf("[%s] %s (at %s)", ratio, msg, p$time))
-  }
-
   notify <- function(step, max_steps, message) {
+    ratio <- sprintf("%.0f%%", 100*step/max_steps)
     msg <- paste(c("", message), collapse = "")
-    ratio <- if (step == 0L) "STARTED" else if (step == max_steps) "DONE" else sprintf("%.1f%%", 100*step/max_steps)
-    notifier_notify(sprintf("[%s] %s (%d/%d)", ratio, msg, step, max_steps))
+    notifier_notify(sprintf("[%s] %s", ratio, msg))
   }
 
   reporter <- local({
@@ -536,7 +530,7 @@ notifier_handler <- function(intrusiveness = getOption("progressr.intrusiveness.
       finish = function(config, state, progression, ...) {
         if (finished) return()
         if (!state$enabled) return()
-        notify(step = state$step, max_steps = config$max_steps, message = progression$message)
+        if (state$delta > 0) notify(step = state$step, max_steps = config$max_steps, message = progression$message)
 	finished <<- TRUE
       }
     )
