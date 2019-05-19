@@ -67,7 +67,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
   owner <- NULL
   done <- list()
   
-  reporter_args <- function(message, progression) {
+  reporter_args <- function(progression) {
     if (!enabled && !is.null(timestamps)) {
       dt <- difftime(Sys.time(), timestamps[1L], units = "secs")
       enabled <<- (dt >= enable_after)
@@ -83,7 +83,6 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
 
     state <- list(
       step = step,
-      message = message,
       timestamps = timestamps,
       delta = step - prev_milestone,
       enabled = enabled
@@ -98,7 +97,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
   }
 
   reset_reporter <- function(p) {
-    args <- reporter_args(message = p$message, progression = p)
+    args <- reporter_args(progression = p)
     debug <- getOption("progressr.debug", FALSE)
     if (debug) {
       mprintf("reset_reporter() ...")
@@ -109,7 +108,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
   }
 
   initiate_reporter <- function(p) {
-    args <- reporter_args(message = p$message, progression = p)
+    args <- reporter_args(progression = p)
     debug <- getOption("progressr.debug", FALSE)
     if (debug) {
       mprintf("initiate_reporter() ...")
@@ -122,7 +121,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
   }
 
   update_reporter <- function(p) {
-    args <- reporter_args(message = p$message, progression = p)
+    args <- reporter_args(progression = p)
     debug <- getOption("progressr.debug", FALSE)
     if (debug) {
       mprintf("update_reporter() ...")
@@ -134,7 +133,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
   }
 
   finish_reporter <- function(p) {
-    args <- reporter_args(message = p$message, progression = p)
+    args <- reporter_args(progression = p)
     debug <- getOption("progressr.debug", FALSE)
     if (debug) {
       mprintf("finish_reporter() ...")
