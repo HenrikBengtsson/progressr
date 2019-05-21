@@ -63,3 +63,24 @@ progression <- function(amount = 1.0, message = character(0L), step = NULL, time
     class = c(class, "progression", "instant_relay_condition", "condition")
   )
 }
+
+
+
+#' @export
+print.progression <- function(x, ...) {
+  s <- sprintf("%s:", class(x)[1])
+  s <- c(s, paste("- call:", deparse(conditionCall(x))))
+  s <- c(s, paste("- message:", sQuote(conditionMessage(x))))
+  s <- c(s, paste("- type:", x$type))
+  s <- c(s, paste("- amount:", x$amount))
+  s <- c(s, paste("- step:", x$step))
+  s <- c(s, paste("- time:", x$time))
+  s <- c(s, paste("- progressor_uuid:", x$progressor_uuid))
+  s <- c(s, paste("- progression_index:", x$progression_index))
+  s <- c(s, paste("- session_uuid:", x$session_uuid))
+  s <- c(s, paste("- owner_session_uuid:", x$owner_session_uuid))
+  s <- paste(s, collapse = "\n")
+  cat(s, "\n", sep = "")
+  
+  invisible(x)
+}
