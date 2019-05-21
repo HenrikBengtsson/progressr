@@ -1,6 +1,21 @@
 Package: progressr
 ==================
 
+Version: 0.0.5 [2019-05-20]
+
+NEW FEATURES:
+
+ * Add filesize_handler progression handler.
+ 
+ * Add support for times = 1L for progression handlers which when used will
+   cause the progression to only be presented upon completion (= last step).
+
+ * The 'shutdown' control_progression signalled by with_progress() on exit
+   now contains the 'status' of the evaluation.  If the evaluation was
+   successful, then status = "ok", otherwise "incomplete".  Examples
+   of incomplete evaluations are errors and interrupts.
+   
+
 Version: 0.0.4 [2019-05-18]
 
 NEW FEATURES:

@@ -28,7 +28,7 @@
 #' @return A function of class `progression_handler`.
 #'
 #' @export
-progression_handler <- function(name, reporter = list(), handler = NULL, enable = getOption("progressr.enable", interactive()), enable_after = getOption("progressr.enable_after", 0.0), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0), intrusiveness = 1.0, clear = getOption("progressr.clear", TRUE)) {
+progression_handler <- function(name, reporter = list(), handler = NULL, enable = getOption("progressr.enable", interactive()), enable_after = getOption("progressr.enable_after", 0.0), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0.5), intrusiveness = 1.0, clear = getOption("progressr.clear", TRUE)) {
   if (!enable) times <- 0
   name <- as.character(name)
   stop_if_not(length(name) == 1L, !is.na(name), nzchar(name))
@@ -67,7 +67,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
   owner <- NULL
   done <- list()
   
-  reporter_args <- function(message, progression) {
+  reporter_args <- function(progression) {
     if (!enabled && !is.null(timestamps)) {
       dt <- difftime(Sys.time(), timestamps[1L], units = "secs")
       enabled <<- (dt >= enable_after)
@@ -75,13 +75,15 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
 
     config <- list(
       max_steps = max_steps,
+      times = times,
+      interval = interval,
       enable_after = enable_after,
+      auto_finish = auto_finish,
       clear = clear
     )
 
     state <- list(
       step = step,
-      message = message,
       timestamps = timestamps,
       delta = step - prev_milestone,
       enabled = enabled
@@ -96,7 +98,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
   }
 
   reset_reporter <- function(p) {
-    args <- reporter_args(message = p$message, progression = p)
+    args <- reporter_args(progression = p)
     debug <- getOption("progressr.debug", FALSE)
     if (debug) {
       mprintf("reset_reporter() ...")
@@ -107,7 +109,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
   }
 
   initiate_reporter <- function(p) {
-    args <- reporter_args(message = p$message, progression = p)
+    args <- reporter_args(progression = p)
     debug <- getOption("progressr.debug", FALSE)
     if (debug) {
       mprintf("initiate_reporter() ...")
@@ -120,7 +122,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
   }
 
   update_reporter <- function(p) {
-    args <- reporter_args(message = p$message, progression = p)
+    args <- reporter_args(progression = p)
     debug <- getOption("progressr.debug", FALSE)
     if (debug) {
       mprintf("update_reporter() ...")
@@ -132,7 +134,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
   }
 
   finish_reporter <- function(p) {
-    args <- reporter_args(message = p$message, progression = p)
+    args <- reporter_args(progression = p)
     debug <- getOption("progressr.debug", FALSE)
     if (debug) {
       mprintf("finish_reporter() ...")
@@ -221,10 +223,15 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
         if (debug) mstr(list(auto_finish = auto_finish, times = times, interval = interval, intrusiveness = intrusiveness))
         
         ## Adjust 'times' and 'interval' according to 'intrusiveness'
-        times <- max(min(times / intrusiveness, max_steps), 2L)
+        times <- min(times / intrusiveness, max_steps)
+        times <- max(times, 1L)
         interval <- interval * intrusiveness
-        
-        milestones <<- seq(from = 1L, to = max_steps, length.out = times)
+
+        milestones <<- if (times == 1L) {
+	  max_steps
+	} else {
+	  seq(from = 1L, to = max_steps, length.out = times)
+	}
         timestamps <<- rep(as.POSIXct(NA), times = max_steps)
         timestamps[1] <<- Sys.time()
         step <<- 0L

@@ -8,7 +8,7 @@ progression_handler(name, reporter = list(), handler = NULL,
   enable = getOption("progressr.enable", interactive()),
   enable_after = getOption("progressr.enable_after", 0),
   times = getOption("progressr.times", +Inf),
-  interval = getOption("progressr.interval", 0), intrusiveness = 1,
+  interval = getOption("progressr.interval", 0.5), intrusiveness = 1,
   clear = getOption("progressr.clear", TRUE))
 }
 \arguments{
