@@ -40,3 +40,28 @@ progressor <- local({
     fcn
   }
 })
+
+
+
+#' @export
+print.progressor <- function(x, ...) {
+  s <- sprintf("%s:", class(x)[1])
+  e <- environment(x)
+  print(ls(e))
+  pe <- parent.env(e)
+
+  s <- c(s, paste("- label:", e$label))
+  s <- c(s, paste("- steps:", e$steps))
+  s <- c(s, paste("- initiate:", e$initiate))
+  s <- c(s, paste("- auto_finish:", e$auto_finish))
+
+  s <- c(s, paste("- progressor_uuid:", e$progressor_uuid))
+  s <- c(s, paste("- progressor_count:", pe$progressor_count))
+  s <- c(s, paste("- progression_index:", e$progression_index))
+  s <- c(s, paste("- owner_session_uuid:", e$owner_session_uuid))
+
+  s <- paste(s, collapse = "\n")
+  cat(s, "\n", sep = "")
+  
+  invisible(x)
+}
