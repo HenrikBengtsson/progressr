@@ -156,13 +156,13 @@ tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusive
       
       initiate = function(config, state, progression, ...) {
         if (!state$enabled || config$times == 1L) return()
-        make_pb(max = config$max_steps, label = progression$message)
+        make_pb(max = config$max_steps, label = conditionMessage(progression))
       },
         
       update = function(config, state, progression, ...) {
         if (!state$enabled || config$times <= 2L) return()
-        make_pb(max = config$max_steps, label = progression$message)
-        setTkProgressBar(pb, value = state$step, label = progression$message)
+        make_pb(max = config$max_steps, label = conditionMessage(progression))
+        setTkProgressBar(pb, value = state$step, label = conditionMessage(progression))
       },
         
       finish = function(config, state, progression, ...) {
@@ -173,7 +173,7 @@ tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusive
           close(pb)
           pb <<- NULL
         } else {
-          setTkProgressBar(pb, value = state$step, label = progression$message)
+          setTkProgressBar(pb, value = state$step, label = conditionMessage(progression))
         }
       }
     )
@@ -224,13 +224,13 @@ winprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiv
       
       initiate = function(config, state, progression, ...) {
         if (!state$enabled || config$times == 1L) return()
-        make_pb(max = config$max_steps, label = progression$message)
+        make_pb(max = config$max_steps, label = conditionMessage(progression))
       },
         
       update = function(config, state, progression, ...) {
         if (!state$enabled || config$times <= 2L) return()
-        make_pb(max = config$max_steps, label = progression$message)
-        setWinProgressBar(pb, value = state$step, label = progression$message)
+        make_pb(max = config$max_steps, label = conditionMessage(progression))
+        setWinProgressBar(pb, value = state$step, label = conditionMessage(progression))
       },
         
       finish = function(config, state, progression, ...) {
@@ -241,7 +241,7 @@ winprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiv
           close(pb)
           pb <<- NULL
         } else {
-          setWinProgressBar(pb, value = state$step, label = progression$message)
+          setWinProgressBar(pb, value = state$step, label = conditionMessage(progression))
         }
       }
     )
@@ -400,7 +400,7 @@ progress_handler <- function(format = "[:bar] :percent :message", show_after = 0
         if (!state$enabled || config$times == 1L) return()
         make_pb(format = format, total = config$max_steps,
                 clear = config$clear, show_after = config$enable_after)
-        tokens <- list(message = paste0(progression$message, ""))
+        tokens <- list(message = paste0(conditionMessage(progression), ""))
         pb$tick(0, tokens = tokens)
       },
         
@@ -409,7 +409,7 @@ progress_handler <- function(format = "[:bar] :percent :message", show_after = 0
         if (state$delta >= 0) {
           make_pb(format = format, total = config$max_steps,
                   clear = config$clear, show_after = config$enable_after)
-          tokens <- list(message = paste0(progression$message, ""))
+          tokens <- list(message = paste0(conditionMessage(progression), ""))
           pb$tick(state$delta, tokens = tokens)
         }
       },
@@ -519,18 +519,18 @@ notifier_handler <- function(intrusiveness = getOption("progressr.intrusiveness.
       
       initiate = function(config, state, progression, ...) {
         if (!state$enabled || config$times == 1L) return()
-        notify(step = state$step, max_steps = config$max_steps, message = progression$message)
+        notify(step = state$step, max_steps = config$max_steps, message = conditionMessage(progression))
       },
         
       update = function(config, state, progression, ...) {
         if (!state$enabled || config$times <= 2L) return()
-        notify(step = state$step, max_steps = config$max_steps, message = progression$message)
+        notify(step = state$step, max_steps = config$max_steps, message = conditionMessage(progression))
       },
         
       finish = function(config, state, progression, ...) {
         if (finished) return()
         if (!state$enabled) return()
-        if (state$delta > 0) notify(step = state$step, max_steps = config$max_steps, message = progression$message)
+        if (state$delta > 0) notify(step = state$step, max_steps = config$max_steps, message = conditionMessage(progression))
 	finished <<- TRUE
       }
     )
@@ -560,7 +560,7 @@ debug_handler <- function(intrusiveness = getOption("progressr.intrusiveness.deb
       if (is.null(t_init)) t_init <<- t
       dt <- difftime(t, t_init, units = "secs")
       delay <- difftime(t, progression$time, units = "secs")
-      message <- paste(c(progression$message, ""), collapse = "")
+      message <- paste(c(conditionMessage(progression), ""), collapse = "")
       entry <- list(now(t), dt, delay, progression$type, state$step, config$max_steps, state$delta, message, config$clear, state$enabled, paste0(progression$status, ""))
       msg <- do.call(sprintf, args = c(list("%s(%.3fs => +%.3fs) %s: %d/%d (%+d) '%s' {clear=%s, enabled=%s, status=%s}"), entry))
       message(msg)
@@ -646,7 +646,7 @@ filesize_handler <- function(file = "default.progress", intrusiveness = getOptio
       nhead <- nchar(head)
       tail <- sprintf(" [%d%%]", round(100 * ratio))
       ntail <- nchar(tail)
-      mid <- paste0(progression$message, "")
+      mid <- paste0(conditionMessage(progression), "")
       nmid <- nchar(mid)
       padding <- size - (nhead + nmid + ntail)
       if (padding <= 0) {
