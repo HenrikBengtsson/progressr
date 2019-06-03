@@ -1,11 +1,15 @@
 Package: progressr
 ==================
 
-Version: 0.0.5-9000 [2019-05-20]
+Version: 0.0.5-9000 [2019-06-03]
 
 NEW FEATURES:
 
  * Add print() for progression conditions and progressor functions.
+
+ * Now the progressors record more details on the session information.
+   This information is passed along with all progression conditions as
+   part of the internal owner information.
  
 
 Version: 0.0.5 [2019-05-20]

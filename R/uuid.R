@@ -18,26 +18,25 @@ session_uuid <- local({
   function(pid = Sys.getpid(), attributes = FALSE) {
     pidstr <- as.character(pid)
     uuid <- uuids[[pidstr]]
-    if (!is.null(uuid)) {
-      if (!attributes) attr(uuid, "source") <- NULL
-      return(uuid)
+    if (is.null(uuid)) {
+      info <- Sys.info()
+      host <- Sys.getenv(c("HOST", "HOSTNAME", "COMPUTERNAME"))
+      host <- host[nzchar(host)]
+      host <- if (length(host) == 0L) info[["nodename"]] else host[1L]
+      info <- list(
+        host = host,
+        info = info,
+        time = Sys.time(),
+        tempdir = tempdir(),
+        pid = pid,
+        random = stealth_sample.int(.Machine$integer.max, size = 1L)
+      )
+      uuid <- uuid(info, keep_source = TRUE)
+      uuids[[pidstr]] <<- uuid
     }
-
-    info <- Sys.info()
-    host <- Sys.getenv(c("HOST", "HOSTNAME", "COMPUTERNAME"))
-    host <- host[nzchar(host)]
-    host <- if (length(host) == 0L) info[["nodename"]] else host[1L]
-    info <- list(
-      host = host,
-      info = info,
-      time = Sys.time(),
-      tempdir = tempdir(),
-      pid = pid,
-      random = stealth_sample.int(.Machine$integer.max, size = 1L)
-    )
-    uuid <- uuid(info, keep_source = TRUE)
-    uuids[[pidstr]] <<- uuid
+    
     if (!attributes) attr(uuid, "source") <- NULL
+    
     uuid
   }
 })
