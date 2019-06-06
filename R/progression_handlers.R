@@ -551,7 +551,7 @@ notifier_handler <- function(intrusiveness = getOption("progressr.intrusiveness.
 #' @example incl/debug_handler.R
 #'
 #' @export
-debug_handler <- function(intrusiveness = getOption("progressr.intrusiveness.debug", 0), ...) {
+debug_handler <- function(interval = getOption("progressr.interval", 0), intrusiveness = getOption("progressr.intrusiveness.debug", 0), ...) {
   reporter <- local({
     t_init <- NULL
     
