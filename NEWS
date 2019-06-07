@@ -1,6 +1,22 @@
 Package: progressr
 ==================
 
+Version: 0.1.0 [2019-06-07]
+
+NEW FEATURES:
+
+ * Now a progression condition is identified from the R session UUID,
+   the progressor UUID, the incremental progression index, and the
+   progression timestamp.
+   
+BUG FIXES:
+
+ * A progressor object that was exported to the same external R process
+   multiple times would produce progression conditions that was
+   non-distinguishable from those previously exported. Adding a timestamp
+   to the progression condition makes them distinguishable.
+
+
 Version: 0.0.6 [2019-06-03]
 
 NEW FEATURES:
@@ -109,8 +125,6 @@ SIGNIFICANT CHANGES:
 NEW FEATURES:
 
  * Add a plyr-compatible "progress bar" named progress_progressr().
-
- * Now 'progression' conditions are also of class 'instant_relay_condition'.
 
  * Add option 'progressr.clear'.
 

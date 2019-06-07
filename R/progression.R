@@ -18,7 +18,10 @@
 #' for the current progressor and the current \R session.
 #'
 #' @param progression_index (integer) A non-negative integer that is
-#  incremented by one for each progression condition created.
+#' incremented by one for each progression condition created.
+#'
+#' @param progression_time (POSIXct or character string) A timestamp specifying
+#' when the progression condition was created.
 #'
 #' @param owner_session_uuid (character string) A character string that is
 #' unique for the \R session where the progressor was created.
@@ -32,12 +35,16 @@
 #' To create and signal a progression condition at once, use [progress()].
 #'
 #' @export
-progression <- function(amount = 1.0, message = character(0L), step = NULL, time = Sys.time(), ..., type = "update", class = NULL, progressor_uuid = NULL, progression_index = NULL, call = NULL, owner_session_uuid = NULL) {
+progression <- function(amount = 1.0, message = character(0L), step = NULL, time = progression_time, ..., type = "update", class = NULL, progressor_uuid = NULL, progression_index = NULL, progression_time = Sys.time(), call = NULL, owner_session_uuid = NULL) {
   message <- as.character(message)
   amount <- as.numeric(amount)
   time <- as.POSIXct(time)
   stop_if_not(is.character(type), length(type) == 1L, !is.na(type))
   class <- as.character(class)
+  if (inherits(progression_time, "POSIXct")) {
+    progression_time <- format(progression_time, format = "%F %H:%M:%OS3 %z")
+  }
+  stop_if_not(length(progression_time) == 1L, is.character(progression_time))
   args <- list(...)
   nargs <- length(args)
   if (nargs > 0L) {
@@ -52,6 +59,7 @@ progression <- function(amount = 1.0, message = character(0L), step = NULL, time
       progressor_uuid = progressor_uuid,
       session_uuid = session_uuid(),
       progression_index = progression_index,
+      progression_time = progression_time,
       type = type,
       message = message,
       amount = amount,
@@ -60,7 +68,7 @@ progression <- function(amount = 1.0, message = character(0L), step = NULL, time
       ...,
       call = call
     ),
-    class = c(class, "progression", "instant_relay_condition", "condition")
+    class = c(class, "progression", "immediateCondition", "condition")
   )
 }
 
@@ -77,6 +85,7 @@ print.progression <- function(x, ...) {
   s <- c(s, paste("- time:", x$time))
   s <- c(s, paste("- progressor_uuid:", x$progressor_uuid))
   s <- c(s, paste("- progression_index:", x$progression_index))
+  s <- c(s, paste("- progression_time:", x$progression_time))
   s <- c(s, paste("- session_uuid:", x$session_uuid))
   s <- c(s, paste("- owner_session_uuid:", x$owner_session_uuid))
   s <- paste(s, collapse = "\n")

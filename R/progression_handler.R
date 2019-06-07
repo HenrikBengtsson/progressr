@@ -155,7 +155,8 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
     progressor_uuid <- p$progressor_uuid
     session_uuid <- p$session_uuid
     progression_index <- p$progression_index
-    progression_id <- sprintf("%s-%d", session_uuid, progression_index)
+    progression_time <- p$progression_time
+    progression_id <- sprintf("%s-%d-%s", session_uuid, progression_index, progression_time)
     db <- done[[progressor_uuid]]
     res <- is.element(progression_id, db)
     if (!res) {
