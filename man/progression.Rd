@@ -5,8 +5,9 @@
 \title{A Progression Condition}
 \usage{
 progression(amount = 1, message = character(0L), step = NULL,
-  time = Sys.time(), ..., type = "update", class = NULL,
-  progressor_uuid = NULL, progression_index = NULL, call = NULL,
+  time = progression_time, ..., type = "update", class = NULL,
+  progressor_uuid = NULL, progression_index = NULL,
+  progression_time = Sys.time(), call = NULL,
   owner_session_uuid = NULL)
 }
 \arguments{
@@ -25,7 +26,11 @@ progression(amount = 1, message = character(0L), step = NULL,
 \item{progressor_uuid}{(character string) A character string that is unique
 for the current progressor and the current \R session.}
 
-\item{progression_index}{(integer) A non-negative integer that is}
+\item{progression_index}{(integer) A non-negative integer that is
+incremented by one for each progression condition created.}
+
+\item{progression_time}{(POSIXct or character string) A timestamp specifying
+when the progression condition was created.}
 
 \item{call}{(expression) A call expression.}
 
