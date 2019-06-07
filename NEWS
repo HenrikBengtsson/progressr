@@ -126,8 +126,6 @@ NEW FEATURES:
 
  * Add a plyr-compatible "progress bar" named progress_progressr().
 
- * Now 'progression' conditions are also of class 'instant_relay_condition'.
-
  * Add option 'progressr.clear'.
 
  * Visual progression handler will now always render the complete update state
