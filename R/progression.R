@@ -68,7 +68,7 @@ progression <- function(amount = 1.0, message = character(0L), step = NULL, time
       ...,
       call = call
     ),
-    class = c(class, "progression", "instant_relay_condition", "condition")
+    class = c(class, "progression", "immediateCondition", "condition")
   )
 }
 
