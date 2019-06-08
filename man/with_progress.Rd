@@ -5,7 +5,8 @@
 \title{Evaluate Expression while Handling Progress Updates}
 \usage{
 with_progress(expr, handlers = getOption("progressr.handlers",
-  txtprogressbar_handler()), cleanup = TRUE)
+  txtprogressbar_handler()), cleanup = TRUE, delay_stdout = TRUE,
+  delay_conditions = c("condition"))
 }
 \arguments{
 \item{expr}{An \R expression to evaluate.}
@@ -15,6 +16,13 @@ If @NULL or an empty list, progress updates are ignored.}
 
 \item{cleanup}{If TRUE, all progression handlers will be shutdown
 at the end regardless of the progression is complete or not.}
+
+\item{delay_stdout}{If TRUE, standard output is captured and relayed
+at the end just before any captured conditions are relayed.}
+
+\item{delay_conditions}{A character vector specifying \link[base:condition]{base::condition}
+classes to be captured and relayed at the end after any captured
+standard output is relayed.}
 }
 \value{
 Return nothing (reserved for future usage).
