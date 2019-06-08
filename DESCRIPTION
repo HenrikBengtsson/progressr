@@ -15,7 +15,9 @@ Suggests:
   notifier,
   pbmcapply,
   plyr,
-  progress
+  progress,
+  future.apply,
+  doFuture
 Remotes:
   gaborcsardi/notifier@d92b1b6
 URL: https://github.com/HenrikBengtsson/progressr
