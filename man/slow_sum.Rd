@@ -4,12 +4,18 @@
 \alias{slow_sum}
 \title{Slowly Calculate Sum of Elements}
 \usage{
-slow_sum(x, delay = getOption("delay", 0.05))
+slow_sum(x, delay = getOption("delay", 0.05), stdout = FALSE,
+  message = FALSE)
 }
 \arguments{
 \item{x}{Numeric vector to sum}
 
 \item{delay}{Delay in seconds after each addition.}
+
+\item{stdout}{If TRUE, then a text is outputted to the standard output
+per element.}
+
+\item{message}{If TRUE, then a message is outputted per element.}
 }
 \value{
 The sum of all elements in \code{x}.

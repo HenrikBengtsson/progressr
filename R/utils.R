@@ -1,3 +1,15 @@
+# More efficient than the default utils::capture.output()
+#' @importFrom utils capture.output
+capture_output <- function(expr, envir = parent.frame(), ...) {
+  res <- eval({
+    file <- rawConnection(raw(0L), open = "w")
+    on.exit(close(file))
+    capture.output(expr, file = file)
+    rawToChar(rawConnectionValue(file))
+  }, envir = envir, enclos = baseenv())
+  unlist(strsplit(res, split = "\n", fixed = TRUE), use.names = FALSE)
+}
+
 now <- function(x = Sys.time(), format = "[%H:%M:%OS3] ") {
   format(as.POSIXlt(x, tz = ""), format = format)
 }
@@ -12,16 +24,15 @@ mprintf <- function(..., appendLF = TRUE, debug = getOption("progressr.debug", F
   message(now(), sprintf(...), appendLF = appendLF)
 }
 
-#' @importFrom utils capture.output
 mprint <- function(..., appendLF = TRUE, debug = getOption("progressr.debug", FALSE)) {
   if (!debug) return()
-  message(paste(now(), capture.output(print(...)), sep = "", collapse = "\n"), appendLF = appendLF)
+  message(paste(now(), capture_output(print(...)), sep = "", collapse = "\n"), appendLF = appendLF)
 }
 
-#' @importFrom utils capture.output str
+#' @importFrom utils str
 mstr <- function(..., appendLF = TRUE, debug = getOption("progressr.debug", FALSE)) {
   if (!debug) return()
-  message(paste(now(), capture.output(str(...)), sep = "", collapse = "\n"), appendLF = appendLF)
+  message(paste(now(), capture_output(str(...)), sep = "", collapse = "\n"), appendLF = appendLF)
 }
 
 stop_if_not <- function(...) {

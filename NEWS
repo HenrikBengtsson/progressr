@@ -1,6 +1,16 @@
 Package: progressr
 ==================
 
+Version: 0.1.1 [2019-06-08]
+
+NEW FEATURES:
+
+ * with_progress() now captures standard output and conditions and relay them
+   at then end.  This is done in order to avoid interweaving such output with
+   the output produced by the progression handlers.  This behavior can be
+   controlled by arguments 'delay_stdout' and 'delay_condition'.
+ 
+
 Version: 0.1.0 [2019-06-07]
 
 NEW FEATURES:

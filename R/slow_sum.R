@@ -4,20 +4,27 @@
 #'
 #' @param delay Delay in seconds after each addition.
 #'
+#' @param stdout If TRUE, then a text is outputted to the standard output
+#' per element.
+#'
+#' @param message If TRUE, then a message is outputted per element.
+#'
 #' @return The sum of all elements in `x`.
 #'
 #' @section Progress updates:
 #' This function signals [progression] conditions as it progresses.
 #'
 #' @export
-slow_sum <- function(x, delay = getOption("delay", 0.05)) {
+slow_sum <- function(x, delay = getOption("delay", 0.05), stdout = FALSE, message = FALSE) {
   progress <- progressor(length(x))
-  
+
   res <- 0
   for (kk in seq_along(x)) {
+    if (stdout) cat(sprintf("Adding element #%d\n", kk))
     Sys.sleep(delay)
     res <- res + x[kk]
     progress(message = sprintf("Adding %g", kk))
+    if (message) message(sprintf("Added value %g", x[kk]))
   }
 
   res
