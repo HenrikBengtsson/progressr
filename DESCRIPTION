@@ -7,20 +7,23 @@ Authors@R: c(
          email = "henrikb@braju.com"))
 License: GPL (>= 3)
 Imports:
-  digest
+    digest
 Suggests:
-  utils,
-  tcltk,
-  beepr,
-  notifier,
-  pbmcapply,
-  plyr,
-  progress,
-  future.apply,
-  doFuture
+    utils,
+    tcltk,
+    beepr,
+    notifier,
+    pbmcapply,
+    plyr,
+    progress,
+    ## For testing purposes:
+    doFuture,
+    future.apply,
+    furrr
 Remotes:
   gaborcsardi/notifier@d92b1b6
 URL: https://github.com/HenrikBengtsson/progressr
 BugReports: https://github.com/HenrikBengtsson/progressr/issues
 RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
+
