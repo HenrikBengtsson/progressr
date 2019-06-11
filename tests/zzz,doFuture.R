@@ -4,6 +4,7 @@ options(progressr.interval = 0.0, delay = 0.01)
 if (requireNamespace("doFuture", quietly = TRUE)) {
   library("doFuture", character.only = TRUE)
   registerDoFuture()
+  future::plan("multiprocess")
   with_progress({
     p <- progressor(4)
     y <- foreach(n = 3:6) %dopar% {

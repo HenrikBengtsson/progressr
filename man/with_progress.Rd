@@ -5,8 +5,10 @@
 \title{Evaluate Expression while Handling Progress Updates}
 \usage{
 with_progress(expr, handlers = getOption("progressr.handlers",
-  txtprogressbar_handler()), cleanup = TRUE, delay_stdout = TRUE,
-  delay_conditions = c("condition"))
+  txtprogressbar_handler()), cleanup = TRUE,
+  delay_stdout = getOption("progressr.delay_stdout", interactive()),
+  delay_conditions = getOption("progressr.delay_conditions", if
+  (interactive()) c("condition") else character(0L)))
 }
 \arguments{
 \item{expr}{An \R expression to evaluate.}
