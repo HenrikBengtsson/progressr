@@ -1,10 +1,10 @@
 library(progressr)
-options(progressr.interval = 0.0, progressr.delay = 0.01)
+options(progressr.interval = 0.0, delay = 0.01)
 
 if (requireNamespace("plyr", quietly = TRUE)) {
   with_progress({
-    y <- plyr::l_ply(1:10, function(x, ...) {
-      slow_sum(x, stdout=TRUE, message=TRUE)
+    y <- plyr::l_ply(3:6, function(n, ...) {
+      slow_sum(1:n, stdout=TRUE, message=TRUE)
     }, .progress = "progressr")
   })
 }

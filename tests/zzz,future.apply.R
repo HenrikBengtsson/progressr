@@ -1,12 +1,12 @@
 library(progressr)
-options(progressr.interval = 0.0, progressr.delay = 0.01)
+options(progressr.interval = 0.0, delay = 0.01)
 
 if (requireNamespace("future.apply", quietly = TRUE)) {
   with_progress({
-    p <- progressor(10)
-    y <- future.apply::future_lapply(1:10, function(x) {
+    p <- progressor(4)
+    y <- future.apply::future_lapply(3:6, function(n) {
       p()
-      slow_sum(x, stdout=TRUE, message=TRUE)
+      slow_sum(1:n, stdout=TRUE, message=TRUE)
     })
   })
 }
