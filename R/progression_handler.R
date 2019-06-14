@@ -28,7 +28,7 @@
 #' @return A function of class `progression_handler`.
 #'
 #' @export
-progression_handler <- function(name, reporter = list(), handler = NULL, enable = getOption("progressr.enable", interactive()), enable_after = getOption("progressr.enable_after", 0.0), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0.5), intrusiveness = 1.0, clear = getOption("progressr.clear", TRUE)) {
+progression_handler <- function(name, reporter = list(), handler = NULL, enable = getOption("progressr.enable", interactive()), enable_after = getOption("progressr.enable_after", 0.0), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0.0), intrusiveness = 1.0, clear = getOption("progressr.clear", TRUE)) {
   if (!enable) times <- 0
   name <- as.character(name)
   stop_if_not(length(name) == 1L, !is.na(name), nzchar(name))
@@ -278,4 +278,36 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
                       "progression_handler", class(handler))
 
   handler
+}
+
+
+#' @export
+print.progression_handler <- function(x, ...) {
+  print(sys.calls())
+  s <- sprintf("Progression handler of class %s:", sQuote(class(x)[1]))
+  
+  env <- environment(x)
+  s <- c(s, " * configuration:")
+  s <- c(s, sprintf("   - name: %s", sQuote(env$name %||% "<NULL>")))
+  s <- c(s, sprintf("   - max_steps: %s", env$max_steps %||% "<NULL>"))
+  s <- c(s, sprintf("   - enable: %s", env$enable))
+  s <- c(s, sprintf("   - enable_after: %g seconds", env$enable_after))
+  s <- c(s, sprintf("   - times: %g", env$times))
+  s <- c(s, sprintf("   - interval: %g seconds", env$interval))
+  s <- c(s, sprintf("   - intrusiveness: %g", env$intrusiveness))
+  s <- c(s, sprintf("   - auto_finish: %s", env$auto_finish))
+  s <- c(s, sprintf("   - clear: %s", env$clear))
+  s <- c(s, sprintf("   - milestones: %s", hpaste(env$milestones %||% "<NULL>")))
+  s <- c(s, sprintf("   - owner: %s", hpaste(env$owner %||% "<NULL>")))
+
+  s <- c(s, " * state:")
+  s <- c(s, sprintf("   - enabled: %s", env$enabled))
+  s <- c(s, sprintf("   - finished: %s", env$finished))
+  s <- c(s, sprintf("   - step: %s", env$step %||% "<NULL>"))
+  s <- c(s, sprintf("   - prev_milestone: %s", env$prev_milestone %||% "<NULL>"))
+  s <- c(s, sprintf("   - delta: %g", (env$step - env$prev_milestone) %||% 0L))
+  s <- c(s, sprintf("   - timestamps: %s", hpaste(env$timestamps %||% "<NULL>")))
+
+  s <- paste(s, collapse = "\n")
+  cat(s, "\n", sep = "")
 }

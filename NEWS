@@ -1,6 +1,24 @@
 Package: progressr
 ==================
 
+Version: 0.1.2 [2019-06-14]
+
+NEW FEATURES:
+
+ * with_progress() gained arguments 'enable' and 'interval' as an alternative
+   to setting corresponding options progressr.*.
+
+ * Now option 'progressr.interval' defaults to 0.0 (was 0.5 seconds).
+
+ * Added print() for 'progression_handler' objects.
+ 
+BUG FIXES:
+
+ * with_progress(..., delay_conditions = "condition"), introduced in v0.1.0,
+   would also capture conditions produced by progression handlers, e.g.
+   progress::progress_bar() output would not be displayed until the very end.
+
+
 Version: 0.1.1 [2019-06-08]
 
 NEW FEATURES:

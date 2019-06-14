@@ -15,12 +15,17 @@
 #' classes to be captured and relayed at the end after any captured
 #' standard output is relayed.
 #'
+#' @param interval (numeric) The minimum time (in seconds) between
+#' successive progression updates from handlers.
+#'
+#' @param enable (logical) If FALSE, then progress is not reported.
+#'
 #' @return Return nothing (reserved for future usage).
 #'
 #' @example incl/with_progress.R
 #'
 #' @export
-with_progress <- function(expr, handlers = getOption("progressr.handlers", txtprogressbar_handler()), cleanup = TRUE, delay_stdout = TRUE, delay_conditions = c("condition")) {
+with_progress <- function(expr, handlers = getOption("progressr.handlers", txtprogressbar_handler), cleanup = TRUE, delay_stdout = getOption("progressr.delay_stdout", interactive()), delay_conditions = getOption("progressr.delay_conditions", if (interactive()) c("condition") else character(0L)), interval = NULL, enable = NULL) {
   stop_if_not(is.logical(cleanup), length(cleanup) == 1L, !is.na(cleanup))
   
   ## FIXME: With zero handlers, progression conditions will be
@@ -28,7 +33,22 @@ with_progress <- function(expr, handlers = getOption("progressr.handlers", txtpr
   ##        Is that what we want? /HB 2019-05-17
   if (length(handlers) == 0L) return(expr)
   if (!is.list(handlers)) handlers <- list(handlers)
-  
+
+  ## Temporarily set progressr options
+  options <- list()
+  if (!is.null(interval)) {
+    stop_if_not(is.numeric(interval), length(interval) == 1L, !is.na(interval))
+    options[["progressr.interval"]] <- interval
+  }
+  if (!is.null(enable)) {
+    stop_if_not(is.logical(enable), length(enable) == 1L, !is.na(enable))
+    options[["progressr.enable"]] <- enable
+  }
+  if (length(options) > 0L) {  
+    oopts <- options(options)
+    on.exit(options(oopts))
+  }
+
   for (kk in seq_along(handlers)) {
     handler <- handlers[[kk]]
     stopifnot(is.function(handler))
@@ -63,7 +83,7 @@ with_progress <- function(expr, handlers = getOption("progressr.handlers", txtpr
           signalCondition(control_progression("shutdown", status = status))
         }, muffleProgression = function(p) NULL)
       }, progression = handler)
-    })
+    }, add = TRUE)
   }
 
   ## Captured stdout output and conditions
@@ -79,7 +99,7 @@ with_progress <- function(expr, handlers = getOption("progressr.handlers", txtpr
         stdout <- rawToChar(rawConnectionValue(stdout_file))
         close(stdout_file)
         if (length(stdout) > 0) cat(stdout, file = stdout())
-      })
+      }, add = TRUE)
     }
     
     ## Delay conditions?
@@ -99,7 +119,7 @@ with_progress <- function(expr, handlers = getOption("progressr.handlers", txtpr
         }
       }, add = TRUE)
     }
-  }
+  } ## if (delay_stdout || length(delay_conditions) > 0)
 
   ## Reset all handlers up start
   withCallingHandlers({
@@ -109,11 +129,17 @@ with_progress <- function(expr, handlers = getOption("progressr.handlers", txtpr
   }, progression = handler)
 
   ## Evaluate expression
+  capture_conditions <- TRUE
   withCallingHandlers(
     expr,
-    progression = handler,
+    progression = function(p) {
+      ## Don't capture conditions that are produced by progression handlers
+      capture_conditions <<- FALSE
+      on.exit(capture_conditions <<- TRUE)
+      handler(p)
+    },
     condition = function(c) {
-      if (inherits(c, c("progression", "error"))) return()
+      if (!capture_conditions || inherits(c, c("progression", "error"))) return()
       if (inherits(c, delay_conditions)) {
         ## Record
         conditions[[length(conditions) + 1L]] <<- c

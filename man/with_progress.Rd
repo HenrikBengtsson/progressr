@@ -5,8 +5,11 @@
 \title{Evaluate Expression while Handling Progress Updates}
 \usage{
 with_progress(expr, handlers = getOption("progressr.handlers",
-  txtprogressbar_handler()), cleanup = TRUE, delay_stdout = TRUE,
-  delay_conditions = c("condition"))
+  txtprogressbar_handler), cleanup = TRUE,
+  delay_stdout = getOption("progressr.delay_stdout", interactive()),
+  delay_conditions = getOption("progressr.delay_conditions", if
+  (interactive()) c("condition") else character(0L)), interval = NULL,
+  enable = NULL)
 }
 \arguments{
 \item{expr}{An \R expression to evaluate.}
@@ -23,6 +26,11 @@ at the end just before any captured conditions are relayed.}
 \item{delay_conditions}{A character vector specifying \link[base:condition]{base::condition}
 classes to be captured and relayed at the end after any captured
 standard output is relayed.}
+
+\item{interval}{(numeric) The minimum time (in seconds) between
+successive progression updates from handlers.}
+
+\item{enable}{(logical) If FALSE, then progress is not reported.}
 }
 \value{
 Return nothing (reserved for future usage).
