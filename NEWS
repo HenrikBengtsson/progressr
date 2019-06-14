@@ -9,6 +9,8 @@ NEW FEATURES:
    to setting corresponding options progressr.*.
 
  * Now option 'progressr.interval' defaults to 0.0 (was 0.5 seconds).
+
+ * Added print() for 'progression_handler' objects.
  
 
 Version: 0.1.1 [2019-06-08]
