@@ -290,7 +290,7 @@ print.progression_handler <- function(x, ...) {
   s <- c(s, " * configuration:")
   s <- c(s, sprintf("   - name: %s", sQuote(env$name %||% "<NULL>")))
   s <- c(s, sprintf("   - max_steps: %s", env$max_steps %||% "<NULL>"))
-  s <- c(s, sprintf("   - enable: %g", env$enable))
+  s <- c(s, sprintf("   - enable: %s", env$enable))
   s <- c(s, sprintf("   - enable_after: %g seconds", env$enable_after))
   s <- c(s, sprintf("   - times: %g", env$times))
   s <- c(s, sprintf("   - interval: %g seconds", env$interval))
