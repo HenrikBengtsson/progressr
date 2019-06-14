@@ -28,7 +28,7 @@
 #' @return A function of class `progression_handler`.
 #'
 #' @export
-progression_handler <- function(name, reporter = list(), handler = NULL, enable = getOption("progressr.enable", interactive()), enable_after = getOption("progressr.enable_after", 0.0), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0.5), intrusiveness = 1.0, clear = getOption("progressr.clear", TRUE)) {
+progression_handler <- function(name, reporter = list(), handler = NULL, enable = getOption("progressr.enable", interactive()), enable_after = getOption("progressr.enable_after", 0.0), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0.0), intrusiveness = 1.0, clear = getOption("progressr.clear", TRUE)) {
   if (!enable) times <- 0
   name <- as.character(name)
   stop_if_not(length(name) == 1L, !is.na(name), nzchar(name))

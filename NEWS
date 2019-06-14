@@ -1,12 +1,14 @@
 Package: progressr
 ==================
 
-Version: 0.1.1-9000 [2019-06-13]
+Version: 0.1.1-9000 [2019-06-14]
 
 NEW FEATURES:
 
  * with_progress() gained arguments 'enable' and 'interval' as an alternative
    to setting corresponding options progressr.*.
+
+ * Now option 'progressr.interval' defaults to 0.0 (was 0.5 seconds).
  
 
 Version: 0.1.1 [2019-06-08]

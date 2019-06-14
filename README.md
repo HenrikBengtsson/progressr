@@ -14,13 +14,13 @@ Assume that we have a function `slow_sum()` for adding up the values in a vector
 ```r
 slow_sum <- function(x) {
   progress <- progressr::progressor(length(x))
-  res <- 0
+  sum <- 0
   for (kk in seq_along(x)) {
     Sys.sleep(0.1)
-    res <- res + x[kk]
-    progress()
+    sum <- sum + x[kk]
+    progress(message = sprintf("Added %g", x[kk]))
   }
-  res
+  sum
 }
 ```
 

@@ -18,14 +18,14 @@
 slow_sum <- function(x, delay = getOption("delay", 0.05), stdout = FALSE, message = FALSE) {
   progress <- progressor(length(x))
 
-  res <- 0
+  sum <- 0
   for (kk in seq_along(x)) {
     if (stdout) cat(sprintf("O: Element #%d\n", kk))
     Sys.sleep(delay)
-    res <- res + x[kk]
+    sum <- sum + x[kk]
     progress(message = sprintf("P: Adding %g", kk))
     if (message) message(sprintf("M: Added value %g", x[kk]))
   }
 
-  res
+  sum
 }
