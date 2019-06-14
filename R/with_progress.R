@@ -129,11 +129,17 @@ with_progress <- function(expr, handlers = getOption("progressr.handlers", txtpr
   }, progression = handler)
 
   ## Evaluate expression
+  capture_conditions <- TRUE
   withCallingHandlers(
     expr,
-    progression = handler,
+    progression = function(p) {
+      ## Don't capture conditions that are produced by progression handlers
+      capture_conditions <<- FALSE
+      on.exit(capture_conditions <<- TRUE)
+      handler(p)
+    },
     condition = function(c) {
-      if (inherits(c, c("progression", "error"))) return()
+      if (!capture_conditions || inherits(c, c("progression", "error"))) return()
       if (inherits(c, delay_conditions)) {
         ## Record
         conditions[[length(conditions) + 1L]] <<- c

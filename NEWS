@@ -12,6 +12,12 @@ NEW FEATURES:
 
  * Added print() for 'progression_handler' objects.
  
+BUG FIXES:
+
+ * with_progress(..., delay_conditions = "condition"), introduced in v0.1.0,
+   would also capture conditions produced by progression handlers, e.g.
+   progress::progress_bar() output would not be displayed until the very end.
+
 
 Version: 0.1.1 [2019-06-08]
 
