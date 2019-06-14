@@ -1,5 +1,3 @@
-# progressr: A Unifying API for Progress Updates
-
 The **[progressr]** package provides a minimal API for reporting progress updates in [R](https://www.r-project.org/).  The design is to separate the representation of progress updates from how they are presented.  What type of progress to signal is controlled by the developer.  How these progress updates are rendered is controlled by the end user.  For instance, some users may prefer visual feedback such as a horizontal progress bar in the terminal, whereas others may prefer auditory feedback.
 
 Design motto:
@@ -137,27 +135,3 @@ To debug progress updates, use:
 [beepr]: https://cran.r-project.org/package=beepr
 [progress]: https://cran.r-project.org/package=progress
 
-
-## Installation
-R package progressr is only available via [GitHub](https://github.com/HenrikBengtsson/progressr) and can be installed in R as:
-```r
-remotes::install_github("HenrikBengtsson/progressr")
-```
-
-
-
-
-## Contributions
-
-This Git repository uses the [Git Flow](http://nvie.com/posts/a-successful-git-branching-model/) branching model (the [`git flow`](https://github.com/petervanderdoes/gitflow-avh) extension is useful for this).  The [`develop`](https://github.com/HenrikBengtsson/progressr/tree/develop) branch contains the latest contributions and other code that will appear in the next release, and the [`master`](https://github.com/HenrikBengtsson/progressr) branch contains the code of the latest release.
-
-Contributing to this package is easy.  Just send a [pull request](https://help.github.com/articles/using-pull-requests/).  When you send your PR, make sure `develop` is the destination branch on the [progressr repository](https://github.com/HenrikBengtsson/progressr).  Your PR should pass `R CMD check --as-cran`, which will also be checked by  and  when the PR is submitted.
-
-
-## Software status
-
-| Resource:     | GitHub        | Travis CI       | AppVeyor         |
-| ------------- | ------------------- | --------------- | ---------------- |
-| _Platforms:_  | _Multiple_          | _Linux & macOS_ | _Windows_        |
-| R CMD check   |  |    |  |
-| Test coverage |                     |      |                  |

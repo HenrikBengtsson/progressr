@@ -3,3 +3,4 @@
 **/*~
 .local
 inst/doc
+.make/README.md.rsp
