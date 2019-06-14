@@ -5,7 +5,8 @@ Version: 0.1.1-9000 [2019-06-13]
 
 NEW FEATURES:
 
- * with_progress() gained argument 'interval'.
+ * with_progress() gained arguments 'enable' and 'interval' as an alternative
+   to setting corresponding options progressr.*.
  
 
 Version: 0.1.1 [2019-06-08]

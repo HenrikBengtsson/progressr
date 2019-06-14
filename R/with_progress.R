@@ -18,12 +18,14 @@
 #' @param interval (numeric) The minimum time (in seconds) between
 #' successive progression updates from handlers.
 #'
+#' @param enable (logical) If FALSE, then progress is not reported.
+#'
 #' @return Return nothing (reserved for future usage).
 #'
 #' @example incl/with_progress.R
 #'
 #' @export
-with_progress <- function(expr, handlers = getOption("progressr.handlers", txtprogressbar_handler), cleanup = TRUE, delay_stdout = getOption("progressr.delay_stdout", interactive()), delay_conditions = getOption("progressr.delay_conditions", if (interactive()) c("condition") else character(0L)), interval = NULL) {
+with_progress <- function(expr, handlers = getOption("progressr.handlers", txtprogressbar_handler), cleanup = TRUE, delay_stdout = getOption("progressr.delay_stdout", interactive()), delay_conditions = getOption("progressr.delay_conditions", if (interactive()) c("condition") else character(0L)), interval = NULL, enable = NULL) {
   stop_if_not(is.logical(cleanup), length(cleanup) == 1L, !is.na(cleanup))
   
   ## FIXME: With zero handlers, progression conditions will be
@@ -33,9 +35,17 @@ with_progress <- function(expr, handlers = getOption("progressr.handlers", txtpr
   if (!is.list(handlers)) handlers <- list(handlers)
 
   ## Temporarily set progressr options
+  options <- list()
   if (!is.null(interval)) {
     stop_if_not(is.numeric(interval), length(interval) == 1L, !is.na(interval))
-    oopts <- options(progressr.interval = interval)
+    options[["progressr.interval"]] <- interval
+  }
+  if (!is.null(enable)) {
+    stop_if_not(is.logical(enable), length(enable) == 1L, !is.na(enable))
+    options[["progressr.enable"]] <- enable
+  }
+  if (length(options) > 0L) {  
+    oopts <- options(options)
     on.exit(options(oopts))
   }
 

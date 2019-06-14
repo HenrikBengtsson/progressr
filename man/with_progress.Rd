@@ -8,7 +8,8 @@ with_progress(expr, handlers = getOption("progressr.handlers",
   txtprogressbar_handler), cleanup = TRUE,
   delay_stdout = getOption("progressr.delay_stdout", interactive()),
   delay_conditions = getOption("progressr.delay_conditions", if
-  (interactive()) c("condition") else character(0L)), interval = NULL)
+  (interactive()) c("condition") else character(0L)), interval = NULL,
+  enable = NULL)
 }
 \arguments{
 \item{expr}{An \R expression to evaluate.}
@@ -28,6 +29,8 @@ standard output is relayed.}
 
 \item{interval}{(numeric) The minimum time (in seconds) between
 successive progression updates from handlers.}
+
+\item{enable}{(logical) If FALSE, then progress is not reported.}
 }
 \value{
 Return nothing (reserved for future usage).
