@@ -59,7 +59,7 @@ options(progressr.handlers = progress_handler)
 This progress handler will present itself as:
 ```r
 > with_progress(y <- slow_sum(1:10))
-[=====================>--------------------------------]  40%
+[==================>---------------------------]  40% Added 4
 ```
 
 
