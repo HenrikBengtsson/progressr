@@ -15,12 +15,15 @@
 #' classes to be captured and relayed at the end after any captured
 #' standard output is relayed.
 #'
+#' @param interval (numeric) The minimum time (in seconds) between
+#' successive progression updates from handlers.
+#'
 #' @return Return nothing (reserved for future usage).
 #'
 #' @example incl/with_progress.R
 #'
 #' @export
-with_progress <- function(expr, handlers = getOption("progressr.handlers", txtprogressbar_handler()), cleanup = TRUE, delay_stdout = getOption("progressr.delay_stdout", interactive()), delay_conditions = getOption("progressr.delay_conditions", if (interactive()) c("condition") else character(0L))) {
+with_progress <- function(expr, handlers = getOption("progressr.handlers", txtprogressbar_handler), cleanup = TRUE, delay_stdout = getOption("progressr.delay_stdout", interactive()), delay_conditions = getOption("progressr.delay_conditions", if (interactive()) c("condition") else character(0L)), interval = NULL) {
   stop_if_not(is.logical(cleanup), length(cleanup) == 1L, !is.na(cleanup))
   
   ## FIXME: With zero handlers, progression conditions will be
@@ -28,7 +31,14 @@ with_progress <- function(expr, handlers = getOption("progressr.handlers", txtpr
   ##        Is that what we want? /HB 2019-05-17
   if (length(handlers) == 0L) return(expr)
   if (!is.list(handlers)) handlers <- list(handlers)
-  
+
+  ## Temporarily set progressr options
+  if (!is.null(interval)) {
+    stop_if_not(is.numeric(interval), length(interval) == 1L, !is.na(interval))
+    oopts <- options(progressr.interval = interval)
+    on.exit(options(oopts))
+  }
+
   for (kk in seq_along(handlers)) {
     handler <- handlers[[kk]]
     stopifnot(is.function(handler))
@@ -63,7 +73,7 @@ with_progress <- function(expr, handlers = getOption("progressr.handlers", txtpr
           signalCondition(control_progression("shutdown", status = status))
         }, muffleProgression = function(p) NULL)
       }, progression = handler)
-    })
+    }, add = TRUE)
   }
 
   ## Captured stdout output and conditions
@@ -79,7 +89,7 @@ with_progress <- function(expr, handlers = getOption("progressr.handlers", txtpr
         stdout <- rawToChar(rawConnectionValue(stdout_file))
         close(stdout_file)
         if (length(stdout) > 0) cat(stdout, file = stdout())
-      })
+      }, add = TRUE)
     }
     
     ## Delay conditions?
