@@ -415,7 +415,7 @@ progress_handler <- function(format = "[:bar] :percent :message", show_after = 0
       },
         
       finish = function(config, state, progression, ...) {
-        if (pb$finished) return()
+        if (is.null(pb) || pb$finished) return()
         make_pb(format = format, total = config$max_steps,
                 clear = config$clear, show_after = config$enable_after)
         reporter$update(config = config, state = state, progression = progression, ...)
