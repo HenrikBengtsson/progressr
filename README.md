@@ -104,6 +104,19 @@ with_progress({
 ```
 
 
+## Roadmap
+
+Because this project is under active development, the progressr API is currently kept at a very minimum.  This will allow for the framework and the API to evolve while minimizing the risk for breaking code that depends on it.  The roadmap for developing the API is roughly:
+
+1. Provide minimal API for producing progress updates, i.e. `progressor()` and `with_progress()`
+   
+2. Add support for nested progress updates
+
+3. Add API to allow users and package developers to design additional progression handlers
+
+For a more up-to-date view on what features might be added, see <https://github.com/HenrikBengtsson/progressr/issues>.
+
+
 ## Appendix
 
 ### Debugging
@@ -144,6 +157,13 @@ R package progressr is only available via [GitHub](https://github.com/HenrikBeng
 remotes::install_github("HenrikBengtsson/progressr")
 ```
 
+### Pre-release version
+
+To install the pre-release version that is available in Git branch `develop` on GitHub, use:
+```r
+remotes::install_github("HenrikBengtsson/progressr@develop")
+```
+This will install the package from source.  
 
 
 
