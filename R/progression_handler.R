@@ -244,6 +244,9 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
         finish_reporter(p)
         timestamps[max_steps] <<- Sys.time()
         prev_milestone <<- max_steps
+      } else if (type == "update" && p$amount == 0) {
+        if (debug) mstr(list(amount = 0, finished = finished, step = step, milestones = milestones, prev_milestone = prev_milestone, interval = interval))
+        update_reporter(p)
       } else if (type == "update") {
         step <<- min(max(step + p$amount, 0L), max_steps)
         timestamps[step] <<- Sys.time()

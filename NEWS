@@ -1,9 +1,13 @@
 Package: progressr
 ==================
 
-Version: 0.1.2-9000 [2019-06-14]
+Version: 0.1.2-9000 [2019-06-21]
 
- * ...
+NEW FEATURES:
+
+ * Now it is possible to send "I'm still here" progression updates by setting
+   the progress step to zero, e.g. progress(amount = 0).  This type of
+   information can for instance be used to updated a progress bar spinner.
  
 
 Version: 0.1.2 [2019-06-14]
