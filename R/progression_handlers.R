@@ -42,13 +42,11 @@ ascii_alert_handler <- function(symbol = "\a", file = stderr(), intrusiveness = 
 #'
 #' @example incl/txtprogressbar_handler.R
 #'
-#' @importFrom utils file_test flush.console
+#' @importFrom utils file_test flush.console txtProgressBar setTxtProgressBar
 #' @export
 txtprogressbar_handler <- function(style = 3L, file = stderr(), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...) {
   reporter <- local({
     ## Import functions
-    txtProgressBar <- utils::txtProgressBar
-    setTxtProgressBar <- utils::setTxtProgressBar
     eraseTxtProgressBar <- function(pb) {
       pb_env <- environment(pb$getVal)
       with(pb_env, {
@@ -268,12 +266,11 @@ winprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiv
 #'
 #' @example incl/pbmcapply_handler.R
 #'
-#' @importFrom utils file_test flush.console
+#' @importFrom utils file_test flush.console txtProgressBar setTxtProgressBar
 #' @export
 pbmcapply_handler <- function(substyle = 3L, style = "ETA", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...) {
   if (!is_fake("pbmcapply_handler")) {
     progressBar <- pbmcapply::progressBar
-    setTxtProgressBar <- utils::setTxtProgressBar
     eraseTxtProgressBar <- function(pb) {
       pb_env <- environment(pb$getVal)
       with(pb_env, {
@@ -293,7 +290,7 @@ pbmcapply_handler <- function(substyle = 3L, style = "ETA", file = stderr(), int
       })
     }
   } else {
-    progressBar <- function(..., style, substyle) utils::txtProgressBar(..., style = substyle)
+    progressBar <- function(..., style, substyle) txtProgressBar(..., style = substyle)
     setTxtProgressBar <- function(...) NULL
     eraseTxtProgressBar <- function(pb) NULL
   }

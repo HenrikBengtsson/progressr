@@ -7,9 +7,9 @@ Authors@R: c(
          email = "henrikb@braju.com"))
 License: GPL (>= 3)
 Imports:
-    digest
+    digest,
+    utils
 Suggests:
-    utils,
     tcltk,
     beepr,
     notifier,

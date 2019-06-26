@@ -18,14 +18,9 @@
 A progression handler for \code{\link[notifier:notify]{notifier::notify()}}.
 }
 \examples{
-if (requireNamespace("notifier", quietly = TRUE)) local({
-  oopts <- options(progressr.clear = FALSE,
-                   progressr.handlers = notifier_handler)
-  on.exit(oopts)
-
-  x <- 1:10
-  with_progress({ y <- slow_sum(x) })
-  
+if (requireNamespace("notifier", quietly = TRUE)) {
+  handlers("notifier")
+  with_progress({ y <- slow_sum(1:10) })
   print(y)
-})
+}
 }

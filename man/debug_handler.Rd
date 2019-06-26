@@ -20,14 +20,7 @@ successive progression updates from this handler.}
 Textual Progression Feedback for Debug Purposes
 }
 \examples{
-local({
-  oopts <- options(progressr.clear = FALSE,
-                   progressr.handlers = debug_handler)
-  on.exit(oopts)
-
-  x <- 1:10
-  with_progress({ y <- slow_sum(x) })
-  
-  print(y)
-})
+handlers("debug")
+with_progress({ y <- slow_sum(1:10) })
+print(y)
 }

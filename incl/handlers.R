@@ -1,5 +1,6 @@
-oopts <- handlers("txtprogressbar", "beepr", on_missing = "ignore")
+hdlrs <- "txtprogressbar"
+if (requireNamespace("beepr", quietly = TRUE)) hdlrs <- c(hdlrs, "beepr")
+handlers(hdlrs)
 
-x <- 1:10
-with_progress({ y <- slow_sum(x) })
+with_progress({ y <- slow_sum(10) })
 print(y)

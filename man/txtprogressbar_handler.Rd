@@ -21,14 +21,7 @@ txtprogressbar_handler(style = 3L, file = stderr(),
 A progression handler for \code{\link[utils:txtProgressBar]{utils::txtProgressBar()}}.
 }
 \examples{
-if (requireNamespace("utils", quietly = TRUE)) local({
-  oopts <- options(progressr.clear = FALSE,
-                   progressr.handlers = txtprogressbar_handler)
-  on.exit(oopts)
-
-  x <- 1:10
-  with_progress({ y <- slow_sum(x) })
-  
-  print(y)
-})
+handlers("txtprogressbar")
+with_progress({ y <- slow_sum(1:10) })
+print(y)
 }

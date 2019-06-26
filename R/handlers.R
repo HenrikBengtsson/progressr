@@ -40,19 +40,29 @@ handlers <- function(..., on_missing = c("error", "warning", "ignore")) {
     handler <- args[[kk]]
     if (is.character(handler)) {
       name <- handler
-      if (!exists(name, mode = "function")) {
-        name <- sprintf("%s_handler", name)
-        if (!exists(name, mode = "function")) {
-	  if (on_missing == "error") {
-            stop("No such progression handler found:", sQuote(handler))
-	  } else if (on_missing == "warning") {
-            warning("Ignoring non-existing progression handler:", sQuote(handler))
-	  }
-	  next
-	}
+      name2 <- sprintf("%s_handler", name)
+      
+      handler <- NULL
+      if (exists(name2, mode = "function")) {
+        handler <- get(name2, mode = "function")
       }
-      names[kk] <- handler
-      handler <- get(name, mode = "function")
+      
+      if (is.null(handler)) {
+        if (exists(name, mode = "function")) {
+          handler <- get(name, mode = "function")
+        }
+      }
+      
+      if (is.null(handler)) {
+        if (on_missing == "error") {
+          stop("No such progression handler found: ", sQuote(name))
+	} else if (on_missing == "warning") {
+          warning("Ignoring non-existing progression handler: ", sQuote(name))
+	}
+        next
+      }
+
+      names[kk] <- name
     }
     stop_if_not(is.function(handler), length(formals(handler)) >= 1L)
     handlers[[kk]] <- handler

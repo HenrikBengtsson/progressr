@@ -1,10 +1,5 @@
-if (requireNamespace("progress", quietly = TRUE)) local({
-  oopts <- options(progressr.clear = FALSE,
-                   progressr.handlers = progress_handler)
-  on.exit(oopts)
-
-  x <- 1:10
-  with_progress({ y <- slow_sum(x) })
-  
+if (requireNamespace("progress", quietly = TRUE)) {
+  handlers("progress")
+  with_progress({ y <- slow_sum(1:10) })
   print(y)
-})
+}

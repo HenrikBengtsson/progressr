@@ -20,14 +20,9 @@ play when progress starts, is updated, and completes.  For silence, use \code{NA
 A progression handler for \code{\link[beepr:beep]{beepr::beep()}}.
 }
 \examples{
-if (requireNamespace("utils", quietly = TRUE)) local({
-  oopts <- options(progressr.clear = FALSE,
-                   progressr.handlers = beepr_handler)
-  on.exit(oopts)
-
-  x <- 1:10
-  with_progress({ y <- slow_sum(x) })
-  
+if (requireNamespace("beepr", quietly = TRUE)) {
+  handlers("beepr")
+  with_progress({ y <- slow_sum(1:10) })
   print(y)
-})
+}
 }
