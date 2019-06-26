@@ -48,7 +48,6 @@ To get progress updates, we can call it as:
   |=====================                                |  40%
 ```
 
-
 ## Customizing how progress is reported
 
 The default is to present progress via `utils::txtProgressBar()`, which is available on all R installations.  To change the default, to, say, `progress_bar()` by the **[progress]** package, set the following R option(\*):
@@ -118,6 +117,11 @@ For a more up-to-date view on what features might be added, see <https://github.
 
 
 ## Appendix
+
+### Under the hood
+
+![](vignettes/figures/slow_sum.svg)
+
 
 ### Debugging
 

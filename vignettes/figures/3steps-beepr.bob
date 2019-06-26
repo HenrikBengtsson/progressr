@@ -1,0 +1,24 @@
+ .-------------.         .------------.        .-------------.
+ | R code      |         | signaled   |        | progression |
+ |             |         | conditions |        | handler     |
+ '-------------'         '------------'        '-------------'
+
+                        *
+                        | progression
+ "p <- progressor(3)"   o.'.'.'.'.'.'.'.>*---o "[---------]   0%"
+                        |                +---o "♫"
+ "a <- 1"               |
+ "b <- 2"               | progression
+ "p(message = 'init')"  o.'.'.'.'.'.'.'.>*---o "[==>------]  33% init"
+                        |                +---o "𝅘𝅥𝅯"      
+ "c <- a+b"             | progression
+ "p(message = 'sum')"   o.'.'.'.'.'.'.'.>*---o "[=====>---]  66% sum" 
+                        |                +---o "𝅘𝅥𝅯"      
+ "d <- sqrt(c)"         | progression
+ "p(message = 'sqrt')"  o.'.'.'.'.'.'.'.>*---o "[========>] 100% sqrt"
+                        |                +---o "♫"      
+                        *
+
+ <===============>                              <===============>
+   controlled by                                  controlled by 
+   the DEVELOPER                                  the END USER

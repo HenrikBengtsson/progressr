@@ -1,0 +1,22 @@
+ .-------------.          .------------.  .-------------.
+ | R code      |          | signaled   |  | progression |
+ |             |          | conditions |  | handler     |
+ '-------------'          '------------'  '-------------'
+                      
+
+                         *
+                         |			 
+ "p <- progressor(3)"    o- - - - - - - ->*---o progress_handler
+                         |                      "|---------|  0%"
+ "a <- 1"                |
+ "b <- 2"                |  progression
+ "p(message = 'setup')"  o- - - - - - - ->*---o progress_handler
+                         |                      "|==>------| 33%"
+ "c <- a+b"              |  progression
+ "p(message = 'sum')"    o- - - - - - - ->*---o progress_handler
+                         |                      "|=====>---| 66%" 
+ "d <- sqrt(c)"          |  progression
+ "p(message = 'sqrt')"   o- - - - - - - ->*---o progress_handler
+                         |                      "|========>|100%"
+                         *
+			 
