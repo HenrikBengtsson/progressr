@@ -9,6 +9,8 @@ NEW FEATURES:
    the progress step to zero, e.g. progress(amount = 0).  This type of
    information can for instance be used to updated a progress bar spinner.
 
+ * Add utility function handlers() for controlling option 'progressr.handlers'.
+ 
 
 Version: 0.1.2 [2019-06-14]
 
