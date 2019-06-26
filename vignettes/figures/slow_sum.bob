@@ -4,25 +4,29 @@
  '-------------'                      '------------'        '-------------'
 
                          o
+                         |
+  "library(progressr)"   '
+  "options(progressr.handlers = list(progress_handler, beepr_handler))"
+                         .
   "y <- with_progress({" |
     "slow_sum(1:10)"     |
   "})"                   '----------.
                                     |
                                     | progression
         : "p <- progressor(10)"     o.'.'.'.'.'.'.'.>*---o "[==>------]" "0%"
-        : "sum <- 0"                |
+        : "sum <- 0"                |                +---o "♫"
         :                           |
         : "sum <- sum + x[1]"       | progression
         : "p(message = 'Added 1')"  o.'.'.'.'.'.'.'.>*---o "[==>------]""10% Added 1"
-        :                           |
+        :                           |                +---o "𝅘𝅥𝅯"
         : "sum <- sum + x[2]"       | progression
         : "p(message = 'Added 2')"  o.'.'.'.'.'.'.'.>*---o "[==>------]""10% Added 2"
-        :                           |
+        :                           |                +---o "𝅘𝅥𝅯"
         :           :               :      :                    :
         :                           |
         : "sum <- sum + x[10]"      | progression
         : "p(message = 'Added 10')" o.'.'.'.'.'.'.'.>*---o "[==>------] 100% Added 10"
-        :                           |
+        :                           |                +---o "♫"
         : "return(sum)"             |
                          .----------'
                          |
