@@ -8,8 +8,8 @@ handlers(..., on_missing = c("error", "warning", "ignore"))
 }
 \arguments{
 \item{\dots}{One or more progression handlers.  Alternatively, this
-functions accepts also a single list of progression handlers as input.
-If this list is empty, then an empty set of progression handlers will
+functions accepts also a single vector of progression handlers as input.
+If this vector is empty, then an empty set of progression handlers will
 be set.}
 
 \item{on_missing}{(character) If \code{"error"}, an error is thrown if one of

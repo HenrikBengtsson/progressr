@@ -1,8 +1,8 @@
 #' Get and Set the List of Progression Handlers
 #'
 #' @param \dots One or more progression handlers.  Alternatively, this
-#' functions accepts also a single list of progression handlers as input.
-#' If this list is empty, then an empty set of progression handlers will
+#' functions accepts also a single vector of progression handlers as input.
+#' If this vector is empty, then an empty set of progression handlers will
 #' be set.
 #'
 #' @param on_missing (character) If `"error"`, an error is thrown if one of
@@ -30,7 +30,7 @@ handlers <- function(..., on_missing = c("error", "warning", "ignore")) {
   on_missing <- match.arg(on_missing)
   
   ## Was a list specified?
-  if (length(args) == 1L && is.list(args[[1]])) {
+  if (length(args) == 1L && is.vector(args[[1]])) {
     args <- args[[1]]
   }
 
@@ -38,6 +38,8 @@ handlers <- function(..., on_missing = c("error", "warning", "ignore")) {
   names <- names(args)
   for (kk in seq_along(args)) {
     handler <- args[[kk]]
+    stop_if_not(length(handler) == 1L)
+    
     if (is.character(handler)) {
       name <- handler
       name2 <- sprintf("%s_handler", name)
