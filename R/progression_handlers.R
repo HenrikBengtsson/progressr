@@ -617,7 +617,7 @@ newline_handler <- function(symbol = "\n", file = stderr(), intrusiveness = getO
 
 
 
-#' Progression Updates Reflected as the Size off a File
+#' Progression Updates Reflected as the Size of a File
 #'
 #' @inheritParams progression_handler
 #'

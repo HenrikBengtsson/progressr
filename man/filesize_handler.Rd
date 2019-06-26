@@ -2,7 +2,7 @@
 % Please edit documentation in R/progression_handlers.R
 \name{filesize_handler}
 \alias{filesize_handler}
-\title{Progression Updates Reflected as the Size off a File}
+\title{Progression Updates Reflected as the Size of a File}
 \usage{
 filesize_handler(file = "default.progress",
   intrusiveness = getOption("progressr.intrusiveness.file", 5), ...)
@@ -16,7 +16,7 @@ filesize_handler(file = "default.progress",
 \item{\ldots}{Additional arguments passed to \code{\link[=progression_handler]{progression_handler()}}.}
 }
 \description{
-Progression Updates Reflected as the Size off a File
+Progression Updates Reflected as the Size of a File
 }
 \examples{
 \donttest{\dontrun{

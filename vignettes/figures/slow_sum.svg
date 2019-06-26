@@ -410,7 +410,7 @@ conditions
 </g>
 <g>
 <text x="473" y="252">
-[==&gt;------]
+[---------]
 </text>
 </g>
 <g>
@@ -420,7 +420,7 @@ conditions
 </g>
 <g>
 <text x="473" y="316">
-[==&gt;------]
+[&gt;--------]
 </text>
 </g>
 <g>
@@ -430,7 +430,7 @@ conditions
 </g>
 <g>
 <text x="473" y="364">
-[==&gt;------]
+[=&gt;-------]
 </text>
 </g>
 <g>
@@ -440,7 +440,7 @@ conditions
 </g>
 <g>
 <text x="473" y="444">
-[==&gt;------] 100% Added 10
+[========&gt;] 100% Added 10
 </text>
 </g>
 <g>
@@ -485,7 +485,7 @@ USER
 </g>
 <g>
 <text x="577" y="364">
-10% Added 2
+20% Added 2
 </text>
 </g>
 <g>

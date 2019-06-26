@@ -23,9 +23,9 @@ Below are all \R options that are currently used by the \pkg{progressr} package.
 
 
 \describe{
-\item{\option{progressr.clear}:}{(logical) If TRUE, any output, typically visual, produced by a reporter will be cleared/removed upon completion, if possible. (Default: \code{TRUE})}
+\item{\option{progressr.clear}:}{(logical) If TRUE, any output, typically visual, produced by a reporter will be cleared/removed upon completion, if possible. (Default: TRUE)}
 
-\item{\option{progressr.enable}:}{(logical) If FALSE, then progress is not reported. (Default: \code{TRUE})}
+\item{\option{progressr.enable}:}{(logical) If FALSE, then progress is not reported. (Default: TRUE)}
 
 \item{\option{progressr.enable_after}:}{(numeric) Delay (in seconds) before progression updates are reported. (Default: \code{0.0})}
 
@@ -53,7 +53,7 @@ Below are all \R options that are currently used by the \pkg{progressr} package.
 \describe{
 \item{\option{progressr.delay_conditions}:}{(character vector) condition classes to be captured and relayed at the end after any captured standard output is relayed. (Default: \code{c("condition")})}
 
-\item{\option{progressr.delay_stdout}:}{(logical) If TRUE, standard output is captured and relayed at the end just before any captured conditions are relayed. (Default: \code{TRUE})}
+\item{\option{progressr.delay_stdout}:}{(logical) If TRUE, standard output is captured and relayed at the end just before any captured conditions are relayed. (Default: TRUE)}
 }
 }
 
@@ -61,7 +61,7 @@ Below are all \R options that are currently used by the \pkg{progressr} package.
 
 
 \describe{
-\item{\option{progressr.debug}:}{(logical) If \code{TRUE}, extensive debug messages are generated. (Default: \code{FALSE})}
+\item{\option{progressr.debug}:}{(logical) If TRUE, extensive debug messages are generated. (Default: FALSE)}
 }
 }
 
