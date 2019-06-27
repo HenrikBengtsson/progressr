@@ -39,7 +39,7 @@ progress_aggregator <- function(progress) {
     invokeRestart("muffleProgression")
   }
 
-  handler <- progression_handler("progress_aggregator", handler = handler)
+  handler <- make_progression_handler("progress_aggregator", handler = handler)
   
   fcn <- function(...) {
     with_progress(..., handlers = handler)

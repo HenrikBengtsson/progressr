@@ -1,4 +1,8 @@
-#' Creates a Progression Handler
+#' Creates a Progression Calling Handler
+#'
+#' A progression calling handler is a function that takes a [base::condition]
+#' as its first argument and that can be use together with
+#' [base::withCallingHandlers()].
 #'
 #' @param name (character) Name of progression handler.
 #'
@@ -25,10 +29,14 @@
 #' @param clear (logical) If TRUE, any output, typically visual, produced
 #'   by a reporter will be cleared/removed upon completion, if possible.
 #'
-#' @return A function of class `progression_handler`.
+#' @return A function of class `progression_handler` that takes a
+#' [progression] condition as its first and only argument.
+#'
+#' @seealso
+#' [base::withCallingHandlers()].
 #'
 #' @export
-progression_handler <- function(name, reporter = list(), handler = NULL, enable = getOption("progressr.enable", interactive()), enable_after = getOption("progressr.enable_after", 0.0), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0.0), intrusiveness = 1.0, clear = getOption("progressr.clear", TRUE)) {
+make_progression_handler <- function(name, reporter = list(), handler = NULL, enable = getOption("progressr.enable", interactive()), enable_after = getOption("progressr.enable_after", 0.0), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0.0), intrusiveness = 1.0, clear = getOption("progressr.clear", TRUE)) {
   if (!enable) times <- 0
   name <- as.character(name)
   stop_if_not(length(name) == 1L, !is.na(name), nzchar(name))
@@ -201,7 +209,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
       type <- p$type
       debug <- getOption("progressr.debug", FALSE)
       if (debug) {
-        mprintf("Progression handler %s ...", sQuote(type))
+        mprintf("Progression calling handler %s ...", sQuote(type))
         mprintf("- progression:")
         mstr(p)
         mprintf("- progressor_uuid: %s", p$progressor_uuid)
@@ -210,10 +218,10 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
       }
 
       if (duplicated) {
-        if (debug) mprintf("Progression handler %s ... already done", sQuote(type))
+        if (debug) mprintf("Progression calling handler %s ... already done", sQuote(type))
         return(invisible())
       } else if (finished) {
-        if (debug) mprintf("Progression handler %s ... already finished", sQuote(type))
+        if (debug) mprintf("Progression calling handler %s ... already finished", sQuote(type))
         return(invisible())
       }
 
@@ -273,12 +281,13 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
         stop("Unknown 'progression' type: ", sQuote(type))
       }
       
-      if (debug) mprintf("Progression handler %s ... done", sQuote(type))
+      if (debug) mprintf("Progression calling handler %s ... done", sQuote(type))
     }
   }
 
   class(handler) <- c(sprintf("%s_progression_handler", name),
-                      "progression_handler", class(handler))
+                      "progression_handler", "calling_handler",
+		      class(handler))
 
   handler
 }
@@ -287,7 +296,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
 #' @export
 print.progression_handler <- function(x, ...) {
   print(sys.calls())
-  s <- sprintf("Progression handler of class %s:", sQuote(class(x)[1]))
+  s <- sprintf("Progression calling handler of class %s:", sQuote(class(x)[1]))
   
   env <- environment(x)
   s <- c(s, " * configuration:")

@@ -285,7 +285,7 @@ library(progressr)
 </g>
 <g>
 <text x="17" y="140">
-options(progressr.handlers = list(progress_handler, beepr_handler))
+handlers(&#39;progress&#39;, &#39;beepr&#39;)
 </text>
 </g>
 <g>

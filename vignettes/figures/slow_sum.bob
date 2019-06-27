@@ -6,7 +6,7 @@
                          o
                          |
   "library(progressr)"   '
-  "options(progressr.handlers = list(progress_handler, beepr_handler))"
+  "handlers('progress', 'beepr')"
                          .
   "y <- with_progress({" |
     "slow_sum(1:10)"     |
