@@ -1,7 +1,7 @@
 library(progressr)
 
 options(progressr.enable = TRUE)
-options(delay = 0.0)
+options(progressr.delay = 0.0)
 
 message("progress_aggregator() ...")
 
@@ -18,7 +18,7 @@ with_progress({
 
 message("- Stray progressions from unknown sources")
 
-slow_prod <- function(x, delay = getOption("delay", 0.05)) {
+slow_prod <- function(x, delay = getOption("progressr.delay", 0.05)) {
   progress <- progressor(2*length(x))
   res <- 0
   for (kk in seq_along(x)) {

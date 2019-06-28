@@ -5,7 +5,7 @@
 \title{Auditory Progression Feedback}
 \usage{
 ascii_alert_handler(symbol = "\\a", file = stderr(),
-  intrusiveness = getOption("progressr.intrusiveness.auditory", 10), ...)
+  intrusiveness = getOption("progressr.intrusiveness.auditory", 5), ...)
 }
 \arguments{
 \item{symbol}{(character string) The character symbol to be outputted,

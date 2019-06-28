@@ -1,5 +1,5 @@
 library(progressr)
-options(progressr.interval = 0.0, delay = 0.01)
+options(progressr.interval = 0.0, progressr.delay = 0.01)
 
 if (requireNamespace("doFuture", quietly = TRUE)) {
   library("doFuture", character.only = TRUE)

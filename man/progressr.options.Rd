@@ -36,7 +36,7 @@ Below are all \R options that are currently used by the \pkg{progressr} package.
 \item{\option{progressr.intrusiveness}:}{(numeric) A non-negative scalar on how intrusive (disruptive) the reporter to the user. This multiplicative scalar applies to the \emph{interval} and \emph{times} parameters. (Default: \code{1.0})\cr
 
 \describe{
-\item{\option{progressr.intrusiveness.auditory}:}{(numeric) intrusiveness for auditory progress handlers (Default: \code{10.0})}
+\item{\option{progressr.intrusiveness.auditory}:}{(numeric) intrusiveness for auditory progress handlers (Default: \code{5.0})}
 \item{\option{progressr.intrusiveness.file}:}{(numeric) intrusiveness for file-based progress handlers (Default: \code{5.0})}
 \item{\option{progressr.intrusiveness.gui}:}{(numeric) intrusiveness for graphical-user-interface progress handlers (Default: \code{1.0})}
 \item{\option{progressr.intrusiveness.notifier}:}{(numeric) intrusiveness for progress handlers that creates notifications (Default: \code{10.0})}
@@ -69,7 +69,7 @@ Below are all \R options that are currently used by the \pkg{progressr} package.
 
 
 \describe{
-\item{\option{delay}:}{(numeric) Delay (in seconds) between each iteration of \code{\link[=slow_sum]{slow_sum()}}. (Default: \code{0.05})}
+\item{\option{progressr.delay}:}{(numeric) Delay (in seconds) between each iteration of \code{\link[=slow_sum]{slow_sum()}}. (Default: \code{1.0})}
 }
 }
 

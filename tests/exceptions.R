@@ -1,7 +1,7 @@
 library(progressr)
 
 options(progressr.enable = TRUE)
-options(delay = 0.0)
+options(progressr.delay = 0.0)
 
 
 message("Exceptions ...")

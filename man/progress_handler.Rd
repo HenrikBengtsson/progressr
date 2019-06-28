@@ -23,7 +23,7 @@ A progression handler for \code{\link[progress:progress_bar]{progress::progress_
 }
 \examples{
 if (requireNamespace("progress", quietly = TRUE)) {
-  handlers("progress")
+  handlers(progress_handler(format = ":spin [:bar] :percent :message"))
   with_progress({ y <- slow_sum(1:10) })
   print(y)
 }

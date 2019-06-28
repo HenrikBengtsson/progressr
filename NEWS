@@ -1,7 +1,7 @@
 Package: progressr
 ==================
 
-Version: 0.1.2-9000 [2019-06-26]
+Version: 0.1.2-9000 [2019-06-27]
 
 NEW FEATURES:
 
@@ -11,6 +11,9 @@ NEW FEATURES:
 
  * Add utility function handlers() for controlling option 'progressr.handlers'.
  
+ * Progression handlers' internal state now has a sticky 'message' field,
+   which hold the most recent, non-empty progression 'message' received.
+
 
 Version: 0.1.2 [2019-06-14]
 

@@ -4,8 +4,8 @@
 \alias{slow_sum}
 \title{Slowly Calculate Sum of Elements}
 \usage{
-slow_sum(x, delay = getOption("delay", 0.05), stdout = FALSE,
-  message = FALSE)
+slow_sum(x, delay = getOption("progressr.delay", 1), stdout = FALSE,
+  message = TRUE)
 }
 \arguments{
 \item{x}{Numeric vector to sum}

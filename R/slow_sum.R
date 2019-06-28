@@ -15,17 +15,27 @@
 #' This function signals [progression] conditions as it progresses.
 #'
 #' @export
-slow_sum <- function(x, delay = getOption("delay", 0.05), stdout = FALSE, message = FALSE) {
+slow_sum <- function(x, delay = getOption("progressr.delay", 1.0), stdout = FALSE, message = TRUE) {
   progress <- progressor(length(x))
 
   sum <- 0
   for (kk in seq_along(x)) {
+    progress(amount = 0)   ## "I'm alive" progression update
+    Sys.sleep(0.2*delay)
     if (stdout) cat(sprintf("O: Element #%d\n", kk))
-    Sys.sleep(delay)
+    progress(amount = 0)
+    Sys.sleep(0.2*delay)
+    progress(amount = 0)
+    Sys.sleep(0.2*delay)
     sum <- sum + x[kk]
     progress(message = sprintf("P: Adding %g", kk))
+    Sys.sleep(0.2*delay)
     if (message) message(sprintf("M: Added value %g", x[kk]))
+    progress(amount = 0)
+    Sys.sleep(0.2*delay)
   }
+
+  progress(amount = 0)
 
   sum
 }

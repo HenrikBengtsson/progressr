@@ -14,11 +14,11 @@
 #' @example incl/ascii_alert_handler.R
 #'
 #' @export
-ascii_alert_handler <- function(symbol = "\a", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.auditory", 10), ...) {
+ascii_alert_handler <- function(symbol = "\a", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.auditory", 5.0), ...) {
   reporter <- local({
     list(
       update = function(config, state, progression, ...) {
-        if (state$enabled) cat(file = file, symbol)
+        if (state$enabled && progression$amount != 0) cat(file = file, symbol)
       }
     )
   })
@@ -79,7 +79,7 @@ txtprogressbar_handler <- function(style = 3L, file = stderr(), intrusiveness = 
       },
         
       update = function(config, state, progression, ...) {
-        if (!state$enabled || config$times == 1L) return()
+        if (!state$enabled || progression$amount == 0 || config$times == 1L) return()
 	make_pb(max = config$max_steps, style = style, file = file)
         setTxtProgressBar(pb, value = state$step)
       },
@@ -158,7 +158,7 @@ tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusive
       },
         
       update = function(config, state, progression, ...) {
-        if (!state$enabled || config$times <= 2L) return()
+        if (!state$enabled || progression$amount == 0 || config$times <= 2L) return()
         make_pb(max = config$max_steps, label = state$message)
         setTkProgressBar(pb, value = state$step, label = state$message)
       },
@@ -226,7 +226,7 @@ winprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiv
       },
         
       update = function(config, state, progression, ...) {
-        if (!state$enabled || config$times <= 2L) return()
+        if (!state$enabled || progression$amount == 0 || config$times <= 2L) return()
         make_pb(max = config$max_steps, label = state$message)
         setWinProgressBar(pb, value = state$step, label = state$message)
       },
@@ -317,7 +317,7 @@ pbmcapply_handler <- function(substyle = 3L, style = "ETA", file = stderr(), int
       },
         
       update = function(config, state, progression, ...) {
-        if (!state$enabled || config$times <= 2L) return()
+        if (!state$enabled || progression$amount == 0 || config$times <= 2L) return()
         make_pb(max = config$max_steps, style = style, substyle = substyle, file = file)
         setTxtProgressBar(pb, value = state$step)
       },
@@ -440,7 +440,7 @@ progress_handler <- function(format = "[:bar] :percent :message", show_after = 0
 #' @example incl/beepr_handler.R
 #'
 #' @export
-beepr_handler <- function(initiate = 2L, update = 10L,  finish = 11L, intrusiveness = getOption("progressr.intrusiveness.auditory", 10), ...) {
+beepr_handler <- function(initiate = 2L, update = 10L,  finish = 11L, intrusiveness = getOption("progressr.intrusiveness.auditory", 5.0), ...) {
   ## Used for package testing purposes only when we want to perform
   ## everything except the last part where the backend is called
   if (!is_fake("beepr_handler")) {
@@ -464,7 +464,7 @@ beepr_handler <- function(initiate = 2L, update = 10L,  finish = 11L, intrusiven
       },
         
       update = function(config, state, progression, ...) {
-        if (!state$enabled || config$times <= 2L) return()
+        if (!state$enabled || progression$amount == 0 || config$times <= 2L) return()
         beep(update)
       },
         
@@ -520,7 +520,7 @@ notifier_handler <- function(intrusiveness = getOption("progressr.intrusiveness.
       },
         
       update = function(config, state, progression, ...) {
-        if (!state$enabled || config$times <= 2L) return()
+        if (!state$enabled || progression$amount == 0 || config$times <= 2L) return()
         notify(step = state$step, max_steps = config$max_steps, message = state$message)
       },
         
@@ -638,6 +638,7 @@ filesize_handler <- function(file = "default.progress", intrusiveness = getOptio
       current_size <- file.size(file)
       if (is.na(current_size)) file.create(file, showWarnings = FALSE)
       if (size == 0L) return()
+      if (progression$amount == 0) return()          
 
       head <- sprintf("%g/%g: ", state$step, config$max_steps)
       nhead <- nchar(head)
