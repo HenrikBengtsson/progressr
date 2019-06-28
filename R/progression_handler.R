@@ -64,6 +64,7 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
   ## Progress state
   max_steps <- NULL
   step <- NULL
+  message <- NULL
   auto_finish <- TRUE
   timestamps <- NULL
   milestones <- NULL
@@ -92,6 +93,7 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
 
     state <- list(
       step = step,
+      message = message,
       timestamps = timestamps,
       delta = step - prev_milestone,
       enabled = enabled
@@ -183,6 +185,7 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
         if (type == "reset") {
           max_steps <<- NULL
           step <<- NULL
+	  message <<- NULL
           auto_finish <<- TRUE
           timestamps <<- NULL
           milestones <<- NULL
@@ -244,6 +247,7 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
         timestamps <<- rep(as.POSIXct(NA), times = max_steps)
         timestamps[1] <<- Sys.time()
         step <<- 0L
+	message <<- character(0L)
         if (debug) mstr(list(finished = finished, milestones = milestones))
         initiate_reporter(p)
         prev_milestone <<- step
@@ -257,6 +261,8 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
         update_reporter(p)
       } else if (type == "update") {
         step <<- min(max(step + p$amount, 0L), max_steps)
+        msg <- conditionMessage(p)
+        if (length(msg) > 0) message <<- msg
         timestamps[step] <<- Sys.time()
         if (debug) mstr(list(finished = finished, step = step, milestones = milestones, prev_milestone = prev_milestone, interval = interval))
         if (length(milestones) > 0L && step >= milestones[1]) {
@@ -316,6 +322,7 @@ print.progression_handler <- function(x, ...) {
   s <- c(s, sprintf("   - enabled: %s", env$enabled))
   s <- c(s, sprintf("   - finished: %s", env$finished))
   s <- c(s, sprintf("   - step: %s", env$step %||% "<NULL>"))
+  s <- c(s, sprintf("   - message: %s", env$message %||% "<NULL>"))
   s <- c(s, sprintf("   - prev_milestone: %s", env$prev_milestone %||% "<NULL>"))
   s <- c(s, sprintf("   - delta: %g", (env$step - env$prev_milestone) %||% 0L))
   s <- c(s, sprintf("   - timestamps: %s", hpaste(env$timestamps %||% "<NULL>")))
