@@ -3,7 +3,7 @@ library(progressr)
 options(progressr.tests.fake_handlers = c("beepr_handler", "notifier_handler", "pbmcapply_handler", "tkprogressbar_handler", "winprogressbar_handler"))
 options(progressr.enable = TRUE)
 
-options(delay = 0.001)
+options(progressr.delay = 0.001)
 options(progressr.times = +Inf)
 options(progressr.interval = 0)
 options(progressr.clear = FALSE)

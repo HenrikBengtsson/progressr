@@ -1,0 +1,38 @@
+ .-------------.                   .------------.      .-------------.
+ | R code      |                   | signaled   |      | progression |
+ |             |                   | conditions |      | handler     |
+ '-------------'                   '------------'      '-------------'
+
+                         o
+                         |
+  "library(progressr)"   '
+  "handlers('progress', 'beepr')"
+                         .
+  "y <- with_progress({" |
+    "slow_sum(1:10)"     |
+  "})"                   '------.
+                                |
+                                | progression
+        : "p <- progressor(10)" o.'.'.'.'.'.'.'.>*---o "[---------]" "0%"
+        : "sum <- 0"            |                +---o "♫"
+        :                       |
+        : "sum <- sum + x[1]"   | progression
+        : "p('Added 1')"        o.'.'.'.'.'.'.'.>*---o "[>--------]""10% Added 1"
+        :                       |                +---o "𝅘𝅥𝅯"
+        : "sum <- sum + x[2]"   | progression
+        : "p('Added 2')"        o.'.'.'.'.'.'.'.>*---o "[=>-------]""20% Added 2"
+        :                       |                +---o "𝅘𝅥𝅯"
+        :           :           :      :                    :
+        :                       |
+        : "sum <- sum + x[10]"  | progression
+        : "p('Added 10')"       o.'.'.'.'.'.'.'.>*---o "[========>] 100% Added 10"
+        :                       |                +---o "♫"
+        : "return(sum)"         |
+                         .------'
+                         |
+                         *
+
+          <===============>                             <===============>
+            controlled by                                 controlled by 
+            the DEVELOPER                                 the END USER
+			 

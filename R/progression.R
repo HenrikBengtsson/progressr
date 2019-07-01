@@ -1,8 +1,10 @@
 #' A Progression Condition
 #'
-#' @param amount (numeric) The total amount of progress made.
+#' A progression condition represents a progress in an \R program.
 #'
 #' @param message (character) A progress message.
+#'
+#' @param amount (numeric) The total amount of progress made.
 #'
 #' @param step (character or integer) The step completed.
 #'
@@ -35,7 +37,7 @@
 #' To create and signal a progression condition at once, use [progress()].
 #'
 #' @export
-progression <- function(amount = 1.0, message = character(0L), step = NULL, time = progression_time, ..., type = "update", class = NULL, progressor_uuid = NULL, progression_index = NULL, progression_time = Sys.time(), call = NULL, owner_session_uuid = NULL) {
+progression <- function(message = character(0L), amount = 1.0, step = NULL, time = progression_time, ..., type = "update", class = NULL, progressor_uuid = NULL, progression_index = NULL, progression_time = Sys.time(), call = NULL, owner_session_uuid = NULL) {
   message <- as.character(message)
   amount <- as.numeric(amount)
   time <- as.POSIXct(time)
@@ -78,8 +80,8 @@ progression <- function(amount = 1.0, message = character(0L), step = NULL, time
 print.progression <- function(x, ...) {
   s <- sprintf("%s:", class(x)[1])
   s <- c(s, paste("- call:", deparse(conditionCall(x))))
-  s <- c(s, paste("- message:", sQuote(conditionMessage(x))))
   s <- c(s, paste("- type:", x$type))
+  s <- c(s, paste("- message:", sQuote(conditionMessage(x))))
   s <- c(s, paste("- amount:", x$amount))
   s <- c(s, paste("- step:", x$step))
   s <- c(s, paste("- time:", x$time))

@@ -14,20 +14,13 @@ successive progression updates from this handler.}
 \item{intrusiveness}{(numeric) A non-negative scalar on how intrusive
 (disruptive) the reporter to the user.}
 
-\item{\ldots}{Additional arguments passed to \code{\link[=progression_handler]{progression_handler()}}.}
+\item{\ldots}{Additional arguments passed to \code{\link[=make_progression_handler]{make_progression_handler()}}.}
 }
 \description{
 Textual Progression Feedback for Debug Purposes
 }
 \examples{
-local({
-  oopts <- options(progressr.clear = FALSE,
-                   progressr.handlers = debug_handler)
-  on.exit(oopts)
-
-  x <- 1:10
-  with_progress({ y <- slow_sum(x) })
-  
-  print(y)
-})
+handlers("debug")
+with_progress({ y <- slow_sum(1:10) })
+print(y)
 }

@@ -16,20 +16,15 @@ the progress bar.}
 \item{intrusiveness}{(numeric) A non-negative scalar on how intrusive
 (disruptive) the reporter to the user.}
 
-\item{\ldots}{Additional arguments passed to \code{\link[=progression_handler]{progression_handler()}}.}
+\item{\ldots}{Additional arguments passed to \code{\link[=make_progression_handler]{make_progression_handler()}}.}
 }
 \description{
 A progression handler for \code{\link[progress:progress_bar]{progress::progress_bar()}}.
 }
 \examples{
-if (requireNamespace("progress", quietly = TRUE)) local({
-  oopts <- options(progressr.clear = FALSE,
-                   progressr.handlers = progress_handler)
-  on.exit(oopts)
-
-  x <- 1:10
-  with_progress({ y <- slow_sum(x) })
-  
+if (requireNamespace("progress", quietly = TRUE)) {
+  handlers(progress_handler(format = ":spin [:bar] :percent :message"))
+  with_progress({ y <- slow_sum(1:10) })
   print(y)
-})
+}
 }

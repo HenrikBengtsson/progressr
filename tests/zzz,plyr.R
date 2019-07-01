@@ -1,5 +1,5 @@
 library(progressr)
-options(progressr.interval = 0.0, delay = 0.01)
+options(progressr.interval = 0.0, progressr.delay = 0.01)
 
 if (requireNamespace("plyr", quietly = TRUE)) {
   with_progress({

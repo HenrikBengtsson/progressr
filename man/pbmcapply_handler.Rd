@@ -17,20 +17,15 @@ pbmcapply_handler(substyle = 3L, style = "ETA", file = stderr(),
 \item{intrusiveness}{(numeric) A non-negative scalar on how intrusive
 (disruptive) the reporter to the user.}
 
-\item{\ldots}{Additional arguments passed to \code{\link[=progression_handler]{progression_handler()}}.}
+\item{\ldots}{Additional arguments passed to \code{\link[=make_progression_handler]{make_progression_handler()}}.}
 }
 \description{
 A progression handler for \code{\link[pbmcapply:progressBar]{pbmcapply::progressBar()}}.
 }
 \examples{
-if (requireNamespace("pbmcapply", quietly = TRUE)) local({
-  oopts <- options(progressr.clear = FALSE,
-                   progressr.handlers = pbmcapply_handler)
-  on.exit(oopts)
-
-  x <- 1:10
-  with_progress({ y <- slow_sum(x) })
-  
+if (requireNamespace("pbmcapply", quietly = TRUE)) {
+  handlers("pbmcapply")
+  with_progress({ y <- slow_sum(1:10) })
   print(y)
-})
+}
 }

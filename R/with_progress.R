@@ -3,7 +3,7 @@
 #' @param expr An \R expression to evaluate.
 #'
 #' @param handlers A progression handler or a list of them.
-#' If @NULL or an empty list, progress updates are ignored.
+#' If NULL or an empty list, progress updates are ignored.
 #'
 #' @param cleanup If TRUE, all progression handlers will be shutdown
 #' at the end regardless of the progression is complete or not.

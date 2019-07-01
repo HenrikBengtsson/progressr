@@ -5,7 +5,7 @@
 \title{Auditory Progression Feedback}
 \usage{
 ascii_alert_handler(symbol = "\\a", file = stderr(),
-  intrusiveness = getOption("progressr.intrusiveness.auditory", 10), ...)
+  intrusiveness = getOption("progressr.intrusiveness.auditory", 5), ...)
 }
 \arguments{
 \item{symbol}{(character string) The character symbol to be outputted,
@@ -16,20 +16,13 @@ which by default is the ASCII BEL character (\code{'\a'} = \code{'\007'}) charac
 \item{intrusiveness}{(numeric) A non-negative scalar on how intrusive
 (disruptive) the reporter to the user.}
 
-\item{\ldots}{Additional arguments passed to \code{\link[=progression_handler]{progression_handler()}}.}
+\item{\ldots}{Additional arguments passed to \code{\link[=make_progression_handler]{make_progression_handler()}}.}
 }
 \description{
 A progression handler based on \code{cat("\a", file=stderr())}.
 }
 \examples{
-if (requireNamespace("utils", quietly = TRUE)) local({
-  oopts <- options(progressr.clear = FALSE,
-                   progressr.handlers = ascii_alert_handler)
-  on.exit(oopts)
-
-  x <- 1:10
-  with_progress({ y <- slow_sum(x) })
-  
-  print(y)
-})
+handlers("ascii_alert")
+with_progress({ y <- slow_sum(1:10) })
+print(y)
 }

@@ -5,7 +5,7 @@
 \title{Auditory Progression Feedback}
 \usage{
 beepr_handler(initiate = 2L, update = 10L, finish = 11L,
-  intrusiveness = getOption("progressr.intrusiveness.auditory", 10), ...)
+  intrusiveness = getOption("progressr.intrusiveness.auditory", 5), ...)
 }
 \arguments{
 \item{initiate, update, finish}{(integer) Indices of \code{\link[beepr:beep]{beepr::beep()}} sounds to
@@ -14,20 +14,15 @@ play when progress starts, is updated, and completes.  For silence, use \code{NA
 \item{intrusiveness}{(numeric) A non-negative scalar on how intrusive
 (disruptive) the reporter to the user.}
 
-\item{\ldots}{Additional arguments passed to \code{\link[=progression_handler]{progression_handler()}}.}
+\item{\ldots}{Additional arguments passed to \code{\link[=make_progression_handler]{make_progression_handler()}}.}
 }
 \description{
 A progression handler for \code{\link[beepr:beep]{beepr::beep()}}.
 }
 \examples{
-if (requireNamespace("utils", quietly = TRUE)) local({
-  oopts <- options(progressr.clear = FALSE,
-                   progressr.handlers = beepr_handler)
-  on.exit(oopts)
-
-  x <- 1:10
-  with_progress({ y <- slow_sum(x) })
-  
+if (requireNamespace("beepr", quietly = TRUE)) {
+  handlers("beepr")
+  with_progress({ y <- slow_sum(1:10) })
   print(y)
-})
+}
 }

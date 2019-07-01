@@ -4,16 +4,16 @@
 \alias{progression}
 \title{A Progression Condition}
 \usage{
-progression(amount = 1, message = character(0L), step = NULL,
+progression(message = character(0L), amount = 1, step = NULL,
   time = progression_time, ..., type = "update", class = NULL,
   progressor_uuid = NULL, progression_index = NULL,
   progression_time = Sys.time(), call = NULL,
   owner_session_uuid = NULL)
 }
 \arguments{
-\item{amount}{(numeric) The total amount of progress made.}
-
 \item{message}{(character) A progress message.}
+
+\item{amount}{(numeric) The total amount of progress made.}
 
 \item{step}{(character or integer) The step completed.}
 
@@ -43,7 +43,7 @@ unique for the \R session where the progressor was created.}
 A \link[base:condition]{base::condition} of class \code{progression}.
 }
 \description{
-A Progression Condition
+A progression condition represents a progress in an \R program.
 }
 \seealso{
 To signal a progression condition, use \code{\link[base:signalCondition]{base::signalCondition()}}.

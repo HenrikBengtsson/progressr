@@ -6,7 +6,7 @@ options(progressr.enable = TRUE)
 options(progressr.times = +Inf)
 options(progressr.interval = 0.1)
 options(progressr.enable_after = 0.5)
-options(delay = 0.1)
+options(progressr.delay = 0.1)
 
 message("with_progress() - progressr.debug = TRUE ...")
 
@@ -16,7 +16,7 @@ with_progress({
   y <- slow_sum(1:10)
 })
 
-options(progressr.enable_after = 0.0, delay = 0.0)
+options(progressr.enable_after = 0.0, progressr.delay = 0.0)
 
 with_progress({
   progress <- progressor(steps = 1 + 2 + 1)

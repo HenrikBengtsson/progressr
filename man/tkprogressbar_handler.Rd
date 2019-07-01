@@ -12,20 +12,15 @@
 \item{intrusiveness}{(numeric) A non-negative scalar on how intrusive
 (disruptive) the reporter to the user.}
 
-\item{\ldots}{Additional arguments passed to \code{\link[=progression_handler]{progression_handler()}}.}
+\item{\ldots}{Additional arguments passed to \code{\link[=make_progression_handler]{make_progression_handler()}}.}
 }
 \description{
 A progression handler for \code{\link[tcltk:tkProgressBar]{tcltk::tkProgressBar()}}.
 }
 \examples{
-if (requireNamespace("tcltk", quietly = TRUE)) local({
-  oopts <- options(progressr.clear = FALSE,
-                   progressr.handlers = tkprogressbar_handler)
-  on.exit(oopts)
-
-  x <- 1:10
-  with_progress({ y <- slow_sum(x) })
-  
+if (requireNamespace("tcltk", quietly = TRUE)) {
+  handlers("tkprogressbar")
+  with_progress({ y <- slow_sum(1:10) })
   print(y)
-})
+}
 }

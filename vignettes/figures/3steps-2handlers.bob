@@ -1,0 +1,20 @@
+                      .------.     .---------------. .-----------------------.
+                      | Code |     | with_progress | | progression_handlers: |
+                      '------'     '---------------' '-----------------------'
+                      
+
+                         o
+ "p <- progressor(3)"    |
+                         |
+                         |  progression
+ "p(message = 'Step 1')" o- - - - - - - ->*------------ progress_handler
+                         |                +------------ beepr_handler
+                         |
+                         |  progression
+ "p(message = 'Step 2')" o- - - - - - - ->*------------ progress_handler
+                         |                +------------ beepr_handler
+                         |
+                         |  progression
+ "p(message = 'Step 3')" o- - - - - - - ->*------------ progress_handler
+                         |                +------------ beepr_handler
+   

@@ -1,4 +1,8 @@
-#' Creates a Progression Handler
+#' Creates a Progression Calling Handler
+#'
+#' A progression calling handler is a function that takes a [base::condition]
+#' as its first argument and that can be use together with
+#' [base::withCallingHandlers()].
 #'
 #' @param name (character) Name of progression handler.
 #'
@@ -25,10 +29,14 @@
 #' @param clear (logical) If TRUE, any output, typically visual, produced
 #'   by a reporter will be cleared/removed upon completion, if possible.
 #'
-#' @return A function of class `progression_handler`.
+#' @return A function of class `progression_handler` that takes a
+#' [progression] condition as its first and only argument.
+#'
+#' @seealso
+#' [base::withCallingHandlers()].
 #'
 #' @export
-progression_handler <- function(name, reporter = list(), handler = NULL, enable = getOption("progressr.enable", interactive()), enable_after = getOption("progressr.enable_after", 0.0), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0.0), intrusiveness = 1.0, clear = getOption("progressr.clear", TRUE)) {
+make_progression_handler <- function(name, reporter = list(), handler = NULL, enable = getOption("progressr.enable", interactive()), enable_after = getOption("progressr.enable_after", 0.0), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0.0), intrusiveness = 1.0, clear = getOption("progressr.clear", TRUE)) {
   if (!enable) times <- 0
   name <- as.character(name)
   stop_if_not(length(name) == 1L, !is.na(name), nzchar(name))
@@ -56,6 +64,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
   ## Progress state
   max_steps <- NULL
   step <- NULL
+  message <- NULL
   auto_finish <- TRUE
   timestamps <- NULL
   milestones <- NULL
@@ -84,6 +93,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
 
     state <- list(
       step = step,
+      message = message,
       timestamps = timestamps,
       delta = step - prev_milestone,
       enabled = enabled
@@ -175,6 +185,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
         if (type == "reset") {
           max_steps <<- NULL
           step <<- NULL
+	  message <<- NULL
           auto_finish <<- TRUE
           timestamps <<- NULL
           milestones <<- NULL
@@ -201,7 +212,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
       type <- p$type
       debug <- getOption("progressr.debug", FALSE)
       if (debug) {
-        mprintf("Progression handler %s ...", sQuote(type))
+        mprintf("Progression calling handler %s ...", sQuote(type))
         mprintf("- progression:")
         mstr(p)
         mprintf("- progressor_uuid: %s", p$progressor_uuid)
@@ -210,10 +221,10 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
       }
 
       if (duplicated) {
-        if (debug) mprintf("Progression handler %s ... already done", sQuote(type))
+        if (debug) mprintf("Progression calling handler %s ... already done", sQuote(type))
         return(invisible())
       } else if (finished) {
-        if (debug) mprintf("Progression handler %s ... already finished", sQuote(type))
+        if (debug) mprintf("Progression calling handler %s ... already finished", sQuote(type))
         return(invisible())
       }
 
@@ -236,6 +247,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
         timestamps <<- rep(as.POSIXct(NA), times = max_steps)
         timestamps[1] <<- Sys.time()
         step <<- 0L
+	message <<- character(0L)
         if (debug) mstr(list(finished = finished, milestones = milestones))
         initiate_reporter(p)
         prev_milestone <<- step
@@ -244,8 +256,13 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
         finish_reporter(p)
         timestamps[max_steps] <<- Sys.time()
         prev_milestone <<- max_steps
+      } else if (type == "update" && p$amount == 0) {
+        if (debug) mstr(list(amount = 0, finished = finished, step = step, milestones = milestones, prev_milestone = prev_milestone, interval = interval))
+        update_reporter(p)
       } else if (type == "update") {
         step <<- min(max(step + p$amount, 0L), max_steps)
+        msg <- conditionMessage(p)
+        if (length(msg) > 0) message <<- msg
         timestamps[step] <<- Sys.time()
         if (debug) mstr(list(finished = finished, step = step, milestones = milestones, prev_milestone = prev_milestone, interval = interval))
         if (length(milestones) > 0L && step >= milestones[1]) {
@@ -270,12 +287,13 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
         stop("Unknown 'progression' type: ", sQuote(type))
       }
       
-      if (debug) mprintf("Progression handler %s ... done", sQuote(type))
+      if (debug) mprintf("Progression calling handler %s ... done", sQuote(type))
     }
   }
 
   class(handler) <- c(sprintf("%s_progression_handler", name),
-                      "progression_handler", class(handler))
+                      "progression_handler", "calling_handler",
+		      class(handler))
 
   handler
 }
@@ -284,7 +302,7 @@ progression_handler <- function(name, reporter = list(), handler = NULL, enable 
 #' @export
 print.progression_handler <- function(x, ...) {
   print(sys.calls())
-  s <- sprintf("Progression handler of class %s:", sQuote(class(x)[1]))
+  s <- sprintf("Progression calling handler of class %s:", sQuote(class(x)[1]))
   
   env <- environment(x)
   s <- c(s, " * configuration:")
@@ -304,6 +322,7 @@ print.progression_handler <- function(x, ...) {
   s <- c(s, sprintf("   - enabled: %s", env$enabled))
   s <- c(s, sprintf("   - finished: %s", env$finished))
   s <- c(s, sprintf("   - step: %s", env$step %||% "<NULL>"))
+  s <- c(s, sprintf("   - message: %s", env$message %||% "<NULL>"))
   s <- c(s, sprintf("   - prev_milestone: %s", env$prev_milestone %||% "<NULL>"))
   s <- c(s, sprintf("   - delta: %g", (env$step - env$prev_milestone) %||% 0L))
   s <- c(s, sprintf("   - timestamps: %s", hpaste(env$timestamps %||% "<NULL>")))

@@ -102,7 +102,7 @@ is_fake <- local({
 known_progression_handlers <- function() {
   ns <- asNamespace(.packageName)
   handlers <- ls(envir = ns, pattern = "_handler$")
-  handlers <- setdiff(handlers, c("progression_handler", "print.progression_handler"))
+  handlers <- setdiff(handlers, c("make_progression_handler", "print.progression_handler"))
   handlers <- mget(handlers, envir = ns, inherits = FALSE)
   handlers
 }
@@ -111,3 +111,46 @@ known_progression_handlers <- function() {
 `%||%` <- function(lhs, rhs) {
   if (is.null(lhs)) rhs else lhs
 }
+
+
+## From R.utils 2.7.0 (2018-08-26)
+query_r_cmd_check <- function(...) {
+  evidences <- list()
+
+  # Command line arguments
+  args <- commandArgs()
+  evidences[["vanilla"]] <- is.element("--vanilla", args)
+
+  # Check the working directory
+  pwd <- getwd()
+  dirname <- basename(pwd)
+  parent <- basename(dirname(pwd))
+  pattern <- ".+[.]Rcheck$"
+
+  # Is 'R CMD check' checking tests?
+  evidences[["tests"]] <- (
+    (regexpr(pattern, parent) != -1) && 
+    (regexpr("^tests(|_.*)$", dirname) != -1)
+  )
+
+  # Is the current working directory as expected?
+  evidences[["pwd"]] <- (evidences[["tests"]] || (regexpr(pattern, dirname) != -1))
+
+  # Is 'R CMD check' checking examples?
+  evidences[["examples"]] <- is.element("CheckExEnv", search())
+
+
+  if (!evidences$vanilla || !evidences$pwd) {
+    res <- "notRunning"
+  } else if (evidences$tests) {
+    res <- "checkingTests"
+  } else if (evidences$examples) {
+    res <- "checkingExamples"
+  } else {
+    res <- "notRunning"
+  }
+
+  res
+}
+
+in_r_cmd_check <- function() { query_r_cmd_check() != "notRunning" }
