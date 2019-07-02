@@ -1,5 +1,7 @@
 # progressr: A Unifying API for Progress Updates
 
+![Lifecycle:maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
+
 The **[progressr]** package provides a minimal API for reporting progress updates in [R](https://www.r-project.org/).  The design is to separate the representation of progress updates from how they are presented.  What type of progress to signal is controlled by the developer.  How these progress updates are rendered is controlled by the end user.  For instance, some users may prefer visual feedback such as a horizontal progress bar in the terminal, whereas others may prefer auditory feedback.
 
 Design motto:
@@ -114,11 +116,11 @@ with_progress({
 
 ### The future framework
 
-The **[future]** framework has built-in support for the kind of progression updates produced by the **progressr** package.
+The **[future]** framework has built-in support for the kind of progression updates produced by the **progressr** package.  Here is an example that uses `future_lapply() of the **[future.apply]** package to parallelize on the local machine while at the same time signaling progression updates:
 
 ```r
 library(future.apply)
-plan(multisession, workers = 2)
+plan(multisession)
 
 library(progressr)
 handlers("progress", "beepr")
@@ -196,6 +198,7 @@ To debug progress updates, use:
 [beepr]: https://cran.r-project.org/package=beepr
 [progress]: https://cran.r-project.org/package=progress
 [future]: https://cran.r-project.org/package=future
+[future.apply]: https://cran.r-project.org/package=future.apply
 
 ## Installation
 R package progressr is only available via [GitHub](https://github.com/HenrikBengtsson/progressr) and can be installed in R as:
