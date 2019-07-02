@@ -4,6 +4,14 @@ Design motto:
 
 > The developer is responsible for providing progress updates but it's only the end user who decides if, when, and how progress should be presented. No exceptions will be allowed.
 
+## Two Minimal APIs
+
+ | Developer's API       | End-user's API              |
+ |-----------------------|-----------------------------|
+ | `p <- progressor(n)`  | `with_progress(expr)`       |
+ | `p(msg, ...)`         | `handlers(...)`             |
+ |                       | `options(progressr.*=...)`  |
+
 
 ## A simple example
 
