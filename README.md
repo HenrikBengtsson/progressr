@@ -1,12 +1,16 @@
 # progressr: A Unifying API for Progress Updates
 
-![Lifecycle:maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
+![Life cycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
 
 The **[progressr]** package provides a minimal API for reporting progress updates in [R](https://www.r-project.org/).  The design is to separate the representation of progress updates from how they are presented.  What type of progress to signal is controlled by the developer.  How these progress updates are rendered is controlled by the end user.  For instance, some users may prefer visual feedback such as a horizontal progress bar in the terminal, whereas others may prefer auditory feedback.
+
+
+<img src="incl/three_in_chinese.gif" alt="Three strokes writing three in Chinese" style="float: right; margin-right: 1ex; margin-left: 1ex;"/>
 
 Design motto:
 
 > The developer is responsible for providing progress updates but it's only the end user who decides if, when, and how progress should be presented. No exceptions will be allowed.
+
 
 ## Two Minimal APIs
 
@@ -15,6 +19,7 @@ Design motto:
  | `p <- progressor(n)`  | `with_progress(expr)`       |
  | `p(msg, ...)`         | `handlers(...)`             |
  |                       | `options(progressr.*=...)`  |
+
 
 
 ## A simple example
@@ -61,7 +66,7 @@ To get progress updates, we can call it as:
 
 ## Customizing how progress is reported
 
-The default is to present progress via `utils::txtProgressBar()`, which is available on all R installations.  To change the default, to, say, `progress_bar()` by the **[progress]** package, set the following R option(\*):
+The default is to present progress via `utils::txtProgressBar()`, which is available on all R installations.  To change the default, to, say, `progress_bar()` by the **[progress]** package, set:
 
 ```r
 handlers("progress")
@@ -71,6 +76,9 @@ This progress handler will present itself as:
 > with_progress(y <- slow_sum(1:10))
 [==================>---------------------------]  40% Added 4
 ```
+
+To set the default progress handler(s) in all your R sessions, call `progressr::handlers(...)` in your <code>~/.Rprofile</code> file.  An alternative, which avoids loading the **progressr** package if never used, is to set `options(progressr.handlers = progress_handler)`.
+
 
 
 ### Auditory progress updates
@@ -116,7 +124,7 @@ with_progress({
 
 ### The future framework
 
-The **[future]** framework has built-in support for the kind of progression updates produced by the **progressr** package.  Here is an example that uses `future_lapply() of the **[future.apply]** package to parallelize on the local machine while at the same time signaling progression updates:
+The **[future]** framework has built-in support for the kind of progression updates produced by the **progressr** package.  Here is an example that uses `future_lapply()` of the **[future.apply]** package to parallelize on the local machine while at the same time signaling progression updates:
 
 ```r
 library(future.apply)
@@ -164,7 +172,7 @@ When using the **progressr** package, progression updates are communicated via R
 
 ![](vignettes/figures/slow_sum.svg)
 
-_Figure: Sequence diagram illustrating how signaled progression conditions are captured by `with_progress()` and relayed to the two progression handlers 'progress' (a progress bar in the terminal) and 'beepr' (auditory) that the end user has choosen._
+_Figure: Sequence diagram illustrating how signaled progression conditions are captured by `with_progress()` and relayed to the two progression handlers 'progress' (a progress bar in the terminal) and 'beepr' (auditory) that the end user has chosen._
 
 
 ### Debugging
@@ -187,10 +195,6 @@ To debug progress updates, use:
 [13:33:50.774] (1.031s => +0.003s) update: 10/10 (+0) 'Added 10' {clear=TRUE, enabled=TRUE, status=}
 [13:33:50.776] (1.033s => +0.001s) shutdown: 10/10 (+0) '' {clear=TRUE, enabled=TRUE, status=ok}
 ```
-
-<small>
-(*) To set the default progress handler in all your R sessions, set this option in your <code>~/.Rprofile</code> file.
-</small>
 
 
 
