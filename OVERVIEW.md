@@ -127,7 +127,11 @@ For a more up-to-date view on what features might be added, see <https://github.
 
 ### Under the hood
 
+
+
 ![](vignettes/figures/slow_sum.svg)
+
+_Figure: Sequence diagram illustrating how signaled progression conditions are captured by `with_progress()` and relayed to the two progression handlers 'progress' (a progress bar in the terminal) and 'beepr' (auditory) that the end user has choosen._
 
 
 ### Debugging
