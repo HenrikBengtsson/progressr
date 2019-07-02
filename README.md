@@ -129,7 +129,16 @@ For a more up-to-date view on what features might be added, see <https://github.
 
 ### Under the hood
 
+When using the **progressr** package, progression updates are communicated via R's condition framework, which provides methods for creating, signaling, capturing, muffling, and relaying conditions.  Progression updates are of classes `progression` and `immediateCondition`(\*).  The below figure gives an example how progression conditions are created, signaled, and rendered.
+
+(\*) The `immediateCondition` class of conditions are relayed as soon as possible by the [**future**](https://cran.r-project.org/package=future) framework, which means that progression updates produced in parallel workers are reported to the end user as soon as the main R session have received them.
+
+
+
+
 ![](vignettes/figures/slow_sum.svg)
+
+_Figure: Sequence diagram illustrating how signaled progression conditions are captured by `with_progress()` and relayed to the two progression handlers 'progress' (a progress bar in the terminal) and 'beepr' (auditory) that the end user has choosen._
 
 
 ### Debugging
