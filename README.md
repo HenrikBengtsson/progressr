@@ -112,6 +112,30 @@ with_progress({
 ```
 
 
+### The future framework
+
+The **[future]** framework has built-in support for the kind of progression updates produced by the **progressr** package.
+
+```r
+library(future.apply)
+plan(multisession, workers = 2)
+
+library(progressr)
+handlers("progress", "beepr")
+
+with_progress({
+  p <- progressr::progressor(5)
+  y <- future_lapply(1:5, function(x, ...) {
+    p(sprintf("x=%g", x))
+    Sys.sleep(1)
+    sqrt(x)
+  })
+})
+## |=====================                                |  40%
+```
+
+
+
 ## Roadmap
 
 Because this project is under active development, the progressr API is currently kept at a very minimum.  This will allow for the framework and the API to evolve while minimizing the risk for breaking code that depends on it.  The roadmap for developing the API is roughly:
@@ -131,7 +155,7 @@ For a more up-to-date view on what features might be added, see <https://github.
 
 When using the **progressr** package, progression updates are communicated via R's condition framework, which provides methods for creating, signaling, capturing, muffling, and relaying conditions.  Progression updates are of classes `progression` and `immediateCondition`(\*).  The below figure gives an example how progression conditions are created, signaled, and rendered.
 
-(\*) The `immediateCondition` class of conditions are relayed as soon as possible by the [**future**](https://cran.r-project.org/package=future) framework, which means that progression updates produced in parallel workers are reported to the end user as soon as the main R session have received them.
+(\*) The `immediateCondition` class of conditions are relayed as soon as possible by the **[future]** framework, which means that progression updates produced in parallel workers are reported to the end user as soon as the main R session have received them.
 
 
 
@@ -171,7 +195,7 @@ To debug progress updates, use:
 [progressr]: https://github.com/HenrikBengtsson/progressr/
 [beepr]: https://cran.r-project.org/package=beepr
 [progress]: https://cran.r-project.org/package=progress
-
+[future]: https://cran.r-project.org/package=future
 
 ## Installation
 R package progressr is only available via [GitHub](https://github.com/HenrikBengtsson/progressr) and can be installed in R as:
