@@ -48,6 +48,7 @@ To get progress updates, we can call it as:
   |=====================                                |  40%
 ```
 
+
 ## Customizing how progress is reported
 
 The default is to present progress via `utils::txtProgressBar()`, which is available on all R installations.  To change the default, to, say, `progress_bar()` by the **[progress]** package, set the following R option(\*):

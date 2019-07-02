@@ -117,6 +117,11 @@ For a more up-to-date view on what features might be added, see <https://github.
 
 ## Appendix
 
+### Under the hood
+
+![](vignettes/figures/slow_sum.svg)
+
+
 ### Debugging
 
 To debug progress updates, use:
