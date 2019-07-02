@@ -62,7 +62,7 @@ To get progress updates, we can call it as:
 The default is to present progress via `utils::txtProgressBar()`, which is available on all R installations.  To change the default, to, say, `progress_bar()` by the **[progress]** package, set the following R option(\*):
 
 ```r
-options(progressr.handlers = progress_handler)
+handlers("progress")
 ```
 This progress handler will present itself as:
 ```r
@@ -76,7 +76,7 @@ This progress handler will present itself as:
 Note all progress updates have to be presented visually. This can equally well be done auditory. For example, using:
 
 ```r
-options(progressr.handlers = beepr_handler)
+handlers("beepr")
 ```
 will present itself as sounds played at the beginning, while progressing, and at the end (using different **[beepr]** sounds).  There will be _no_ output written to the terminal;
 ```r
@@ -91,7 +91,7 @@ will present itself as sounds played at the beginning, while progressing, and at
 
 It is possible to have multiple progress handlers presenting progress updates at the same time.  For example, to get both visual and auditory updates, use:
 ```r
-options(progressr.handlers = list(txtprogressbar_handler, beepr_handler))
+handlers("txtprogressbar", "beepr")
 ```
 
 
@@ -169,7 +169,7 @@ _Figure: Sequence diagram illustrating how signaled progression conditions are c
 
 To debug progress updates, use:
 ```r
-> options(progressr.handlers = debug_handler)
+> handlers("debug")
 > with_progress(y <- slow_sum(1:10))
 [13:33:50.776] (1.033s => +0.001s) shutdown: 10/10 (+0) '' {clear=TRUE, enabled=TRUE, status=ok}
 [13:33:49.743] (0.000s => +0.002s) initiate: 0/10 (+0) '' {clear=TRUE, enabled=TRUE, status=}
