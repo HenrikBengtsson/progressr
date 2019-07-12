@@ -7,6 +7,7 @@ HenrikBengtsson
 https
 macOS
 NL
+parallelize
 plyr
 Plyr
 POSIXct
@@ -16,4 +17,5 @@ progressor
 Progressor
 roadmap
 Roadmap
+Rprofile
 substyle

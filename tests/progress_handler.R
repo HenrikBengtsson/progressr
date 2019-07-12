@@ -15,7 +15,7 @@ x <- 1:10
 message("progress_handler() ...")
 
 with_progress({
-  progress <- progressor(length(x))
+  progress <- progressor(along = x)
   for (ii in x) {
     Sys.sleep(delay)
     progress(message = sprintf("(%s)", paste(letters[1:ii], collapse="")))

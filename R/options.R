@@ -62,12 +62,24 @@
 #'
 #'
 #' @seealso
-#' To set \R options when \R starts (even before the \pkg{progressr} package is loaded), see the \link[base]{Startup} help page.  The \href{https://cran.r-project.org/package=startup}{\pkg{startup}} package provides a friendly mechanism for configurating \R's startup process.
+#' To set \R options when \R starts (even before the \pkg{progressr} package is loaded), see the \link[base]{Startup} help page.  The \href{https://cran.r-project.org/package=startup}{\pkg{startup}} package provides a friendly mechanism for configuring \R at startup.
 #'
 #' @aliases
-#' progressr.debug
-#' progressr.handlers
 #' progressr.clear
+#' progressr.debug
+#' progressr.delay
+#' progressr.delay_stdout progressr.delay_conditions
+#' progressr.enable progressr.enable_after
+#' progressr.interval
+#' progressr.intrusiveness
+#' progressr.intrusiveness.auditory
+#' progressr.intrusiveness.debug
+#' progressr.intrusiveness.file
+#' progressr.intrusiveness.gui
+#' progressr.intrusiveness.notifier
+#' progressr.intrusiveness.terminal
+#' progressr.handlers
+#' progressr.times
 #'
 #' @keywords internal
 #' @name progressr.options

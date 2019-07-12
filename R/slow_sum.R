@@ -16,7 +16,7 @@
 #'
 #' @export
 slow_sum <- function(x, delay = getOption("progressr.delay", 1.0), stdout = FALSE, message = TRUE) {
-  progress <- progressor(length(x))
+  progress <- progressor(along = x)
 
   sum <- 0
   for (kk in seq_along(x)) {

@@ -1,10 +1,25 @@
 # progressr: A Unifying API for Progress Updates
 
+![Life cycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
+
 The **[progressr]** package provides a minimal API for reporting progress updates in [R](https://www.r-project.org/).  The design is to separate the representation of progress updates from how they are presented.  What type of progress to signal is controlled by the developer.  How these progress updates are rendered is controlled by the end user.  For instance, some users may prefer visual feedback such as a horizontal progress bar in the terminal, whereas others may prefer auditory feedback.
+
+
+<img src="incl/three_in_chinese.gif" alt="Three strokes writing three in Chinese" style="float: right; margin-right: 1ex; margin-left: 1ex;"/>
 
 Design motto:
 
 > The developer is responsible for providing progress updates but it's only the end user who decides if, when, and how progress should be presented. No exceptions will be allowed.
+
+
+## Two Minimal APIs
+
+ | Developer's API       | End-user's API              |
+ |-----------------------|-----------------------------|
+ | `p <- progressor(n)`  | `with_progress(expr)`       |
+ | `p(msg, ...)`         | `handlers(...)`             |
+ |                       | `options(progressr.*=...)`  |
+
 
 
 ## A simple example
@@ -48,12 +63,13 @@ To get progress updates, we can call it as:
   |=====================                                |  40%
 ```
 
+
 ## Customizing how progress is reported
 
-The default is to present progress via `utils::txtProgressBar()`, which is available on all R installations.  To change the default, to, say, `progress_bar()` by the **[progress]** package, set the following R option(\*):
+The default is to present progress via `utils::txtProgressBar()`, which is available on all R installations.  To change the default, to, say, `progress_bar()` by the **[progress]** package, set:
 
 ```r
-options(progressr.handlers = progress_handler)
+handlers("progress")
 ```
 This progress handler will present itself as:
 ```r
@@ -61,13 +77,16 @@ This progress handler will present itself as:
 [==================>---------------------------]  40% Added 4
 ```
 
+To set the default progress handler(s) in all your R sessions, call `progressr::handlers(...)` in your <code>~/.Rprofile</code> file.  An alternative, which avoids loading the **progressr** package if never used, is to set `options(progressr.handlers = progress_handler)`.
+
+
 
 ### Auditory progress updates
 
 Note all progress updates have to be presented visually. This can equally well be done auditory. For example, using:
 
 ```r
-options(progressr.handlers = beepr_handler)
+handlers("beepr")
 ```
 will present itself as sounds played at the beginning, while progressing, and at the end (using different **[beepr]** sounds).  There will be _no_ output written to the terminal;
 ```r
@@ -82,7 +101,7 @@ will present itself as sounds played at the beginning, while progressing, and at
 
 It is possible to have multiple progress handlers presenting progress updates at the same time.  For example, to get both visual and auditory updates, use:
 ```r
-options(progressr.handlers = list(txtprogressbar_handler, beepr_handler))
+handlers("txtprogressbar", "beepr")
 ```
 
 
@@ -103,6 +122,30 @@ with_progress({
 ```
 
 
+### The future framework
+
+The **[future]** framework has built-in support for the kind of progression updates produced by the **progressr** package.  Here is an example that uses `future_lapply()` of the **[future.apply]** package to parallelize on the local machine while at the same time signaling progression updates:
+
+```r
+library(future.apply)
+plan(multisession)
+
+library(progressr)
+handlers("progress", "beepr")
+
+with_progress({
+  p <- progressr::progressor(5)
+  y <- future_lapply(1:5, function(x, ...) {
+    p(sprintf("x=%g", x))
+    Sys.sleep(1)
+    sqrt(x)
+  })
+})
+## [=================>-----------------------------]  40% x=2
+```
+
+
+
 ## Roadmap
 
 Because this project is under active development, the progressr API is currently kept at a very minimum.  This will allow for the framework and the API to evolve while minimizing the risk for breaking code that depends on it.  The roadmap for developing the API is roughly:
@@ -120,16 +163,24 @@ For a more up-to-date view on what features might be added, see <https://github.
 
 ### Under the hood
 
+When using the **progressr** package, progression updates are communicated via R's condition framework, which provides methods for creating, signaling, capturing, muffling, and relaying conditions.  Progression updates are of classes `progression` and `immediateCondition`(\*).  The below figure gives an example how progression conditions are created, signaled, and rendered.
+
+(\*) The `immediateCondition` class of conditions are relayed as soon as possible by the **[future]** framework, which means that progression updates produced in parallel workers are reported to the end user as soon as the main R session have received them.
+
+
+
+
 ![](vignettes/figures/slow_sum.svg)
+
+_Figure: Sequence diagram illustrating how signaled progression conditions are captured by `with_progress()` and relayed to the two progression handlers 'progress' (a progress bar in the terminal) and 'beepr' (auditory) that the end user has chosen._
 
 
 ### Debugging
 
 To debug progress updates, use:
 ```r
-> options(progressr.handlers = debug_handler)
+> handlers("debug")
 > with_progress(y <- slow_sum(1:10))
-[13:33:50.776] (1.033s => +0.001s) shutdown: 10/10 (+0) '' {clear=TRUE, enabled=TRUE, status=ok}
 [13:33:49.743] (0.000s => +0.002s) initiate: 0/10 (+0) '' {clear=TRUE, enabled=TRUE, status=}
 [13:33:49.847] (0.104s => +0.001s) update: 1/10 (+1) 'Added 1' {clear=TRUE, enabled=TRUE, status=}
 [13:33:49.950] (0.206s => +0.001s) update: 2/10 (+1) 'Added 2' {clear=TRUE, enabled=TRUE, status=}
@@ -142,18 +193,16 @@ To debug progress updates, use:
 [13:33:50.670] (0.927s => +0.001s) update: 9/10 (+1) 'Added 9' {clear=TRUE, enabled=TRUE, status=}
 [13:33:50.773] (1.030s => +0.001s) update: 10/10 (+1) 'Added 10' {clear=TRUE, enabled=TRUE, status=}
 [13:33:50.774] (1.031s => +0.003s) update: 10/10 (+0) 'Added 10' {clear=TRUE, enabled=TRUE, status=}
+[13:33:50.776] (1.033s => +0.001s) shutdown: 10/10 (+0) '' {clear=TRUE, enabled=TRUE, status=ok}
 ```
-
-<small>
-(*) To set the default progress handler in all your R sessions, set this option in your <code>~/.Rprofile</code> file.
-</small>
 
 
 
 [progressr]: https://github.com/HenrikBengtsson/progressr/
 [beepr]: https://cran.r-project.org/package=beepr
 [progress]: https://cran.r-project.org/package=progress
-
+[future]: https://cran.r-project.org/package=future
+[future.apply]: https://cran.r-project.org/package=future.apply
 
 ## Installation
 R package progressr is only available via [GitHub](https://github.com/HenrikBengtsson/progressr) and can be installed in R as:

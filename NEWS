@@ -1,6 +1,13 @@
 Package: progressr
 ==================
 
+Version: 0.1.4 [2019-07-02]
+
+NEW FEATURES:
+
+ * Add support for progressor(along = ...).
+ 
+
 Version: 0.1.3 [2019-07-01]
 
 NEW FEATURES:

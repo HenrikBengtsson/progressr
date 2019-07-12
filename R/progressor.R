@@ -2,6 +2,8 @@
 #'
 #' @param steps (integer) Maximum number of steps.
 #'
+#' @param along (vector; alternative) Corresponds to `steps = seq_along(along)`.
+#'
 #' @param label (character) A label.
 #'
 #' @param initiate (logical) If TRUE, the progressor will signal a
@@ -16,7 +18,12 @@
 progressor <- local({
   progressor_count <- 0L
   
-  function(steps, label = NA_character_, initiate = TRUE, auto_finish = TRUE) {
+  function(steps = NULL, along = NULL, label = NA_character_, initiate = TRUE, auto_finish = TRUE) {
+    stop_if_not(!is.null(steps) || !is.null(along))
+    if (!is.null(along)) steps <- length(along)
+    stop_if_not(length(steps) == 1L, is.numeric(steps), !is.na(steps),
+                steps >= 0)
+    
     label <- as.character(label)
     stop_if_not(length(label) == 1L)
 
