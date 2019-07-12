@@ -1,4 +1,4 @@
-![Life cycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
+![Life cycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)
 
 The **[progressr]** package provides a minimal API for reporting progress updates in [R](https://www.r-project.org/).  The design is to separate the representation of progress updates from how they are presented.  What type of progress to signal is controlled by the developer.  How these progress updates are rendered is controlled by the end user.  For instance, some users may prefer visual feedback such as a horizontal progress bar in the terminal, whereas others may prefer auditory feedback.
 
