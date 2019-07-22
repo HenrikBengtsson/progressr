@@ -19,7 +19,8 @@ Suggests:
     future,
     doFuture,
     future.apply,
-    furrr
+    furrr,
+    shiny
 Remotes:
   gaborcsardi/notifier@d92b1b6
 URL: https://github.com/HenrikBengtsson/progressr

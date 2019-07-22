@@ -3,7 +3,9 @@ Package: progressr
 
 Version: 0.1.4-9000 [2019-07-22]
 
- * ...
+NEW FEATURES:
+
+ * Add a "shiny" progression handler.
 
 
 Version: 0.1.4 [2019-07-02]
