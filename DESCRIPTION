@@ -10,6 +10,7 @@ Imports:
     digest,
     utils
 Suggests:
+    graphics,
     tcltk,
     beepr,
     notifier,

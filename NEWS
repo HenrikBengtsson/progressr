@@ -10,6 +10,8 @@ NEW FEATURES:
    the "shiny" progression handler is by default added to the list of
    progression handlers used.
 
+ * Add demo("mandelbrot", package = "progressr").
+ 
 
 Version: 0.1.4 [2019-07-02]
 
