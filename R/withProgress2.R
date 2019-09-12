@@ -13,5 +13,5 @@ withProgress2 <- function(expr, ..., env = parent.frame(), quoted = FALSE, handl
   if (!quoted) expr <- substitute(expr)
   expr <- bquote(progressr::with_progress({.(expr)}, handlers = .(handlers)))
   withVisible(shiny::withProgress(expr, ..., env = env, quoted = TRUE))
-#  if (res$visible) res$value else invisible(res$value)
+  if (res$visible) res$value else invisible(res$value)
 }
