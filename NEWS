@@ -1,11 +1,14 @@
 Package: progressr
 ==================
 
-Version: 0.1.4-9000 [2019-07-22]
+Version: 0.1.4-9000 [2019-09-12]
 
 NEW FEATURES:
 
- * Add a "shiny" progression handler.
+ * Add withProgress2(), which is a plug-in backward compatibily replacement
+   for shiny::withProgress() wrapped in progressr::with_progress() where the
+   the "shiny" progression handler is by default added to the list of
+   progression handlers used.
 
 
 Version: 0.1.4 [2019-07-02]
