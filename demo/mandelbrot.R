@@ -6,7 +6,7 @@ p <- function(...) NULL
 
 ## WORKAROUND: resolved() should launch lazy future
 ## https://github.com/HenrikBengtsson/future/issues/337
-if (packageVersion("future") < "1.15.0") {
+if (packageVersion("future") < "1.14.0-9000") {
   resolved <- function(future, ...) {
     if (future$state == "created") future <- run(future)
     future::resolved(future, ...)
