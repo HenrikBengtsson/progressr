@@ -10,7 +10,7 @@ options(progressr.delay = 0.1)
 
 message("with_progress() - progressr.debug = TRUE ...")
 
-options(progressr.handlers = progressr:::known_progression_handlers())
+options(progressr.handlers = progressr:::known_progression_handlers(exclude = "shiny_handler"))
 
 with_progress({
   y <- slow_sum(1:10)
