@@ -24,7 +24,7 @@ plot_what_is_done <- function(counts) {
     if (!resolved(f)) next
 
     message(sprintf("Plotting tile #%d of %d ...", kk, n))
-    counts[[kk]] <- value(counts[[kk]])
+    counts[[kk]] <- value(f)
     screen(kk)
     plot(counts[[kk]])
     p()
