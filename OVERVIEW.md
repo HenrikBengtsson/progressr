@@ -112,7 +112,7 @@ The functions in the [**plyr**](https://cran.r-project.org/package=plyr) package
 library(progressr)
 with_progress({
   y <- plyr::l_ply(1:5, function(x, ...) {
-    Sys.sleep(1)
+    Sys.sleep(6.0-x)
     sqrt(x)
   }, .progress = "progressr")
 })
@@ -140,7 +140,7 @@ with_progress({
   p <- progressr::progressor(5)
   y <- future_lapply(1:5, function(x, ...) {
     p(sprintf("x=%g", x))
-    Sys.sleep(1)
+    Sys.sleep(6.0-x)
     sqrt(x)
   })
 })
@@ -164,7 +164,7 @@ with_progress({
   p <- progressr::progressor(5)
   y <- foreach(x = 1:5) %dopar% {
     p(sprintf("x=%g", x))
-    Sys.sleep(1)
+    Sys.sleep(6.0-x)
     sqrt(x)
   }
 })
