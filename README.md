@@ -152,8 +152,8 @@ handlers("progress", "beepr")
 xs <- 1:5
 
 with_progress({
-  p <- progressor(5)
-  y <- foreach(x = 1:5) %dopar% {
+  p <- progressor(along = xs)
+  y <- foreach(x = xs) %dopar% {
     p(sprintf("x=%g", x))
     Sys.sleep(6.0-x)
     sqrt(x)
