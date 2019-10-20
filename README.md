@@ -107,12 +107,51 @@ handlers("txtprogressbar", "beepr")
 
 ## Support for progressr elsewhere
 
-### The future framework
+Note that progression updates by **progressr** is designed to work out of the box for any _sequential_ iterator framework in R.  Here is an set of examples for the most common ones:
 
-The **[future]** framework has built-in support for the kind of progression updates produced by the **progressr** package.  This means that you can use it with for instance **[future.apply]**, **[furrr]**, and **[foreach]** with **[doFuture]**.
+```r
+library(progressr)
+
+xs <- 1:5
+y_truth <- lapply(xs, slow_sqrt)
+
+with_progress({
+  p <- progressor(along = xs)
+  y <- lapply(xs, function(x) {
+    p(sprintf("x=%g", x))
+    Sys.sleep(0.1)
+    sqrt(x)
+  })
+})
+
+library(foreach)
+with_progress({
+  p <- progressor(along = xs)
+  y <- foreach(x = xs) %do% {
+    p(sprintf("x=%g", x))
+    Sys.sleep(0.1)
+    sqrt(x)
+  }
+})
+
+library(purrr)
+with_progress({
+  p <- progressor(along = xs)
+  y <- map(xs, function(x) {
+    p(sprintf("x=%g", x))
+    Sys.sleep(0.1)
+    sqrt(x)
+  })
+})
+```
 
 
-#### future_lapply()
+### Parallel processing and progress updates
+
+The **[future]** framework, which provides a unified API for parallel and distributed processing in R, has built-in support for the kind of progression updates produced by the **progressr** package.  This means that you can use it with for instance **[future.apply]**, **[furrr]**, and **[foreach]** with **[doFuture]**.
+
+
+#### future_lapply() - parallel lapply()
 
 Here is an example that uses `future_lapply()` of the **[future.apply]** package to parallelize on the local machine while at the same time signaling progression updates:
 
@@ -158,6 +197,29 @@ with_progress({
     Sys.sleep(6.0-x)
     sqrt(x)
   }
+})
+## [=================>-----------------------------]  40% x=2
+```
+
+
+#### future_map() - parallel purrr::map()
+
+```r
+library(furrr)
+plan(multisession)
+
+library(progressr)
+handlers("progress", "beepr")
+
+xs <- 1:5
+
+with_progress({
+  p <- progressor(along = xs)
+  y <- future_map(xs, function(x) {
+    p(sprintf("x=%g", x))
+    Sys.sleep(6.0-x)
+    sqrt(x)
+  })
 })
 ## [=================>-----------------------------]  40% x=2
 ```
