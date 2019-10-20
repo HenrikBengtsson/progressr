@@ -2,9 +2,14 @@ AppVeyor
 beepr
 BEL
 CMD
+doFuture
+doParallel
+foreach
+furrr
 github
 HenrikBengtsson
 https
+lapply
 macOS
 NL
 parallelize
@@ -19,3 +24,4 @@ roadmap
 Roadmap
 Rprofile
 substyle
+withProgress

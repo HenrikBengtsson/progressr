@@ -1,4 +1,4 @@
-#' Plug-in backward compatibily replacement for shiny::withProgress()
+#' Plug-in backward compatibility replacement for shiny::withProgress()
 #'
 #' @param expr,\ldots,env,quoted Arguments passed to [shiny::withProgress] as is.
 #'

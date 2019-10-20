@@ -2,7 +2,7 @@
 % Please edit documentation in R/withProgress2.R
 \name{withProgress2}
 \alias{withProgress2}
-\title{Plug-in backward compatibily replacement for shiny::withProgress()}
+\title{Plug-in backward compatibility replacement for shiny::withProgress()}
 \usage{
 withProgress2(expr, ..., env = parent.frame(), quoted = FALSE,
   handlers = c(shiny = shiny_handler, getOption("progressr.handlers")))
@@ -16,7 +16,7 @@ withProgress2(expr, ..., env = parent.frame(), quoted = FALSE,
 The value of \code{[shiny::withProgress]}.
 }
 \description{
-Plug-in backward compatibily replacement for shiny::withProgress()
+Plug-in backward compatibility replacement for shiny::withProgress()
 }
 \examples{
 library(shiny)

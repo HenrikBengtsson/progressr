@@ -105,27 +105,6 @@ handlers("txtprogressbar", "beepr")
 
 ## Support for progressr elsewhere
 
-### The plyr package
-
-The functions in the [**plyr**](https://cran.r-project.org/package=plyr) package take argument `.progress`, which can be used to produce progress updates.  To have them generate **progressr** 'progression' updates, use `.progress = "progressr"`. For example,
-```r
-library(plyr)
-library(progressr)
-
-xs <- 1:5
-
-with_progress({
-  y <- l_ply(xs, function(x, ...) {
-    Sys.sleep(6.0-x)
-    sqrt(x)
-  }, .progress = "progressr")
-})
-## |=====================                                |  40%
-```
-
-_Comment_: This also works when using `.parallel = TRUE` with a **[foreach]** parallel-backend such as **[doParallel]** or **[doFuture]** registered.
-
-
 ### The future framework
 
 The **[future]** framework has built-in support for the kind of progression updates produced by the **progressr** package.  This means that you can use it with for instance **[future.apply]**, **[furrr]]*, and **[foreach]**+**[doFuture]**.
@@ -180,6 +159,27 @@ with_progress({
 })
 ## [=================>-----------------------------]  40% x=2
 ```
+
+
+### The plyr package
+
+The functions in the [**plyr**](https://cran.r-project.org/package=plyr) package take argument `.progress`, which can be used to produce progress updates.  To have them generate **progressr** 'progression' updates, use `.progress = "progressr"`. For example,
+```r
+library(plyr)
+library(progressr)
+
+xs <- 1:5
+
+with_progress({
+  y <- l_ply(xs, function(x, ...) {
+    Sys.sleep(6.0-x)
+    sqrt(x)
+  }, .progress = "progressr")
+})
+## |=====================                                |  40%
+```
+
+_Comment_: This also works when using `.parallel = TRUE` with a **[foreach]** parallel-backend such as **[doParallel]** or **[doFuture]** registered.
 
 
 
