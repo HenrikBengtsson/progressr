@@ -122,7 +122,12 @@ with_progress({
 
 ### The future framework
 
-The **[future]** framework has built-in support for the kind of progression updates produced by the **progressr** package.  Here is an example that uses `future_lapply()` of the **[future.apply]** package to parallelize on the local machine while at the same time signaling progression updates:
+The **[future]** framework has built-in support for the kind of progression updates produced by the **progressr** package.  This means that you can use it with for instance **[future.apply]**, **[furrr]]*, and **[foreach]**+**[doFuture]**.
+
+
+#### future_lapply()
+
+Here is an example that uses `future_lapply()` of the **[future.apply]** package to parallelize on the local machine while at the same time signaling progression updates:
 
 ```r
 library(future.apply)
@@ -141,6 +146,32 @@ with_progress({
 })
 ## [=================>-----------------------------]  40% x=2
 ```
+
+
+#### foreach() with doFuture
+
+Here is an example that uses `foreach()` of the **[foreach]** package to parallelize on the local machine (via **[doFuture]**) while at the same time signaling progression updates:
+
+```r
+library(doFuture)
+registerDoFuture()
+plan(multisession)
+
+library(progressr)
+handlers("progress", "beepr")
+
+with_progress({
+  p <- progressr::progressor(5)
+  y <- foreach(x = 1:5) %dopar% {
+    p(sprintf("x=%g", x))
+    Sys.sleep(1)
+    sqrt(x)
+  }
+})
+## [=================>-----------------------------]  40% x=2
+```
+
+
 
 
 
@@ -201,3 +232,7 @@ To debug progress updates, use:
 [progress]: https://cran.r-project.org/package=progress
 [future]: https://cran.r-project.org/package=future
 [future.apply]: https://cran.r-project.org/package=future.apply
+[doFuture]: https://cran.r-project.org/package=doFuture
+[foreach]: https://cran.r-project.org/package=foreach
+[furrr]: https://cran.r-project.org/package=furrr
+
