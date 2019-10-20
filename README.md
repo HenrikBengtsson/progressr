@@ -28,7 +28,7 @@ Assume that we have a function `slow_sum()` for adding up the values in a vector
 
 ```r
 slow_sum <- function(x) {
-  progress <- progressr::progressor(length(x))
+  progress <- progressr::progressor(along = x)
   sum <- 0
   for (kk in seq_along(x)) {
     Sys.sleep(0.1)
@@ -111,15 +111,21 @@ handlers("txtprogressbar", "beepr")
 
 The functions in the [**plyr**](https://cran.r-project.org/package=plyr) package take argument `.progress`, which can be used to produce progress updates.  To have them generate **progressr** 'progression' updates, use `.progress = "progressr"`. For example,
 ```r
+library(plyr)
 library(progressr)
+
+xs <- 1:5
+
 with_progress({
-  y <- plyr::l_ply(1:5, function(x, ...) {
+  y <- l_ply(xs, function(x, ...) {
     Sys.sleep(6.0-x)
     sqrt(x)
   }, .progress = "progressr")
 })
 ## |=====================                                |  40%
 ```
+
+_Comment_: This also works when using `.parallel = TRUE` with a **[foreach]** parallel-backend such as **[doParallel]** or **[doFuture]** registered.
 
 
 ### The future framework
@@ -138,9 +144,11 @@ plan(multisession)
 library(progressr)
 handlers("progress", "beepr")
 
+xs <- 1:5
+
 with_progress({
-  p <- progressr::progressor(5)
-  y <- future_lapply(1:5, function(x, ...) {
+  p <- progressor(along = xs)
+  y <- future_lapply(xs, function(x, ...) {
     p(sprintf("x=%g", x))
     Sys.sleep(6.0-x)
     sqrt(x)
@@ -162,8 +170,10 @@ plan(multisession)
 library(progressr)
 handlers("progress", "beepr")
 
+xs <- 1:5
+
 with_progress({
-  p <- progressr::progressor(5)
+  p <- progressor(5)
   y <- foreach(x = 1:5) %dopar% {
     p(sprintf("x=%g", x))
     Sys.sleep(6.0-x)
