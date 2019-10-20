@@ -107,7 +107,7 @@ handlers("txtprogressbar", "beepr")
 
 ### The future framework
 
-The **[future]** framework has built-in support for the kind of progression updates produced by the **progressr** package.  This means that you can use it with for instance **[future.apply]**, **[furrr]]*, and **[foreach]**+**[doFuture]**.
+The **[future]** framework has built-in support for the kind of progression updates produced by the **progressr** package.  This means that you can use it with for instance **[future.apply]**, **[furrr]**, and **[foreach]** with **[doFuture]**.
 
 
 #### future_lapply()
