@@ -60,4 +60,4 @@ Rplots.pdf$
 ^last.dump*
 
 vignettes/
-^.*[.]gif$
+^.*.gif$
