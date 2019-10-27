@@ -1,6 +1,6 @@
 # progressr: A Unifying API for Progress Updates
 
-![Life cycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
+![Life cycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)
 
 The **[progressr]** package provides a minimal API for reporting progress updates in [R](https://www.r-project.org/).  The design is to separate the representation of progress updates from how they are presented.  What type of progress to signal is controlled by the developer.  How these progress updates are rendered is controlled by the end user.  For instance, some users may prefer visual feedback such as a horizontal progress bar in the terminal, whereas others may prefer auditory feedback.
 
@@ -28,7 +28,7 @@ Assume that we have a function `slow_sum()` for adding up the values in a vector
 
 ```r
 slow_sum <- function(x) {
-  progress <- progressr::progressor(length(x))
+  progress <- progressr::progressor(along = x)
   sum <- 0
   for (kk in seq_along(x)) {
     Sys.sleep(0.1)
@@ -107,24 +107,53 @@ handlers("txtprogressbar", "beepr")
 
 ## Support for progressr elsewhere
 
-### The plyr package
+Note that progression updates by **progressr** is designed to work out of the box for any _sequential_ iterator framework in R.  Here is an set of examples for the most common ones:
 
-The functions in the [**plyr**](https://cran.r-project.org/package=plyr) package take argument `.progress`, which can be used to produce progress updates.  To have them generate **progressr** 'progression' updates, use `.progress = "progressr"`. For example,
 ```r
 library(progressr)
+
+xs <- 1:5
+y_truth <- lapply(xs, slow_sqrt)
+
 with_progress({
-  y <- plyr::l_ply(1:5, function(x, ...) {
-    Sys.sleep(1)
+  p <- progressor(along = xs)
+  y <- lapply(xs, function(x) {
+    p(sprintf("x=%g", x))
+    Sys.sleep(0.1)
     sqrt(x)
-  }, .progress = "progressr")
+  })
 })
-## |=====================                                |  40%
+
+library(foreach)
+with_progress({
+  p <- progressor(along = xs)
+  y <- foreach(x = xs) %do% {
+    p(sprintf("x=%g", x))
+    Sys.sleep(0.1)
+    sqrt(x)
+  }
+})
+
+library(purrr)
+with_progress({
+  p <- progressor(along = xs)
+  y <- map(xs, function(x) {
+    p(sprintf("x=%g", x))
+    Sys.sleep(0.1)
+    sqrt(x)
+  })
+})
 ```
 
 
-### The future framework
+### Parallel processing and progress updates
 
-The **[future]** framework has built-in support for the kind of progression updates produced by the **progressr** package.  Here is an example that uses `future_lapply()` of the **[future.apply]** package to parallelize on the local machine while at the same time signaling progression updates:
+The **[future]** framework, which provides a unified API for parallel and distributed processing in R, has built-in support for the kind of progression updates produced by the **progressr** package.  This means that you can use it with for instance **[future.apply]**, **[furrr]**, and **[foreach]** with **[doFuture]**.
+
+
+#### future_lapply() - parallel lapply()
+
+Here is an example that uses `future_lapply()` of the **[future.apply]** package to parallelize on the local machine while at the same time signaling progression updates:
 
 ```r
 library(future.apply)
@@ -133,16 +162,90 @@ plan(multisession)
 library(progressr)
 handlers("progress", "beepr")
 
+xs <- 1:5
+
 with_progress({
-  p <- progressr::progressor(5)
-  y <- future_lapply(1:5, function(x, ...) {
+  p <- progressor(along = xs)
+  y <- future_lapply(xs, function(x, ...) {
     p(sprintf("x=%g", x))
-    Sys.sleep(1)
+    Sys.sleep(6.0-x)
     sqrt(x)
   })
 })
 ## [=================>-----------------------------]  40% x=2
 ```
+
+
+#### foreach() with doFuture
+
+Here is an example that uses `foreach()` of the **[foreach]** package to parallelize on the local machine (via **[doFuture]**) while at the same time signaling progression updates:
+
+```r
+library(doFuture)
+registerDoFuture()
+plan(multisession)
+
+library(progressr)
+handlers("progress", "beepr")
+
+xs <- 1:5
+
+with_progress({
+  p <- progressor(along = xs)
+  y <- foreach(x = xs) %dopar% {
+    p(sprintf("x=%g", x))
+    Sys.sleep(6.0-x)
+    sqrt(x)
+  }
+})
+## [=================>-----------------------------]  40% x=2
+```
+
+
+#### future_map() - parallel purrr::map()
+
+```r
+library(furrr)
+plan(multisession)
+
+library(progressr)
+handlers("progress", "beepr")
+
+xs <- 1:5
+
+with_progress({
+  p <- progressor(along = xs)
+  y <- future_map(xs, function(x) {
+    p(sprintf("x=%g", x))
+    Sys.sleep(6.0-x)
+    sqrt(x)
+  })
+})
+## [=================>-----------------------------]  40% x=2
+```
+
+
+### The plyr package
+
+The functions in the [**plyr**](https://cran.r-project.org/package=plyr) package take argument `.progress`, which can be used to produce progress updates.  To have them generate **progressr** 'progression' updates, use `.progress = "progressr"`. For example,
+```r
+library(plyr)
+library(progressr)
+
+xs <- 1:5
+
+with_progress({
+  y <- l_ply(xs, function(x, ...) {
+    Sys.sleep(6.0-x)
+    sqrt(x)
+  }, .progress = "progressr")
+})
+## |=====================                                |  40%
+```
+
+_Comment_: This also works when using `.parallel = TRUE` with a **[foreach]** parallel-backend such as **[doParallel]** or **[doFuture]** registered.
+
+
 
 
 
@@ -203,6 +306,10 @@ To debug progress updates, use:
 [progress]: https://cran.r-project.org/package=progress
 [future]: https://cran.r-project.org/package=future
 [future.apply]: https://cran.r-project.org/package=future.apply
+[doFuture]: https://cran.r-project.org/package=doFuture
+[foreach]: https://cran.r-project.org/package=foreach
+[furrr]: https://cran.r-project.org/package=furrr
+
 
 ## Installation
 R package progressr is only available via [GitHub](https://github.com/HenrikBengtsson/progressr) and can be installed in R as:
@@ -224,7 +331,7 @@ This will install the package from source.
 
 This Git repository uses the [Git Flow](http://nvie.com/posts/a-successful-git-branching-model/) branching model (the [`git flow`](https://github.com/petervanderdoes/gitflow-avh) extension is useful for this).  The [`develop`](https://github.com/HenrikBengtsson/progressr/tree/develop) branch contains the latest contributions and other code that will appear in the next release, and the [`master`](https://github.com/HenrikBengtsson/progressr) branch contains the code of the latest release.
 
-Contributing to this package is easy.  Just send a [pull request](https://help.github.com/articles/using-pull-requests/).  When you send your PR, make sure `develop` is the destination branch on the [progressr repository](https://github.com/HenrikBengtsson/progressr).  Your PR should pass `R CMD check --as-cran`, which will also be checked by  and  when the PR is submitted.
+Contributing to this package is easy.  Just send a [pull request](https://help.github.com/articles/using-pull-requests/).  When you send your PR, make sure `develop` is the destination branch on the [progressr repository](https://github.com/HenrikBengtsson/progressr).  Your PR should pass `R CMD check --as-cran`, which will also be checked by <a href="https://travis-ci.org/HenrikBengtsson/progressr">Travis CI</a> and  when the PR is submitted.
 
 
 ## Software status
@@ -232,5 +339,5 @@ Contributing to this package is easy.  Just send a [pull request](https://help.g
 | Resource:     | GitHub        | Travis CI       | AppVeyor         |
 | ------------- | ------------------- | --------------- | ---------------- |
 | _Platforms:_  | _Multiple_          | _Linux & macOS_ | _Windows_        |
-| R CMD check   |  |    |  |
-| Test coverage |                     |      |                  |
+| R CMD check   |  | <a href="https://travis-ci.org/HenrikBengtsson/progressr"><img src="https://travis-ci.org/HenrikBengtsson/progressr.svg" alt="Build status"></a>   |  |
+| Test coverage |                     | <a href="https://codecov.io/gh/HenrikBengtsson/progressr"><img src="https://codecov.io/gh/HenrikBengtsson/progressr/branch/develop/graph/badge.svg" alt="Coverage Status"/></a>     |                  |

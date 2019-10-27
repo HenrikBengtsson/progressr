@@ -75,8 +75,21 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
   ## Progress cache
   owner <- NULL
   done <- list()
+
+  ## Sanity checks
+  .validate_internal_state <- function(label = "<no-label>") {
+    error <- function(...) {
+      msg <- sprintf(...)
+      stop(sprintf(".validate_internal_state(%s): %s", sQuote(label), msg))
+    }
+    if (!is.null(timestamps)) {
+      if (length(timestamps) == 0L) error("length(timestamp) == 0L")
+    }
+  }
   
   reporter_args <- function(progression) {
+    .validate_internal_state("reporter_args() ... begin")
+    
     if (!enabled && !is.null(timestamps)) {
       dt <- difftime(Sys.time(), timestamps[1L], units = "secs")
       enabled <<- (dt >= enable_after)
@@ -100,11 +113,13 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
     )
     if (length(state$delta) == 0L) state$delta <- 0L
 
+    .validate_internal_state("reporter_args() ... end")
+
     c(config, state, list(
       config = config,
       state = state,
       progression = progression
-    ))
+    ))    
   }
 
   reset_reporter <- function(p) {
@@ -115,6 +130,7 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
       mstr(args)
     }
     do.call(reporter$reset, args = args)
+    .validate_internal_state("reset_reporter() ... done")
     if (debug) mprintf("reset_reporter() ... done")
   }
 
@@ -128,6 +144,7 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
     stop_if_not(is.null(prev_milestone), length(milestones) > 0L)
     do.call(reporter$initiate, args = args)
     finished <<- FALSE
+    .validate_internal_state("initiate_reporter() ... done")
     if (debug) mprintf("initiate_reporter() ... done")
   }
 
@@ -140,6 +157,7 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
     }
     stop_if_not(!is.null(step), length(milestones) > 0L)
     do.call(reporter$update, args = args)
+    .validate_internal_state("update_reporter() ... done")
     if (debug) mprintf("update_reporter() ... done")
   }
 
@@ -152,6 +170,7 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
     }
     do.call(reporter$finish, args = args)
     finished <<- TRUE
+    .validate_internal_state("finish_reporter() ... done")
     if (debug) mprintf("finish_reporter() ... done")
   }
 
@@ -195,11 +214,14 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
 	  owner <<- NULL
           done <<- list()
           reset_reporter(p)
+          .validate_internal_state(sprintf("handler(type=%s) ... end", type))
         } else if (type == "shutdown") {
           finish_reporter(p)
+          .validate_internal_state(sprintf("handler(type=%s) ... end", type))
         } else {
 	  stop("Unknown control_progression type: ", sQuote(type))
 	}
+        .validate_internal_state(sprintf("control_progression ... end", type))
         return(invisible())
       }	
 
@@ -230,6 +252,8 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
 
       if (type == "initiate") {
         max_steps <<- p$steps
+	if (debug) mstr(list(max_steps=max_steps))
+	stop_if_not(!is.null(max_steps), is.numeric(max_steps), length(max_steps) == 1L, max_steps >= 1)
         auto_finish <<- p$auto_finish
         times <- min(times, max_steps)
         if (debug) mstr(list(auto_finish = auto_finish, times = times, interval = interval, intrusiveness = intrusiveness))
@@ -251,16 +275,21 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
         if (debug) mstr(list(finished = finished, milestones = milestones))
         initiate_reporter(p)
         prev_milestone <<- step
+        .validate_internal_state(sprintf("handler(type=%s) ... end", type))
       } else if (type == "finish") {
         if (debug) mstr(list(finished = finished, milestones = milestones))
         finish_reporter(p)
         timestamps[max_steps] <<- Sys.time()
         prev_milestone <<- max_steps
+        .validate_internal_state()
       } else if (type == "update" && p$amount == 0) {
         if (debug) mstr(list(amount = 0, finished = finished, step = step, milestones = milestones, prev_milestone = prev_milestone, interval = interval))
         update_reporter(p)
+        .validate_internal_state(sprintf("handler(type=%s, amount=0) ... end", type))
       } else if (type == "update") {
+	if (debug) mstr(list(step=step, "p$amount"=p$amount, max_steps=max_steps))
         step <<- min(max(step + p$amount, 0L), max_steps)
+	stop_if_not(step >= 1L)
         msg <- conditionMessage(p)
         if (length(msg) > 0) message <<- msg
         timestamps[step] <<- Sys.time()
@@ -283,12 +312,16 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
             finish_reporter(p)
           }
         }
+        .validate_internal_state(sprintf("handler(type=%s) ... end", type))
       } else {
         stop("Unknown 'progression' type: ", sQuote(type))
       }
-      
+
+      ## Sanity checks
+      .validate_internal_state(sprintf("handler() ... end", type))
+
       if (debug) mprintf("Progression calling handler %s ... done", sQuote(type))
-    }
+    } ## handler()
   }
 
   class(handler) <- c(sprintf("%s_progression_handler", name),

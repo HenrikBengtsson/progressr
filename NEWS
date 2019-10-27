@@ -1,6 +1,24 @@
 Package: progressr
 ==================
 
+Version: 0.1.5 [2019-10-26]
+
+NEW FEATURES:
+
+ * Add withProgress2(), which is a plug-in backward compatibily replacement
+   for shiny::withProgress() wrapped in progressr::with_progress() where the
+   the "shiny" progression handler is by default added to the list of
+   progression handlers used.
+
+ * Add demo("mandelbrot", package = "progressr").
+
+BUG FIXES:
+
+ * Package could set '.Random.seed' to NULL, instead of removing it, which in
+   turn would produce a warning on "'.Random.seed' is not an integer vector but
+   of type 'NULL', so ignored" when the next random number generated.
+
+
 Version: 0.1.4 [2019-07-02]
 
 NEW FEATURES:

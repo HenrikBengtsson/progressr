@@ -679,3 +679,32 @@ filesize_handler <- function(file = "default.progress", intrusiveness = getOptio
   
   make_progression_handler("filesize", reporter, intrusiveness = intrusiveness, ...)
 }
+
+
+#' Visual Progression Feedback
+#'
+#' A progression handler for \pkg{shiny} and [shiny::withProgress()].
+#'
+#' @inheritParams make_progression_handler
+#'
+#' @param \ldots Additional arguments passed to [make_progression_handler()].
+#'
+#' @examples
+#' \donttest{\dontrun{
+#' options(progressr.handlers = shiny_handler())
+#' with_progress(y <- slow_sum(1:100))
+#' }}
+#'
+#' @export
+shiny_handler <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), ...) {
+  reporter <- local({
+    list(
+      update = function(config, state, progression, ...) {
+        shiny::incProgress(amount = progression$amount / config$max_steps,
+	                   message = state$message)
+      }
+    )
+  })
+  
+  make_progression_handler("shiny", reporter, intrusiveness = intrusiveness, ...)
+}
