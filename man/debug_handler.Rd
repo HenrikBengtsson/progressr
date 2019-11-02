@@ -5,7 +5,8 @@
 \title{Textual Progression Feedback for Debug Purposes}
 \usage{
 debug_handler(interval = getOption("progressr.interval", 0),
-  intrusiveness = getOption("progressr.intrusiveness.debug", 0), ...)
+  intrusiveness = getOption("progressr.intrusiveness.debug", 0),
+  target = "terminal", ...)
 }
 \arguments{
 \item{interval}{(numeric) The minimum time (in seconds) between
@@ -13,6 +14,9 @@ successive progression updates from this handler.}
 
 \item{intrusiveness}{(numeric) A non-negative scalar on how intrusive
 (disruptive) the reporter to the user.}
+
+\item{target}{(character vector) Specifies where progression updates are
+rendered.}
 
 \item{\ldots}{Additional arguments passed to \code{\link[=make_progression_handler]{make_progression_handler()}}.}
 }

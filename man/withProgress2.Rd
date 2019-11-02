@@ -5,7 +5,8 @@
 \title{Plug-in backward compatibility replacement for shiny::withProgress()}
 \usage{
 withProgress2(expr, ..., env = parent.frame(), quoted = FALSE,
-  handlers = c(shiny = shiny_handler, getOption("progressr.handlers")))
+  handlers = c(shiny = shiny_handler, progressr::handlers(default =
+  NULL)))
 }
 \arguments{
 \item{expr, \ldots, env, quoted}{Arguments passed to \link[shiny:withProgress]{shiny::withProgress} as is.}

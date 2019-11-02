@@ -5,7 +5,8 @@
 \title{Visual Progression Feedback}
 \usage{
 pbmcapply_handler(substyle = 3L, style = "ETA", file = stderr(),
-  intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...)
+  intrusiveness = getOption("progressr.intrusiveness.terminal", 1),
+  target = "terminal", ...)
 }
 \arguments{
 \item{substyle}{(integer) The progress-bar substyle according to \code{\link[pbmcapply:progressBar]{pbmcapply::progressBar()}}.}
@@ -16,6 +17,9 @@ pbmcapply_handler(substyle = 3L, style = "ETA", file = stderr(),
 
 \item{intrusiveness}{(numeric) A non-negative scalar on how intrusive
 (disruptive) the reporter to the user.}
+
+\item{target}{(character vector) Specifies where progression updates are
+rendered.}
 
 \item{\ldots}{Additional arguments passed to \code{\link[=make_progression_handler]{make_progression_handler()}}.}
 }

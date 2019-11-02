@@ -4,7 +4,8 @@
 \alias{handlers}
 \title{Get and Set the List of Progression Handlers}
 \usage{
-handlers(..., on_missing = c("error", "warning", "ignore"))
+handlers(..., on_missing = c("error", "warning", "ignore"),
+  default = txtprogressbar_handler)
 }
 \arguments{
 \item{\dots}{One or more progression handlers.  Alternatively, this
@@ -16,6 +17,9 @@ be set.}
 the progression handlers does not exists.  If \code{"warning"}, a warning
 is produces and the missing handlers is ignored.  If \code{"ignore"}, the
 missing handlers is ignored.}
+
+\item{default}{The default progression calling handler to use if none
+are set.}
 }
 \value{
 (invisibly) the previous list of progression handlers set.

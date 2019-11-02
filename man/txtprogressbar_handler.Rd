@@ -5,7 +5,8 @@
 \title{Visual Progression Feedback}
 \usage{
 txtprogressbar_handler(style = 3L, file = stderr(),
-  intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...)
+  intrusiveness = getOption("progressr.intrusiveness.terminal", 1),
+  target = "terminal", ...)
 }
 \arguments{
 \item{style}{(integer) The progress-bar style according to \code{\link[utils:txtProgressBar]{utils::txtProgressBar()}}.}
@@ -14,6 +15,9 @@ txtprogressbar_handler(style = 3L, file = stderr(),
 
 \item{intrusiveness}{(numeric) A non-negative scalar on how intrusive
 (disruptive) the reporter to the user.}
+
+\item{target}{(character vector) Specifies where progression updates are
+rendered.}
 
 \item{\ldots}{Additional arguments passed to \code{\link[=make_progression_handler]{make_progression_handler()}}.}
 }

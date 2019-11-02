@@ -14,7 +14,7 @@
 #' @example incl/ascii_alert_handler.R
 #'
 #' @export
-ascii_alert_handler <- function(symbol = "\a", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.auditory", 5.0), ...) {
+ascii_alert_handler <- function(symbol = "\a", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.auditory", 5.0), target = c("terminal", "audio"), ...) {
   reporter <- local({
     list(
       update = function(config, state, progression, ...) {
@@ -44,7 +44,7 @@ ascii_alert_handler <- function(symbol = "\a", file = stderr(), intrusiveness = 
 #'
 #' @importFrom utils file_test flush.console txtProgressBar setTxtProgressBar
 #' @export
-txtprogressbar_handler <- function(style = 3L, file = stderr(), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...) {
+txtprogressbar_handler <- function(style = 3L, file = stderr(), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
   reporter <- local({
     ## Import functions
     eraseTxtProgressBar <- function(pb) {
@@ -123,7 +123,7 @@ txtprogressbar_handler <- function(style = 3L, file = stderr(), intrusiveness = 
 #' @example incl/tkprogressbar_handler.R
 #'
 #' @export
-tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), ...) {
+tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), target = "terminal", ...) {
   ## Used for package testing purposes only when we want to perform
   ## everything except the last part where the backend is called
   if (!is_fake("tkprogressbar_handler")) {
@@ -190,7 +190,7 @@ tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusive
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
 #'
 #' @export
-winprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), ...) {
+winprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), target = "gui", ...) {
   ## Used for package testing purposes only when we want to perform
   ## everything except the last part where the backend is called
   if (!is_fake("winprogressbar_handler")) {
@@ -268,7 +268,7 @@ winprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiv
 #'
 #' @importFrom utils file_test flush.console txtProgressBar setTxtProgressBar
 #' @export
-pbmcapply_handler <- function(substyle = 3L, style = "ETA", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...) {
+pbmcapply_handler <- function(substyle = 3L, style = "ETA", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
   if (!is_fake("pbmcapply_handler")) {
     progressBar <- pbmcapply::progressBar
     eraseTxtProgressBar <- function(pb) {
@@ -366,7 +366,7 @@ pbmcapply_handler <- function(substyle = 3L, style = "ETA", file = stderr(), int
 #' @example incl/progress_handler.R
 #'
 #' @export
-progress_handler <- function(format = "[:bar] :percent :message", show_after = 0.0, intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...) {
+progress_handler <- function(format = "[:bar] :percent :message", show_after = 0.0, intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
   if (!is_fake("progress_handler")) {
     progress_bar <- progress::progress_bar
   } else {
@@ -440,7 +440,7 @@ progress_handler <- function(format = "[:bar] :percent :message", show_after = 0
 #' @example incl/beepr_handler.R
 #'
 #' @export
-beepr_handler <- function(initiate = 2L, update = 10L,  finish = 11L, intrusiveness = getOption("progressr.intrusiveness.auditory", 5.0), ...) {
+beepr_handler <- function(initiate = 2L, update = 10L,  finish = 11L, intrusiveness = getOption("progressr.intrusiveness.auditory", 5.0), target = "audio", ...) {
   ## Used for package testing purposes only when we want to perform
   ## everything except the last part where the backend is called
   if (!is_fake("beepr_handler")) {
@@ -491,7 +491,7 @@ beepr_handler <- function(initiate = 2L, update = 10L,  finish = 11L, intrusiven
 #' @example incl/notifier_handler.R
 #'
 #' @export
-notifier_handler <- function(intrusiveness = getOption("progressr.intrusiveness.notifier", 10), ...) {
+notifier_handler <- function(intrusiveness = getOption("progressr.intrusiveness.notifier", 10), target = "gui", ...) {
   ## Used for package testing purposes only when we want to perform
   ## everything except the last part where the backend is called
   if (!is_fake("notifier_handler")) {
@@ -548,7 +548,7 @@ notifier_handler <- function(intrusiveness = getOption("progressr.intrusiveness.
 #' @example incl/debug_handler.R
 #'
 #' @export
-debug_handler <- function(interval = getOption("progressr.interval", 0), intrusiveness = getOption("progressr.intrusiveness.debug", 0), ...) {
+debug_handler <- function(interval = getOption("progressr.interval", 0), intrusiveness = getOption("progressr.intrusiveness.debug", 0), target = "terminal", ...) {
   reporter <- local({
     t_init <- NULL
     
@@ -599,7 +599,7 @@ debug_handler <- function(interval = getOption("progressr.interval", 0), intrusi
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
 #'
 #' @export
-newline_handler <- function(symbol = "\n", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.debug", 0), ...) {
+newline_handler <- function(symbol = "\n", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.debug", 0), target = "terminal", ...) {
   reporter <- local({
     list(
       initiate = function(...) cat(file = file, symbol),
@@ -630,7 +630,7 @@ newline_handler <- function(symbol = "\n", file = stderr(), intrusiveness = getO
 #'
 #' @importFrom utils file_test
 #' @export
-filesize_handler <- function(file = "default.progress", intrusiveness = getOption("progressr.intrusiveness.file", 5), ...) {
+filesize_handler <- function(file = "default.progress", intrusiveness = getOption("progressr.intrusiveness.file", 5), target = "file", ...) {
   reporter <- local({
     set_file_size <- function(config, state, progression) {
       ratio <- state$step / config$max_steps
@@ -696,7 +696,7 @@ filesize_handler <- function(file = "default.progress", intrusiveness = getOptio
 #' }}
 #'
 #' @export
-shiny_handler <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), ...) {
+shiny_handler <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), target = "gui", ...) {
   reporter <- local({
     list(
       update = function(config, state, progression, ...) {

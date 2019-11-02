@@ -25,7 +25,7 @@
 #' @example incl/with_progress.R
 #'
 #' @export
-with_progress <- function(expr, handlers = getOption("progressr.handlers", txtprogressbar_handler), cleanup = TRUE, delay_stdout = getOption("progressr.delay_stdout", interactive()), delay_conditions = getOption("progressr.delay_conditions", if (interactive()) c("condition") else character(0L)), interval = NULL, enable = NULL) {
+with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE, delay_stdout = getOption("progressr.delay_stdout", interactive()), delay_conditions = getOption("progressr.delay_conditions", if (interactive()) c("condition") else character(0L)), interval = NULL, enable = NULL) {
   stop_if_not(is.logical(cleanup), length(cleanup) == 1L, !is.na(cleanup))
   
   ## FIXME: With zero handlers, progression conditions will be

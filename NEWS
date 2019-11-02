@@ -1,9 +1,12 @@
 Package: progressr
 ==================
 
-Version: 0.1.5-9000 [2019-10-26]
+Version: 0.1.5-9000 [2019-11-02]
 
- * ...
+NEW FEATURES:
+
+ * handlers() gained argument 'default' specifying a progression handler to
+   be returned if none is set.
 
 
 Version: 0.1.5 [2019-10-26]

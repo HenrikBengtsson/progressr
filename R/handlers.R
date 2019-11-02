@@ -10,6 +10,9 @@
 #' is produces and the missing handlers is ignored.  If `"ignore"`, the
 #' missing handlers is ignored.
 #'
+#' @param default The default progression calling handler to use if none
+#' are set.
+#'
 #' @return (invisibly) the previous list of progression handlers set.
 #' If no arguments are specified, then the current set of progression
 #' handlers is returned.
@@ -21,11 +24,11 @@
 #' @example incl/handlers.R
 #'
 #' @export
-handlers <- function(..., on_missing = c("error", "warning", "ignore")) {
+handlers <- function(..., on_missing = c("error", "warning", "ignore"), default = txtprogressbar_handler) {
   args <- list(...)
 
   ## Get the current set of progression handlers?
-  if (length(args) == 0L) return(getOption("progressr.handlers"))
+  if (length(args) == 0L) return(getOption("progressr.handlers", default))
 
   on_missing <- match.arg(on_missing)
   

@@ -9,7 +9,7 @@ make_progression_handler(name, reporter = list(), handler = NULL,
   enable_after = getOption("progressr.enable_after", 0),
   times = getOption("progressr.times", +Inf),
   interval = getOption("progressr.interval", 0), intrusiveness = 1,
-  clear = getOption("progressr.clear", TRUE))
+  clear = getOption("progressr.clear", TRUE), target = "terminal")
 }
 \arguments{
 \item{name}{(character) Name of progression handler.}
@@ -36,6 +36,9 @@ successive progression updates from this handler.}
 
 \item{clear}{(logical) If TRUE, any output, typically visual, produced
 by a reporter will be cleared/removed upon completion, if possible.}
+
+\item{target}{(character vector) Specifies where progression updates are
+rendered.}
 }
 \value{
 A function of class \code{progression_handler} that takes a
