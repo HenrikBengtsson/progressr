@@ -4,32 +4,30 @@ library(graphics)
 
 p <- function(...) NULL
 
-## WORKAROUND: resolved() should launch lazy future
-## https://github.com/HenrikBengtsson/future/issues/337
-if (packageVersion("future") < "1.14.0-9000") {
-  resolved <- function(future, ...) {
-    if (future$state == "created") future <- run(future)
-    future::resolved(future, ...)
-  }
-}
-
 plot_what_is_done <- function(counts) {
+  done <- 0L
+  
   for (kk in seq_along(counts)) {
     f <- counts[[kk]]
 
     ## Already plotted?
-    if (!inherits(f, "Future")) next
+    if (!inherits(f, "Future")) {
+      done <- done + 1L
+      next
+    }
 
     ## Not resolved?
-    if (!resolved(f)) next
+    ## NOTE: This will block, if all workers are busy!
+    if (runif(1) < 0.8*(1-(done/length(counts))) || !resolved(f)) next
 
     message(sprintf("Plotting tile #%d of %d ...", kk, n))
     counts[[kk]] <- value(f)
     screen(kk)
     plot(counts[[kk]])
-    p()
-  }
 
+    done <- done + 1L
+  }
+  
   counts
 }
 
@@ -45,11 +43,11 @@ if (!is.list(region)) {
     region <- list(xmid = 0.282989, ymid = -0.01, side = 3e-8)
   }
 }
-nrow <- getOption("future.demo.mandelbrot.nrow", 3L)
-resolution <- getOption("future.demo.mandelbrot.resolution", 400L)
+nrow <- getOption("future.demo.mandelbrot.nrow", 5L)
+resolution <- getOption("future.demo.mandelbrot.resolution", 1024L)
 delay <- getOption("future.demo.mandelbrot.delay", interactive())
 if (isTRUE(delay)) {
-  delay <- function(counts) Sys.sleep(rexp(1, rate = 2))
+  delay <- function(counts) Sys.sleep(runif(1L, min=0.5, max=5))
 } else if (!is.function(delay)) {
   delay <- function(counts) {}
 }
@@ -58,6 +56,7 @@ if (isTRUE(delay)) {
 Cs <- mandelbrot_tiles(xmid = region$xmid, ymid = region$ymid,
                        side = region$side, nrow = nrow,
                        resolution = resolution)
+message("Tiles: ", paste(dim(Cs), collapse = " by "))		       
 if (interactive()) {
   dev.new()
   plot.new()
@@ -77,7 +76,6 @@ message(sprintf("* Creating %d Mandelbrot tiles", n))
 with_progress({
   p <- progressor(along = Cs)
   counts <- lapply(seq_along(Cs), FUN=function(ii) {
-    p()
     C <- Cs[[ii]]
     future({
       message(sprintf("Calculating tile #%d of %d ...", ii, n), appendLF = FALSE)
@@ -86,19 +84,17 @@ with_progress({
       ## Emulate slowness
       delay(fit)
   
+      p(sprintf("Tile #%d by %d", ii, Sys.getpid()))
+      
       message(" done")
       fit
     }, lazy = TRUE)
   })
-})
+  str(counts)
 
-## Calculate and plot tiles
-message(sprintf("* Calculating and plotting %d Mandelbrot tiles", n))
-with_progress({
-  p <- progressor(along = Cs)
-  repeat {
+  pp <- 0L
+  while (any(sapply(counts, FUN = inherits, "Future"))) {
     counts <- plot_what_is_done(counts)
-    if (!any(sapply(counts, FUN = inherits, "Future"))) break
   }
 })
 
