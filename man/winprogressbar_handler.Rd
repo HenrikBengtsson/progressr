@@ -4,9 +4,11 @@
 \alias{winprogressbar_handler}
 \title{Visual Progression Feedback for MS Windows}
 \usage{
-
-  winprogressbar_handler(intrusiveness = getOption("progressr.intrusiveness.gui",
-  1), target = "gui", ...)
+winprogressbar_handler(
+  intrusiveness = getOption("progressr.intrusiveness.gui", 1),
+  target = "gui",
+  ...
+)
 }
 \arguments{
 \item{intrusiveness}{(numeric) A non-negative scalar on how intrusive

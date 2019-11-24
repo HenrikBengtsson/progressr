@@ -4,8 +4,13 @@
 \alias{progressor}
 \title{Create a Progressor Function}
 \usage{
-progressor(steps = NULL, along = NULL, label = NA_character_,
-  initiate = TRUE, auto_finish = TRUE)
+progressor(
+  steps = NULL,
+  along = NULL,
+  label = NA_character_,
+  initiate = TRUE,
+  auto_finish = TRUE
+)
 }
 \arguments{
 \item{steps}{(integer) Maximum number of steps.}

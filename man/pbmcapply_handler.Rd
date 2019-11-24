@@ -4,9 +4,14 @@
 \alias{pbmcapply_handler}
 \title{Visual Progression Feedback}
 \usage{
-pbmcapply_handler(substyle = 3L, style = "ETA", file = stderr(),
+pbmcapply_handler(
+  substyle = 3L,
+  style = "ETA",
+  file = stderr(),
   intrusiveness = getOption("progressr.intrusiveness.terminal", 1),
-  target = "terminal", ...)
+  target = "terminal",
+  ...
+)
 }
 \arguments{
 \item{substyle}{(integer) The progress-bar substyle according to \code{\link[pbmcapply:progressBar]{pbmcapply::progressBar()}}.}

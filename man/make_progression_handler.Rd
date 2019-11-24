@@ -4,12 +4,18 @@
 \alias{make_progression_handler}
 \title{Creates a Progression Calling Handler}
 \usage{
-make_progression_handler(name, reporter = list(), handler = NULL,
+make_progression_handler(
+  name,
+  reporter = list(),
+  handler = NULL,
   enable = getOption("progressr.enable", interactive()),
   enable_after = getOption("progressr.enable_after", 0),
   times = getOption("progressr.times", +Inf),
-  interval = getOption("progressr.interval", 0), intrusiveness = 1,
-  clear = getOption("progressr.clear", TRUE), target = "terminal")
+  interval = getOption("progressr.interval", 0),
+  intrusiveness = 1,
+  clear = getOption("progressr.clear", TRUE),
+  target = "terminal"
+)
 }
 \arguments{
 \item{name}{(character) Name of progression handler.}

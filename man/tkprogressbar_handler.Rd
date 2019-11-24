@@ -4,9 +4,11 @@
 \alias{tkprogressbar_handler}
 \title{Visual Progression Feedback}
 \usage{
-
-  tkprogressbar_handler(intrusiveness = getOption("progressr.intrusiveness.gui",
-  1), target = "terminal", ...)
+tkprogressbar_handler(
+  intrusiveness = getOption("progressr.intrusiveness.gui", 1),
+  target = "terminal",
+  ...
+)
 }
 \arguments{
 \item{intrusiveness}{(numeric) A non-negative scalar on how intrusive

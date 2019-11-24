@@ -4,8 +4,11 @@
 \alias{shiny_handler}
 \title{Visual Progression Feedback}
 \usage{
-shiny_handler(intrusiveness = getOption("progressr.intrusiveness.gui",
-  1), target = "gui", ...)
+shiny_handler(
+  intrusiveness = getOption("progressr.intrusiveness.gui", 1),
+  target = "gui",
+  ...
+)
 }
 \arguments{
 \item{intrusiveness}{(numeric) A non-negative scalar on how intrusive

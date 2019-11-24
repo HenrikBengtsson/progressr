@@ -4,9 +4,13 @@
 \alias{progress_handler}
 \title{Visual Progression Feedback}
 \usage{
-progress_handler(format = "[:bar] :percent :message", show_after = 0,
+progress_handler(
+  format = "[:bar] :percent :message",
+  show_after = 0,
   intrusiveness = getOption("progressr.intrusiveness.terminal", 1),
-  target = "terminal", ...)
+  target = "terminal",
+  ...
+)
 }
 \arguments{
 \item{format}{(character string) The format of the progress bar.}

@@ -4,13 +4,17 @@
 \alias{newline_handler}
 \title{Textual Progression Feedback that outputs a Newline}
 \usage{
-newline_handler(symbol = "\\n", file = stderr(),
+newline_handler(
+  symbol = "\\n",
+  file = stderr(),
   intrusiveness = getOption("progressr.intrusiveness.debug", 0),
-  target = "terminal", ...)
+  target = "terminal",
+  ...
+)
 }
 \arguments{
 \item{symbol}{(character string) The character symbol to be outputted,
-which by default is the ASCII NL character (\code{'\n'} = \code{'\013'}) character.}
+which by default is the ASCII NL character (\code{'\\n'} = \code{'\\013'}) character.}
 
 \item{file}{(connection) A \link[base:connection]{base::connection} to where output should be sent.}
 

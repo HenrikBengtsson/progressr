@@ -4,9 +4,13 @@
 \alias{withProgress2}
 \title{Plug-in backward compatibility replacement for shiny::withProgress()}
 \usage{
-withProgress2(expr, ..., env = parent.frame(), quoted = FALSE,
-  handlers = c(shiny = shiny_handler, progressr::handlers(default =
-  NULL)))
+withProgress2(
+  expr,
+  ...,
+  env = parent.frame(),
+  quoted = FALSE,
+  handlers = c(shiny = shiny_handler, progressr::handlers(default = NULL))
+)
 }
 \arguments{
 \item{expr, \ldots, env, quoted}{Arguments passed to \link[shiny:withProgress]{shiny::withProgress} as is.}
@@ -14,7 +18,7 @@ withProgress2(expr, ..., env = parent.frame(), quoted = FALSE,
 \item{handlers}{Zero or more progression handlers used to report on progress.}
 }
 \value{
-The value of \code{[shiny::withProgress]}.
+The value of \verb{[shiny::withProgress]}.
 }
 \description{
 Plug-in backward compatibility replacement for shiny::withProgress()

@@ -4,9 +4,11 @@
 \alias{notifier_handler}
 \title{Operating-System Specific Progression Feedback}
 \usage{
-
-  notifier_handler(intrusiveness = getOption("progressr.intrusiveness.notifier",
-  10), target = "gui", ...)
+notifier_handler(
+  intrusiveness = getOption("progressr.intrusiveness.notifier", 10),
+  target = "gui",
+  ...
+)
 }
 \arguments{
 \item{intrusiveness}{(numeric) A non-negative scalar on how intrusive

@@ -4,8 +4,11 @@
 \alias{handlers}
 \title{Get and Set the List of Progression Handlers}
 \usage{
-handlers(..., on_missing = c("error", "warning", "ignore"),
-  default = txtprogressbar_handler)
+handlers(
+  ...,
+  on_missing = c("error", "warning", "ignore"),
+  default = txtprogressbar_handler
+)
 }
 \arguments{
 \item{\dots}{One or more progression handlers.  Alternatively, this

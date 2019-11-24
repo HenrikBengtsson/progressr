@@ -4,9 +4,12 @@
 \alias{filesize_handler}
 \title{Progression Updates Reflected as the Size of a File}
 \usage{
-filesize_handler(file = "default.progress",
+filesize_handler(
+  file = "default.progress",
   intrusiveness = getOption("progressr.intrusiveness.file", 5),
-  target = "file", ...)
+  target = "file",
+  ...
+)
 }
 \arguments{
 \item{file}{(character) A filename.}

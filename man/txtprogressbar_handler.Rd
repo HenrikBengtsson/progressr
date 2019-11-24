@@ -4,9 +4,13 @@
 \alias{txtprogressbar_handler}
 \title{Visual Progression Feedback}
 \usage{
-txtprogressbar_handler(style = 3L, file = stderr(),
+txtprogressbar_handler(
+  style = 3L,
+  file = stderr(),
   intrusiveness = getOption("progressr.intrusiveness.terminal", 1),
-  target = "terminal", ...)
+  target = "terminal",
+  ...
+)
 }
 \arguments{
 \item{style}{(integer) The progress-bar style according to \code{\link[utils:txtProgressBar]{utils::txtProgressBar()}}.}

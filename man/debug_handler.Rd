@@ -4,9 +4,12 @@
 \alias{debug_handler}
 \title{Textual Progression Feedback for Debug Purposes}
 \usage{
-debug_handler(interval = getOption("progressr.interval", 0),
+debug_handler(
+  interval = getOption("progressr.interval", 0),
   intrusiveness = getOption("progressr.intrusiveness.debug", 0),
-  target = "terminal", ...)
+  target = "terminal",
+  ...
+)
 }
 \arguments{
 \item{interval}{(numeric) The minimum time (in seconds) between
