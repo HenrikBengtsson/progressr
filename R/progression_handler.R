@@ -256,7 +256,7 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
       }
 
       if (type == "initiate") {
-        max_steps <<- p$steps
+        max_steps <<- sum(p$step_lengths)
 	if (debug) mstr(list(max_steps=max_steps))
 	stop_if_not(!is.null(max_steps), is.numeric(max_steps), length(max_steps) == 1L, max_steps >= 1)
         auto_finish <<- p$auto_finish

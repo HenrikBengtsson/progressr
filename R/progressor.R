@@ -1,8 +1,13 @@
 #' Create a Progressor Function
 #'
-#' @param steps (integer) Maximum number of steps.
+#' @param steps (integer) The number progress steps, where each step has
+#' the same length corresponding to `step_lengths = rep(1L, times = steps)`.
 #'
-#' @param along (vector; alternative) Corresponds to `steps = seq_along(along)`.
+#' @param along (vector; alternative) Corresponds to `steps = length(along)`
+#' or, equivalently, `step_lengths = rep(1L, times = length(along))`.
+#'
+#' @param step_lengths (integer vector; alternative) Corresponds to
+#' `steps = sum(step_lengths)` and where each step has different length.
 #'
 #' @param label (character) A label.
 #'
@@ -17,12 +22,20 @@
 #' @export
 progressor <- local({
   progressor_count <- 0L
-  
-  function(steps = NULL, along = NULL, label = NA_character_, initiate = TRUE, auto_finish = TRUE) {
+
+  function(steps = NULL, along = NULL, step_lengths = NULL, label = NA_character_, initiate = TRUE, auto_finish = TRUE) {
     stop_if_not(!is.null(steps) || !is.null(along))
-    if (!is.null(along)) steps <- length(along)
-    stop_if_not(length(steps) == 1L, is.numeric(steps), !is.na(steps),
-                steps >= 0)
+    if (!is.null(steps)) {
+      stop_if_not(length(steps) == 1L, is.numeric(steps), !is.na(steps),
+                  steps >= 0)
+      step_lengths <- rep(1L, times = steps)
+    } else if (!is.null(along)) {
+      step_lengths <- rep(1L, times = length(along))
+    } else if (!is.null(step_lengths)) {
+      stop_if_not(is.numeric(step_lengths), length(step_lengths) >= 1L,
+                  !anyNA(step_lengths), all(step_lengths >= 0))
+      steps <- length(step_lengths)
+    }
     
     label <- as.character(label)
     stop_if_not(length(label) == 1L)
@@ -42,7 +55,7 @@ progressor <- local({
     }
     class(fcn) <- c("progressor", class(fcn))
   
-    if (initiate) fcn(type = "initiate", steps = steps, auto_finish = auto_finish)
+    if (initiate) fcn(type = "initiate", step_lengths = step_lengths, auto_finish = auto_finish)
     
     fcn
   }
@@ -58,7 +71,8 @@ print.progressor <- function(x, ...) {
   pe <- parent.env(e)
 
   s <- c(s, paste("- label:", e$label))
-  s <- c(s, paste("- steps:", e$steps))
+  s <- c(s, sprintf("- step lengths: [n=%d] %s", length(e$step_lengths),
+                    hpaste(e$step_lengths)))
   s <- c(s, paste("- initiate:", e$initiate))
   s <- c(s, paste("- auto_finish:", e$auto_finish))
 
