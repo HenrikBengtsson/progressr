@@ -1,9 +1,11 @@
 Package: progressr
 ==================
 
-Version: 0.1.5-9000 [2019-11-02]
+Version: 0.1.5-9000 [2019-11-24]
 
 NEW FEATURES:
+
+ * Add support for progressor(step_sizes).
 
  * handlers() gained argument 'default' specifying a progression handler to
    be returned if none is set.

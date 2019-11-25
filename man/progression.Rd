@@ -22,7 +22,7 @@ progression(
 \arguments{
 \item{message}{(character) A progress message.}
 
-\item{amount}{(numeric) The total amount of progress made.}
+\item{amount}{(numeric) The total amount of progress made in this step.}
 
 \item{step}{(character or integer) The step completed.}
 

@@ -4,7 +4,7 @@
 #'
 #' @param message (character) A progress message.
 #'
-#' @param amount (numeric) The total amount of progress made.
+#' @param amount (numeric) The total amount of progress made in this step.
 #'
 #' @param step (character or integer) The step completed.
 #'

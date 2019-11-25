@@ -7,7 +7,7 @@
 progressor(
   steps = NULL,
   along = NULL,
-  step_lengths = NULL,
+  step_sizes = NULL,
   label = NA_character_,
   initiate = TRUE,
   auto_finish = TRUE
@@ -15,13 +15,13 @@ progressor(
 }
 \arguments{
 \item{steps}{(integer) The number progress steps, where each step has
-the same length corresponding to \code{step_lengths = rep(1L, times = steps)}.}
+the same length corresponding to \code{step_sizes = rep(1L, times = steps)}.}
 
 \item{along}{(vector; alternative) Corresponds to \code{steps = length(along)}
-or, equivalently, \code{step_lengths = rep(1L, times = length(along))}.}
+or, equivalently, \code{step_sizes = rep(1L, times = length(along))}.}
 
-\item{step_lengths}{(integer vector; alternative) Corresponds to
-\code{steps = sum(step_lengths)} and where each step has different length.}
+\item{step_sizes}{(integer vector; alternative) Corresponds to
+\code{steps = sum(step_sizes)} and where each step has different length.}
 
 \item{label}{(character) A label.}
 

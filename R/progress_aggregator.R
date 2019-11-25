@@ -11,8 +11,8 @@ progress_aggregator <- function(progress) {
   stop_if_not(inherits(progress, "progressor"))
 
   ## Here we can find out how many steps the progressor function wants
-  step_lengths <- environment(progress)$step_lengths
-  max_steps <- sum(step_lengths)
+  step_sizes <- environment(progress)$step_sizes
+  max_steps <- sum(step_sizes)
   
   handler <- function(p) {
     stopifnot(inherits(p, "progression"))

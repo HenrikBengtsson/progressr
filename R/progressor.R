@@ -1,13 +1,13 @@
 #' Create a Progressor Function
 #'
 #' @param steps (integer) The number progress steps, where each step has
-#' the same length corresponding to `step_lengths = rep(1L, times = steps)`.
+#' the same length corresponding to `step_sizes = rep(1L, times = steps)`.
 #'
 #' @param along (vector; alternative) Corresponds to `steps = length(along)`
-#' or, equivalently, `step_lengths = rep(1L, times = length(along))`.
+#' or, equivalently, `step_sizes = rep(1L, times = length(along))`.
 #'
-#' @param step_lengths (integer vector; alternative) Corresponds to
-#' `steps = sum(step_lengths)` and where each step has different length.
+#' @param step_sizes (integer vector; alternative) Corresponds to
+#' `steps = sum(step_sizes)` and where each step has different length.
 #'
 #' @param label (character) A label.
 #'
@@ -23,19 +23,18 @@
 progressor <- local({
   progressor_count <- 0L
 
-  function(steps = NULL, along = NULL, step_lengths = NULL, label = NA_character_, initiate = TRUE, auto_finish = TRUE) {
-    stop_if_not(!is.null(steps) || !is.null(along) || !is.null(step_lengths))
+  function(steps = NULL, along = NULL, step_sizes = NULL, label = NA_character_, initiate = TRUE, auto_finish = TRUE) {
+    stop_if_not(!is.null(steps) || !is.null(along) || !is.null(step_sizes))
     if (!is.null(steps)) {
       stop_if_not(length(steps) == 1L, is.numeric(steps), !is.na(steps),
                   steps >= 0)
-      step_lengths <- rep(1L, times = steps)
+      step_sizes <- rep(1L, times = steps)
     } else if (!is.null(along)) {
-      step_lengths <- rep(1L, times = length(along))
-    } else if (!is.null(step_lengths)) {
-      stop_if_not(is.numeric(step_lengths), length(step_lengths) >= 1L,
-                  !anyNA(step_lengths), all(step_lengths >= 0))
-      steps <- length(step_lengths)
+      step_sizes <- rep(1L, times = length(along))
     }
+
+    stop_if_not(is.numeric(step_sizes), length(step_sizes) >= 1L,
+                !anyNA(step_sizes), all(step_sizes >= 0))
     
     label <- as.character(label)
     stop_if_not(length(label) == 1L)
@@ -45,17 +44,24 @@ progressor <- local({
     progressor_uuid <- progressor_uuid(progressor_count)
     progression_index <- 0L
     
-    fcn <- function(..., type = "update") {
-      progression_index <<- progression_index + 1L
+    fcn <- function(..., amount = NULL, type = "update") {
+      on.exit(progression_index <<- progression_index + 1L)
+      stop_if_not(progression_index >= 0L, progression_index < sum(step_sizes))
+      if (type == "update") {
+        amount <- if (is.null(amount)) step_sizes[progression_index] else 1.0
+        stop_if_not(is.numeric(amount), length(amount) == 1L, !is.na(amount), is.finite(amount), amount >= 0.0)
+      }
+      
       progress(type = type,
-               ...,
+               amount = amount,
+	       ...,
                progressor_uuid = progressor_uuid,
                progression_index = progression_index,
                owner_session_uuid = owner_session_uuid)
     }
     class(fcn) <- c("progressor", class(fcn))
   
-    if (initiate) fcn(type = "initiate", step_lengths = step_lengths, auto_finish = auto_finish)
+    if (initiate) fcn(type = "initiate", step_sizes = step_sizes, auto_finish = auto_finish)
     
     fcn
   }
@@ -70,9 +76,9 @@ print.progressor <- function(x, ...) {
   pe <- parent.env(e)
 
   s <- c(s, paste("- label:", e$label))
-  s <- c(s, sprintf("- steps: %d", sum(e$step_lengths)))
-  s <- c(s, sprintf("- step lengths: [n=%d] %s", length(e$step_lengths),
-                    hpaste(e$step_lengths)))
+  s <- c(s, sprintf("- steps: %d", sum(e$step_sizes)))
+  s <- c(s, sprintf("- step lengths: [n=%d] %s", length(e$step_sizes),
+                    hpaste(e$step_sizes)))
   s <- c(s, paste("- initiate:", e$initiate))
   s <- c(s, paste("- auto_finish:", e$auto_finish))
 
