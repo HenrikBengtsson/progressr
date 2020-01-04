@@ -9,8 +9,8 @@ app <- shinyApp(
   server = function(input, output) {
     output$plot <- renderPlot({
       X <- 1:15
-      withProgress2(message = "Calculation in progress",
-                    detail = "This may take a while ...", value = 0, {
+      withProgressShiny(message = "Calculation in progress",
+                        detail = "This may take a while ...", value = 0, {
         p <- progressor(along = X)
         y <- lapply(X, FUN=function(x) {
           p()

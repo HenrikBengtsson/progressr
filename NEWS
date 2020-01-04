@@ -1,7 +1,11 @@
 Package: progressr
 ==================
 
-Version: 0.1.5-9000 [2019-11-02]
+Version: 0.1.5-9000 [2020-01-04]
+
+SIGNIFICANT CHANGES:
+
+ * Renamed  withProgress2() to withProgressShiny().
 
 NEW FEATURES:
 
