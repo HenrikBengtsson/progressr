@@ -26,5 +26,5 @@ Remotes:
   gaborcsardi/notifier@d92b1b6
 URL: https://github.com/HenrikBengtsson/progressr
 BugReports: https://github.com/HenrikBengtsson/progressr/issues
-RoxygenNote: 7.0.1
+RoxygenNote: 7.0.2
 Roxygen: list(markdown = TRUE)
