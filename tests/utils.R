@@ -1,10 +1,4 @@
-library(progressr)
-
-mdebug <- progressr:::mdebug
-mprint <- progressr:::mprint
-mprintf <- progressr:::mprintf
-mstr <- progressr:::mstr
-stop_if_not <- progressr:::stop_if_not
+source("incl/start.R")
 
 message("*** utils ...")
 
@@ -39,3 +33,5 @@ tryCatch(stop_if_not(c(1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8
 message("*** stop_if_not() ... done")
 
 message("*** utils ... DONE")
+
+source("incl/end.R")

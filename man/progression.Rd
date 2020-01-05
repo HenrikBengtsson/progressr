@@ -4,11 +4,20 @@
 \alias{progression}
 \title{A Progression Condition}
 \usage{
-progression(message = character(0L), amount = 1, step = NULL,
-  time = progression_time, ..., type = "update", class = NULL,
-  progressor_uuid = NULL, progression_index = NULL,
-  progression_time = Sys.time(), call = NULL,
-  owner_session_uuid = NULL)
+progression(
+  message = character(0L),
+  amount = 1,
+  step = NULL,
+  time = progression_time,
+  ...,
+  type = "update",
+  class = NULL,
+  progressor_uuid = NULL,
+  progression_index = NULL,
+  progression_time = Sys.time(),
+  call = NULL,
+  owner_session_uuid = NULL
+)
 }
 \arguments{
 \item{message}{(character) A progress message.}

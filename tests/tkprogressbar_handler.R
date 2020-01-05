@@ -1,10 +1,6 @@
-library(progressr)
+source("incl/start.R")
 
-options(progressr.delay = 0.01)
-options(progressr.times = +Inf)
-options(progressr.interval = 0.2)
 options(progressr.clear = FALSE)
-delay <- getOption("progressr.delay", 0.5)
 
 if (requireNamespace("tcltk", quietly = TRUE)) {
   options(progressr.handlers = tkprogressbar_handler)
@@ -16,8 +12,10 @@ message("progress_handler() ...")
 with_progress({
   progress <- progressor(along = x)
   for (ii in x) {
-    Sys.sleep(delay)
+    Sys.sleep(getOption("progressr.delay", 0.1))
     progress(message = sprintf("(%s)", paste(letters[1:ii], collapse="")))
   }
 })
 message("progress_handler() ... done")
+
+source("incl/end.R")

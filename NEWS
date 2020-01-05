@@ -1,6 +1,18 @@
 Package: progressr
 ==================
 
+Version: 0.2.0 [2020-01-04]
+
+SIGNIFICANT CHANGES:
+
+ * Renamed  withProgress2() to withProgressShiny().
+
+NEW FEATURES:
+
+ * handlers() gained argument 'default' specifying a progression handler to
+   be returned if none is set.
+
+
 Version: 0.1.5 [2019-10-26]
 
 NEW FEATURES:

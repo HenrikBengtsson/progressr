@@ -4,22 +4,30 @@
 \alias{ascii_alert_handler}
 \title{Auditory Progression Feedback}
 \usage{
-ascii_alert_handler(symbol = "\\a", file = stderr(),
-  intrusiveness = getOption("progressr.intrusiveness.auditory", 5), ...)
+ascii_alert_handler(
+  symbol = "\\a",
+  file = stderr(),
+  intrusiveness = getOption("progressr.intrusiveness.auditory", 5),
+  target = c("terminal", "audio"),
+  ...
+)
 }
 \arguments{
 \item{symbol}{(character string) The character symbol to be outputted,
-which by default is the ASCII BEL character (\code{'\a'} = \code{'\007'}) character.}
+which by default is the ASCII BEL character (\code{'\\a'} = \code{'\\007'}) character.}
 
 \item{file}{(connection) A \link[base:connection]{base::connection} to where output should be sent.}
 
 \item{intrusiveness}{(numeric) A non-negative scalar on how intrusive
 (disruptive) the reporter to the user.}
 
+\item{target}{(character vector) Specifies where progression updates are
+rendered.}
+
 \item{\ldots}{Additional arguments passed to \code{\link[=make_progression_handler]{make_progression_handler()}}.}
 }
 \description{
-A progression handler based on \code{cat("\a", file=stderr())}.
+A progression handler based on \code{cat("\\a", file=stderr())}.
 }
 \examples{
 handlers("ascii_alert")

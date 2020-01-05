@@ -6,10 +6,10 @@
 #'
 #' @return The value of `[shiny::withProgress]`.
 #'
-#' @example incl/shiny-withProgress.R
+#' @example incl/withProgressShiny.R
 #'
 #' @export
-withProgress2 <- function(expr, ..., env = parent.frame(), quoted = FALSE, handlers = c(shiny = shiny_handler, getOption("progressr.handlers"))) {
+withProgressShiny <- function(expr, ..., env = parent.frame(), quoted = FALSE, handlers = c(shiny = shiny_handler, progressr::handlers(default = NULL))) {
   if (!quoted) expr <- substitute(expr)
   expr <- bquote(progressr::with_progress({.(expr)}, handlers = .(handlers)))
   res <- withVisible(shiny::withProgress(expr, ..., env = env, quoted = TRUE))

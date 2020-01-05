@@ -1,4 +1,4 @@
-library(progressr)
+source("incl/start.R")
 
 message("progression() ...")
 
@@ -24,3 +24,5 @@ print(res)
 stopifnot(isTRUE(res))
 
 message("progression() ... done")
+
+source("incl/end.R")

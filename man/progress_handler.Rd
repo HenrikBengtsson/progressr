@@ -4,8 +4,13 @@
 \alias{progress_handler}
 \title{Visual Progression Feedback}
 \usage{
-progress_handler(format = "[:bar] :percent :message", show_after = 0,
-  intrusiveness = getOption("progressr.intrusiveness.terminal", 1), ...)
+progress_handler(
+  format = "[:bar] :percent :message",
+  show_after = 0,
+  intrusiveness = getOption("progressr.intrusiveness.terminal", 1),
+  target = "terminal",
+  ...
+)
 }
 \arguments{
 \item{format}{(character string) The format of the progress bar.}
@@ -15,6 +20,9 @@ the progress bar.}
 
 \item{intrusiveness}{(numeric) A non-negative scalar on how intrusive
 (disruptive) the reporter to the user.}
+
+\item{target}{(character vector) Specifies where progression updates are
+rendered.}
 
 \item{\ldots}{Additional arguments passed to \code{\link[=make_progression_handler]{make_progression_handler()}}.}
 }

@@ -29,6 +29,9 @@
 #' @param clear (logical) If TRUE, any output, typically visual, produced
 #'   by a reporter will be cleared/removed upon completion, if possible.
 #'
+#' @param target (character vector) Specifies where progression updates are
+#'   rendered.
+#'
 #' @return A function of class `progression_handler` that takes a
 #' [progression] condition as its first and only argument.
 #'
@@ -36,7 +39,7 @@
 #' [base::withCallingHandlers()].
 #'
 #' @export
-make_progression_handler <- function(name, reporter = list(), handler = NULL, enable = getOption("progressr.enable", interactive()), enable_after = getOption("progressr.enable_after", 0.0), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0.0), intrusiveness = 1.0, clear = getOption("progressr.clear", TRUE)) {
+make_progression_handler <- function(name, reporter = list(), handler = NULL, enable = getOption("progressr.enable", interactive()), enable_after = getOption("progressr.enable_after", 0.0), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0.0), intrusiveness = 1.0, clear = getOption("progressr.clear", TRUE), target = "terminal") {
   if (!enable) times <- 0
   name <- as.character(name)
   stop_if_not(length(name) == 1L, !is.na(name), nzchar(name))
@@ -50,7 +53,8 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
               times >= 0)
   stop_if_not(length(interval) == 1L, is.numeric(interval),
               !is.na(interval), interval >= 0)
-
+  stop_if_not(is.character(target))
+  
   ## Disable progress updates?
   if (times == 0 || is.infinite(interval) || is.infinite(intrusiveness)) {
     handler <- function(p) NULL
@@ -101,7 +105,8 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
       interval = interval,
       enable_after = enable_after,
       auto_finish = auto_finish,
-      clear = clear
+      clear = clear,
+      target = target
     )
 
     state <- list(
@@ -327,7 +332,7 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
   class(handler) <- c(sprintf("%s_progression_handler", name),
                       "progression_handler", "calling_handler",
 		      class(handler))
-
+		      
   handler
 }
 
@@ -348,6 +353,7 @@ print.progression_handler <- function(x, ...) {
   s <- c(s, sprintf("   - intrusiveness: %g", env$intrusiveness))
   s <- c(s, sprintf("   - auto_finish: %s", env$auto_finish))
   s <- c(s, sprintf("   - clear: %s", env$clear))
+  s <- c(s, sprintf("   - target: %s", paste(sQuote(env$target), collapse = ", ")))
   s <- c(s, sprintf("   - milestones: %s", hpaste(env$milestones %||% "<NULL>")))
   s <- c(s, sprintf("   - owner: %s", hpaste(env$owner %||% "<NULL>")))
 

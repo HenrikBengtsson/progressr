@@ -4,12 +4,16 @@
 \alias{with_progress}
 \title{Evaluate Expression while Handling Progress Updates}
 \usage{
-with_progress(expr, handlers = getOption("progressr.handlers",
-  txtprogressbar_handler), cleanup = TRUE,
+with_progress(
+  expr,
+  handlers = progressr::handlers(),
+  cleanup = TRUE,
   delay_stdout = getOption("progressr.delay_stdout", interactive()),
-  delay_conditions = getOption("progressr.delay_conditions", if
-  (interactive()) c("condition") else character(0L)), interval = NULL,
-  enable = NULL)
+  delay_conditions = getOption("progressr.delay_conditions", if (interactive())
+    c("condition") else character(0L)),
+  interval = NULL,
+  enable = NULL
+)
 }
 \arguments{
 \item{expr}{An \R expression to evaluate.}

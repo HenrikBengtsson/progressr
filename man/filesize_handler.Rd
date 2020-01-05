@@ -4,14 +4,21 @@
 \alias{filesize_handler}
 \title{Progression Updates Reflected as the Size of a File}
 \usage{
-filesize_handler(file = "default.progress",
-  intrusiveness = getOption("progressr.intrusiveness.file", 5), ...)
+filesize_handler(
+  file = "default.progress",
+  intrusiveness = getOption("progressr.intrusiveness.file", 5),
+  target = "file",
+  ...
+)
 }
 \arguments{
 \item{file}{(character) A filename.}
 
 \item{intrusiveness}{(numeric) A non-negative scalar on how intrusive
 (disruptive) the reporter to the user.}
+
+\item{target}{(character vector) Specifies where progression updates are
+rendered.}
 
 \item{\ldots}{Additional arguments passed to \code{\link[=make_progression_handler]{make_progression_handler()}}.}
 }

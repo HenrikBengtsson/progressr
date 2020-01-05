@@ -4,8 +4,14 @@
 \alias{beepr_handler}
 \title{Auditory Progression Feedback}
 \usage{
-beepr_handler(initiate = 2L, update = 10L, finish = 11L,
-  intrusiveness = getOption("progressr.intrusiveness.auditory", 5), ...)
+beepr_handler(
+  initiate = 2L,
+  update = 10L,
+  finish = 11L,
+  intrusiveness = getOption("progressr.intrusiveness.auditory", 5),
+  target = "audio",
+  ...
+)
 }
 \arguments{
 \item{initiate, update, finish}{(integer) Indices of \code{\link[beepr:beep]{beepr::beep()}} sounds to
@@ -13,6 +19,9 @@ play when progress starts, is updated, and completes.  For silence, use \code{NA
 
 \item{intrusiveness}{(numeric) A non-negative scalar on how intrusive
 (disruptive) the reporter to the user.}
+
+\item{target}{(character vector) Specifies where progression updates are
+rendered.}
 
 \item{\ldots}{Additional arguments passed to \code{\link[=make_progression_handler]{make_progression_handler()}}.}
 }
