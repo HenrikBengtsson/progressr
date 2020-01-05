@@ -16,6 +16,8 @@ Suggests:
     pbmcapply,
     plyr,
     progress,
+    foreach,
+    purrr,
     future (>= 1.15.1),
     doFuture,
     future.apply,
