@@ -302,9 +302,11 @@ To debug progress updates, use:
 [progressr]: https://github.com/HenrikBengtsson/progressr/
 [beepr]: https://cran.r-project.org/package=beepr
 [progress]: https://cran.r-project.org/package=progress
+[purrr]: https://cran.r-project.org/package=purrr
 [future]: https://cran.r-project.org/package=future
+[foreach]: https://cran.r-project.org/package=foreach
 [future.apply]: https://cran.r-project.org/package=future.apply
+[doParallel]: https://cran.r-project.org/package=doParallel
 [doFuture]: https://cran.r-project.org/package=doFuture
 [foreach]: https://cran.r-project.org/package=foreach
 [furrr]: https://cran.r-project.org/package=furrr
-

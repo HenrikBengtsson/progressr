@@ -209,9 +209,10 @@ winprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiv
   reporter <- local({
     pb <- NULL
     
-    make_pb <- function(...) {
+    make_pb <- function(..., label = NULL) {
       if (!is.null(pb)) return(pb)
-      pb <<- winProgressBar(...)
+      label <- paste0(label, "")
+      pb <<- winProgressBar(..., label = label)
       pb
     }
 
@@ -228,7 +229,7 @@ winprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiv
       update = function(config, state, progression, ...) {
         if (!state$enabled || progression$amount == 0 || config$times <= 2L) return()
         make_pb(max = config$max_steps, label = state$message)
-        setWinProgressBar(pb, value = state$step, label = state$message)
+        setWinProgressBar(pb, value = state$step, label = paste0(state$message, ""))
       },
         
       finish = function(config, state, progression, ...) {
@@ -239,7 +240,7 @@ winprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiv
           close(pb)
           pb <<- NULL
         } else {
-          setWinProgressBar(pb, value = state$step, label = state$message)
+          setWinProgressBar(pb, value = state$step, label = paste0(state$message, ""))
         }
       }
     )

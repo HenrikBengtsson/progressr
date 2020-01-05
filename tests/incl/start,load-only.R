@@ -6,12 +6,18 @@ oopts0 <- options()
 ## Default options for tests
 oopts <- options()
 
+check_full <- isTRUE(as.logical(Sys.getenv("R_CHECK_FULL", "FALSE")))
+
 ## Private
+`%||%` <- progressr:::`%||%`
+hpaste <- progressr:::hpaste
 mdebug <- progressr:::mdebug
 mprint <- progressr:::mprint
 mprintf <- progressr:::mprintf
 mstr <- progressr:::mstr
+in_r_cmd_check <- progressr:::in_r_cmd_check
 stop_if_not <- progressr:::stop_if_not
+printf <- function(...) cat(sprintf(...))
 known_progression_handlers <- progressr:::known_progression_handlers
 
 non_supported_progression_handlers <- function() {
@@ -26,6 +32,11 @@ non_supported_progression_handlers <- function() {
   if (.Platform$OS.type != "windows") {
     names <- c(names, "winprogressbar")
   }
+  if (!check_full) {
+    names <- c(names, "notifier")
+    names <- c(names, "shiny")
+  }
+  names <- unique(names)
   paste0(names, "_handler")
 }
 
