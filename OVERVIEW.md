@@ -310,4 +310,3 @@ To debug progress updates, use:
 [doFuture]: https://cran.r-project.org/package=doFuture
 [foreach]: https://cran.r-project.org/package=foreach
 [furrr]: https://cran.r-project.org/package=furrr
-

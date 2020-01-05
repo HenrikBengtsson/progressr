@@ -6,6 +6,8 @@ Version: 0.2.0-9000 [2020-01-04]
 BUG FIXES:
 
  * winprogressbar_handler() would produce error "invalid 'Label' argument".
+
+ * handlers() did not return a list if the 'default' handler was returned.
  
 
 Version: 0.2.0 [2020-01-04]
