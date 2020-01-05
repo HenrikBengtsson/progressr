@@ -96,6 +96,12 @@ print(in_r_cmd_check())
 message("*** in_r_cmd_check() ... done")
 
 
+message("*** .onLoad() ...")
+
+progressr:::.onLoad(pkgname = "progressr")
+
+message("*** .onLoad() ... done")
+
 message("*** utils ... DONE")
 
 source("incl/end.R")
