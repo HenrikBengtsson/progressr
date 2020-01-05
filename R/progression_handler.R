@@ -332,7 +332,7 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
   class(handler) <- c(sprintf("%s_progression_handler", name),
                       "progression_handler", "calling_handler",
 		      class(handler))
-
+		      
   handler
 }
 

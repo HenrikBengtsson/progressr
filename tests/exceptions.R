@@ -1,7 +1,4 @@
-library(progressr)
-
-options(progressr.enable = TRUE)
-options(progressr.delay = 0.0)
+source("incl/start.R")
 
 
 message("Exceptions ...")
@@ -30,3 +27,5 @@ stopifnot(inherits(res, "error"))
 
 
 message("Exceptions ... done")
+
+source("incl/end.R")

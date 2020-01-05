@@ -1,6 +1,5 @@
 source("incl/start.R")
 
-library(progressr)
 library(future)
 supportedStrategies <- function(...) future:::supportedStrategies()
 

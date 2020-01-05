@@ -1,5 +1,4 @@
-library(progressr)
-options(progressr.interval = 0.0, progressr.delay = 0.1)
+source("incl/start.R")
 
 if (requireNamespace("furrr", quietly = TRUE)) {
   future::plan("multiprocess")
@@ -11,3 +10,5 @@ if (requireNamespace("furrr", quietly = TRUE)) {
     })
   })
 }
+
+source("incl/end.R")

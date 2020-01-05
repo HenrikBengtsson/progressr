@@ -1,6 +1,4 @@
-library(progressr)
-options(progressr.interval = 0.0, progressr.delay = 0.1)
-options(progressr.enable = TRUE)
+source("incl/start.R")
 
 if (requireNamespace("future.apply", quietly = TRUE)) {
   future::plan("multiprocess")
@@ -12,3 +10,5 @@ if (requireNamespace("future.apply", quietly = TRUE)) {
     })
   })
 }
+
+source("incl/end.R")

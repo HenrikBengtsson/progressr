@@ -1,7 +1,4 @@
-library(progressr)
-
-options(progressr.enable = TRUE)
-options(progressr.delay = 0.0)
+source("incl/start.R")
 
 message("progress_aggregator() ...")
 
@@ -58,3 +55,5 @@ with_progress({
 
 
 message("progress_aggregator() ... done")
+
+source("incl/end.R")

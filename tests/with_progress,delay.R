@@ -1,12 +1,10 @@
-library(progressr)
+source("incl/start.R")
 
 options(progressr.tests.fake_handlers = c("beepr_handler", "notifier_handler", "pbmcapply_handler", "tkprogressbar_handler", "winprogressbar_handler"))
-options(progressr.enable = TRUE)
-
-options(progressr.delay = 0.001)
-options(progressr.times = +Inf)
-options(progressr.interval = 0)
 options(progressr.clear = FALSE)
+options(progressr.enable_after = NULL)
+options(progressr.debug = FALSE)
+options(progressr.times = NULL)
 
 record_output <- function(expr, envir = parent.frame()) {
   conditions <- list()
@@ -47,3 +45,5 @@ for (delay in c(FALSE, TRUE)) {
 }
 
 message("*** with_progress() - delaying output ... DONE")
+
+source("incl/end.R")

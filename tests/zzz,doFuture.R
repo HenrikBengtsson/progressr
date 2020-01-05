@@ -1,5 +1,4 @@
-library(progressr)
-options(progressr.interval = 0.0, progressr.delay = 0.01)
+source("incl/start.R")
 
 if (requireNamespace("doFuture", quietly = TRUE)) {
   library("doFuture", character.only = TRUE)
@@ -13,3 +12,5 @@ if (requireNamespace("doFuture", quietly = TRUE)) {
     }
   })
 }
+
+source("incl/end.R")

@@ -1,5 +1,4 @@
-library(progressr)
-options(progressr.interval = 0.0, progressr.delay = 0.01)
+source("incl/start.R")
 
 if (requireNamespace("plyr", quietly = TRUE)) {
   with_progress({
@@ -8,3 +7,5 @@ if (requireNamespace("plyr", quietly = TRUE)) {
     }, .progress = "progressr")
   })
 }
+
+source("incl/end.R")

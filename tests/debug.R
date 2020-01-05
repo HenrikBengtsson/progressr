@@ -1,12 +1,4 @@
-library(progressr)
-
-options(progressr.tests.fake_handlers = c("beepr_handler", "notifier_handler", "pbmcapply_handler", "progress_handler", "tkprogressbar_handler", "winprogressbar_handler"))
-options(progressr.debug = TRUE)
-options(progressr.enable = TRUE)
-options(progressr.times = +Inf)
-options(progressr.interval = 0.1)
-options(progressr.enable_after = 0.5)
-options(progressr.delay = 0.1)
+source("incl/start.R")
 
 message("with_progress() - progressr.debug = TRUE ...")
 
@@ -16,7 +8,6 @@ with_progress({
   y <- slow_sum(1:10)
 })
 
-options(progressr.enable_after = 0.0, progressr.delay = 0.0)
 
 with_progress({
   progress <- progressor(steps = 1 + 2 + 1)
@@ -30,3 +21,5 @@ with_progress({
 
 
 message("with_progress() - progressr.debug = TRUE ... done")
+
+source("incl/end.R")
