@@ -102,6 +102,13 @@ progressr:::.onLoad(pkgname = "progressr")
 
 message("*** .onLoad() ... done")
 
+message("*** known_progression_handlers() ...")
+
+res <- known_progression_handlers()
+str(res)
+
+message("*** known_progression_handlers() ... done")
+
 message("*** utils ... DONE")
 
 source("incl/end.R")

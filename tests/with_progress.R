@@ -17,9 +17,30 @@ if (requireNamespace("utils")) {
   })
   print(sum)
   stopifnot(sum == truth)
+
+  with_progress({
+    cat("This stdout output will be delayed")
+    message("This message will be delayed")
+    warning("This warning will be delayed")
+    signalCondition(simpleCondition("This simpleCondition will be delayed"))
+    sum <- slow_sum(x)
+  }, interval = 0.1, enable = TRUE, delay_conditions = "condition")
+  print(sum)
+  stopifnot(sum == truth)
 }
 
 message("with_progress() - default ... done")
+
+message("with_progress() - filesize ...")
+
+with_progress({
+  sum <- slow_sum(x)
+}, filesize_handler())
+print(sum)
+stopifnot(sum == truth)
+
+message("with_progress() - filesize ... done")
+
 
 message("with_progress() - utils::txtProgressBar() ...")
 
