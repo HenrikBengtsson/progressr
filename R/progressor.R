@@ -1,15 +1,16 @@
 #' Create a Progressor Function
 #'
-#' @param steps (integer) Maximum number of steps.
+#' @param steps (integer) Number of progressing steps.
 #'
-#' @param along (vector; alternative) Corresponds to `steps = seq_along(along)`.
+#' @param along (vector; alternative) Alternative that sets
+#' `steps = length(along)`.
 #'
-#' @param extra (integer; optional) Extra steps in addition to what `steps`
-#' or `along` specifies.
+#' @param a,b (integer; optional) Intercept and slope applying transform
+#' `steps <- a + b * steps`.
 #'
-#' @param transform (function; optional) A function that takes the number of
-#' steps according to `steps` or `along` and returns another finite and
-#' non-negative number of steps.
+#' @param transform (function; optional) A function that takes the effective
+#' number of `steps` as input and returns another finite and non-negative
+#' number of steps.
 #'
 #' @param label (character) A label.
 #'
@@ -25,12 +26,12 @@
 progressor <- local({
   progressor_count <- 0L
   
-  function(steps = NULL, along = NULL, extra = 0L, transform = function(n) n + extra, label = NA_character_, initiate = TRUE, auto_finish = TRUE) {
+  function(steps = length(along), along = NULL, a = 0L, b = 1L, transform = function(steps) b * steps + a, label = NA_character_, initiate = TRUE, auto_finish = TRUE) {
     stop_if_not(!is.null(steps) || !is.null(along))
-    if (!is.null(along)) steps <- length(along)
     stop_if_not(length(steps) == 1L, is.numeric(steps), !is.na(steps),
                 steps >= 0)
-    stop_if_not(length(extra) == 1L, is.numeric(extra), !is.na(extra))		
+    stop_if_not(length(a) == 1L, is.numeric(a), !is.na(a))
+    stop_if_not(length(b) == 1L, is.numeric(b), !is.na(b))
     stop_if_not(is.function(transform))
     
     label <- as.character(label)
