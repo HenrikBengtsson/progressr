@@ -68,7 +68,6 @@ progressor <- local({
 print.progressor <- function(x, ...) {
   s <- sprintf("%s:", class(x)[1])
   e <- environment(x)
-  print(ls(e))
   pe <- parent.env(e)
 
   s <- c(s, paste("- label:", e$label))
