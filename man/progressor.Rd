@@ -7,6 +7,8 @@
 progressor(
   steps = NULL,
   along = NULL,
+  extra = 0L,
+  transform = function(n) n + extra,
   label = NA_character_,
   initiate = TRUE,
   auto_finish = TRUE
@@ -16,6 +18,13 @@ progressor(
 \item{steps}{(integer) Maximum number of steps.}
 
 \item{along}{(vector; alternative) Corresponds to \code{steps = seq_along(along)}.}
+
+\item{extra}{(integer; optional) Extra steps in addition to what \code{steps}
+or \code{along} specifies.}
+
+\item{transform}{(function; optional) A function that takes the number of
+steps according to \code{steps} or \code{along} and returns another finite and
+non-negative number of steps.}
 
 \item{label}{(character) A label.}
 

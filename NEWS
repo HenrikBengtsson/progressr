@@ -1,9 +1,11 @@
 Package: progressr
 ==================
 
-Version: 0.2.1-9000 [2020-01-04]
+Version: 0.2.1-9000 [2020-01-10]
 
- * ...
+NEW FEATURES:
+
+ * progressor() gained argument 'extra' and 'transform'.
  
 
 Version: 0.2.1 [2020-01-04]
