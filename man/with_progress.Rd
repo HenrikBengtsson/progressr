@@ -42,6 +42,11 @@ Return nothing (reserved for future usage).
 \description{
 Evaluate Expression while Handling Progress Updates
 }
+\details{
+Formally, progression handlers are calling handlers that are called
+when a \link{progression} condition is signaled.  These handlers are functions
+that takes one argument which is the \link{progression} condition.
+}
 \examples{
 x <- 1:10
 
@@ -98,4 +103,7 @@ with_progress({
 })
 
 options(oopts)
+}
+\seealso{
+\code{\link[base:withCallingHandlers]{base::withCallingHandlers()}}
 }

@@ -24,6 +24,14 @@
 #'
 #' @example incl/with_progress.R
 #'
+#' @details
+#' Formally, progression handlers are calling handlers that are called
+#' when a [progression] condition is signaled.  These handlers are functions
+#' that takes one argument which is the [progression] condition.
+#'
+#' @seealso
+#' [base::withCallingHandlers()]
+#'
 #' @export
 with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE, delay_stdout = getOption("progressr.delay_stdout", interactive()), delay_conditions = getOption("progressr.delay_conditions", if (interactive()) c("condition") else character(0L)), interval = NULL, enable = NULL) {
   stop_if_not(is.logical(cleanup), length(cleanup) == 1L, !is.na(cleanup))
@@ -60,14 +68,14 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
   }
 
   if (length(handlers) > 1L) {
-    handler <- function(p) {
+    calling_handler <- function(p) {
       for (kk in seq_along(handlers)) {
         handler <- handlers[[kk]]
         handler(p)
       }
     }
   } else {
-    handler <- handlers[[1]]
+    calling_handler <- handlers[[1]]
   }
 
   ## Flag indicating whether with_progress() exited due to
@@ -82,7 +90,7 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
         withRestarts({
           signalCondition(control_progression("shutdown", status = status))
         }, muffleProgression = function(p) NULL)
-      }, progression = handler)
+      }, progression = calling_handler)
     }, add = TRUE)
   }
 
