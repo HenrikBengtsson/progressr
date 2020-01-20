@@ -122,6 +122,10 @@ txtprogressbar_handler <- function(style = 3L, file = stderr(), intrusiveness = 
 #'
 #' @example incl/tkprogressbar_handler.R
 #'
+#' @section Requirements:
+#' This progression handler requires the \pkg{tcltk} package and that the
+#' current R session supports Tcl/Tk (`capabilities("tcltk")`).
+#'
 #' @export
 tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), target = "terminal", ...) {
   ## Used for package testing purposes only when we want to perform
@@ -188,6 +192,9 @@ tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusive
 #' @inheritParams make_progression_handler
 #'
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
+#'
+#' @section Requirements:
+#' This progression handler requires MS Windows.
 #'
 #' @export
 winprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), target = "gui", ...) {
@@ -266,6 +273,9 @@ winprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiv
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
 #'
 #' @example incl/pbmcapply_handler.R
+#'
+#' @section Requirements:
+#' This progression handler requires the \pkg{pbmcapply} package.
 #'
 #' @importFrom utils file_test flush.console txtProgressBar setTxtProgressBar
 #' @export
@@ -366,6 +376,9 @@ pbmcapply_handler <- function(substyle = 3L, style = "ETA", file = stderr(), int
 #'
 #' @example incl/progress_handler.R
 #'
+#' @section Requirements:
+#' This progression handler requires the \pkg{progress} package.
+#'
 #' @export
 progress_handler <- function(format = "[:bar] :percent :message", show_after = 0.0, intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
   if (!is_fake("progress_handler")) {
@@ -440,6 +453,9 @@ progress_handler <- function(format = "[:bar] :percent :message", show_after = 0
 #'
 #' @example incl/beepr_handler.R
 #'
+#' @section Requirements:
+#' This progression handler requires the \pkg{beepr} package.
+#'
 #' @export
 beepr_handler <- function(initiate = 2L, update = 10L,  finish = 11L, intrusiveness = getOption("progressr.intrusiveness.auditory", 5.0), target = "audio", ...) {
   ## Used for package testing purposes only when we want to perform
@@ -490,6 +506,11 @@ beepr_handler <- function(initiate = 2L, update = 10L,  finish = 11L, intrusiven
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
 #'
 #' @example incl/notifier_handler.R
+#'
+#' @section Requirements:
+#' This progression handler requires the \pkg{notifier} package, which is only
+#' available from <https://github.com/gaborcsardi/notifier>.  This can be
+#' installed as `remotes::install_github("gaborcsardi/notifier@62d484")`.
 #'
 #' @export
 notifier_handler <- function(intrusiveness = getOption("progressr.intrusiveness.notifier", 10), target = "gui", ...) {
@@ -695,6 +716,9 @@ filesize_handler <- function(file = "default.progress", intrusiveness = getOptio
 #' handlers(shiny_handler())
 #' with_progress(y <- slow_sum(1:100))
 #' }}
+#'
+#' @section Requirements:
+#' This progression handler requires the \pkg{shiny} package.
 #'
 #' @export
 shiny_handler <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), target = "gui", ...) {

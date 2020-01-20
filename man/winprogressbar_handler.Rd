@@ -22,3 +22,8 @@ rendered.}
 \description{
 A progression handler for \code{\link[utils:winProgressBar]{utils::winProgressBar()}}.
 }
+\section{Requirements}{
+
+This progression handler requires MS Windows.
+}
+

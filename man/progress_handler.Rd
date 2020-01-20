@@ -29,6 +29,11 @@ rendered.}
 \description{
 A progression handler for \code{\link[progress:progress_bar]{progress::progress_bar()}}.
 }
+\section{Requirements}{
+
+This progression handler requires the \pkg{progress} package.
+}
+
 \examples{
 if (requireNamespace("progress", quietly = TRUE)) {
   handlers(progress_handler(format = ":spin [:bar] :percent :message"))

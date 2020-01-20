@@ -41,9 +41,9 @@ This function provides a convenient alternative for getting and setting
 option \option{progressr.handlers}.
 }
 \examples{
-hdlrs <- "txtprogressbar"
-if (requireNamespace("beepr", quietly = TRUE)) hdlrs <- c(hdlrs, "beepr")
-handlers(hdlrs)
+handlers("txtprogressbar")
+if (requireNamespace("beepr", quietly = TRUE))
+  handlers("beepr", append = TRUE)
 
 with_progress({ y <- slow_sum(10) })
 print(y)

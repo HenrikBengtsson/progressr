@@ -28,6 +28,11 @@ rendered.}
 \description{
 A progression handler for \code{\link[beepr:beep]{beepr::beep()}}.
 }
+\section{Requirements}{
+
+This progression handler requires the \pkg{beepr} package.
+}
+
 \examples{
 if (requireNamespace("beepr", quietly = TRUE)) {
   handlers("beepr")

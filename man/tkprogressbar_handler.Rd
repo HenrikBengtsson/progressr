@@ -22,6 +22,12 @@ rendered.}
 \description{
 A progression handler for \code{\link[tcltk:tkProgressBar]{tcltk::tkProgressBar()}}.
 }
+\section{Requirements}{
+
+This progression handler requires the \pkg{tcltk} package and that the
+current R session supports Tcl/Tk (\code{capabilities("tcltk")}).
+}
+
 \examples{
 if (requireNamespace("tcltk", quietly = TRUE)) {
   handlers("tkprogressbar")

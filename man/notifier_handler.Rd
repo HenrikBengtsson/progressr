@@ -22,6 +22,13 @@ rendered.}
 \description{
 A progression handler for \code{\link[notifier:notify]{notifier::notify()}}.
 }
+\section{Requirements}{
+
+This progression handler requires the \pkg{notifier} package, which is only
+available from \url{https://github.com/gaborcsardi/notifier}.  This can be
+installed as \code{remotes::install_github("gaborcsardi/notifier@62d484")}.
+}
+
 \examples{
 if (requireNamespace("notifier", quietly = TRUE)) {
   handlers("notifier")

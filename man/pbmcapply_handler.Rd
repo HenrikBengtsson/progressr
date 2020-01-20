@@ -31,6 +31,11 @@ rendered.}
 \description{
 A progression handler for \code{\link[pbmcapply:progressBar]{pbmcapply::progressBar()}}.
 }
+\section{Requirements}{
+
+This progression handler requires the \pkg{pbmcapply} package.
+}
+
 \examples{
 if (requireNamespace("pbmcapply", quietly = TRUE)) {
   handlers("pbmcapply")

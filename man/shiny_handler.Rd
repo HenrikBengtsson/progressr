@@ -22,6 +22,11 @@ rendered.}
 \description{
 A progression handler for \pkg{shiny} and \code{\link[shiny:withProgress]{shiny::withProgress()}}.
 }
+\section{Requirements}{
+
+This progression handler requires the \pkg{shiny} package.
+}
+
 \examples{
 \donttest{\dontrun{
 handlers(shiny_handler())
