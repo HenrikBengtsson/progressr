@@ -13,7 +13,7 @@ message("progress_handler() ...")
 with_progress({
   progress <- progressor(along = x)
   for (ii in x) {
-    Sys.sleep(getOption("progressr.delay", 0.1))
+    Sys.sleep(getOption("progressr.demo.delay", 0.1))
     progress(message = sprintf("(%s)", paste(letters[1:ii], collapse="")))
   }
 })

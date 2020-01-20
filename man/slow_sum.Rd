@@ -6,7 +6,7 @@
 \usage{
 slow_sum(
   x,
-  delay = getOption("progressr.delay", 1),
+  delay = getOption("progressr.demo.delay", 1),
   stdout = FALSE,
   message = TRUE
 )

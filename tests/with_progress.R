@@ -1,6 +1,6 @@
 source("incl/start.R")
 
-options(progressr.delay = 0.001)
+options(progressr.demo.delay = 0.001)
 options(progressr.interval = 0.0)
 options(progressr.clear = FALSE)
 

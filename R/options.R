@@ -57,7 +57,7 @@
 #' @section Options for progressr examples and demos:
 #'
 #' \describe{
-#'  \item{\option{progressr.delay}:}{(numeric) Delay (in seconds) between each iteration of [slow_sum()]. (Default: `1.0`)}
+#'  \item{\option{progressr.demo.delay}:}{(numeric) Delay (in seconds) between each iteration of [slow_sum()]. (Default: `1.0`)}
 #' }
 #'
 #'
@@ -67,7 +67,7 @@
 #' @aliases
 #' progressr.clear
 #' progressr.debug
-#' progressr.delay
+#' progressr.demo.delay
 #' progressr.delay_stdout progressr.delay_conditions
 #' progressr.enable progressr.enable_after
 #' progressr.interval

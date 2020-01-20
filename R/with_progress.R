@@ -24,7 +24,7 @@
 #'
 #' @example incl/with_progress.R
 #'
-#' @details
+#' @section Progression handler functions:
 #' Formally, progression handlers are calling handlers that are called
 #' when a [progression] condition is signaled.  These handlers are functions
 #' that takes one argument which is the [progression] condition.

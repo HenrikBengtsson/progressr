@@ -1,4 +1,4 @@
-#' Create a Progressor Function
+#' Create a Progressor Function which Signals Progress Updates
 #'
 #' @param steps (integer) Number of progressing steps.
 #'
@@ -15,7 +15,7 @@
 #' @param label (character) A label.
 #'
 #' @param initiate (logical) If TRUE, the progressor will signal a
-#' [progression] 'initiate' condition.
+#' [progression] 'initiate' condition when created.
 #'
 #' @param auto_finish (logical) If TRUE, then the progressor will signal a
 #' [progression] 'finish' condition as soon as the last step has been reached.

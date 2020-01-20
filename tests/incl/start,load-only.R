@@ -44,7 +44,7 @@ non_supported_progression_handlers <- function() {
 ## Settings
 options(progressr.clear = TRUE)
 options(progressr.debug = FALSE)
-options(progressr.delay = 0.0)
+options(progressr.demo.delay = 0.0)
 options(progressr.enable = TRUE)
 options(progressr.enable_after = 0.0)
 options(progressr.interval = 0.1)

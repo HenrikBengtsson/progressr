@@ -18,14 +18,14 @@ Suggests:
     progress,
     foreach,
     purrr,
-    future (>= 1.15.1),
+    future (>= 1.16.0),
     doFuture,
     future.apply,
     furrr,
     shiny,
     notifier
 Remotes:
-  gaborcsardi/notifier@d92b1b6
+  gaborcsardi/notifier@62d484
 URL: https://github.com/HenrikBengtsson/progressr
 BugReports: https://github.com/HenrikBengtsson/progressr/issues
 RoxygenNote: 7.0.2

@@ -2,7 +2,7 @@
 % Please edit documentation in R/progressor.R
 \name{progressor}
 \alias{progressor}
-\title{Create a Progressor Function}
+\title{Create a Progressor Function which Signals Progress Updates}
 \usage{
 progressor(
   steps = length(along),
@@ -31,7 +31,7 @@ number of steps.}
 \item{label}{(character) A label.}
 
 \item{initiate}{(logical) If TRUE, the progressor will signal a
-\link{progression} 'initiate' condition.}
+\link{progression} 'initiate' condition when created.}
 
 \item{auto_finish}{(logical) If TRUE, then the progressor will signal a
 \link{progression} 'finish' condition as soon as the last step has been reached.}
@@ -40,5 +40,5 @@ number of steps.}
 A function of class \code{progressor}.
 }
 \description{
-Create a Progressor Function
+Create a Progressor Function which Signals Progress Updates
 }

@@ -14,11 +14,11 @@ Design motto:
 
 ## Two Minimal APIs
 
- | Developer's API       | End-user's API              |
- |-----------------------|-----------------------------|
- | `p <- progressor(n)`  | `with_progress(expr)`       |
- | `p(msg, ...)`         | `handlers(...)`             |
- |                       | `options(progressr.*=...)`  |
+ | Developer's API               | End-user's API              |
+ |-------------------------------|-----------------------------|
+ | `p <- progressor(n)`          | `with_progress(expr)`       |
+ | `p <- progressor(along = x)`  | `handlers(...)`             |
+ | `p(msg, ...)`                 | `options(progressr.*=...)`  |
 
 
 
@@ -28,12 +28,12 @@ Assume that we have a function `slow_sum()` for adding up the values in a vector
 
 ```r
 slow_sum <- function(x) {
-  progress <- progressr::progressor(along = x)
+  p <- progressr::progressor(along = x)
   sum <- 0
   for (kk in seq_along(x)) {
     Sys.sleep(0.1)
     sum <- sum + x[kk]
-    progress(message = sprintf("Added %g", x[kk]))
+    p(message = sprintf("Added %g", x[kk]))
   }
   sum
 }

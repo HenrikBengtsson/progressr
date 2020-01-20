@@ -4,7 +4,7 @@
 \alias{progressr.options}
 \alias{progressr.clear}
 \alias{progressr.debug}
-\alias{progressr.delay}
+\alias{progressr.demo.delay}
 \alias{progressr.delay_stdout}
 \alias{progressr.delay_conditions}
 \alias{progressr.enable}
@@ -83,7 +83,7 @@ Below are all \R options that are currently used by the \pkg{progressr} package.
 
 
 \describe{
-\item{\option{progressr.delay}:}{(numeric) Delay (in seconds) between each iteration of \code{\link[=slow_sum]{slow_sum()}}. (Default: \code{1.0})}
+\item{\option{progressr.demo.delay}:}{(numeric) Delay (in seconds) between each iteration of \code{\link[=slow_sum]{slow_sum()}}. (Default: \code{1.0})}
 }
 }
 
