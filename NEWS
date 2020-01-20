@@ -1,12 +1,14 @@
 Package: progressr
 ==================
 
-Version: 0.2.1-9000 [2020-01-12]
+Version: 0.2.1-9000 [2020-01-20]
 
 NEW FEATURES:
 
  * progressor() gained offset and slope arguments 'a' and 'b', and functional
    argument 'transform'.
+
+ * handlers() gained argument 'append' to make it easier to append handlers.
  
 BUG FIXES:
 

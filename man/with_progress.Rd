@@ -99,14 +99,13 @@ if (requireNamespace("beepr", quietly = TRUE)) {
 
 ## Progress reported via customied utils::txtProgressBar, beepr::beep,
 ## and notifier::notify, if available.
-handlers <- list(txtprogressbar_handler(style = 3L))
+handlers(txtprogressbar_handler(style = 3L))
 if (requireNamespace("beepr", quietly = TRUE)) {
-  handlers <- c(handlers, list(beepr_handler()))
+  handlers("beepr", append = TRUE)
 }
 if (requireNamespace("notifier", quietly = TRUE)) {
-  handlers <- c(handlers, list(notifier_handler(times = 3L, interval = 0.1)))
+  handlers(notifier_handler(times = 3L, interval = 0.1), append = TRUE)
 }
-handlers(handlers)
 
 with_progress({
   y <- slow_sum(1:30)

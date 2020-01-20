@@ -5,6 +5,9 @@
 #' If this vector is empty, then an empty set of progression handlers will
 #' be set.
 #'
+#' @param append (logial) If FALSE, the specified progression handlers replace
+#' the current ones, otherwise appended to them.
+#'
 #' @param on_missing (character) If `"error"`, an error is thrown if one of
 #' the progression handlers does not exists.  If `"warning"`, a warning
 #' is produces and the missing handlers is ignored.  If `"ignore"`, the
@@ -24,7 +27,7 @@
 #' @example incl/handlers.R
 #'
 #' @export
-handlers <- function(..., on_missing = c("error", "warning", "ignore"), default = txtprogressbar_handler) {
+handlers <- function(..., append = FALSE, on_missing = c("error", "warning", "ignore"), default = txtprogressbar_handler) {
   args <- list(...)
 
   ## Get the current set of progression handlers?
@@ -81,6 +84,11 @@ handlers <- function(..., on_missing = c("error", "warning", "ignore"), default 
   ## Drop non-existing handlers
   keep <- vapply(handlers, FUN = is.function, FUN.VALUE = FALSE)
   handlers <- handlers[keep]
+
+  if (append) {
+    current <- getOption("progressr.handlers", list())
+    if (length(current) > 0L) handlers <- c(current, handlers)
+  }
 
   options(progressr.handlers = handlers)[[1]]
 }
