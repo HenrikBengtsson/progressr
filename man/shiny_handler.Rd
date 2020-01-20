@@ -24,7 +24,7 @@ A progression handler for \pkg{shiny} and \code{\link[shiny:withProgress]{shiny:
 }
 \examples{
 \donttest{\dontrun{
-options(progressr.handlers = shiny_handler())
+handlers(shiny_handler())
 with_progress(y <- slow_sum(1:100))
 }}
 

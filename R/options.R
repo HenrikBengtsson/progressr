@@ -8,7 +8,7 @@
 #' @section Options for controlling progression reporting:
 #'
 #' \describe{
-#'  \item{\option{progressr.handlers}:}{(function or list of functions) Zero or more progression handlers that will report on any progression updates.  If NULL or an empty list, progress updates are ignored. (Default: `txtprogressbar_handler`)}
+#'  \item{\option{progressr.handlers}:}{(function or list of functions) Zero or more progression handlers that will report on any progression updates.  If empty list, progress updates are ignored.  If NULL, the default (`txtprogressbar_handler`) progression handlers is used.  The recommended way to set this option is via [progressr::handlers()]. (Default: NULL)}
 #' }
 #'
 #'

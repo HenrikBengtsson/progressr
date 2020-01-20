@@ -625,7 +625,7 @@ newline_handler <- function(symbol = "\n", file = stderr(), intrusiveness = getO
 #'
 #' @examples
 #' \donttest{\dontrun{
-#' options(progressr.handlers = filesize_handler(file = "myscript.progress"))
+#' handlers(filesize_handler(file = "myscript.progress"))
 #' with_progress(y <- slow_sum(1:100))
 #' }}
 #'
@@ -692,7 +692,7 @@ filesize_handler <- function(file = "default.progress", intrusiveness = getOptio
 #'
 #' @examples
 #' \donttest{\dontrun{
-#' options(progressr.handlers = shiny_handler())
+#' handlers(shiny_handler())
 #' with_progress(y <- slow_sum(1:100))
 #' }}
 #'

@@ -27,7 +27,7 @@ Progression Updates Reflected as the Size of a File
 }
 \examples{
 \donttest{\dontrun{
-options(progressr.handlers = filesize_handler(file = "myscript.progress"))
+handlers(filesize_handler(file = "myscript.progress"))
 with_progress(y <- slow_sum(1:100))
 }}
 
