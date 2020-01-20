@@ -20,7 +20,7 @@ rendered.}
 \item{\ldots}{Additional arguments passed to \code{\link[=make_progression_handler]{make_progression_handler()}}.}
 }
 \description{
-A progression handler for \code{\link[notifier:notify]{notifier::notify()}}.
+A progression handler for \code{notify()} of the \pkg{notifier} package.
 }
 \section{Requirements}{
 

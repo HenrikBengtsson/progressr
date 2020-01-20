@@ -14,18 +14,15 @@ Suggests:
     tcltk,
     beepr,
     pbmcapply,
-    plyr,
     progress,
-    foreach,
     purrr,
-    future (>= 1.16.0),
+    foreach,
+    plyr,
     doFuture,
+    future (>= 1.16.0),
     future.apply,
     furrr,
-    shiny,
-    notifier
-Remotes:
-  gaborcsardi/notifier@62d484
+    shiny
 URL: https://github.com/HenrikBengtsson/progressr
 BugReports: https://github.com/HenrikBengtsson/progressr/issues
 RoxygenNote: 7.0.2

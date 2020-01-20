@@ -1,6 +1,6 @@
 #' Operating-System Specific Progression Feedback
 #'
-#' A progression handler for [notifier::notify()].
+#' A progression handler for `notify()` of the \pkg{notifier} package.
 #'
 #' @inheritParams make_progression_handler
 #'
@@ -18,7 +18,10 @@ notifier_handler <- function(intrusiveness = getOption("progressr.intrusiveness.
   ## Used for package testing purposes only when we want to perform
   ## everything except the last part where the backend is called
   if (!is_fake("notifier_handler")) {
-    notifier_notify <- function(...) notifier::notify(...)
+    if (!requireNamespace("notifier", quietly = TRUE)) {
+      stop("Package 'notifier' is not available. See ?progressr::notifier_handler() for installation instructions")
+    }
+    notifier_notify <- get("notify", mode = "function", envir = getNamespace("notifier"))
   } else {
     notifier_notify <- function(...) NULL
   }
