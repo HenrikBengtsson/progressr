@@ -1,0 +1,81 @@
+#' Visual Progression Feedback
+#'
+#' A progression handler for [utils::txtProgressBar()].
+#'
+#' @inheritParams make_progression_handler
+#'
+#' @param style (integer) The progress-bar style according to [utils::txtProgressBar()].
+#'
+#' @param file (connection) A [base::connection] to where output should be sent.
+#'
+#' @param \ldots Additional arguments passed to [make_progression_handler()].
+#'
+#' @example incl/txtprogressbar_handler.R
+#'
+#' @importFrom utils file_test flush.console txtProgressBar setTxtProgressBar
+#' @export
+txtprogressbar_handler <- function(style = 3L, file = stderr(), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
+  reporter <- local({
+    ## Import functions
+    eraseTxtProgressBar <- function(pb) {
+      pb_env <- environment(pb$getVal)
+      with(pb_env, {
+        if (style == 1L || style == 2L) {
+          n <- .nb
+        } else if (style == 3L) {
+          n <- 3L + nw * width + 6L
+        }
+        cat("\r", strrep(" ", times = n), "\r", sep = "", file = file)
+        flush.console()
+      })
+    }
+
+    pb <- NULL
+
+    make_pb <- function(...) {
+      if (!is.null(pb)) return(pb)
+      pb <<- txtProgressBar(...)
+      pb
+    }
+
+    list(
+      reset = function(...) {
+        pb <<- NULL
+      },
+      
+      initiate = function(config, state, progression, ...) {
+        if (!state$enabled || config$times == 1L) return()
+        make_pb(max = config$max_steps, style = style, file = file)
+      },
+        
+      update = function(config, state, progression, ...) {
+        if (!state$enabled || progression$amount == 0 || config$times == 1L) return()
+	make_pb(max = config$max_steps, style = style, file = file)
+        setTxtProgressBar(pb, value = state$step)
+      },
+        
+      finish = function(config, state, progression, ...) {
+        ## Already finished?
+        if (is.null(pb)) return()
+        if (!state$enabled) return()
+        if (config$clear) {
+          eraseTxtProgressBar(pb)
+          ## Suppress newline outputted by close()
+          pb_env <- environment(pb$getVal)
+          file <- pb_env$file
+          pb_env$file <- tempfile()
+          on.exit({
+            if (file_test("-f", pb_env$file)) file.remove(pb_env$file)
+            pb_env$file <- file
+          })
+        } else {
+          setTxtProgressBar(pb, value = config$max_steps)
+        }
+        close(pb)
+	pb <<- NULL
+      }
+    )
+  })
+  
+  make_progression_handler("txtprogressbar", reporter, intrusiveness = intrusiveness, ...)
+}
