@@ -7,9 +7,9 @@
 progressor(
   steps = length(along),
   along = NULL,
-  a = 0L,
-  b = 1L,
-  transform = function(steps) b * steps + a,
+  offset = 0L,
+  scale = 1L,
+  transform = function(steps) scale * steps + offset,
   label = NA_character_,
   initiate = TRUE,
   auto_finish = TRUE
@@ -21,8 +21,8 @@ progressor(
 \item{along}{(vector; alternative) Alternative that sets
 \code{steps = length(along)}.}
 
-\item{a, b}{(integer; optional) Intercept and slope applying transform
-\code{steps <- a + b * steps}.}
+\item{offset, scale}{(integer; optional) scale and offset applying transform
+\code{steps <- scale * steps + offset}.}
 
 \item{transform}{(function; optional) A function that takes the effective
 number of \code{steps} as input and returns another finite and non-negative

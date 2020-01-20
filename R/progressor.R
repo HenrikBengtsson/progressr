@@ -5,8 +5,8 @@
 #' @param along (vector; alternative) Alternative that sets
 #' `steps = length(along)`.
 #'
-#' @param a,b (integer; optional) Intercept and slope applying transform
-#' `steps <- a + b * steps`.
+#' @param offset,scale (integer; optional) scale and offset applying transform
+#' `steps <- scale * steps + offset`.
 #'
 #' @param transform (function; optional) A function that takes the effective
 #' number of `steps` as input and returns another finite and non-negative
@@ -26,12 +26,12 @@
 progressor <- local({
   progressor_count <- 0L
   
-  function(steps = length(along), along = NULL, a = 0L, b = 1L, transform = function(steps) b * steps + a, label = NA_character_, initiate = TRUE, auto_finish = TRUE) {
+  function(steps = length(along), along = NULL, offset = 0L, scale = 1L, transform = function(steps) scale * steps + offset, label = NA_character_, initiate = TRUE, auto_finish = TRUE) {
     stop_if_not(!is.null(steps) || !is.null(along))
     stop_if_not(length(steps) == 1L, is.numeric(steps), !is.na(steps),
                 steps >= 0)
-    stop_if_not(length(a) == 1L, is.numeric(a), !is.na(a))
-    stop_if_not(length(b) == 1L, is.numeric(b), !is.na(b))
+    stop_if_not(length(offset) == 1L, is.numeric(offset), !is.na(offset))
+    stop_if_not(length(scale) == 1L, is.numeric(scale), !is.na(scale))
     stop_if_not(is.function(transform))
     
     label <- as.character(label)
