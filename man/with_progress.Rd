@@ -97,14 +97,11 @@ if (requireNamespace("beepr", quietly = TRUE)) {
   })
 }
 
-## Progress reported via customied utils::txtProgressBar, beepr::beep,
-## and notifier::notify, if available.
+## Progress reported via customized utils::txtProgressBar and beepr::beep,
+## if available.
 handlers(txtprogressbar_handler(style = 3L))
 if (requireNamespace("beepr", quietly = TRUE)) {
   handlers("beepr", append = TRUE)
-}
-if (requireNamespace("notifier", quietly = TRUE)) {
-  handlers(notifier_handler(times = 3L, interval = 0.1), append = TRUE)
 }
 
 with_progress({

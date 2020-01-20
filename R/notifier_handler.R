@@ -18,10 +18,11 @@ notifier_handler <- function(intrusiveness = getOption("progressr.intrusiveness.
   ## Used for package testing purposes only when we want to perform
   ## everything except the last part where the backend is called
   if (!is_fake("notifier_handler")) {
-    if (!requireNamespace("notifier", quietly = TRUE)) {
+    pkg <- "notifier"
+    if (!requireNamespace(pkg, quietly = TRUE)) {
       stop("Package 'notifier' is not available. See ?progressr::notifier_handler() for installation instructions")
     }
-    notifier_notify <- get("notify", mode = "function", envir = getNamespace("notifier"))
+    notifier_notify <- get("notify", mode = "function", envir = getNamespace(pkg))
   } else {
     notifier_notify <- function(...) NULL
   }
