@@ -74,7 +74,7 @@ with_progress({
 })
 
 ## Progress reported via tcltk::tkProgressBar
-if (requireNamespace("tcltk", quietly = TRUE)) {
+if (capabilities("tcltk") && requireNamespace("tcltk", quietly = TRUE)) {
   handlers("tkprogressbar")
   with_progress({
     y <- slow_sum(x)
