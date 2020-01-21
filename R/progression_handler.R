@@ -287,19 +287,15 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
         timestamps[max_steps] <<- Sys.time()
         prev_milestone <<- max_steps
         .validate_internal_state()
-      } else if (type == "update" && p$amount == 0) {
-        if (debug) mstr(list(amount = 0, finished = finished, step = step, milestones = milestones, prev_milestone = prev_milestone, interval = interval))
-        update_reporter(p)
-        .validate_internal_state(sprintf("handler(type=%s, amount=0) ... end", type))
       } else if (type == "update") {
 	if (debug) mstr(list(step=step, "p$amount"=p$amount, max_steps=max_steps))
         step <<- min(max(step + p$amount, 0L), max_steps)
-	stop_if_not(step >= 1L)
+	stop_if_not(step >= 0L)
         msg <- conditionMessage(p)
         if (length(msg) > 0) message <<- msg
         timestamps[step] <<- Sys.time()
         if (debug) mstr(list(finished = finished, step = step, milestones = milestones, prev_milestone = prev_milestone, interval = interval))
-        if (length(milestones) > 0L && step >= milestones[1]) {
+	if (length(milestones) > 0L && step >= milestones[1]) {
           skip <- FALSE
           if (interval > 0) {
             dt <- difftime(timestamps[step], timestamps[max(prev_milestone, 1L)], units = "secs")
@@ -316,6 +312,8 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
             if (debug) mstr(list(type = "finish (auto)", milestones = milestones))
             finish_reporter(p)
           }
+        } else {
+          update_reporter(p)
         }
         .validate_internal_state(sprintf("handler(type=%s) ... end", type))
       } else {

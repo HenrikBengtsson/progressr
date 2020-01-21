@@ -1,6 +1,20 @@
 Package: progressr
 ==================
 
+Version: 0.3.0 [2020-01-20]
+
+NEW FEATURES:
+
+ * progressor() gained offset and slope arguments 'a' and 'b', and functional
+   argument 'transform'.
+
+ * handlers() gained argument 'append' to make it easier to append handlers.
+ 
+BUG FIXES:
+
+ * A progression condition with amount = 0 would not update the message.
+
+ 
 Version: 0.2.1 [2020-01-04]
 
 BUG FIXES:

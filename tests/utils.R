@@ -89,6 +89,20 @@ print(TRUE %||% FALSE)
 
 message("*** %||% ... done")
 
+message("*** query_r_cmd_check() ...")
+
+print(query_r_cmd_check())
+
+cat("Command line arguments:\n")
+args <- commandArgs()
+print(args)
+
+cat("Working directory:\n")
+pwd <- getwd()
+print(pwd)
+
+message("*** query_r_cmd_check() ... done")
+
 message("*** in_r_cmd_check() ...")
 
 print(in_r_cmd_check())
@@ -101,6 +115,13 @@ message("*** .onLoad() ...")
 progressr:::.onLoad(pkgname = "progressr")
 
 message("*** .onLoad() ... done")
+
+message("*** known_progression_handlers() ...")
+
+res <- known_progression_handlers()
+str(res)
+
+message("*** known_progression_handlers() ... done")
 
 message("*** utils ... DONE")
 

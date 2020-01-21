@@ -15,7 +15,7 @@ with_progress({
 
 message("- Stray progressions from unknown sources")
 
-slow_prod <- function(x, delay = getOption("progressr.delay", 0.05)) {
+slow_prod <- function(x, delay = getOption("progressr.demo.delay", 0.05)) {
   progress <- progressor(2*length(x))
   res <- 0
   for (kk in seq_along(x)) {

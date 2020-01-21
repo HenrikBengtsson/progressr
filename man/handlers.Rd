@@ -6,6 +6,7 @@
 \usage{
 handlers(
   ...,
+  append = FALSE,
   on_missing = c("error", "warning", "ignore"),
   default = txtprogressbar_handler
 )
@@ -15,6 +16,9 @@ handlers(
 functions accepts also a single vector of progression handlers as input.
 If this vector is empty, then an empty set of progression handlers will
 be set.}
+
+\item{append}{(logical) If FALSE, the specified progression handlers
+replace the current ones, otherwise appended to them.}
 
 \item{on_missing}{(character) If \code{"error"}, an error is thrown if one of
 the progression handlers does not exists.  If \code{"warning"}, a warning
@@ -37,9 +41,9 @@ This function provides a convenient alternative for getting and setting
 option \option{progressr.handlers}.
 }
 \examples{
-hdlrs <- "txtprogressbar"
-if (requireNamespace("beepr", quietly = TRUE)) hdlrs <- c(hdlrs, "beepr")
-handlers(hdlrs)
+handlers("txtprogressbar")
+if (requireNamespace("beepr", quietly = TRUE))
+  handlers("beepr", append = TRUE)
 
 with_progress({ y <- slow_sum(10) })
 print(y)

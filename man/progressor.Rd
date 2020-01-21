@@ -2,25 +2,36 @@
 % Please edit documentation in R/progressor.R
 \name{progressor}
 \alias{progressor}
-\title{Create a Progressor Function}
+\title{Create a Progressor Function which Signals Progress Updates}
 \usage{
 progressor(
-  steps = NULL,
+  steps = length(along),
   along = NULL,
+  offset = 0L,
+  scale = 1L,
+  transform = function(steps) scale * steps + offset,
   label = NA_character_,
   initiate = TRUE,
   auto_finish = TRUE
 )
 }
 \arguments{
-\item{steps}{(integer) Maximum number of steps.}
+\item{steps}{(integer) Number of progressing steps.}
 
-\item{along}{(vector; alternative) Corresponds to \code{steps = seq_along(along)}.}
+\item{along}{(vector; alternative) Alternative that sets
+\code{steps = length(along)}.}
+
+\item{offset, scale}{(integer; optional) scale and offset applying transform
+\code{steps <- scale * steps + offset}.}
+
+\item{transform}{(function; optional) A function that takes the effective
+number of \code{steps} as input and returns another finite and non-negative
+number of steps.}
 
 \item{label}{(character) A label.}
 
 \item{initiate}{(logical) If TRUE, the progressor will signal a
-\link{progression} 'initiate' condition.}
+\link{progression} 'initiate' condition when created.}
 
 \item{auto_finish}{(logical) If TRUE, then the progressor will signal a
 \link{progression} 'finish' condition as soon as the last step has been reached.}
@@ -29,5 +40,5 @@ progressor(
 A function of class \code{progressor}.
 }
 \description{
-Create a Progressor Function
+Create a Progressor Function which Signals Progress Updates
 }

@@ -1,9 +1,8 @@
-#' Evaluate Expression while Ignoring All Progress Updates
+#' @details
+#' `without_progress()` evaluates an expression while ignoring all
+#' progress updates.
 #'
-#' @param expr An \R expression to evaluate.
-#'
-#' @return Return nothing (reserved for future usage).
-#'
+#' @rdname with_progress
 #' @export
 without_progress <- function(expr) {
   withCallingHandlers(expr, progression = function(p) {

@@ -4,7 +4,7 @@
 \alias{progressr.options}
 \alias{progressr.clear}
 \alias{progressr.debug}
-\alias{progressr.delay}
+\alias{progressr.demo.delay}
 \alias{progressr.delay_stdout}
 \alias{progressr.delay_conditions}
 \alias{progressr.enable}
@@ -29,7 +29,7 @@ Below are all \R options that are currently used by the \pkg{progressr} package.
 
 
 \describe{
-\item{\option{progressr.handlers}:}{(function or list of functions) Zero or more progression handlers that will report on any progression updates.  If NULL or an empty list, progress updates are ignored. (Default: \code{txtprogressbar_handler})}
+\item{\option{progressr.handlers}:}{(function or list of functions) Zero or more progression handlers that will report on any progression updates.  If empty list, progress updates are ignored.  If NULL, the default (\code{txtprogressbar_handler}) progression handlers is used.  The recommended way to set this option is via \code{\link[progressr:handlers]{progressr::handlers()}}. (Default: NULL)}
 }
 }
 
@@ -83,7 +83,7 @@ Below are all \R options that are currently used by the \pkg{progressr} package.
 
 
 \describe{
-\item{\option{progressr.delay}:}{(numeric) Delay (in seconds) between each iteration of \code{\link[=slow_sum]{slow_sum()}}. (Default: \code{1.0})}
+\item{\option{progressr.demo.delay}:}{(numeric) Delay (in seconds) between each iteration of \code{\link[=slow_sum]{slow_sum()}}. (Default: \code{1.0})}
 }
 }
 

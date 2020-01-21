@@ -15,7 +15,7 @@
 #' This function signals [progression] conditions as it progresses.
 #'
 #' @export
-slow_sum <- function(x, delay = getOption("progressr.delay", 1.0), stdout = FALSE, message = TRUE) {
+slow_sum <- function(x, delay = getOption("progressr.demo.delay", 1.0), stdout = FALSE, message = TRUE) {
   progress <- progressor(along = x)
 
   sum <- 0

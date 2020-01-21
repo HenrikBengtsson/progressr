@@ -15,6 +15,7 @@ mdebug <- progressr:::mdebug
 mprint <- progressr:::mprint
 mprintf <- progressr:::mprintf
 mstr <- progressr:::mstr
+query_r_cmd_check <- progressr:::query_r_cmd_check
 in_r_cmd_check <- progressr:::in_r_cmd_check
 stop_if_not <- progressr:::stop_if_not
 printf <- function(...) cat(sprintf(...))
@@ -44,7 +45,7 @@ non_supported_progression_handlers <- function() {
 ## Settings
 options(progressr.clear = TRUE)
 options(progressr.debug = FALSE)
-options(progressr.delay = 0.0)
+options(progressr.demo.delay = 0.0)
 options(progressr.enable = TRUE)
 options(progressr.enable_after = 0.0)
 options(progressr.interval = 0.1)

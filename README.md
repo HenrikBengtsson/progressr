@@ -14,11 +14,11 @@ Design motto:
 
 ## Two Minimal APIs
 
- | Developer's API       | End-user's API              |
- |-----------------------|-----------------------------|
- | `p <- progressor(n)`  | `with_progress(expr)`       |
- | `p(msg, ...)`         | `handlers(...)`             |
- |                       | `options(progressr.*=...)`  |
+ | Developer's API               | End-user's API              |
+ |-------------------------------|-----------------------------|
+ | `p <- progressor(n)`          | `with_progress(expr)`       |
+ | `p <- progressor(along = x)`  | `handlers(...)`             |
+ | `p(msg, ...)`                 |                             |
 
 
 
@@ -28,12 +28,12 @@ Assume that we have a function `slow_sum()` for adding up the values in a vector
 
 ```r
 slow_sum <- function(x) {
-  progress <- progressr::progressor(along = x)
+  p <- progressr::progressor(along = x)
   sum <- 0
   for (kk in seq_along(x)) {
     Sys.sleep(0.1)
     sum <- sum + x[kk]
-    progress(message = sprintf("Added %g", x[kk]))
+    p(message = sprintf("Added %g", x[kk]))
   }
   sum
 }
@@ -77,7 +77,7 @@ This progress handler will present itself as:
 [==================>---------------------------]  40% Added 4
 ```
 
-To set the default progress handler(s) in all your R sessions, call `progressr::handlers(...)` in your <code>~/.Rprofile</code> file.  An alternative, which avoids loading the **progressr** package if never used, is to set `options(progressr.handlers = progress_handler)`.
+To set the default progress handler(s) in all your R sessions, call `progressr::handlers(...)` in your <code>~/.Rprofile</code> file.
 
 
 
@@ -304,12 +304,14 @@ To debug progress updates, use:
 [progressr]: https://github.com/HenrikBengtsson/progressr/
 [beepr]: https://cran.r-project.org/package=beepr
 [progress]: https://cran.r-project.org/package=progress
+[purrr]: https://cran.r-project.org/package=purrr
 [future]: https://cran.r-project.org/package=future
+[foreach]: https://cran.r-project.org/package=foreach
 [future.apply]: https://cran.r-project.org/package=future.apply
+[doParallel]: https://cran.r-project.org/package=doParallel
 [doFuture]: https://cran.r-project.org/package=doFuture
 [foreach]: https://cran.r-project.org/package=foreach
 [furrr]: https://cran.r-project.org/package=furrr
-
 
 ## Installation
 R package progressr is only available via [GitHub](https://github.com/HenrikBengtsson/progressr) and can be installed in R as:
@@ -331,7 +333,7 @@ This will install the package from source.
 
 This Git repository uses the [Git Flow](http://nvie.com/posts/a-successful-git-branching-model/) branching model (the [`git flow`](https://github.com/petervanderdoes/gitflow-avh) extension is useful for this).  The [`develop`](https://github.com/HenrikBengtsson/progressr/tree/develop) branch contains the latest contributions and other code that will appear in the next release, and the [`master`](https://github.com/HenrikBengtsson/progressr) branch contains the code of the latest release.
 
-Contributing to this package is easy.  Just send a [pull request](https://help.github.com/articles/using-pull-requests/).  When you send your PR, make sure `develop` is the destination branch on the [progressr repository](https://github.com/HenrikBengtsson/progressr).  Your PR should pass `R CMD check --as-cran`, which will also be checked by <a href="https://travis-ci.org/HenrikBengtsson/progressr">Travis CI</a> and  when the PR is submitted.
+Contributing to this package is easy.  Just send a [pull request](https://help.github.com/articles/using-pull-requests/).  When you send your PR, make sure `develop` is the destination branch on the [progressr repository](https://github.com/HenrikBengtsson/progressr).  Your PR should pass `R CMD check --as-cran`, which will also be checked by <a href="https://travis-ci.org/HenrikBengtsson/progressr">Travis CI</a> and <a href="https://ci.appveyor.com/project/HenrikBengtsson/progressr">AppVeyor CI</a> when the PR is submitted.
 
 
 ## Software status

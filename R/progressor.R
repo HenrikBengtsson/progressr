@@ -1,13 +1,21 @@
-#' Create a Progressor Function
+#' Create a Progressor Function which Signals Progress Updates
 #'
-#' @param steps (integer) Maximum number of steps.
+#' @param steps (integer) Number of progressing steps.
 #'
-#' @param along (vector; alternative) Corresponds to `steps = seq_along(along)`.
+#' @param along (vector; alternative) Alternative that sets
+#' `steps = length(along)`.
+#'
+#' @param offset,scale (integer; optional) scale and offset applying transform
+#' `steps <- scale * steps + offset`.
+#'
+#' @param transform (function; optional) A function that takes the effective
+#' number of `steps` as input and returns another finite and non-negative
+#' number of steps.
 #'
 #' @param label (character) A label.
 #'
 #' @param initiate (logical) If TRUE, the progressor will signal a
-#' [progression] 'initiate' condition.
+#' [progression] 'initiate' condition when created.
 #'
 #' @param auto_finish (logical) If TRUE, then the progressor will signal a
 #' [progression] 'finish' condition as soon as the last step has been reached.
@@ -18,14 +26,20 @@
 progressor <- local({
   progressor_count <- 0L
   
-  function(steps = NULL, along = NULL, label = NA_character_, initiate = TRUE, auto_finish = TRUE) {
+  function(steps = length(along), along = NULL, offset = 0L, scale = 1L, transform = function(steps) scale * steps + offset, label = NA_character_, initiate = TRUE, auto_finish = TRUE) {
     stop_if_not(!is.null(steps) || !is.null(along))
-    if (!is.null(along)) steps <- length(along)
     stop_if_not(length(steps) == 1L, is.numeric(steps), !is.na(steps),
                 steps >= 0)
+    stop_if_not(length(offset) == 1L, is.numeric(offset), !is.na(offset))
+    stop_if_not(length(scale) == 1L, is.numeric(scale), !is.na(scale))
+    stop_if_not(is.function(transform))
     
     label <- as.character(label)
     stop_if_not(length(label) == 1L)
+
+    steps <- transform(steps)
+    stop_if_not(length(steps) == 1L, is.numeric(steps), !is.na(steps),
+                steps >= 0)
 
     owner_session_uuid <- session_uuid(attributes = TRUE)
     progressor_count <<- progressor_count + 1L
@@ -54,7 +68,6 @@ progressor <- local({
 print.progressor <- function(x, ...) {
   s <- sprintf("%s:", class(x)[1])
   e <- environment(x)
-  print(ls(e))
   pe <- parent.env(e)
 
   s <- c(s, paste("- label:", e$label))
