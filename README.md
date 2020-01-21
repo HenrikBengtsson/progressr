@@ -18,7 +18,7 @@ Design motto:
  |-------------------------------|-----------------------------|
  | `p <- progressor(n)`          | `with_progress(expr)`       |
  | `p <- progressor(along = x)`  | `handlers(...)`             |
- | `p(msg, ...)`                 | `options(progressr.*=...)`  |
+ | `p(msg, ...)`                 |                             |
 
 
 
@@ -77,7 +77,7 @@ This progress handler will present itself as:
 [==================>---------------------------]  40% Added 4
 ```
 
-To set the default progress handler(s) in all your R sessions, call `progressr::handlers(...)` in your <code>~/.Rprofile</code> file.  An alternative, which avoids loading the **progressr** package if never used, is to set `options(progressr.handlers = progress_handler)`.
+To set the default progress handler(s) in all your R sessions, call `progressr::handlers(...)` in your <code>~/.Rprofile</code> file.
 
 
 
