@@ -5,7 +5,7 @@
 # * Travis CI: https://docs.travis-ci.com/user/languages/r
 # * covr: https://github.com/jimhester/covr
 #
-# Validate your .travis.yml file at http://lint.travis-ci.org/
+# YAML validated using http://www.yamllint.com/
 #----------------------------------------------------------------
 language: r
 sudo: false
@@ -30,7 +30,7 @@ matrix:
         - _R_CHECK_LENGTH_1_CONDITION_=true
         - _R_CHECK_LENGTH_1_LOGIC2_=true
         - _R_CLASS_MATRIX_ARRAY_=true
-     - os: osx
+    - os: osx
       r: oldrel
     - os: osx
       r: release
@@ -42,7 +42,7 @@ matrix:
       after_success:
         - Rscript -e 'covr::codecov(quiet=FALSE)'
       env: NB='w/ covr' ## Just a label
-    
+
 notifications:
   email:
     on_success: change
