@@ -2,11 +2,11 @@ source("incl/start.R")
 
 options(progressr.clear = FALSE)
 
-message("shiny_handler ...")
+message("handler_shiny ...")
 
-h <- shiny_handler()
+h <- handler_shiny()
 print(h)
 
-message("shiny_handler ... done")
+message("handler_shiny ... done")
 
 source("incl/end.R")

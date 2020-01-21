@@ -8,7 +8,7 @@ x <- 1:10
 
 for (style in 1:3) {
   message(sprintf("- style = %d ...", style))
-  handlers(txtprogressbar_handler(style = style))
+  handlers(handler_txtprogressbar(style = style))
   
   with_progress({
     progress <- progressor(along = x)

@@ -1,9 +1,12 @@
 Package: progressr
 ==================
 
-Version: 0.3.0-9000 [2020-01-20]
+Version: 0.3.0-9000 [2020-01-21]
 
- * ...
+SIGNIFICANT CHANGES:
+
+ * All progression handler function have been renamed from <name>_handler()
+   to handler_<name>() to make it easier to use autocompletion on them.
 
 
 Version: 0.3.0 [2020-01-20]

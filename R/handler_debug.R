@@ -4,10 +4,10 @@
 #'
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
 #'
-#' @example incl/debug_handler.R
+#' @example incl/handler_debug.R
 #'
 #' @export
-debug_handler <- function(interval = getOption("progressr.interval", 0), intrusiveness = getOption("progressr.intrusiveness.debug", 0), target = "terminal", ...) {
+handler_debug <- function(interval = getOption("progressr.interval", 0), intrusiveness = getOption("progressr.intrusiveness.debug", 0), target = "terminal", ...) {
   reporter <- local({
     t_init <- NULL
     

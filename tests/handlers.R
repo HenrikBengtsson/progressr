@@ -23,7 +23,7 @@ for (kk in seq_along(hs)) {
   print(handler)
 }
 
-hs <- handlers("txtprogressbar_handler")
+hs <- handlers("handler_txtprogressbar")
 print(hs)
 
 message("handlers() - exceptions ...")

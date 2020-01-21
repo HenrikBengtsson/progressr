@@ -2,14 +2,13 @@ source("incl/start.R")
 
 options(progressr.clear = FALSE)
 
-if (requireNamespace("progress", quietly = TRUE)) {
-  options(progressr.handlers = progress_handler)
+if (capabilities("tcltk") && requireNamespace("tcltk", quietly = TRUE)) {
+  options(progressr.handlers = handler_tkprogressbar)
 }  
 
 x <- 1:10
 
-message("progress_handler() ...")
-
+message("handler_progress() ...")
 with_progress({
   progress <- progressor(along = x)
   for (ii in x) {
@@ -17,7 +16,6 @@ with_progress({
     progress(message = sprintf("(%s)", paste(letters[1:ii], collapse="")))
   }
 })
-
-message("progress_handler() ... done")
+message("handler_progress() ... done")
 
 source("incl/end.R")

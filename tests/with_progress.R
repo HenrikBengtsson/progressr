@@ -35,7 +35,7 @@ message("with_progress() - filesize ...")
 
 with_progress({
   sum <- slow_sum(x)
-}, filesize_handler())
+}, handler_filesize())
 print(sum)
 stopifnot(sum == truth)
 
@@ -47,7 +47,7 @@ message("with_progress() - utils::txtProgressBar() ...")
 if (requireNamespace("utils")) {
   with_progress({
     sum <- slow_sum(x)
-  }, txtprogressbar_handler(style = 2L))
+  }, handler_txtprogressbar(style = 2L))
   print(sum)
   stopifnot(sum == truth)
 }
@@ -59,7 +59,7 @@ message("with_progress() - tcltk::tkProgressBar() ...")
 
 with_progress({
   sum <- slow_sum(x)
-}, tkprogressbar_handler)
+}, handler_tkprogressbar)
 
 message("with_progress() - tcltk::tkProgressBar() ... done")
 
@@ -68,7 +68,7 @@ message("with_progress() - utils::winProgressBar() ...")
 
 with_progress({
   sum <- slow_sum(x)
-}, winprogressbar_handler)
+}, handler_winprogressbar)
 
 message("with_progress() - utils::winProgressBar() ... done")
 
@@ -79,7 +79,7 @@ if (requireNamespace("progress")) {
   ## Display progress using default handler
   with_progress({
     sum <- slow_sum(x)
-  }, progress_handler(clear = FALSE))
+  }, handler_progress(clear = FALSE))
   print(sum)
   stopifnot(sum == truth)
 }
@@ -91,7 +91,7 @@ message("with_progress() - pbmcapply::progressBar() ...")
 
 with_progress({
   sum <- slow_sum(x)
-}, pbmcapply_handler)
+}, handler_pbmcapply)
 
 message("with_progress() - pbmcapply::progressBar() ... done")
 
@@ -100,7 +100,7 @@ message("with_progress() - ascii_alert ...")
 
 with_progress({
   sum <- slow_sum(x)
-}, ascii_alert_handler())
+}, handler_ascii_alert())
 print(sum)
 stopifnot(sum == truth)
 
@@ -111,7 +111,7 @@ message("with_progress() - beepr::beep() ...")
 
 with_progress({
   sum <- slow_sum(x)
-}, beepr_handler)
+}, handler_beepr)
 print(sum)
 stopifnot(sum == truth)
 
@@ -122,7 +122,7 @@ message("with_progress() - notifier::notify() ...")
 
 with_progress({
   sum <- slow_sum(x)
-}, notifier_handler)
+}, handler_notifier)
 print(sum)
 stopifnot(sum == truth)
 
@@ -154,7 +154,7 @@ message("with_progress() - void ... done")
 message("with_progress() - multiple handlers ...")
 
 if (requireNamespace("utils", quietly = TRUE)) {
-  handlers <- list(txtprogressbar_handler, newline_handler, debug_handler)
+  handlers <- list(handler_txtprogressbar, handler_newline, handler_debug)
   options(progressr.handlers = handlers)
   
   with_progress({

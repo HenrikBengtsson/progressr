@@ -11,14 +11,14 @@
 #'
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
 #'
-#' @example incl/progress_handler.R
+#' @example incl/handler_progress.R
 #'
 #' @section Requirements:
 #' This progression handler requires the \pkg{progress} package.
 #'
 #' @export
-progress_handler <- function(format = "[:bar] :percent :message", show_after = 0.0, intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
-  if (!is_fake("progress_handler")) {
+handler_progress <- function(format = "[:bar] :percent :message", show_after = 0.0, intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
+  if (!is_fake("handler_progress")) {
     progress_bar <- progress::progress_bar
   } else {
     progress_bar <- list(

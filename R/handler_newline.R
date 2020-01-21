@@ -10,7 +10,7 @@
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
 #'
 #' @export
-newline_handler <- function(symbol = "\n", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.debug", 0), target = "terminal", ...) {
+handler_newline <- function(symbol = "\n", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.debug", 0), target = "terminal", ...) {
   reporter <- local({
     list(
       initiate = function(...) cat(file = file, symbol),

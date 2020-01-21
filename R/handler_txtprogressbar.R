@@ -10,11 +10,11 @@
 #'
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
 #'
-#' @example incl/txtprogressbar_handler.R
+#' @example incl/handler_txtprogressbar.R
 #'
 #' @importFrom utils file_test flush.console txtProgressBar setTxtProgressBar
 #' @export
-txtprogressbar_handler <- function(style = 3L, file = stderr(), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
+handler_txtprogressbar <- function(style = 3L, file = stderr(), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
   reporter <- local({
     ## Import functions
     eraseTxtProgressBar <- function(pb) {

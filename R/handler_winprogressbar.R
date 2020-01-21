@@ -10,12 +10,12 @@
 #' This progression handler requires MS Windows.
 #'
 #' @export
-winprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), target = "gui", ...) {
+handler_winprogressbar <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), target = "gui", ...) {
   ## Used for package testing purposes only when we want to perform
   ## everything except the last part where the backend is called
-  if (!is_fake("winprogressbar_handler")) {
+  if (!is_fake("handler_winprogressbar")) {
     if (.Platform$OS.type != "windows") {
-      stop("winprogressbar_handler requires MS Windows: ",
+      stop("handler_winprogressbar requires MS Windows: ",
            sQuote(.Platform$OS.type))
     }
     ## Import functions

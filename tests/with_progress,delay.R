@@ -1,6 +1,6 @@
 source("incl/start.R")
 
-options(progressr.tests.fake_handlers = c("beepr_handler", "notifier_handler", "pbmcapply_handler", "tkprogressbar_handler", "winprogressbar_handler"))
+options(progressr.tests.fake_handlers = c("handler_beepr", "handler_notifier", "handler_pbmcapply", "handler_tkprogressbar", "handler_winprogressbar"))
 options(progressr.clear = FALSE)
 options(progressr.enable_after = NULL)
 options(progressr.debug = FALSE)

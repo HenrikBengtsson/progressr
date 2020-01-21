@@ -6,7 +6,7 @@
 #'
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
 #'
-#' @example incl/notifier_handler.R
+#' @example incl/handler_notifier.R
 #'
 #' @section Requirements:
 #' This progression handler requires the \pkg{notifier} package, which is only
@@ -14,13 +14,13 @@
 #' installed as `remotes::install_github("gaborcsardi/notifier@62d484")`.
 #'
 #' @export
-notifier_handler <- function(intrusiveness = getOption("progressr.intrusiveness.notifier", 10), target = "gui", ...) {
+handler_notifier <- function(intrusiveness = getOption("progressr.intrusiveness.notifier", 10), target = "gui", ...) {
   ## Used for package testing purposes only when we want to perform
   ## everything except the last part where the backend is called
-  if (!is_fake("notifier_handler")) {
+  if (!is_fake("handler_notifier")) {
     pkg <- "notifier"
     if (!requireNamespace(pkg, quietly = TRUE)) {
-      stop("Package 'notifier' is not available. See ?progressr::notifier_handler() for installation instructions")
+      stop("Package 'notifier' is not available. See ?progressr::handler_notifier() for installation instructions")
     }
     notifier_notify <- get("notify", mode = "function", envir = getNamespace(pkg))
   } else {

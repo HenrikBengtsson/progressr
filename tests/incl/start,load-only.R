@@ -38,7 +38,7 @@ non_supported_progression_handlers <- function() {
     names <- c(names, "shiny")
   }
   names <- unique(names)
-  paste0(names, "_handler")
+  sprintf("handler_%s", names)
 }
 
 
@@ -52,7 +52,7 @@ options(progressr.interval = 0.1)
 options(progressr.times = +Inf)
 
 
-options(progressr.tests.fake_handlers = c(non_supported_progression_handlers(), "beepr_handler", "notifier_handler", "progress_handler"))
+options(progressr.tests.fake_handlers = c(non_supported_progression_handlers(), "handler_beepr", "handler_notifier", "handler_progress"))
 
 
 ## WORKAROUND: Make sure tests also work with 'covr' package

@@ -6,19 +6,19 @@
 #'
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
 #'
-#' @example incl/tkprogressbar_handler.R
+#' @example incl/handler_tkprogressbar.R
 #'
 #' @section Requirements:
 #' This progression handler requires the \pkg{tcltk} package and that the
 #' current R session supports Tcl/Tk (`capabilities("tcltk")`).
 #'
 #' @export
-tkprogressbar_handler <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), target = "terminal", ...) {
+handler_tkprogressbar <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), target = "terminal", ...) {
   ## Used for package testing purposes only when we want to perform
   ## everything except the last part where the backend is called
-  if (!is_fake("tkprogressbar_handler")) {
+  if (!is_fake("handler_tkprogressbar")) {
     if (!capabilities("tcltk")) {
-      stop("tkprogressbar_handler requires TclTk support")
+      stop("handler_tkprogressbar requires TclTk support")
     }
     ## Import functions
     tkProgressBar <- tcltk::tkProgressBar

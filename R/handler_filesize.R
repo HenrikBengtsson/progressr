@@ -8,13 +8,13 @@
 #'
 #' @examples
 #' \donttest{\dontrun{
-#' handlers(filesize_handler(file = "myscript.progress"))
+#' handlers(handler_filesize(file = "myscript.progress"))
 #' with_progress(y <- slow_sum(1:100))
 #' }}
 #'
 #' @importFrom utils file_test
 #' @export
-filesize_handler <- function(file = "default.progress", intrusiveness = getOption("progressr.intrusiveness.file", 5), target = "file", ...) {
+handler_filesize <- function(file = "default.progress", intrusiveness = getOption("progressr.intrusiveness.file", 5), target = "file", ...) {
   reporter <- local({
     set_file_size <- function(config, state, progression) {
       ratio <- state$step / config$max_steps

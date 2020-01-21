@@ -12,15 +12,15 @@
 #'
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
 #'
-#' @example incl/pbmcapply_handler.R
+#' @example incl/handler_pbmcapply.R
 #'
 #' @section Requirements:
 #' This progression handler requires the \pkg{pbmcapply} package.
 #'
 #' @importFrom utils file_test flush.console txtProgressBar setTxtProgressBar
 #' @export
-pbmcapply_handler <- function(substyle = 3L, style = "ETA", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
-  if (!is_fake("pbmcapply_handler")) {
+handler_pbmcapply <- function(substyle = 3L, style = "ETA", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
+  if (!is_fake("handler_pbmcapply")) {
     progressBar <- pbmcapply::progressBar
     eraseTxtProgressBar <- function(pb) {
       pb_env <- environment(pb$getVal)

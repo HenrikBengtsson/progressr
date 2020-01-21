@@ -9,7 +9,7 @@
 #' @example incl/withProgressShiny.R
 #'
 #' @export
-withProgressShiny <- function(expr, ..., env = parent.frame(), quoted = FALSE, handlers = c(shiny = shiny_handler, progressr::handlers(default = NULL))) {
+withProgressShiny <- function(expr, ..., env = parent.frame(), quoted = FALSE, handlers = c(shiny = handler_shiny, progressr::handlers(default = NULL))) {
   if (!quoted) expr <- substitute(expr)
   expr <- bquote(progressr::with_progress({.(expr)}, handlers = .(handlers)))
   res <- withVisible(shiny::withProgress(expr, ..., env = env, quoted = TRUE))

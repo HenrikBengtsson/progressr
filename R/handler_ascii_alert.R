@@ -11,10 +11,10 @@
 #'
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
 #'
-#' @example incl/ascii_alert_handler.R
+#' @example incl/handler_ascii_alert.R
 #'
 #' @export
-ascii_alert_handler <- function(symbol = "\a", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.auditory", 5.0), target = c("terminal", "audio"), ...) {
+handler_ascii_alert <- function(symbol = "\a", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.auditory", 5.0), target = c("terminal", "audio"), ...) {
   reporter <- local({
     list(
       update = function(config, state, progression, ...) {

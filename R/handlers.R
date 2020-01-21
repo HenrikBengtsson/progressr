@@ -27,7 +27,7 @@
 #' @example incl/handlers.R
 #'
 #' @export
-handlers <- function(..., append = FALSE, on_missing = c("error", "warning", "ignore"), default = txtprogressbar_handler) {
+handlers <- function(..., append = FALSE, on_missing = c("error", "warning", "ignore"), default = handler_txtprogressbar) {
   args <- list(...)
 
   ## Get the current set of progression handlers?
@@ -51,7 +51,7 @@ handlers <- function(..., append = FALSE, on_missing = c("error", "warning", "ig
     
     if (is.character(handler)) {
       name <- handler
-      name2 <- sprintf("%s_handler", name)
+      name2 <- sprintf("handler_%s", name)
       
       handler <- NULL
       if (exists(name2, mode = "function")) {

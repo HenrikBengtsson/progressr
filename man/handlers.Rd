@@ -8,7 +8,7 @@ handlers(
   ...,
   append = FALSE,
   on_missing = c("error", "warning", "ignore"),
-  default = txtprogressbar_handler
+  default = handler_txtprogressbar
 )
 }
 \arguments{

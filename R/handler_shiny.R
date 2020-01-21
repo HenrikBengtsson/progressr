@@ -8,7 +8,7 @@
 #'
 #' @examples
 #' \donttest{\dontrun{
-#' handlers(shiny_handler())
+#' handlers(handler_shiny())
 #' with_progress(y <- slow_sum(1:100))
 #' }}
 #'
@@ -16,7 +16,7 @@
 #' This progression handler requires the \pkg{shiny} package.
 #'
 #' @export
-shiny_handler <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), target = "gui", ...) {
+handler_shiny <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), target = "gui", ...) {
   reporter <- local({
     list(
       update = function(config, state, progression, ...) {

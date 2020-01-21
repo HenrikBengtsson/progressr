@@ -9,7 +9,7 @@ withProgressShiny(
   ...,
   env = parent.frame(),
   quoted = FALSE,
-  handlers = c(shiny = shiny_handler, progressr::handlers(default = NULL))
+  handlers = c(shiny = handler_shiny, progressr::handlers(default = NULL))
 )
 }
 \arguments{

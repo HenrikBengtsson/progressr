@@ -99,7 +99,7 @@ if (requireNamespace("beepr", quietly = TRUE)) {
 
 ## Progress reported via customized utils::txtProgressBar and beepr::beep,
 ## if available.
-handlers(txtprogressbar_handler(style = 3L))
+handlers(handler_txtprogressbar(style = 3L))
 if (requireNamespace("beepr", quietly = TRUE)) {
   handlers("beepr", append = TRUE)
 }
