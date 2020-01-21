@@ -32,7 +32,7 @@ handlers <- function(..., append = FALSE, on_missing = c("error", "warning", "ig
 
   ## Get the current set of progression handlers?
   if (length(args) == 0L) {
-    if (!is.list(default)) default <- list(default)
+    if (!is.list(default) && !is.null(default)) default <- list(default)
     return(getOption("progressr.handlers", default))
   }
 
