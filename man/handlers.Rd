@@ -17,8 +17,8 @@ functions accepts also a single vector of progression handlers as input.
 If this vector is empty, then an empty set of progression handlers will
 be set.}
 
-\item{append}{(logial) If FALSE, the specified progression handlers replace
-the current ones, otherwise appended to them.}
+\item{append}{(logical) If FALSE, the specified progression handlers
+replace the current ones, otherwise appended to them.}
 
 \item{on_missing}{(character) If \code{"error"}, an error is thrown if one of
 the progression handlers does not exists.  If \code{"warning"}, a warning

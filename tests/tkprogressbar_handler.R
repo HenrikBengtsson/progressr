@@ -2,7 +2,7 @@ source("incl/start.R")
 
 options(progressr.clear = FALSE)
 
-if (requireNamespace("tcltk", quietly = TRUE)) {
+if (capabilities("tcltk") && requireNamespace("tcltk", quietly = TRUE)) {
   options(progressr.handlers = tkprogressbar_handler)
 }  
 
