@@ -25,4 +25,8 @@ roadmap
 Roadmap
 Rprofile
 substyle
+tcltk
+tkProgressBar
+txtProgressBar
+winProgressBar
 withProgress
