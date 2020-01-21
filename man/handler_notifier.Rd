@@ -2,7 +2,7 @@
 % Please edit documentation in R/handler_notifier.R
 \name{handler_notifier}
 \alias{handler_notifier}
-\title{Operating-System Specific Progression Feedback}
+\title{Progression Handler: Progress Reported via the Operating-System Notification Framework (GUI, Text)}
 \usage{
 handler_notifier(
   intrusiveness = getOption("progressr.intrusiveness.notifier", 10),
@@ -37,3 +37,4 @@ if (requireNamespace(pkg, quietly = TRUE)) {
   print(y)
 }
 }
+\keyword{internal}

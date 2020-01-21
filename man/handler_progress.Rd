@@ -2,7 +2,7 @@
 % Please edit documentation in R/handler_progress.R
 \name{handler_progress}
 \alias{handler_progress}
-\title{Visual Progression Feedback}
+\title{Progression Handler: Progress Reported via 'progress' Progress Bars (Text) in the Terminal}
 \usage{
 handler_progress(
   format = "[:bar] :percent :message",

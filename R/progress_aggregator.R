@@ -6,6 +6,7 @@
 #'
 #' @example incl/progress_aggregator.R
 #'
+#' @keywords internal
 #' @export
 progress_aggregator <- function(progress) {
   stop_if_not(inherits(progress, "progressor"))

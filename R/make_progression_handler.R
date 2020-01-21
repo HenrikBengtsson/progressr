@@ -38,6 +38,7 @@
 #' @seealso
 #' [base::withCallingHandlers()].
 #'
+#' @keywords internal
 #' @export
 make_progression_handler <- function(name, reporter = list(), handler = NULL, enable = getOption("progressr.enable", interactive()), enable_after = getOption("progressr.enable_after", 0.0), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0.0), intrusiveness = 1.0, clear = getOption("progressr.clear", TRUE), target = "terminal") {
   if (!enable) times <- 0

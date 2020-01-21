@@ -2,7 +2,7 @@
 % Please edit documentation in R/handlers.R
 \name{handlers}
 \alias{handlers}
-\title{Get and Set the List of Progression Handlers}
+\title{Get and Set Progression Handlers used to Report Progression}
 \usage{
 handlers(
   ...,
@@ -34,11 +34,16 @@ If no arguments are specified, then the current set of progression
 handlers is returned.
 }
 \description{
-Get and Set the List of Progression Handlers
+Get and Set Progression Handlers used to Report Progression
 }
 \details{
 This function provides a convenient alternative for getting and setting
 option \option{progressr.handlers}.
+
+\emph{IMPORTANT: Setting progression handlers is a privileges that should be
+left to the end user. It should not be used by R packages, which only task
+is to \emph{signal} progress updates, not to decide if, when, and how progress
+should be reported.}
 }
 \examples{
 handlers("txtprogressbar")

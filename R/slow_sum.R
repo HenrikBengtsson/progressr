@@ -14,6 +14,7 @@
 #' @section Progress updates:
 #' This function signals [progression] conditions as it progresses.
 #'
+#' @keywords internal
 #' @export
 slow_sum <- function(x, delay = getOption("progressr.demo.delay", 1.0), stdout = FALSE, message = TRUE) {
   progress <- progressor(along = x)

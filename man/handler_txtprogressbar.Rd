@@ -2,7 +2,7 @@
 % Please edit documentation in R/handler_txtprogressbar.R
 \name{handler_txtprogressbar}
 \alias{handler_txtprogressbar}
-\title{Visual Progression Feedback}
+\title{Progression Handler: Progress Reported as Plain Progress bars (Text) in the Terminal}
 \usage{
 handler_txtprogressbar(
   style = 3L,

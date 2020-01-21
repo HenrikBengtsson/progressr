@@ -2,7 +2,7 @@
 % Please edit documentation in R/handler_pbmcapply.R
 \name{handler_pbmcapply}
 \alias{handler_pbmcapply}
-\title{Visual Progression Feedback}
+\title{Progression Handler: Progress Reported via 'pbmcapply' Progress Bars (Text) in the Terminal}
 \usage{
 handler_pbmcapply(
   substyle = 3L,

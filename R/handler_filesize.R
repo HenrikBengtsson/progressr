@@ -1,4 +1,4 @@
-#' Progression Updates Reflected as the Size of a File
+#' Progression Handler: Progress Reported as the Size of a File on the File System
 #'
 #' @inheritParams make_progression_handler
 #'
@@ -11,6 +11,14 @@
 #' handlers(handler_filesize(file = "myscript.progress"))
 #' with_progress(y <- slow_sum(1:100))
 #' }}
+#'
+#' @details
+#' This progression handler reports progress by updating the size of a file
+#' on the file system. This provides a convenient way for an R script running
+#' in batch mode to report on the progress such that the user can peek at the
+#' file size (by default in 0-100 bytes) to assess the amount of the progress
+#' made.  If the \file{*.progress} file is accessible via for instance SSH,
+#' SFTP, FTPS, HTTPS, etc., then progress can be assessed using such tools.
 #'
 #' @importFrom utils file_test
 #' @export

@@ -1,4 +1,4 @@
-#' Auditory Progression Feedback
+#' Progression Handler: Progress Reported as 'beepr' Sounds (Audio)
 #'
 #' A progression handler for [beepr::beep()].
 #'

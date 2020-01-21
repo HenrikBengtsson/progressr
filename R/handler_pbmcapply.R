@@ -1,4 +1,4 @@
-#' Visual Progression Feedback
+#' Progression Handler: Progress Reported via 'pbmcapply' Progress Bars (Text) in the Terminal
 #'
 #' A progression handler for [pbmcapply::progressBar()].
 #'

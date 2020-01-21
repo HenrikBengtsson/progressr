@@ -2,7 +2,7 @@
 % Please edit documentation in R/withProgressShiny.R
 \name{withProgressShiny}
 \alias{withProgressShiny}
-\title{Plug-in backward compatibility replacement for shiny::withProgress()}
+\title{Use Progressr in Shiny Apps: Plug-in Backward Compatibility Replacement for shiny::withProgress()}
 \usage{
 withProgressShiny(
   expr,
@@ -21,7 +21,7 @@ withProgressShiny(
 The value of \verb{[shiny::withProgress]}.
 }
 \description{
-Plug-in backward compatibility replacement for shiny::withProgress()
+Use Progressr in Shiny Apps: Plug-in Backward Compatibility Replacement for shiny::withProgress()
 }
 \examples{
 library(shiny)

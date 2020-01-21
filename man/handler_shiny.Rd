@@ -2,7 +2,7 @@
 % Please edit documentation in R/handler_shiny.R
 \name{handler_shiny}
 \alias{handler_shiny}
-\title{Visual Progression Feedback}
+\title{Progression Handler: Progress Reported via 'shiny' Widgets (GUI) in the HTML Browser}
 \usage{
 handler_shiny(
   intrusiveness = getOption("progressr.intrusiveness.gui", 1),

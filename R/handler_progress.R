@@ -1,4 +1,4 @@
-#' Visual Progression Feedback
+#' Progression Handler: Progress Reported via 'progress' Progress Bars (Text) in the Terminal
 #'
 #' A progression handler for [progress::progress_bar()].
 #'

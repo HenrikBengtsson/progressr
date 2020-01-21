@@ -1,4 +1,4 @@
-#' Get and Set the List of Progression Handlers
+#' Get and Set Progression Handlers used to Report Progression
 #'
 #' @param \dots One or more progression handlers.  Alternatively, this
 #' functions accepts also a single vector of progression handlers as input.
@@ -23,6 +23,11 @@
 #' @details
 #' This function provides a convenient alternative for getting and setting
 #' option \option{progressr.handlers}.
+#'
+#' _IMPORTANT: Setting progression handlers is a privileges that should be
+#' left to the end user. It should not be used by R packages, which only task
+#' is to _signal_ progress updates, not to decide if, when, and how progress
+#' should be reported._
 #'
 #' @example incl/handlers.R
 #'

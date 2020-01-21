@@ -2,7 +2,7 @@
 % Please edit documentation in R/handler_beepr.R
 \name{handler_beepr}
 \alias{handler_beepr}
-\title{Auditory Progression Feedback}
+\title{Progression Handler: Progress Reported as 'beepr' Sounds (Audio)}
 \usage{
 handler_beepr(
   initiate = 2L,

@@ -1,4 +1,4 @@
-#' Visual Progression Feedback
+#' Progression Handler: Progress Reported as a Tcl/Tk Progress Bars in the GUI
 #'
 #' A progression handler for [tcltk::tkProgressBar()].
 #'

@@ -2,7 +2,7 @@
 % Please edit documentation in R/handler_filesize.R
 \name{handler_filesize}
 \alias{handler_filesize}
-\title{Progression Updates Reflected as the Size of a File}
+\title{Progression Handler: Progress Reported as the Size of a File on the File System}
 \usage{
 handler_filesize(
   file = "default.progress",
@@ -23,7 +23,15 @@ rendered.}
 \item{\ldots}{Additional arguments passed to \code{\link[=make_progression_handler]{make_progression_handler()}}.}
 }
 \description{
-Progression Updates Reflected as the Size of a File
+Progression Handler: Progress Reported as the Size of a File on the File System
+}
+\details{
+This progression handler reports progress by updating the size of a file
+on the file system. This provides a convenient way for an R script running
+in batch mode to report on the progress such that the user can peek at the
+file size (by default in 0-100 bytes) to assess the amount of the progress
+made.  If the \file{*.progress} file is accessible via for instance SSH,
+SFTP, FTPS, HTTPS, etc., then progress can be assessed using such tools.
 }
 \examples{
 \donttest{\dontrun{

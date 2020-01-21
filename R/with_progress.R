@@ -1,4 +1,4 @@
-#' Evaluate Expression while Handling Progress Updates
+#' Report on Progress while Evaluating an R Expression
 #'
 #' @param expr An \R expression to evaluate.
 #'
@@ -23,6 +23,11 @@
 #' @return Return nothing (reserved for future usage).
 #'
 #' @example incl/with_progress.R
+#'
+#' @details
+#' _IMPORTANT: This function is meant for end users only.  It should not
+#' be used by R packages, which only task is to _signal_ progress updates,
+#' not to decide if, when, and how progress should be reported._
 #'
 #' @section Progression handler functions:
 #' Formally, progression handlers are calling handlers that are called

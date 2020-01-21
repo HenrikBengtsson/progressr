@@ -2,7 +2,7 @@
 % Please edit documentation in R/handler_debug.R
 \name{handler_debug}
 \alias{handler_debug}
-\title{Textual Progression Feedback for Debug Purposes}
+\title{Progression Handler: Progress Reported as Verbose Output (Text) in the Terminal}
 \usage{
 handler_debug(
   interval = getOption("progressr.interval", 0),
@@ -24,7 +24,7 @@ rendered.}
 \item{\ldots}{Additional arguments passed to \code{\link[=make_progression_handler]{make_progression_handler()}}.}
 }
 \description{
-Textual Progression Feedback for Debug Purposes
+Progression Handler: Progress Reported as Verbose Output (Text) in the Terminal
 }
 \examples{
 handlers("debug")

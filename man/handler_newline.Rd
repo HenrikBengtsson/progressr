@@ -2,7 +2,7 @@
 % Please edit documentation in R/handler_newline.R
 \name{handler_newline}
 \alias{handler_newline}
-\title{Textual Progression Feedback that outputs a Newline}
+\title{Progression Handler: Progress Reported as a New Line (Text) in the Terminal}
 \usage{
 handler_newline(
   symbol = "\\n",
@@ -27,5 +27,6 @@ rendered.}
 \item{\ldots}{Additional arguments passed to \code{\link[=make_progression_handler]{make_progression_handler()}}.}
 }
 \description{
-Textual Progression Feedback that outputs a Newline
+Progression Handler: Progress Reported as a New Line (Text) in the Terminal
 }
+\keyword{internal}

@@ -1,4 +1,4 @@
-#' Create a Progressor Function which Signals Progress Updates
+#' Create a Progressor Function to Signal Progress Updates
 #'
 #' @param steps (integer) Number of progressing steps.
 #'

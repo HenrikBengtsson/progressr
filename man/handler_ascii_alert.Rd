@@ -2,7 +2,7 @@
 % Please edit documentation in R/handler_ascii_alert.R
 \name{handler_ascii_alert}
 \alias{handler_ascii_alert}
-\title{Auditory Progression Feedback}
+\title{Progression Handler: Progress Reported as ASCII ALERT Symbols (Audio or Blink) in the Terminal}
 \usage{
 handler_ascii_alert(
   symbol = "\\a",

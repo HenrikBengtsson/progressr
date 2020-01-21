@@ -1,6 +1,6 @@
-#' Progressr Progression Updates in Plyr
+#' Use Progressr with Plyr Map-Reduce Functions
 #'
-#' A \pkg{plyr} "progress bar" that signals [progression] conditions.
+#' A "progress bar" for \pkg{plyr}'s `.progress` argument.
 #'
 #' @param \ldots Not used.
 #'

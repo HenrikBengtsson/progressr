@@ -2,7 +2,7 @@
 % Please edit documentation in R/handler_tkprogressbar.R
 \name{handler_tkprogressbar}
 \alias{handler_tkprogressbar}
-\title{Visual Progression Feedback}
+\title{Progression Handler: Progress Reported as a Tcl/Tk Progress Bars in the GUI}
 \usage{
 handler_tkprogressbar(
   intrusiveness = getOption("progressr.intrusiveness.gui", 1),

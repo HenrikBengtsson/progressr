@@ -31,3 +31,4 @@ with_progress({
 
 message("progress_aggregator() ... done")
 }
+\keyword{internal}

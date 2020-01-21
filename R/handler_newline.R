@@ -1,4 +1,4 @@
-#' Textual Progression Feedback that outputs a Newline
+#' Progression Handler: Progress Reported as a New Line (Text) in the Terminal
 #'
 #' @inheritParams make_progression_handler
 #'
@@ -9,6 +9,7 @@
 #'
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
 #'
+#' @keywords internal
 #' @export
 handler_newline <- function(symbol = "\n", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.debug", 0), target = "terminal", ...) {
   reporter <- local({

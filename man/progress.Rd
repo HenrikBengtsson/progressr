@@ -21,3 +21,4 @@ Creates and Signals a Progression Condition
 To signal a progression condition, use \code{\link[base:signalCondition]{base::signalCondition()}}.
 To create and signal a progression condition at once, use \code{\link[=progress]{progress()}}.
 }
+\keyword{internal}

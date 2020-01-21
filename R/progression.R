@@ -36,6 +36,7 @@
 #' To signal a progression condition, use [base::signalCondition()].
 #' To create and signal a progression condition at once, use [progress()].
 #'
+#' @keywords internal
 #' @export
 progression <- function(message = character(0L), amount = 1.0, step = NULL, time = progression_time, ..., type = "update", class = NULL, progressor_uuid = NULL, progression_index = NULL, progression_time = Sys.time(), call = NULL, owner_session_uuid = NULL) {
   message <- as.character(message)

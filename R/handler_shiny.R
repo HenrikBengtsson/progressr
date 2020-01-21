@@ -1,4 +1,4 @@
-#' Visual Progression Feedback
+#' Progression Handler: Progress Reported via 'shiny' Widgets (GUI) in the HTML Browser
 #'
 #' A progression handler for \pkg{shiny} and [shiny::withProgress()].
 #'
