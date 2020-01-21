@@ -5,8 +5,8 @@
 #' If this vector is empty, then an empty set of progression handlers will
 #' be set.
 #'
-#' @param append (logial) If FALSE, the specified progression handlers replace
-#' the current ones, otherwise appended to them.
+#' @param append (logical) If FALSE, the specified progression handlers
+#' replace the current ones, otherwise appended to them.
 #'
 #' @param on_missing (character) If `"error"`, an error is thrown if one of
 #' the progression handlers does not exists.  If `"warning"`, a warning
