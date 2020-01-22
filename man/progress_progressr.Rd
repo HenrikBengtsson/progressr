@@ -28,8 +28,15 @@ updates at the same time.
 }
 
 \examples{
-with_progress({
-  y <- plyr::l_ply(1:10, function(...) Sys.sleep(0.1), .progress = "progressr")
-})
+if (requireNamespace("plyr", quietly=TRUE)) {
+
+  with_progress({
+    y <- plyr::llply(1:10, function(x) {
+      Sys.sleep(0.1)
+      sqrt(x)
+    }, .progress = "progressr")
+  })
+  
+}
 
 }

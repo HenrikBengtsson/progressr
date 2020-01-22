@@ -7,10 +7,7 @@
 #' @return A named [base::list] that can be passed as argument `.progress`
 #' to any of \pkg{plyr} function accepting that argument.
 #'
-#' @examples
-#' with_progress({
-#'   y <- plyr::l_ply(1:10, function(...) Sys.sleep(0.1), .progress = "progressr")
-#' })
+#' @example incl/plyr_progress_progressr.R
 #'
 #' @section Limitations:
 #' One can use use [doFuture::registerDoFuture()] to run \pkg{plyr} functions
