@@ -1,4 +1,4 @@
-#' progressr: A Unified API for Progress Updates
+#' progressr: A Unifying API for Progress Updates
 #'
 #' The \pkg{progressr} package provides a minimal, unifying API for scripts
 #' and packages to report progress updates from anywhere including when

@@ -2,7 +2,7 @@
 % Please edit documentation in R/handlers.R
 \name{handlers}
 \alias{handlers}
-\title{Get and Set Progression Handlers used to Report Progression}
+\title{Control How Progress is Reported}
 \usage{
 handlers(
   ...,
@@ -34,7 +34,7 @@ If no arguments are specified, then the current set of progression
 handlers is returned.
 }
 \description{
-Get and Set Progression Handlers used to Report Progression
+Control How Progress is Reported
 }
 \details{
 This function provides a convenient alternative for getting and setting

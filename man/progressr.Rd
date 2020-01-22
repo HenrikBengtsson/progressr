@@ -4,7 +4,7 @@
 \name{progressr}
 \alias{progressr}
 \alias{progressr-package}
-\title{progressr: A Unified API for Progress Updates}
+\title{progressr: A Unifying API for Progress Updates}
 \description{
 The \pkg{progressr} package provides a minimal, unifying API for scripts
 and packages to report progress updates from anywhere including when

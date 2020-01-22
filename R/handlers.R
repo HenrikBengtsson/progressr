@@ -1,4 +1,4 @@
-#' Get and Set Progression Handlers used to Report Progression
+#' Control How Progress is Reported
 #'
 #' @param \dots One or more progression handlers.  Alternatively, this
 #' functions accepts also a single vector of progression handlers as input.
