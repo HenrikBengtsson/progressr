@@ -15,6 +15,11 @@
 #' @section Requirements:
 #' This progression handler requires the \pkg{shiny} package.
 #'
+#' @details
+#' For most Shiny application there is little need to use this Shiny handler
+#' directly.  Instead, it is sufficient to use [withProgressShiny()].
+#'
+#' @keywords internal
 #' @export
 handler_shiny <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), target = "gui", ...) {
   reporter <- local({

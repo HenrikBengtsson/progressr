@@ -1,5 +1,4 @@
 #' Progression Handler: Progress Reported as a MS Windows Progress Bars in the GUI
-#' Visual Progression Feedback for MS Windows
 #'
 #' A progression handler for [utils::winProgressBar()].
 #'

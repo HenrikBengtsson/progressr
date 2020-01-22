@@ -18,11 +18,16 @@ withProgressShiny(
 \item{handlers}{Zero or more progression handlers used to report on progress.}
 }
 \value{
-The value of \verb{[shiny::withProgress]}.
+The value of \link[shiny:withProgress]{shiny::withProgress}.
 }
 \description{
 Use Progressr in Shiny Apps: Plug-in Backward Compatibility Replacement for shiny::withProgress()
 }
+\section{Requirements}{
+
+This function requires the \pkg{shiny} package.
+}
+
 \examples{
 library(shiny)
 library(progressr)

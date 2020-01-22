@@ -16,6 +16,17 @@ to any of \pkg{plyr} function accepting that argument.
 \description{
 A "progress bar" for \pkg{plyr}'s \code{.progress} argument.
 }
+\section{Limitations}{
+
+One can use use \code{\link[doFuture:registerDoFuture]{doFuture::registerDoFuture()}} to run \pkg{plyr} functions
+in parallel, e.g. \code{plyr::l_ply(..., .parallel = TRUE)}.  Unfortunately,
+using \code{.parallel = TRUE} disables progress updates because, internally,
+\pkg{plyr} forces \code{.progress = "none"} whenever \code{.parallel = TRUE}.
+Thus, despite the \pkg{future} ecosystem and \pkg{progressr} would support
+it, it is not possible to run \pkg{dplyr} in parallel \emph{and} get progress
+updates at the same time.
+}
+
 \examples{
 with_progress({
   y <- plyr::l_ply(1:10, function(...) Sys.sleep(0.1), .progress = "progressr")

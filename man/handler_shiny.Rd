@@ -22,6 +22,10 @@ rendered.}
 \description{
 A progression handler for \pkg{shiny} and \code{\link[shiny:withProgress]{shiny::withProgress()}}.
 }
+\details{
+For most Shiny application there is little need to use this Shiny handler
+directly.  Instead, it is sufficient to use \code{\link[=withProgressShiny]{withProgressShiny()}}.
+}
 \section{Requirements}{
 
 This progression handler requires the \pkg{shiny} package.
@@ -34,3 +38,4 @@ with_progress(y <- slow_sum(1:100))
 }}
 
 }
+\keyword{internal}

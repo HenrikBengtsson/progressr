@@ -1,4 +1,4 @@
-#' Progression Handler: Progress Reported as Verbose Output (Text) in the Terminal
+#' Progression Handler: Progress Reported as Debug Information (Text) in the Terminal
 #'
 #' @inheritParams make_progression_handler
 #'

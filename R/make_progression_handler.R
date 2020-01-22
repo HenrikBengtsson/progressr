@@ -2,13 +2,14 @@
 #'
 #' A progression calling handler is a function that takes a [base::condition]
 #' as its first argument and that can be use together with
-#' [base::withCallingHandlers()].
+#' [base::withCallingHandlers()].  This function helps creating such
+#' progression calling handler functions.
 #'
 #' @param name (character) Name of progression handler.
 #'
 #' @param reporter (environment) A reporter environment.
 #'
-#' @param handler (function) Function take a `progression` condition
+#' @param handler (function) Function take a [progression] condition
 #'   as the first argument.
 #'
 #' @param intrusiveness (numeric) A non-negative scalar on how intrusive
@@ -34,6 +35,12 @@
 #'
 #' @return A function of class `progression_handler` that takes a
 #' [progression] condition as its first and only argument.
+#'
+#' @details
+#' The inner details of progression handlers and how to use this function
+#' are still to be documented.  Until then, see the source code of existing
+#' handlers for how it is used, e.g. `progressr::handler_txtprogressbar`.
+#' Please use with care as things might change.
 #'
 #' @seealso
 #' [base::withCallingHandlers()].

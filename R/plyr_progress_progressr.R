@@ -12,6 +12,15 @@
 #'   y <- plyr::l_ply(1:10, function(...) Sys.sleep(0.1), .progress = "progressr")
 #' })
 #'
+#' @section Limitations:
+#' One can use use [doFuture::registerDoFuture()] to run \pkg{plyr} functions
+#' in parallel, e.g. `plyr::l_ply(..., .parallel = TRUE)`.  Unfortunately,
+#' using `.parallel = TRUE` disables progress updates because, internally,
+#' \pkg{plyr} forces `.progress = "none"` whenever `.parallel = TRUE`.
+#' Thus, despite the \pkg{future} ecosystem and \pkg{progressr} would support
+#' it, it is not possible to run \pkg{dplyr} in parallel _and_ get progress
+#' updates at the same time.
+#'
 #' @export
 progress_progressr <- function(...) {
   ## Progressor

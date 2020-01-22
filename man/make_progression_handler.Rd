@@ -22,7 +22,7 @@ make_progression_handler(
 
 \item{reporter}{(environment) A reporter environment.}
 
-\item{handler}{(function) Function take a \code{progression} condition
+\item{handler}{(function) Function take a \link{progression} condition
 as the first argument.}
 
 \item{enable}{(logical) If FALSE, then progress is not reported.}
@@ -53,7 +53,14 @@ A function of class \code{progression_handler} that takes a
 \description{
 A progression calling handler is a function that takes a \link[base:condition]{base::condition}
 as its first argument and that can be use together with
-\code{\link[base:withCallingHandlers]{base::withCallingHandlers()}}.
+\code{\link[base:withCallingHandlers]{base::withCallingHandlers()}}.  This function helps creating such
+progression calling handler functions.
+}
+\details{
+The inner details of progression handlers and how to use this function
+are still to be documented.  Until then, see the source code of existing
+handlers for how it is used, e.g. \code{progressr::handler_txtprogressbar}.
+Please use with care as things might change.
 }
 \seealso{
 \code{\link[base:withCallingHandlers]{base::withCallingHandlers()}}.

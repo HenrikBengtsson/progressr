@@ -4,9 +4,12 @@
 #'
 #' @param handlers Zero or more progression handlers used to report on progress.
 #'
-#' @return The value of `[shiny::withProgress]`.
+#' @return The value of [shiny::withProgress].
 #'
 #' @example incl/withProgressShiny.R
+#'
+#' @section Requirements:
+#' This function requires the \pkg{shiny} package.
 #'
 #' @export
 withProgressShiny <- function(expr, ..., env = parent.frame(), quoted = FALSE, handlers = c(shiny = handler_shiny, progressr::handlers(default = NULL))) {

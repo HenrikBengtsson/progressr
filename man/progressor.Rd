@@ -2,7 +2,7 @@
 % Please edit documentation in R/progressor.R
 \name{progressor}
 \alias{progressor}
-\title{Create a Progressor Function to Signal Progress Updates}
+\title{Create a Progressor Function that Signals Progress Updates}
 \usage{
 progressor(
   steps = length(along),
@@ -40,5 +40,5 @@ number of steps.}
 A function of class \code{progressor}.
 }
 \description{
-Create a Progressor Function to Signal Progress Updates
+Create a Progressor Function that Signals Progress Updates
 }

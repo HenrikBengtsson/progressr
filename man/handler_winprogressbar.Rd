@@ -2,8 +2,7 @@
 % Please edit documentation in R/handler_winprogressbar.R
 \name{handler_winprogressbar}
 \alias{handler_winprogressbar}
-\title{Progression Handler: Progress Reported as a MS Windows Progress Bars in the GUI
-Visual Progression Feedback for MS Windows}
+\title{Progression Handler: Progress Reported as a MS Windows Progress Bars in the GUI}
 \usage{
 handler_winprogressbar(
   intrusiveness = getOption("progressr.intrusiveness.gui", 1),

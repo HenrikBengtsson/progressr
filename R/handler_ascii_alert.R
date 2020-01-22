@@ -1,4 +1,4 @@
-#' Progression Handler: Progress Reported as ASCII ALERT Symbols (Audio or Blink) in the Terminal
+#' Progression Handler: Progress Reported as ASCII BEL Symbols (Audio or Blink) in the Terminal
 #'
 #' A progression handler based on `cat("\a", file=stderr())`.
 #'
