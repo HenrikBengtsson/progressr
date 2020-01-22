@@ -14,7 +14,7 @@
 #' [progress::progress_bar()] or via the graphical user interface (GUI)
 #' using [utils::winProgressBar()] or [tcltk::tkProgressBar()].
 #' An alternative to above visual rendering of progress, is to report it
-#' using [beep::beepr()] sounds.
+#' using [beepr::beep()] sounds.
 #' It is possible to use a combination of above progression handlers, e.g.
 #' a progress bar in the terminal together with audio updates.
 #' In addition to the existing handlers, it is possible to develop custom
@@ -27,7 +27,7 @@
 #' \pkg{foreach}.
 #' The \pkg{progressr} package will also work with parallel processing via
 #' the \pkg{future} framework, e.g. [future.apply::future_lapply()],
-#' [furrr::map()], and [foreach::foreach()] with \pkg{doFuture}.
+#' [furrr::future_map()], and [foreach::foreach()] with \pkg{doFuture}.
 #'
 #' The \pkg{progressr} package works is compatible with Shiny applications.
 #'

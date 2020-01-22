@@ -21,7 +21,7 @@ in the terminal using \code{\link[utils:txtProgressBar]{utils::txtProgressBar()}
 \code{\link[progress:progress_bar]{progress::progress_bar()}} or via the graphical user interface (GUI)
 using \code{\link[utils:winProgressBar]{utils::winProgressBar()}} or \code{\link[tcltk:tkProgressBar]{tcltk::tkProgressBar()}}.
 An alternative to above visual rendering of progress, is to report it
-using \code{\link[beep:beepr]{beep::beepr()}} sounds.
+using \code{\link[beepr:beep]{beepr::beep()}} sounds.
 It is possible to use a combination of above progression handlers, e.g.
 a progress bar in the terminal together with audio updates.
 In addition to the existing handlers, it is possible to develop custom
@@ -34,7 +34,7 @@ APIs like the \code{\link[=lapply]{lapply()}} family of functions, \pkg{purrr}, 
 \pkg{foreach}.
 The \pkg{progressr} package will also work with parallel processing via
 the \pkg{future} framework, e.g. \code{\link[future.apply:future_lapply]{future.apply::future_lapply()}},
-\code{\link[furrr:map]{furrr::map()}}, and \code{\link[foreach:foreach]{foreach::foreach()}} with \pkg{doFuture}.
+\code{\link[furrr:future_map]{furrr::future_map()}}, and \code{\link[foreach:foreach]{foreach::foreach()}} with \pkg{doFuture}.
 
 The \pkg{progressr} package works is compatible with Shiny applications.
 }
