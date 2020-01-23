@@ -1,11 +1,11 @@
 # progressr: A Unifying API for Progress Updates
 
-![Life cycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)
+![Life cycle: experimental](inst/doc/imgs/lifecycle-experimental-orange.svg)
 
 The **[progressr]** package provides a minimal API for reporting progress updates in [R](https://www.r-project.org/).  The design is to separate the representation of progress updates from how they are presented.  What type of progress to signal is controlled by the developer.  How these progress updates are rendered is controlled by the end user.  For instance, some users may prefer visual feedback such as a horizontal progress bar in the terminal, whereas others may prefer auditory feedback.
 
 
-<img src="figures/three_in_chinese.gif" alt="Three strokes writing three in Chinese" style="float: right; margin-right: 1ex; margin-left: 1ex;"/>
+<img src="inst/doc/imgs/three_in_chinese.gif" alt="Three strokes writing three in Chinese" style="float: right; margin-right: 1ex; margin-left: 1ex;"/>
 
 Design motto:
 
@@ -293,7 +293,7 @@ When using the **progressr** package, progression updates are communicated via R
 
 
 
-![](figures/slow_sum.svg)
+![](inst/doc/imgs/slow_sum.svg)
 
 _Figure: Sequence diagram illustrating how signaled progression conditions are captured by `with_progress()` and relayed to the two progression handlers 'progress' (a progress bar in the terminal) and 'beepr' (auditory) that the end user has chosen._
 
@@ -339,6 +339,13 @@ R package progressr is only available via [GitHub](https://github.com/HenrikBeng
 remotes::install_github("HenrikBengtsson/progressr")
 ```
 
+### Pre-release version
+
+To install the pre-release version that is available in Git branch `develop` on GitHub, use:
+```r
+remotes::install_github("HenrikBengtsson/progressr@develop")
+```
+This will install the package from source.  
 
 
 
