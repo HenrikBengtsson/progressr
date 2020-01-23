@@ -11,10 +11,28 @@
 #'
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
 #'
-#' @example incl/handler_progress.R
-#'
 #' @section Requirements:
 #' This progression handler requires the \pkg{progress} package.
+#'
+#' @section Appearance:
+#' Below is how this progress handler renders by default at 0%, 30% and 99%
+#' progress:
+#' 
+#' With `handlers(handler_progress())`:
+#' ```r
+#' [-------------------------------------------------]   0% 
+#' [====>--------------------------------------------]  10% 
+#' [================================================>]  99% 
+#' ```
+#'
+#' If the progression updates have messages, they will appear like:
+#' ```r
+#' [-----------------------------------------]   0% Starting
+#' [===========>----------------------------]  30% Importing
+#' [=====================================>]  99% Summarizing
+#' ```
+#'
+#' @example incl/handler_progress.R
 #'
 #' @export
 handler_progress <- function(format = "[:bar] :percent :message", show_after = 0.0, intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
