@@ -1,6 +1,6 @@
 #' Progression Handler: Progress Reported as a MS Windows Progress Bars in the GUI
 #'
-#' A progression handler for [utils::winProgressBar()].
+#' A progression handler for `winProgressBar()` in the \pkg{utils} package.
 #'
 #' @inheritParams make_progression_handler
 #'

@@ -19,7 +19,7 @@ The \emph{end user} has full control of \emph{how}, \emph{where}, and \emph{when
 these progress updates.  For instance, they can chose to report progress
 in the terminal using \code{\link[utils:txtProgressBar]{utils::txtProgressBar()}} or
 \code{\link[progress:progress_bar]{progress::progress_bar()}} or via the graphical user interface (GUI)
-using \code{\link[utils:winProgressBar]{utils::winProgressBar()}} or \code{\link[tcltk:tkProgressBar]{tcltk::tkProgressBar()}}.
+using \code{utils::winProgressBar()} or \code{\link[tcltk:tkProgressBar]{tcltk::tkProgressBar()}}.
 An alternative to above visual rendering of progress, is to report it
 using \code{\link[beepr:beep]{beepr::beep()}} sounds.
 It is possible to use a combination of above progression handlers, e.g.

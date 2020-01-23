@@ -12,7 +12,7 @@
 #' these progress updates.  For instance, they can chose to report progress
 #' in the terminal using [utils::txtProgressBar()] or
 #' [progress::progress_bar()] or via the graphical user interface (GUI)
-#' using [utils::winProgressBar()] or [tcltk::tkProgressBar()].
+#' using `utils::winProgressBar()` or [tcltk::tkProgressBar()].
 #' An alternative to above visual rendering of progress, is to report it
 #' using [beepr::beep()] sounds.
 #' It is possible to use a combination of above progression handlers, e.g.
