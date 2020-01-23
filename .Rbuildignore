@@ -58,6 +58,5 @@ Rplots.pdf$
 ^.ghi
 ^.issues
 ^last.dump*
-
-vignettes/
-^.*.gif$
+^imgs
+^.*.bob$
