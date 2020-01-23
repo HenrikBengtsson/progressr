@@ -43,6 +43,9 @@ matrix:
         - Rscript -e 'covr::codecov(quiet=FALSE)'
       env: NB='w/ covr' ## Just a label
 
+r_github_packages:
+  - HenrikBengtsson/progressr@develop
+  
 notifications:
   email:
     on_success: change
