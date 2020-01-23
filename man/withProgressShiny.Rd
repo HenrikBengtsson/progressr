@@ -2,14 +2,14 @@
 % Please edit documentation in R/withProgressShiny.R
 \name{withProgressShiny}
 \alias{withProgressShiny}
-\title{Plug-in backward compatibility replacement for shiny::withProgress()}
+\title{Use Progressr in Shiny Apps: Plug-in Backward Compatibility Replacement for shiny::withProgress()}
 \usage{
 withProgressShiny(
   expr,
   ...,
   env = parent.frame(),
   quoted = FALSE,
-  handlers = c(shiny = shiny_handler, progressr::handlers(default = NULL))
+  handlers = c(shiny = handler_shiny, progressr::handlers(default = NULL))
 )
 }
 \arguments{
@@ -18,11 +18,16 @@ withProgressShiny(
 \item{handlers}{Zero or more progression handlers used to report on progress.}
 }
 \value{
-The value of \verb{[shiny::withProgress]}.
+The value of \link[shiny:withProgress]{shiny::withProgress}.
 }
 \description{
-Plug-in backward compatibility replacement for shiny::withProgress()
+Use Progressr in Shiny Apps: Plug-in Backward Compatibility Replacement for shiny::withProgress()
 }
+\section{Requirements}{
+
+This function requires the \pkg{shiny} package.
+}
+
 \examples{
 library(shiny)
 library(progressr)

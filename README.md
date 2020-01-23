@@ -5,7 +5,7 @@
 The **[progressr]** package provides a minimal API for reporting progress updates in [R](https://www.r-project.org/).  The design is to separate the representation of progress updates from how they are presented.  What type of progress to signal is controlled by the developer.  How these progress updates are rendered is controlled by the end user.  For instance, some users may prefer visual feedback such as a horizontal progress bar in the terminal, whereas others may prefer auditory feedback.
 
 
-<img src="incl/three_in_chinese.gif" alt="Three strokes writing three in Chinese" style="float: right; margin-right: 1ex; margin-left: 1ex;"/>
+<img src="figures/three_in_chinese.gif" alt="Three strokes writing three in Chinese" style="float: right; margin-right: 1ex; margin-left: 1ex;"/>
 
 Design motto:
 
@@ -107,13 +107,15 @@ handlers("txtprogressbar", "beepr")
 
 ## Support for progressr elsewhere
 
-Note that progression updates by **progressr** is designed to work out of the box for any _sequential_ iterator framework in R.  Here is an set of examples for the most common ones:
+Note that progression updates by **progressr** is designed to work out of the box for any _sequential_ iterator framework in R.  Below is an set of examples for the most common ones.
+
+
+### Base R Apply Functions
 
 ```r
 library(progressr)
 
 xs <- 1:5
-y_truth <- lapply(xs, slow_sqrt)
 
 with_progress({
   p <- progressor(along = xs)
@@ -123,8 +125,17 @@ with_progress({
     sqrt(x)
   })
 })
+#  |=====================                                |  40%
+```
 
+### The foreach package
+
+```r
 library(foreach)
+library(progressr)
+
+xs <- 1:5
+
 with_progress({
   p <- progressor(along = xs)
   y <- foreach(x = xs) %do% {
@@ -133,8 +144,17 @@ with_progress({
     sqrt(x)
   }
 })
+#  |=====================                                |  40%
+```
 
+### The purrr package
+
+```r
 library(purrr)
+library(progressr)
+
+xs <- 1:5
+
 with_progress({
   p <- progressor(along = xs)
   y <- map(xs, function(x) {
@@ -143,15 +163,34 @@ with_progress({
     sqrt(x)
   })
 })
+#  |=====================                                |  40%
+```
+
+### The plyr package
+
+The functions in the [**plyr**](https://cran.r-project.org/package=plyr) package take argument `.progress`, which can be used to produce progress updates.  To have them generate **progressr** 'progression' updates, use `.progress = "progressr"`. For example,
+```r
+library(plyr)
+library(progressr)
+
+xs <- 1:5
+
+with_progress({
+  y <- llply(xs, function(x, ...) {
+    Sys.sleep(0.1)
+    sqrt(x)
+  }, .progress = "progressr")
+})
+#  |=====================                                |  40%
 ```
 
 
-### Parallel processing and progress updates
+## Parallel processing and progress updates
 
 The **[future]** framework, which provides a unified API for parallel and distributed processing in R, has built-in support for the kind of progression updates produced by the **progressr** package.  This means that you can use it with for instance **[future.apply]**, **[furrr]**, and **[foreach]** with **[doFuture]**.
 
 
-#### future_lapply() - parallel lapply()
+### future_lapply() - parallel lapply()
 
 Here is an example that uses `future_lapply()` of the **[future.apply]** package to parallelize on the local machine while at the same time signaling progression updates:
 
@@ -176,7 +215,7 @@ with_progress({
 ```
 
 
-#### foreach() with doFuture
+### foreach() with doFuture
 
 Here is an example that uses `foreach()` of the **[foreach]** package to parallelize on the local machine (via **[doFuture]**) while at the same time signaling progression updates:
 
@@ -202,7 +241,7 @@ with_progress({
 ```
 
 
-#### future_map() - parallel purrr::map()
+### future_map() - parallel purrr::map()
 
 ```r
 library(furrr)
@@ -227,26 +266,7 @@ with_progress({
 
 ### The plyr package
 
-The functions in the [**plyr**](https://cran.r-project.org/package=plyr) package take argument `.progress`, which can be used to produce progress updates.  To have them generate **progressr** 'progression' updates, use `.progress = "progressr"`. For example,
-```r
-library(plyr)
-library(progressr)
-
-xs <- 1:5
-
-with_progress({
-  y <- l_ply(xs, function(x, ...) {
-    Sys.sleep(6.0-x)
-    sqrt(x)
-  }, .progress = "progressr")
-})
-## |=====================                                |  40%
-```
-
-_Comment_: This also works when using `.parallel = TRUE` with a **[foreach]** parallel-backend such as **[doParallel]** or **[doFuture]** registered.
-
-
-
+Unfortunately, when using `.parallel = TRUE`, the **plyr** package resets `.progress` to the default `"none"` internally regardless how we set `.progress`.  This prevents **progressr** progression updates from being used with _parallel_ **plyr**.  If it was not for this forced reset, using `doFuture::registerDoFuture()` with `.parallel = TRUE` and `.progress = "progressr"` would indeed have reported on progress updates also when **plyr** runs in parallel.  See <https://github.com/HenrikBengtsson/progressr/issues/70> for a hack that works around this limitation.
 
 
 ## Roadmap
@@ -273,7 +293,7 @@ When using the **progressr** package, progression updates are communicated via R
 
 
 
-![](vignettes/figures/slow_sum.svg)
+![](figures/slow_sum.svg)
 
 _Figure: Sequence diagram illustrating how signaled progression conditions are captured by `with_progress()` and relayed to the two progression handlers 'progress' (a progress bar in the terminal) and 'beepr' (auditory) that the end user has chosen._
 
@@ -319,13 +339,6 @@ R package progressr is only available via [GitHub](https://github.com/HenrikBeng
 remotes::install_github("HenrikBengtsson/progressr")
 ```
 
-### Pre-release version
-
-To install the pre-release version that is available in Git branch `develop` on GitHub, use:
-```r
-remotes::install_github("HenrikBengtsson/progressr@develop")
-```
-This will install the package from source.  
 
 
 

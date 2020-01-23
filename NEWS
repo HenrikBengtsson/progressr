@@ -1,12 +1,19 @@
 Package: progressr
 ==================
 
+Version: 0.4.0 [2020-01-22]
+
+SIGNIFICANT CHANGES:
+
+ * All progression handler function have been renamed from <name>_handler()
+   to handler_<name>() to make it easier to use autocompletion on them.
+
+
 Version: 0.3.0 [2020-01-20]
 
 NEW FEATURES:
 
- * progressor() gained offset and slope arguments 'a' and 'b', and functional
-   argument 'transform'.
+ * progressor() gained arguments 'offset' and 'scale', and 'transform'.
 
  * handlers() gained argument 'append' to make it easier to append handlers.
  

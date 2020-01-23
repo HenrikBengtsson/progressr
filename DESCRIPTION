@@ -1,7 +1,7 @@
 Package: progressr
-Version: 0.3.0
+Version: 0.4.0
 Title: A Unifying API for Progress Updates
-Description: A minimal, unifying API for scripts and packages to report progress updates. By design, it allows the developer to focus on what progress that should be reported on, without having to worry about how to present it. The end user has full control on how, where, and when to render these progress updates, e.g. in the terminal using 'utils::txtProgressBar()' or 'progress::progress_bar()', in a graphical user interface using 'utils::winProgressBar()', 'tcltk::tkProgressBar()' or 'shiny::withProgress()', via the speakers using 'beep::beepr()', or on a file system via the size of a file. Anyone can add additional, customized, progression handlers. The 'progressr' package uses R's condition framework for signaling progress updated. Because of this, progress can be reported from almost anywhere in R, e.g. from classical for and while loops, from map-reduce APIs like the 'lapply()' family of functions, 'purrr', 'plyr', and 'foreach'. It will also work with parallel processing via the 'future' framework, e.g. 'future.apply::future_lapply()', 'furrr::map()', and 'foreach' with 'doFuture'.
+Description: A minimal, unifying API for scripts and packages to report progress updates from anywhere including when using parallel processing.  The package is designed such that the developer can to focus on what progress should be reported on without having to worry about how to present it.  The end user has full control of how, where, and when to render these progress updates, e.g. in the terminal using 'utils::txtProgressBar()' or 'progress::progress_bar()', in a graphical user interface using 'utils::winProgressBar()', 'tcltk::tkProgressBar()' or 'shiny::withProgress()', via the speakers using 'beep::beepr()', or on a file system via the size of a file. Anyone can add additional, customized, progression handlers. The 'progressr' package uses R's condition framework for signaling progress updated. Because of this, progress can be reported from almost anywhere in R, e.g. from classical for and while loops, from map-reduce APIs like the 'lapply()' family of functions, 'purrr', 'plyr', and 'foreach'. It will also work with parallel processing via the 'future' framework, e.g. 'future.apply::future_lapply()', 'furrr::map()', and 'foreach' with 'doFuture'. The package is compatible with Shiny applications.
 Authors@R: c(
   person("Henrik", "Bengtsson", role=c("aut", "cre", "cph"),
          email = "henrikb@braju.com"))
@@ -22,7 +22,10 @@ Suggests:
     future (>= 1.16.0),
     future.apply,
     furrr,
-    shiny
+    shiny,
+    commonmark,
+    tools
+VignetteBuilder: progressr
 URL: https://github.com/HenrikBengtsson/progressr
 BugReports: https://github.com/HenrikBengtsson/progressr/issues
 RoxygenNote: 7.0.2

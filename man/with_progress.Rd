@@ -3,7 +3,7 @@
 \name{with_progress}
 \alias{with_progress}
 \alias{without_progress}
-\title{Evaluate Expression while Handling Progress Updates}
+\title{Report on Progress while Evaluating an R Expression}
 \usage{
 with_progress(
   expr,
@@ -43,9 +43,13 @@ successive progression updates from handlers.}
 Return nothing (reserved for future usage).
 }
 \description{
-Evaluate Expression while Handling Progress Updates
+Report on Progress while Evaluating an R Expression
 }
 \details{
+\emph{IMPORTANT: This function is meant for end users only.  It should not
+be used by R packages, which only task is to \emph{signal} progress updates,
+not to decide if, when, and how progress should be reported.}
+
 \code{without_progress()} evaluates an expression while ignoring all
 progress updates.
 }
@@ -99,7 +103,7 @@ if (requireNamespace("beepr", quietly = TRUE)) {
 
 ## Progress reported via customized utils::txtProgressBar and beepr::beep,
 ## if available.
-handlers(txtprogressbar_handler(style = 3L))
+handlers(handler_txtprogressbar(style = 3L))
 if (requireNamespace("beepr", quietly = TRUE)) {
   handlers("beepr", append = TRUE)
 }

@@ -9,7 +9,7 @@ invalid <- progression(type = "unknown", session_uuid = "dummy", progressor_uuid
 print(invalid)
 res <- tryCatch(with_progress({
   signalCondition(invalid)
-}, handlers = debug_handler), error = identity)
+}, handlers = handler_debug), error = identity)
 str(res)
 stopifnot(inherits(res, "error"))
 

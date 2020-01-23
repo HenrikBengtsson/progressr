@@ -1,4 +1,4 @@
-#' Get and Set the List of Progression Handlers
+#' Control How Progress is Reported
 #'
 #' @param \dots One or more progression handlers.  Alternatively, this
 #' functions accepts also a single vector of progression handlers as input.
@@ -24,10 +24,15 @@
 #' This function provides a convenient alternative for getting and setting
 #' option \option{progressr.handlers}.
 #'
+#' _IMPORTANT: Setting progression handlers is a privileges that should be
+#' left to the end user. It should not be used by R packages, which only task
+#' is to _signal_ progress updates, not to decide if, when, and how progress
+#' should be reported._
+#'
 #' @example incl/handlers.R
 #'
 #' @export
-handlers <- function(..., append = FALSE, on_missing = c("error", "warning", "ignore"), default = txtprogressbar_handler) {
+handlers <- function(..., append = FALSE, on_missing = c("error", "warning", "ignore"), default = handler_txtprogressbar) {
   args <- list(...)
 
   ## Get the current set of progression handlers?
@@ -51,7 +56,7 @@ handlers <- function(..., append = FALSE, on_missing = c("error", "warning", "ig
     
     if (is.character(handler)) {
       name <- handler
-      name2 <- sprintf("%s_handler", name)
+      name2 <- sprintf("handler_%s", name)
       
       handler <- NULL
       if (exists(name2, mode = "function")) {

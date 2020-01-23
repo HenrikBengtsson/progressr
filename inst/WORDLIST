@@ -9,10 +9,12 @@ furrr
 github
 HenrikBengtsson
 https
+HTTPS
 lapply
 macOS
 NL
 parallelize
+pbmcapply
 plyr
 Plyr
 POSIXct
@@ -24,5 +26,10 @@ purrr
 roadmap
 Roadmap
 Rprofile
+SFTP
 substyle
+tcltk
+tkProgressBar
+txtProgressBar
+winProgressBar
 withProgress

@@ -32,3 +32,4 @@ Slowly Calculate Sum of Elements
 This function signals \link{progression} conditions as it progresses.
 }
 
+\keyword{internal}

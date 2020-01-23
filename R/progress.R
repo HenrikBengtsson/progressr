@@ -10,6 +10,7 @@
 #' To signal a progression condition, use [base::signalCondition()].
 #' To create and signal a progression condition at once, use [progress()].
 #'
+#' @keywords internal
 #' @export
 progress <- function(..., call = sys.call()) {
   args <- list(...)
