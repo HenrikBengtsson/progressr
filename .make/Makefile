@@ -423,6 +423,9 @@ win-builder-devel: $(R_OUTDIR)/$(PKG_TARBALL)
 win-builder-release: $(R_OUTDIR)/$(PKG_TARBALL)
 	curl -v -T $? ftp://anonymous@$(WIN_BUILDER)/R-release/
 
+win-builder-oldrelease: $(R_OUTDIR)/$(PKG_TARBALL)
+	curl -v -T $? ftp://anonymous@$(WIN_BUILDER)/R-oldrelease/
+
 win-builder: win-builder-devel win-builder-release
 
 
