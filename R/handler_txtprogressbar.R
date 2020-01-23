@@ -10,6 +10,32 @@
 #'
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
 #'
+#' @section Appearance:
+#' Below is how this progress handler renders at 0%, 30% and 99% progress
+#' for the three different `style` values that [utils::txtProgressBar()]
+#' supports.
+#'
+#' With `handlers(handler_txtprogressbar(style = 1L))`:
+#' ```r
+#'
+#' ====================================
+#' ==========================================================
+#' ```
+#'
+#' With `handlers(handler_txtprogressbar(style = 2L))`:
+#' ```r
+#' 
+#' ====================================
+#' ==========================================================
+#' ```
+#'
+#' With `handlers(handler_txtprogressbar(style = 3L))`:
+#' ```r  
+#'   |                                                 |   0%
+#'   |===============                                  |  30%
+#'   |=================================================|  99%
+#' ```
+#'
 #' @example incl/handler_txtprogressbar.R
 #'
 #' @importFrom utils file_test flush.console txtProgressBar setTxtProgressBar

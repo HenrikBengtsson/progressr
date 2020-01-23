@@ -15,8 +15,8 @@ The package is designed such that \emph{the developer} can to focus on \emph{wha
 progress should be reported on without having to worry about \emph{how} to
 present it.
 
-The \emph{end user} has full control on \emph{how}, \emph{where}, and \emph{when} to render
-these progress updates.  For instance, they can choose to report progress
+The \emph{end user} has full control of \emph{how}, \emph{where}, and \emph{when} to render
+these progress updates.  For instance, they can chose to report progress
 in the terminal using \code{\link[utils:txtProgressBar]{utils::txtProgressBar()}} or
 \code{\link[progress:progress_bar]{progress::progress_bar()}} or via the graphical user interface (GUI)
 using \code{\link[utils:winProgressBar]{utils::winProgressBar()}} or \code{\link[tcltk:tkProgressBar]{tcltk::tkProgressBar()}}.
@@ -24,7 +24,7 @@ An alternative to above visual rendering of progress, is to report it
 using \code{\link[beepr:beep]{beepr::beep()}} sounds.
 It is possible to use a combination of above progression handlers, e.g.
 a progress bar in the terminal together with audio updates.
-In addition to the existing handlers, it is possible to develop custom
+Besides the existing handlers, it is possible to develop custom
 progression handlers.
 
 The \pkg{progressr} package uses R's condition framework for signaling
@@ -36,8 +36,43 @@ The \pkg{progressr} package will also work with parallel processing via
 the \pkg{future} framework, e.g. \code{\link[future.apply:future_lapply]{future.apply::future_lapply()}},
 \code{\link[furrr:future_map]{furrr::future_map()}}, and \code{\link[foreach:foreach]{foreach::foreach()}} with \pkg{doFuture}.
 
-The \pkg{progressr} package works is compatible with Shiny applications.
+The \pkg{progressr} package is compatible with Shiny applications.
 }
+\section{Progression Handlers}{
+
+
+In the terminal:
+\itemize{
+\item \link{handler_txtprogressbar} (default)
+\item \link{handler_pbmcapply}
+\item \link{handler_progress}
+\item \link{handler_ascii_alert}
+\item \link{handler_debug}
+}
+
+In the graphical user interface (GUI):
+\itemize{
+\item \link{handler_tkprogressbar}
+\item \link{handler_winprogressbar}
+}
+
+Via audio:
+\itemize{
+\item \link{handler_beepr}
+\item \link{handler_ascii_alert}
+}
+
+Via the file system:
+\itemize{
+\item \link{handler_filesize}
+}
+
+In Shiny:
+\itemize{
+\item \link{withProgressShiny}
+}
+}
+
 \examples{
 library(progressr)
 

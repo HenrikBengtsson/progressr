@@ -34,6 +34,22 @@ A progression handler for \code{\link[progress:progress_bar]{progress::progress_
 This progression handler requires the \pkg{progress} package.
 }
 
+\section{Appearance}{
+
+Below is how this progress handler renders by default at 0\%, 30\% and 99\%
+progress:
+
+With \code{handlers(handler_progress())}:\if{html}{\out{<div class="r">}}\preformatted{[-------------------------------------------------]   0\% 
+[====>--------------------------------------------]  10\% 
+[================================================>]  99\% 
+}\if{html}{\out{</div>}}
+
+If the progression updates have messages, they will appear like:\if{html}{\out{<div class="r">}}\preformatted{[-----------------------------------------]   0\% Starting
+[===========>----------------------------]  30\% Importing
+[=====================================>]  99\% Summarizing
+}\if{html}{\out{</div>}}
+}
+
 \examples{
 if (requireNamespace("progress", quietly = TRUE)) {
 

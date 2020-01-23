@@ -26,6 +26,19 @@ rendered.}
 \description{
 Progression Handler: Progress Reported as Debug Information (Text) in the Terminal
 }
+\section{Appearance}{
+
+Below is how this progress handler renders by default at 0\%, 30\% and 99\%
+progress:
+
+With \code{handlers(handler_debug())}:\if{html}{\out{<div class="r">}}\preformatted{[21:27:11.236] (0.000s => +0.001s) initiate: 0/100 (+0) '' \{clear=TRUE, enabled=TRUE, status=\}
+[21:27:11.237] (0.001s => +0.000s) update: 0/100 (+0) 'Starting' \{clear=TRUE, enabled=TRUE, status=\}
+[21:27:14.240] (3.004s => +0.002s) update: 30/100 (+30) 'Importing' \{clear=TRUE, enabled=TRUE, status=\}
+[21:27:16.245] (5.009s => +0.001s) update: 100/100 (+70) 'Summarizing' \{clear=TRUE, enabled=TRUE, status=\}
+[21:27:16.246] (5.010s => +0.003s) update: 100/100 (+0) 'Summarizing' \{clear=TRIE, enabled=TRUE, status=\}
+}\if{html}{\out{</div>}}
+}
+
 \examples{
 handlers("debug")
 with_progress({ y <- slow_sum(1:10) })

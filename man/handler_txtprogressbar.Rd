@@ -28,8 +28,31 @@ rendered.}
 \description{
 A progression handler for \code{\link[utils:txtProgressBar]{utils::txtProgressBar()}}.
 }
+\section{Appearance}{
+
+Below is how this progress handler renders at 0\%, 30\% and 99\% progress
+for the three different \code{style} values that \code{\link[utils:txtProgressBar]{utils::txtProgressBar()}}
+supports.
+
+With \code{handlers(handler_txtprogressbar(style = 1L))}:\if{html}{\out{<div class="r">}}\preformatted{
+====================================
+==========================================================
+}\if{html}{\out{</div>}}
+
+With \code{handlers(handler_txtprogressbar(style = 2L))}:\if{html}{\out{<div class="r">}}\preformatted{
+====================================
+==========================================================
+}\if{html}{\out{</div>}}
+
+With \code{handlers(handler_txtprogressbar(style = 3L))}:\if{html}{\out{<div class="r">}}\preformatted{  |                                                 |   0\%
+  |===============                                  |  30\%
+  |=================================================|  99\%
+}\if{html}{\out{</div>}}
+}
+
 \examples{
 handlers("txtprogressbar")
+
 with_progress({ y <- slow_sum(1:10) })
 print(y)
 }

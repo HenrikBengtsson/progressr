@@ -4,18 +4,32 @@
 #'
 #' @inheritParams make_progression_handler
 #'
-#' @param substyle (integer) The progress-bar substyle according to [pbmcapply::progressBar()].
-#'
 #' @param style (character) The progress-bar style according to [pbmcapply::progressBar()].
+#'
+#' @param substyle (integer) The progress-bar substyle according to [pbmcapply::progressBar()].
 #'
 #' @param file (connection) A [base::connection] to where output should be sent.
 #'
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
 #'
-#' @example incl/handler_pbmcapply.R
-#'
 #' @section Requirements:
 #' This progression handler requires the \pkg{pbmcapply} package.
+#'
+#' @section Appearance:
+#' Since `style = "txt"` corresponds to using [handler_txtprogressbar()]
+#' with `style = substyle`, the main usage of this handler is with
+#' `style = "ETA"` (default) for which `substyle` is ignored.
+#' Below is how this progress handler renders by default at 0%, 30% and 99%
+#' progress:
+#' 
+#' With `handlers(handler_pbmcapply())`:
+#' ```r
+#'  |                                         |   0%, ETA NA
+#'  |===========                           |  30%, ETA 01:32
+#'  |======================================|  99%, ETA 00:01
+#' ```
+#'
+#' @example incl/handler_pbmcapply.R
 #'
 #' @importFrom utils file_test flush.console txtProgressBar setTxtProgressBar
 #' @export
