@@ -24,7 +24,7 @@
 #' This function provides a convenient alternative for getting and setting
 #' option \option{progressr.handlers}.
 #'
-#' _IMPORTANT: Setting progression handlers is a privileges that should be
+#' _IMPORTANT: Setting progression handlers is a privilege that should be
 #' left to the end user. It should not be used by R packages, which only task
 #' is to _signal_ progress updates, not to decide if, when, and how progress
 #' should be reported._
