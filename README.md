@@ -1,4 +1,4 @@
-# progressr: A Unifying API for Progress Updates
+# progressr: A Inclusive, Unifying API for Progress Updates
 
 ![Life cycle: experimental](inst/doc/imgs/lifecycle-experimental-orange.svg)
 
