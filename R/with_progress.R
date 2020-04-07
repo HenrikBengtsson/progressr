@@ -139,7 +139,7 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
       withRestarts({
         signalCondition(control_progression("reset"))
       }, muffleProgression = function(p) NULL)
-  }, progression = handler)
+  }, progression = calling_handler)
 
   ## Evaluate expression
   capture_conditions <- TRUE
@@ -149,7 +149,7 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
       ## Don't capture conditions that are produced by progression handlers
       capture_conditions <<- FALSE
       on.exit(capture_conditions <<- TRUE)
-      handler(p)
+      calling_handler(p)
     },
     condition = function(c) {
       if (!capture_conditions || inherits(c, c("progression", "error"))) return()

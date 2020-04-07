@@ -1,9 +1,11 @@
 Package: progressr
 ==================
 
-Version: 0.4.0-9000 [2020-01-23]
+Version: 0.4.0-9000 [2020-04-06]
 
- * ...
+BUG FIXES:
+
+ * Only the last of multiple progression handlers registered was used.
 
 
 Version: 0.4.0 [2020-01-22]
