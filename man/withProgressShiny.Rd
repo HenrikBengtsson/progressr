@@ -61,8 +61,6 @@ app <- shinyApp(
 local({
   oopts <- options(device.ask.default = FALSE)
   on.exit(options(oopts))
-  \donttest{
-  print(app)
-  }
+  if (interactive()) print(app)
 })
 }
