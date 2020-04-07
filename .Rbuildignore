@@ -3,6 +3,7 @@
 #----------------------------
 ^.svn
 ^.git
+^.github
 ^.make
 ^INSTALL[.]md$
 ^OVERVIEW[.]md$
