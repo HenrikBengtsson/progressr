@@ -3,6 +3,10 @@ Package: progressr
 
 Version: 0.4.0-9000 [2020-04-06]
 
+NEW FEATURES:
+
+ * Add 'void' progression handler.
+
 BUG FIXES:
 
  * Only the last of multiple progression handlers registered was used.
