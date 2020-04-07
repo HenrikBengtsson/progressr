@@ -28,5 +28,5 @@ Suggests:
 VignetteBuilder: progressr
 URL: https://github.com/HenrikBengtsson/progressr
 BugReports: https://github.com/HenrikBengtsson/progressr/issues
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 Roxygen: list(markdown = TRUE)
