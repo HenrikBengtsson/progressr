@@ -19,6 +19,7 @@ if [[ $SGE_CLUSTER_NAME == *wynton* ]]; then
 #    module load r/4.0.0-alpha
 
     ## Some packages need a more modern version of gcc, e.g. 'balvaan'
+    module load CBI-testing
     module load scl-devtoolset/4
 
     ## Some packages require non-default system libraries
