@@ -23,6 +23,25 @@ register_vignette_engine_during_build_only <- function(pkgname) {
                                         extensions = "table",
                                         normalize = FALSE)
 
+      ## Embed images as <img src="data:img/png;base64...">
+      mimes <- list(
+        gif = "image/gif",
+        jpg = "image/jpeg",
+        png = "image/png",
+        svg = "image/svg+xml"
+      )
+      for (kk in seq_along(mimes)) {
+        mime <- mimes[[kk]]
+        pattern <- sprintf('(.*[ ]src=")([^"]+[.]%s)(".*)', names(mimes)[kk])
+        idxs <- grep(pattern, html)
+        if (length(idxs) == 0) next
+        for (idx in idxs) {
+          file <- gsub(pattern, "\\2", html[idx])
+          uri <- base64enc::dataURI(file = file, mime = mime)
+          html[idx] <- gsub(pattern, sprintf("\\1%s\\3", uri), html[idx])
+        }
+      }
+        
       ## Inject HTML environment
       html <- c("<!DOCTYPE html>",
                 "<html lang=\"en\">",
@@ -49,4 +68,3 @@ register_vignette_engine_during_build_only <- function(pkgname) {
     }
   )
 }
-

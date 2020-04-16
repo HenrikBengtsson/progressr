@@ -24,6 +24,7 @@ Suggests:
     furrr,
     shiny,
     commonmark,
+    base64enc,
     tools
 VignetteBuilder: progressr
 URL: https://github.com/HenrikBengtsson/progressr
