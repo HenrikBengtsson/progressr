@@ -112,6 +112,16 @@ handlers("txtprogressbar", "beepr")
 ```
 
 
+### Silence all progress
+
+To silence all progress updates, use:
+
+```r
+handlers("void")
+```
+
+
+
 ## Support for progressr elsewhere
 
 Note that progression updates by **progressr** is designed to work out of the box for any _sequential_ iterator framework in R.  Below is an set of examples for the most common ones.
@@ -328,7 +338,7 @@ To debug progress updates, use:
 
 
 
-[progressr]: https://github.com/HenrikBengtsson/progressr/
+[progressr]: https://cran.r-project.org/package=progressr
 [beepr]: https://cran.r-project.org/package=beepr
 [progress]: https://cran.r-project.org/package=progress
 [purrr]: https://cran.r-project.org/package=purrr
