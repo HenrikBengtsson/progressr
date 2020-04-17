@@ -3,7 +3,6 @@ beepr
 BEL
 CMD
 doFuture
-doParallel
 foreach
 furrr
 github
@@ -23,13 +22,19 @@ Pre
 progressor
 Progressor
 purrr
+Renviron
 roadmap
 Roadmap
 Rprofile
+selfonly
 SFTP
 substyle
 tcltk
 tkProgressBar
 txtProgressBar
+VignetteAuthor
+VignetteEngine
+VignetteIndexEntry
+VignetteKeyword
 winProgressBar
 withProgress

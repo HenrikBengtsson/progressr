@@ -101,7 +101,7 @@ is_fake <- local({
 
 known_progression_handlers <- function(exclude = NULL) {
   ns <- asNamespace(.packageName)
-  handlers <- ls(envir = ns, pattern = "_handler$")
+  handlers <- ls(envir = ns, pattern = "^handler_")
   handlers <- setdiff(handlers, c("make_progression_handler", "print.progression_handler"))
   handlers <- setdiff(handlers, exclude)
   handlers <- mget(handlers, envir = ns, inherits = FALSE)
