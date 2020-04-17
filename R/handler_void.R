@@ -12,7 +12,7 @@
 #' }}
 #'
 #' @details
-#' This progression handler give not output - it is invisible and silent.
+#' This progression handler gives not output - it is invisible and silent.
 #'
 #' @export
 handler_void <- function(intrusiveness = 0, ...) {

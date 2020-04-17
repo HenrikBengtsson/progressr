@@ -16,7 +16,7 @@ handler_void(intrusiveness = 0, ...)
 Progression Handler: No Progress Report
 }
 \details{
-This progression handler give not output - it is invisible and silent.
+This progression handler gives not output - it is invisible and silent.
 }
 \examples{
 \donttest{\dontrun{
