@@ -349,6 +349,13 @@ R package progressr is available on [CRAN](https://cran.r-project.org/package=pr
 install.packages("progressr")
 ```
 
+### Pre-release version
+
+To install the pre-release version that is available in Git branch `develop` on GitHub, use:
+```r
+remotes::install_github("HenrikBengtsson/progressr@develop")
+```
+This will install the package from source.  
 
 
 
