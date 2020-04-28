@@ -95,5 +95,5 @@ handlers <- function(..., append = FALSE, on_missing = c("error", "warning", "ig
     if (length(current) > 0L) handlers <- c(current, handlers)
   }
 
-  options(progressr.handlers = handlers)[[1]]
+  invisible(options(progressr.handlers = handlers)[[1]])
 }

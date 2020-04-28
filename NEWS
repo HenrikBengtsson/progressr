@@ -7,6 +7,8 @@ BUG FIXES:
 
  * The 'progress' handler, which uses progress::progress_bar(), did not support
    colorization of the 'format' string when done by the 'crayon' package.
+
+ * handlers() did not return invisible (as documented).
  
 
 Version: 0.5.0 [2020-04-16]
