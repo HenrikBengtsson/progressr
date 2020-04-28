@@ -36,6 +36,10 @@
 #'
 #' @export
 handler_progress <- function(format = "[:bar] :percent :message", show_after = 0.0, intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
+  ## Force evaluation for 'format' here in case 'crayon' is used.  This
+  ## works around the https://github.com/r-lib/crayon/issues/48 problem
+  format <- as.character(format)
+  
   if (!is_fake("handler_progress")) {
     progress_bar <- progress::progress_bar
   } else {
