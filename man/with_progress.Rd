@@ -9,10 +9,9 @@ with_progress(
   expr,
   handlers = progressr::handlers(),
   cleanup = TRUE,
-  delay_terminal = interactive(),
-  delay_stdout = getOption("progressr.delay_stdout", delay_terminal),
-  delay_conditions = getOption("progressr.delay_conditions", if (delay_terminal)
-    c("condition") else character(0L)),
+  delay_terminal = NULL,
+  delay_stdout = NULL,
+  delay_conditions = NULL,
   interval = NULL,
   enable = NULL
 )

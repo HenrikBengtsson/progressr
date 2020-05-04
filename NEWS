@@ -1,11 +1,16 @@
 Package: progressr
 ==================
 
-Version: 0.5.0-9000 [2020-05-03]
+Version: 0.5.0-9000 [2020-05-04]
 
 NEW FEATURES:
 
- * with_progress() gained argument 'delay_terminal'.
+ * with_progress() gained argument 'delay_terminal' whose the default will be
+   automatically inferred from inspecting the currently set handlers and
+   whether they output to the terminal or not.
+
+ * Arguments 'delay_stdout' and 'delay_conditions' for with_progress() is
+   now agile to the effective value of the 'delay_terminal' argument.
  
 BUG FIXES:
 

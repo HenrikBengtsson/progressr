@@ -41,14 +41,15 @@
 #' [base::withCallingHandlers()]
 #'
 #' @export
-with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE, delay_terminal = interactive(), delay_stdout = getOption("progressr.delay_stdout", delay_terminal), delay_conditions = getOption("progressr.delay_conditions", if (delay_terminal) c("condition") else character(0L)), interval = NULL, enable = NULL) {
+with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE, delay_terminal = NULL, delay_stdout = NULL, delay_conditions = NULL, interval = NULL, enable = NULL) {
   stop_if_not(is.logical(cleanup), length(cleanup) == 1L, !is.na(cleanup))
   
   ## FIXME: With zero handlers, progression conditions will be
   ##        passed on upstream just as without with_progress().
   ##        Is that what we want? /HB 2019-05-17
+
+  # Nothing to do?
   if (length(handlers) == 0L) return(expr)
-  if (!is.list(handlers)) handlers <- list(handlers)
 
   ## Temporarily set progressr options
   options <- list()
@@ -56,24 +57,65 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
     stop_if_not(is.numeric(interval), length(interval) == 1L, !is.na(interval))
     options[["progressr.interval"]] <- interval
   }
-  if (!is.null(enable)) {
-    stop_if_not(is.logical(enable), length(enable) == 1L, !is.na(enable))
-    options[["progressr.enable"]] <- enable
-  }
+  
   if (length(options) > 0L) {  
     oopts <- options(options)
     on.exit(options(oopts))
   }
+
+  ## Enabled or not?
+  if (!is.null(enable)) {
+    stop_if_not(is.logical(enable), length(enable) == 1L, !is.na(enable))
+    
+    # Nothing to do?
+    if (!enable) return(expr)
+
+    options[["progressr.enable"]] <- enable
+  }
+
+  if (!is.list(handlers)) handlers <- list(handlers)
 
   for (kk in seq_along(handlers)) {
     handler <- handlers[[kk]]
     stopifnot(is.function(handler))
     if (!inherits(handler, "progression_handler")) {
       handler <- handler()
-      stopifnot(is.function(handler))
+      stopifnot(is.function(handler), inherits(handler, "progression_handler"))
       handlers[[kk]] <- handler
     }
   }
+
+  ## Keep only enabled handlers
+  enabled <- vapply(handlers, FUN = function(h) {
+    env <- environment(h)
+    value <- env$enable
+    isTRUE(value) || is.null(value)
+  }, FUN.VALUE = TRUE)
+  handlers <- handlers[enabled]
+  
+  ## Nothing to do?
+  if (length(handlers) == 0L) return(expr)
+
+
+  ## Do we need to buffer terminal output?
+  if (is.null(delay_terminal)) {
+    delay_terminal <- vapply(handlers, FUN = function(h) {
+      env <- environment(h)
+      any(env$target == "terminal")
+    }, FUN.VALUE = NA)
+    delay_terminal <- any(delay_terminal, na.rm = TRUE)
+  }
+
+  if (is.null(delay_stdout)) {
+    delay_stdout <- getOption("progressr.delay_stdout", delay_terminal)
+  }
+
+  if (is.null(delay_conditions)) {
+    delay_conditions <- getOption("progressr.delay_conditions", {
+      if (delay_terminal) c("condition") else character(0L)
+    })
+  }
+
 
   if (length(handlers) > 1L) {
     calling_handler <- function(p) {
