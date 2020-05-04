@@ -67,5 +67,5 @@ handler_tkprogressbar <- function(intrusiveness = getOption("progressr.intrusive
     )
   })
   
-  make_progression_handler("tkprogressbar", reporter, intrusiveness = intrusiveness, ...)
+  make_progression_handler("tkprogressbar", reporter, intrusiveness = intrusiveness, target = target, ...)
 }

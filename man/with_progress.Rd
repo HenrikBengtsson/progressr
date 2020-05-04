@@ -9,8 +9,9 @@ with_progress(
   expr,
   handlers = progressr::handlers(),
   cleanup = TRUE,
-  delay_stdout = getOption("progressr.delay_stdout", interactive()),
-  delay_conditions = getOption("progressr.delay_conditions", if (interactive())
+  delay_terminal = interactive(),
+  delay_stdout = getOption("progressr.delay_stdout", delay_terminal),
+  delay_conditions = getOption("progressr.delay_conditions", if (delay_terminal)
     c("condition") else character(0L)),
   interval = NULL,
   enable = NULL
@@ -26,6 +27,9 @@ If NULL or an empty list, progress updates are ignored.}
 
 \item{cleanup}{If TRUE, all progression handlers will be shutdown
 at the end regardless of the progression is complete or not.}
+
+\item{delay_terminal}{If TRUE, output and conditions that may end up in
+the terminal will delayed.}
 
 \item{delay_stdout}{If TRUE, standard output is captured and relayed
 at the end just before any captured conditions are relayed.}

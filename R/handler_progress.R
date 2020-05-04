@@ -94,5 +94,5 @@ handler_progress <- function(format = "[:bar] :percent :message", show_after = 0
     )
   })
 
-  make_progression_handler("progress", reporter, intrusiveness = intrusiveness, ...)
+  make_progression_handler("progress", reporter, intrusiveness = intrusiveness, target = target, ...)
 }

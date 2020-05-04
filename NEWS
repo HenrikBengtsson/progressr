@@ -1,14 +1,20 @@
 Package: progressr
 ==================
 
-Version: 0.5.0-9000 [2020-04-27]
+Version: 0.5.0-9000 [2020-05-03]
 
+NEW FEATURES:
+
+ * with_progress() gained argument 'delay_terminal'.
+ 
 BUG FIXES:
 
  * The 'progress' handler, which uses progress::progress_bar(), did not support
    colorization of the 'format' string when done by the 'crayon' package.
 
  * handlers() did not return invisible (as documented).
+
+ * Argument 'target' was ignored for all handler functions.
  
 
 Version: 0.5.0 [2020-04-16]

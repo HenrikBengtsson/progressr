@@ -8,6 +8,9 @@
 #' @param cleanup If TRUE, all progression handlers will be shutdown
 #' at the end regardless of the progression is complete or not.
 #'
+#' @param delay_terminal If TRUE, output and conditions that may end up in
+#' the terminal will delayed.
+#'
 #' @param delay_stdout If TRUE, standard output is captured and relayed
 #' at the end just before any captured conditions are relayed.
 #'
@@ -38,7 +41,7 @@
 #' [base::withCallingHandlers()]
 #'
 #' @export
-with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE, delay_stdout = getOption("progressr.delay_stdout", interactive()), delay_conditions = getOption("progressr.delay_conditions", if (interactive()) c("condition") else character(0L)), interval = NULL, enable = NULL) {
+with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE, delay_terminal = interactive(), delay_stdout = getOption("progressr.delay_stdout", delay_terminal), delay_conditions = getOption("progressr.delay_conditions", if (delay_terminal) c("condition") else character(0L)), interval = NULL, enable = NULL) {
   stop_if_not(is.logical(cleanup), length(cleanup) == 1L, !is.na(cleanup))
   
   ## FIXME: With zero handlers, progression conditions will be

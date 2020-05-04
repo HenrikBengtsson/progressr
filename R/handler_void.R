@@ -15,7 +15,7 @@
 #' This progression handler gives not output - it is invisible and silent.
 #'
 #' @export
-handler_void <- function(intrusiveness = 0, ...) {
+handler_void <- function(intrusiveness = 0, target = "void", enable = FALSE, ...) {
   reporter <- local({
     list(
       initiate = function(config, state, progression, ...) NULL,
@@ -24,5 +24,5 @@ handler_void <- function(intrusiveness = 0, ...) {
     )
   })
   
-  make_progression_handler("void", reporter, intrusiveness = intrusiveness, ...)
+  make_progression_handler("void", reporter, intrusiveness = intrusiveness, target = target, enable = enable, ...)
 }

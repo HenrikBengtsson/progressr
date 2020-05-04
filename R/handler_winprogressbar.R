@@ -66,5 +66,5 @@ handler_winprogressbar <- function(intrusiveness = getOption("progressr.intrusiv
     )
   })
   
-  make_progression_handler("winprogressbar", reporter, intrusiveness = intrusiveness, ...)
+  make_progression_handler("winprogressbar", reporter, intrusiveness = intrusiveness, target = target, ...)
 }

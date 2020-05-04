@@ -71,5 +71,5 @@ handler_filesize <- function(file = "default.progress", intrusiveness = getOptio
     )
   })
   
-  make_progression_handler("filesize", reporter, intrusiveness = intrusiveness, ...)
+  make_progression_handler("filesize", reporter, intrusiveness = intrusiveness, target = target, ...)
 }

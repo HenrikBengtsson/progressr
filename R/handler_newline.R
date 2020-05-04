@@ -20,5 +20,5 @@ handler_newline <- function(symbol = "\n", file = stderr(), intrusiveness = getO
     )
   })
   
-  make_progression_handler("newline", reporter, intrusiveness = intrusiveness, ...)
+  make_progression_handler("newline", reporter, intrusiveness = intrusiveness, target = target, ...)
 }

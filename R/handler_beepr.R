@@ -50,5 +50,5 @@ handler_beepr <- function(initiate = 2L, update = 10L,  finish = 11L, intrusiven
     )
   })
   
-  make_progression_handler("beepr", reporter, intrusiveness = intrusiveness, ...)
+  make_progression_handler("beepr", reporter, intrusiveness = intrusiveness, target = target, ...)
 }

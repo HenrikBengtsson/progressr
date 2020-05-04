@@ -103,5 +103,5 @@ handler_txtprogressbar <- function(style = 3L, file = stderr(), intrusiveness = 
     )
   })
   
-  make_progression_handler("txtprogressbar", reporter, intrusiveness = intrusiveness, ...)
+  make_progression_handler("txtprogressbar", reporter, intrusiveness = intrusiveness, target = target, ...)
 }

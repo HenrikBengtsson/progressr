@@ -23,5 +23,5 @@ handler_ascii_alert <- function(symbol = "\a", file = stderr(), intrusiveness = 
     )
   })
 
-  make_progression_handler("ascii_alert", reporter, intrusiveness = intrusiveness, ...)
+  make_progression_handler("ascii_alert", reporter, intrusiveness = intrusiveness, target = target, ...)
 }

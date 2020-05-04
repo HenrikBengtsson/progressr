@@ -110,5 +110,5 @@ handler_pbmcapply <- function(substyle = 3L, style = "ETA", file = stderr(), int
     )
   })
   
-  make_progression_handler("pbmcapply", reporter, intrusiveness = intrusiveness, ...)
+  make_progression_handler("pbmcapply", reporter, intrusiveness = intrusiveness, target = target, ...)
 }
