@@ -21,7 +21,9 @@
 #' @param interval (numeric) The minimum time (in seconds) between
 #' successive progression updates from handlers.
 #'
-#' @param enable (logical) If FALSE, then progress is not reported.
+#' @param enable (logical) If FALSE, then progress is not reported.  The
+#' default is to report progress in interactive mode but not batch mode.
+#' See below for more details.
 #'
 #' @return Return nothing (reserved for future usage).
 #'
@@ -36,6 +38,24 @@
 #' Formally, progression handlers are calling handlers that are called
 #' when a [progression] condition is signaled.  These handlers are functions
 #' that takes one argument which is the [progression] condition.
+#'
+#' @section Progress updates in batch mode:
+#' When running R from the command line, R runs in a non-interactive mode
+#' (`interactive()` returns `FALSE`).  The default behavior of
+#' `with_progress()` is to _not_ report on progress in non-interactive mode.
+#' To have progress being reported on also then, set R options
+#' \option{progressr.enable} or environment variable \env{R_PROGRESSR_ENABLE}
+#' to `TRUE`.  Alternatively, one can set argument `enable=TRUE` when calling
+#' `with_progress()`.  For example,
+#' ```sh
+#' $ Rscript -e "library(progressr)" -e "with_progress(slow_sum(1:5))"
+#' ```
+#' will _not_ report on progress, whereas:
+#' ```sh
+#' $ export R_PROGRESSR_ENABLE=TRUE
+#' $ Rscript -e "library(progressr)" -e "with_progress(slow_sum(1:5))"
+#' ```
+#' will.
 #'
 #' @seealso
 #' [base::withCallingHandlers()]

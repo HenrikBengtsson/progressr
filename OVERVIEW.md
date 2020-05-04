@@ -112,6 +112,25 @@ handlers("void")
 ```
 
 
+### Progress updates in non-interactive mode ("batch mode")
+
+When running R from the command line, R runs in a non-interactive mode
+(`interactive()` returns `FALSE`).  The default behavior of `with_progress()`
+is to _not_ report on progress in non-interactive mode.
+To reported on progress also then, set R options `progressr.enable` or
+environment variable `R_PROGRESSR_ENABLE` to `TRUE`.  For example,
+
+```sh
+$ Rscript -e "library(progressr)" -e "with_progress(y <- slow_sum(1:10))"
+```
+will _not_ report on progress, whereas
+```sh
+$ export R_PROGRESSR_ENABLE=TRUE
+$ Rscript -e "library(progressr)" -e "with_progress(y <- slow_sum(1:10))"
+```
+will.
+
+
 
 ## Support for progressr elsewhere
 
