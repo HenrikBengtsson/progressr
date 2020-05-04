@@ -47,9 +47,10 @@ Zero or more progression handlers that will report on any progression updates.  
 If TRUE, any output, typically visual, produced by a reporter will be cleared/removed upon completion, if possible. (Default: TRUE)
 }
 
-\item{\option{progressr.enable}:}{
+\item{\option{progressr.enable} / \env{R_PROGRESS_ENABLE}:}{
 (logical)
-If FALSE, then progress is not reported. (Default: TRUE)
+If FALSE, then progress is not reported.
+(Default: TRUE)
 }
 
 \item{\option{progressr.enable_after}:}{

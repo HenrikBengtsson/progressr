@@ -47,7 +47,9 @@
 #'
 #' @keywords internal
 #' @export
-make_progression_handler <- function(name, reporter = list(), handler = NULL, enable = getOption("progressr.enable", interactive()), enable_after = getOption("progressr.enable_after", 0.0), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0.0), intrusiveness = 1.0, clear = getOption("progressr.clear", TRUE), target = "terminal") {
+make_progression_handler <- function(name, reporter = list(), handler = NULL, enable = getOption("progressr.enable", Sys.getenv("R_PROGRESSR_ENABLE", interactive())), enable_after = getOption("progressr.enable_after", 0.0), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0.0), intrusiveness = 1.0, clear = getOption("progressr.clear", TRUE), target = "terminal") {
+  enable <- as.logical(enable)
+  stop_if_not(is.logical(enable), length(enable) == 1L, !is.na(enable))
   if (!enable) times <- 0
   name <- as.character(name)
   stop_if_not(length(name) == 1L, !is.na(name), nzchar(name))

@@ -11,6 +11,9 @@ NEW FEATURES:
 
  * Arguments 'delay_stdout' and 'delay_conditions' for with_progress() is
    now agile to the effective value of the 'delay_terminal' argument.
+
+ * Add environment variable 'R_PROGRESSR_ENABLE', which becomes the default
+   value of option 'progress.enable' if that is not already set.
  
 BUG FIXES:
 
