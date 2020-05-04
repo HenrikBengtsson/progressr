@@ -10,11 +10,12 @@ make_progression_handler(
   handler = NULL,
   enable = getOption("progressr.enable", Sys.getenv("R_PROGRESSR_ENABLE",
     interactive())),
-  enable_after = getOption("progressr.enable_after", 0),
-  times = getOption("progressr.times", +Inf),
-  interval = getOption("progressr.interval", 0),
+  enable_after = getOption("progressr.enable_after",
+    Sys.getenv("R_PROGRESSR_ENABLE_AFTER", 0)),
+  times = getOption("progressr.times", Sys.getenv("R_PROGRESSR_TIMES", +Inf)),
+  interval = getOption("progressr.interval", Sys.getenv("R_PROGRESSR_INTERVAL", 0)),
   intrusiveness = 1,
-  clear = getOption("progressr.clear", TRUE),
+  clear = getOption("progressr.clear", Sys.getenv("R_PROGRESSR_CLEAR", TRUE)),
   target = "terminal"
 )
 }

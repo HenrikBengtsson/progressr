@@ -21,30 +21,33 @@
 #' @section Options for controlling progression handlers:
 #'
 #' \describe{
-#'   \item{\option{progressr.clear}:}{
+#'   \item{\option{progressr.clear} / \env{R_PROGRESSR_CLEAR}:}{
 #'     (logical)
 #'     If TRUE, any output, typically visual, produced by a reporter will be cleared/removed upon completion, if possible. (Default: TRUE)
 #'   }
 #'
-#'   \item{\option{progressr.enable} / \env{R_PROGRESS_ENABLE}:}{
+#'   \item{\option{progressr.enable} / \env{R_PROGRESSR_ENABLE}:}{
 #'     (logical)
 #'     If FALSE, then progress is not reported.
 #'     (Default: TRUE)
 #'   }
 #'
-#'   \item{\option{progressr.enable_after}:}{
+#'   \item{\option{progressr.enable_after} / \env{R_PROGRESSR_ENABLE_AFTER}:}{
 #'     (numeric)
-#'     Delay (in seconds) before progression updates are reported. (Default: `0.0`)
+#'     Delay (in seconds) before progression updates are reported.
+#'     (Default: `0.0`)
 #'   }
 #'
-#'   \item{\option{progressr.times}:}{
+#'   \item{\option{progressr.times} / \env{R_PROGRESSR_TIMES}:}{
 #'     (numeric)
-#'     The maximum number of times a handler should report progression updates. If zero, then progress is not reported. (Default: `+Inf`)
+#'     The maximum number of times a handler should report progression updates. If zero, then progress is not reported.
+#'     (Default: `+Inf`)
 #'   }
 #'
-#'   \item{\option{progressr.interval}:}{
+#'   \item{\option{progressr.interval} / \env{R_PROGRESSR_INTERVAL}:}{
 #'     (numeric)
-#'     The minimum time (in seconds) between successive progression updates from this handler. (Default: `0.0`)
+#'     The minimum time (in seconds) between successive progression updates from this handler.
+#'     (Default: `0.0`)
 #'   }
 #'
 #'   \item{\option{progressr.intrusiveness}:}{

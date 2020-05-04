@@ -40,7 +40,9 @@ standard output is relayed.}
 \item{interval}{(numeric) The minimum time (in seconds) between
 successive progression updates from handlers.}
 
-\item{enable}{(logical) If FALSE, then progress is not reported.}
+\item{enable}{(logical) If FALSE, then progress is not reported.  The
+default is to report progress in interactive mode but not batch mode.
+See below for more details.}
 }
 \value{
 Return nothing (reserved for future usage).
@@ -61,6 +63,24 @@ progress updates.
 Formally, progression handlers are calling handlers that are called
 when a \link{progression} condition is signaled.  These handlers are functions
 that takes one argument which is the \link{progression} condition.
+}
+
+\section{Progress updates in batch mode}{
+
+When running R from the command line, R runs in a non-interactive mode
+(\code{interactive()} returns \code{FALSE}).  The default behavior of
+\code{with_progress()} is to \emph{not} report on progress in non-interactive mode.
+To have progress being reported on also then, set R options
+\option{progressr.enable} or environment variable \env{R_PROGRESSR_ENABLE}
+to \code{TRUE}.  Alternatively, one can set argument \code{enable=TRUE} when calling
+\code{with_progress()}.  For example,\if{html}{\out{<div class="sh">}}\preformatted{$ Rscript -e "library(progressr)" -e "with_progress(slow_sum(1:5))"
+}\if{html}{\out{</div>}}
+
+will \emph{not} report on progress, whereas:\if{html}{\out{<div class="sh">}}\preformatted{$ export R_PROGRESSR_ENABLE=TRUE
+$ Rscript -e "library(progressr)" -e "with_progress(slow_sum(1:5))"
+}\if{html}{\out{</div>}}
+
+will.
 }
 
 \examples{

@@ -47,7 +47,7 @@
 #'
 #' @keywords internal
 #' @export
-make_progression_handler <- function(name, reporter = list(), handler = NULL, enable = getOption("progressr.enable", Sys.getenv("R_PROGRESSR_ENABLE", interactive())), enable_after = getOption("progressr.enable_after", 0.0), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0.0), intrusiveness = 1.0, clear = getOption("progressr.clear", TRUE), target = "terminal") {
+make_progression_handler <- function(name, reporter = list(), handler = NULL, enable = getOption("progressr.enable", Sys.getenv("R_PROGRESSR_ENABLE", interactive())), enable_after = getOption("progressr.enable_after", Sys.getenv("R_PROGRESSR_ENABLE_AFTER", 0.0)), times = getOption("progressr.times", Sys.getenv("R_PROGRESSR_TIMES", +Inf)), interval = getOption("progressr.interval", Sys.getenv("R_PROGRESSR_INTERVAL", 0.0)), intrusiveness = 1.0, clear = getOption("progressr.clear",  Sys.getenv("R_PROGRESSR_CLEAR", TRUE)), target = "terminal") {
   enable <- as.logical(enable)
   stop_if_not(is.logical(enable), length(enable) == 1L, !is.na(enable))
   if (!enable) times <- 0
@@ -57,12 +57,17 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
 #  formals <- formals(handler)
 #  stop_if_not(length(formals) == 1L)
   stop_if_not(is.list(reporter))
+  enable_after <- as.numeric(enable_after)
   stop_if_not(is.numeric(enable_after), length(enable_after),
               !is.na(enable_after), enable_after >= 0)
+  times <- as.numeric(times)
   stop_if_not(length(times) == 1L, is.numeric(times), !is.na(name),
               times >= 0)
+  interval <- as.numeric(interval)
   stop_if_not(length(interval) == 1L, is.numeric(interval),
               !is.na(interval), interval >= 0)
+  clear <- as.logical(clear)
+  stop_if_not(is.logical(clear), length(clear) == 1L, !is.na(clear))
   stop_if_not(is.character(target))
   
   ## Disable progress updates?
