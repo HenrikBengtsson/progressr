@@ -13,6 +13,7 @@ lapply
 macOS
 NL
 parallelize
+pbapply
 pbmcapply
 plyr
 Plyr

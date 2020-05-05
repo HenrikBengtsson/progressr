@@ -279,6 +279,8 @@ with_progress({
 
 ### future_map() - parallel purrr::map()
 
+Here is an example that uses `future_map()` of the **[furrr]** package to parallelize on the local machine while at the same time signaling progression updates:
+
 ```r
 library(furrr)
 plan(multisession)
@@ -299,6 +301,8 @@ with_progress({
 ## [=================>-----------------------------]  40% x=2
 ```
 
+_Note:_ This solution does not involved the `.progress = TRUE` argument that **furrr** implements.  Because **progressr** is more generic and because `.progress = TRUE` only works for certain future backends and produces errors on others, I recommended to stop using `.progress = TRUE` and use the **progressr** package instead.
+
 
 ### The plyr package
 
@@ -314,6 +318,9 @@ As of May 2020, there are three types of **future** backends that are known(*) t
  3. `cluster` (local and remote)
 
 Here "near-live" means that the progress handlers will report on progress almost immediately when the progress is signaled on the worker.   For all other future backends, the progress updates are only relayed back to the main machine and reported together with the results of the futures.  For instance, if `future_lapply(X, FUN)` chunks up the processing of, say, 100 elements in `X` into eight futures, we will see progress from each of the 100 elements as they are done when using a future backend supporting "near-live" updates, whereas we will only see those updated to be flushed eight times when using any other types of future backends.
+
+As a reference, the frequency of progress updates we get in the non-live case is the same as what you get from other parallel-progress solutions such as `pbapply::pblapply()` of the **[pbapply]** package and `furrr::future_map(..., .progress = TRUE)` of the **[furrr]** package.
+
 
 (*) Other future backends may gain support for "near-live" progress updating later.  Adding support for those is independent of the **progressr** package.  Feature requests for adding that support should go to those future-backend packages.
 
@@ -382,3 +389,4 @@ To debug progress updates, use:
 [doFuture]: https://cran.r-project.org/package=doFuture
 [foreach]: https://cran.r-project.org/package=foreach
 [furrr]: https://cran.r-project.org/package=furrr
+[pbapply]: https://cran.r-project.org/package=pbapply
