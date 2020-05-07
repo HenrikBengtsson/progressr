@@ -319,7 +319,7 @@ Here "near-live" means that the progress handlers will report on progress almost
 
 ## Note of caution - sending progress updates too frequently
 
-Signaling progress updates comes with some overhead.  In situation where use progress updates, this overhead is typically much smaller than the task we are processing in each step.  However, if the task we iterate over is quick, then the processing time induced by the progress updates might dominate each overall processing time.  If that is the case, a simple solution is to only signal progress updates every n:th step.  Here is a version of `slow_sum()` that signals progress every 10:th iteration:
+Signaling progress updates comes with some overhead.  In situation where we use progress updates, this overhead is typically much smaller than the task we are processing in each step.  However, if the task we iterate over is quick, then the extra time induced by the progress updates might end up dominating the overall processing time.  If that is the case, a simple solution is to only signal progress updates every n:th step.  Here is a version of `slow_sum()` that signals progress every 10:th iteration:
 ```
 slow_sum <- function(x) {
   p <- progressr::progressor(length(x) / 10)
