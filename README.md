@@ -83,7 +83,7 @@ To set the default progress handler(s) in all your R sessions, call `progressr::
 
 ### Auditory progress updates
 
-Note all progress updates have to be presented visually. This can equally well be done auditory. For example, using:
+Progress updates do not have to be presented visually. They can equally well be communicated via audio. For example, using:
 
 ```r
 handlers("beepr")
