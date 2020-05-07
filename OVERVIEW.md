@@ -315,6 +315,26 @@ Here "near-live" means that the progress handlers will report on progress almost
 
 
 
+## Note of caution - sending progress updates too frequently
+
+Signaling progress updates comes with some overhead.  In situation where use progress updates, this overhead is typically much smaller than the task we are processing in each step.  However, if the task we iterate over is quick, then the processing time induced by the progress updates might dominate each overall processing time.  If that is the case, a simple solution is to only signal progress updates every n:th step.  Here is a version of `slow_sum()` that signals progress every 10:th iteration:
+```
+slow_sum <- function(x) {
+  p <- progressr::progressor(length(x) / 10)
+  sum <- 0
+  for (kk in seq_along(x)) {
+    Sys.sleep(0.1)
+    sum <- sum + x[kk]
+    if (kk %% 10 == 0) p(message = sprintf("Added %g", x[kk]))
+  }
+  sum
+}
+```
+
+The overhead of progress signaling may depend on context.  For example, in parallel processing with near-live progress updates via 'multisession' futures, each progress update is communicated via a socket connections back to the main R session.  These connections might become clogged up if progress updates are to frequent.
+
+
+
 ## Roadmap
 
 Because this project is under active development, the progressr API is currently kept at a very minimum.  This will allow for the framework and the API to evolve while minimizing the risk for breaking code that depends on it.  The roadmap for developing the API is roughly:

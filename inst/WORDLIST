@@ -11,6 +11,7 @@ https
 HTTPS
 lapply
 macOS
+multisession
 NL
 parallelize
 pbapply
@@ -31,6 +32,7 @@ selfonly
 SFTP
 substyle
 tcltk
+th
 tkProgressBar
 txtProgressBar
 VignetteAuthor
