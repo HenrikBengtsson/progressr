@@ -331,7 +331,7 @@ slow_sum <- function(x) {
 }
 ```
 
-The overhead of progress signaling may depend on context.  For example, in parallel processing with near-live progress updates via 'multisession' futures, each progress update is communicated via a socket connections back to the main R session.  These connections might become clogged up if progress updates are to frequent.
+The overhead of progress signaling may depend on context.  For example, in parallel processing with near-live progress updates via 'multisession' futures, each progress update is communicated via a socket connections back to the main R session.  These connections might become clogged up if progress updates are too frequent.
 
 
 
