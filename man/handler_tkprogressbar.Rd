@@ -5,12 +5,16 @@
 \title{Progression Handler: Progress Reported as a Tcl/Tk Progress Bars in the GUI}
 \usage{
 handler_tkprogressbar(
+  width = 300L,
   intrusiveness = getOption("progressr.intrusiveness.gui", 1),
   target = "terminal",
   ...
 )
 }
 \arguments{
+\item{width}{(integer; optional) The width of the progress bar for
+\code{winProgressBar()}.}
+
 \item{intrusiveness}{(numeric) A non-negative scalar on how intrusive
 (disruptive) the reporter to the user.}
 

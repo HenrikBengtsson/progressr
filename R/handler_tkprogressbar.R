@@ -4,6 +4,9 @@
 #'
 #' @inheritParams make_progression_handler
 #'
+#' @param width (integer; optional) The width of the progress bar for
+#' `winProgressBar()`.
+#'
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
 #'
 #' @example incl/handler_tkprogressbar.R
@@ -13,7 +16,7 @@
 #' current R session supports Tcl/Tk (`capabilities("tcltk")`).
 #'
 #' @export
-handler_tkprogressbar <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), target = "terminal", ...) {
+handler_tkprogressbar <- function(width = 300L, intrusiveness = getOption("progressr.intrusiveness.gui", 1), target = "terminal", ...) {
   ## Used for package testing purposes only when we want to perform
   ## everything except the last part where the backend is called
   if (!is_fake("handler_tkprogressbar")) {
@@ -33,7 +36,7 @@ handler_tkprogressbar <- function(intrusiveness = getOption("progressr.intrusive
     
     make_pb <- function(...) {
       if (!is.null(pb)) return(pb)
-      pb <<- tkProgressBar(...)
+      pb <<- tkProgressBar(..., width = width)
       pb
     }
 
