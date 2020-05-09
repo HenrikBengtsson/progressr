@@ -4,7 +4,7 @@
 #'
 #' @inheritParams make_progression_handler
 #'
-#' @param width (integer; optional) The width of the progress bar for
+#' @param width (integer) The width of the progress bar for
 #' `winProgressBar()`.
 #'
 #' @param \ldots Additional arguments passed to [make_progression_handler()].

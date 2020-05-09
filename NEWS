@@ -1,7 +1,7 @@
 Package: progressr
 ==================
 
-Version: 0.5.0-9000 [2020-05-04]
+Version: 0.5.0-9000 [2020-05-08]
 
 NEW FEATURES:
 
@@ -12,6 +12,8 @@ NEW FEATURES:
  * Arguments 'delay_stdout' and 'delay_conditions' for with_progress() is
    now agile to the effective value of the 'delay_terminal' argument.
 
+ * Add argument 'width' to progress-bar handlers.
+ 
  * Add environment variables 'R_PROGRESSR_CLEAR', 'R_PROGRESSR_ENABLE',
    'R_PROGRESSR_ENABLE_AFTER', 'R_PROGRESSR_TIMES', and 'R_PROGRESSR_INTERVAL'
    for controlling the default value of the corresponding 'progressr.*' options.

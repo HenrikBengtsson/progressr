@@ -6,7 +6,7 @@
 #'
 #' @param format (character string) The format of the progress bar.
 #'
-#' @param width (integer; optional) The width of the progress bar.
+#' @param width (integer) The width of the progress bar.
 #'
 #' @param show_after (numeric) Number of seconds to wait before displaying
 #' the progress bar.

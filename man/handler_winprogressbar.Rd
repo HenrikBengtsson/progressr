@@ -12,7 +12,7 @@ handler_winprogressbar(
 )
 }
 \arguments{
-\item{width}{(integer; optional) The width of the progress bar for
+\item{width}{(integer) The width of the progress bar for
 \code{winProgressBar()}.}
 
 \item{intrusiveness}{(numeric) A non-negative scalar on how intrusive

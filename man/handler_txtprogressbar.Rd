@@ -17,7 +17,7 @@ handler_txtprogressbar(
 \item{style}{(integer) The progress-bar style according to
 \code{\link[utils:txtProgressBar]{utils::txtProgressBar()}}.}
 
-\item{width}{(integer; optional) The width of the progress bar for
+\item{width}{(integer) The width of the progress bar for
 \code{\link[utils:txtProgressBar]{utils::txtProgressBar()}}.}
 
 \item{file}{(connection) A \link[base:connection]{base::connection} to where output should be sent.}

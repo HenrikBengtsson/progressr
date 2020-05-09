@@ -16,7 +16,7 @@ handler_progress(
 \arguments{
 \item{format}{(character string) The format of the progress bar.}
 
-\item{width}{(integer; optional) The width of the progress bar.}
+\item{width}{(integer) The width of the progress bar.}
 
 \item{show_after}{(numeric) Number of seconds to wait before displaying
 the progress bar.}

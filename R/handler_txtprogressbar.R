@@ -7,7 +7,7 @@
 #' @param style (integer) The progress-bar style according to
 #' [utils::txtProgressBar()].
 #'
-#' @param width (integer; optional) The width of the progress bar for
+#' @param width (integer) The width of the progress bar for
 #' [utils::txtProgressBar()].
 #'
 #' @param file (connection) A [base::connection] to where output should be sent.
