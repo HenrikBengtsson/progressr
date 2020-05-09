@@ -8,8 +8,6 @@
 #'
 #' @param substyle (integer) The progress-bar substyle according to [pbmcapply::progressBar()].
 #'
-#' @param width (integer) The width of the progress bar.
-#'
 #' @param file (connection) A [base::connection] to where output should be sent.
 #'
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
@@ -35,7 +33,10 @@
 #'
 #' @importFrom utils file_test flush.console txtProgressBar setTxtProgressBar
 #' @export
-handler_pbmcapply <- function(substyle = 3L, style = "ETA", width = NA_integer_, file = stderr(), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
+handler_pbmcapply <- function(substyle = 3L, style = "ETA", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
+  ## Additional arguments passed to the progress-handler backend
+  backend_args <- handler_backend_args(...)
+
   if (!is_fake("handler_pbmcapply")) {
     progressBar <- pbmcapply::progressBar
     eraseTxtProgressBar <- function(pb) {
@@ -69,7 +70,8 @@ handler_pbmcapply <- function(substyle = 3L, style = "ETA", width = NA_integer_,
     
     make_pb <- function(...) {
       if (!is.null(pb)) return(pb)
-      pb <<- progressBar(..., width = width)
+      args <- c(list(...), backend_args)
+      pb <<- do.call(progressBar, args = args)
       pb
     }
 

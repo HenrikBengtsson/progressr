@@ -5,16 +5,12 @@
 \title{Progression Handler: Progress Reported as a MS Windows Progress Bars in the GUI}
 \usage{
 handler_winprogressbar(
-  width = 300L,
   intrusiveness = getOption("progressr.intrusiveness.gui", 1),
   target = "gui",
   ...
 )
 }
 \arguments{
-\item{width}{(integer) The width of the progress bar for
-\code{winProgressBar()}.}
-
 \item{intrusiveness}{(numeric) A non-negative scalar on how intrusive
 (disruptive) the reporter to the user.}
 

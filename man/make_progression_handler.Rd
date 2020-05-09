@@ -16,7 +16,8 @@ make_progression_handler(
   interval = getOption("progressr.interval", Sys.getenv("R_PROGRESSR_INTERVAL", 0)),
   intrusiveness = 1,
   clear = getOption("progressr.clear", Sys.getenv("R_PROGRESSR_CLEAR", TRUE)),
-  target = "terminal"
+  target = "terminal",
+  ...
 )
 }
 \arguments{
@@ -47,6 +48,9 @@ by a reporter will be cleared/removed upon completion, if possible.}
 
 \item{target}{(character vector) Specifies where progression updates are
 rendered.}
+
+\item{\ldots}{Additional arguments passed to \code{\link[=make_progression_handler]{make_progression_handler()}}
+or not used.}
 }
 \value{
 A function of class \code{progression_handler} that takes a

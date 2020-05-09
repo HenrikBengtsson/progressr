@@ -6,7 +6,6 @@
 \usage{
 handler_txtprogressbar(
   style = 3L,
-  width = NA_integer_,
   file = stderr(),
   intrusiveness = getOption("progressr.intrusiveness.terminal", 1),
   target = "terminal",
@@ -15,9 +14,6 @@ handler_txtprogressbar(
 }
 \arguments{
 \item{style}{(integer) The progress-bar style according to
-\code{\link[utils:txtProgressBar]{utils::txtProgressBar()}}.}
-
-\item{width}{(integer) The width of the progress bar for
 \code{\link[utils:txtProgressBar]{utils::txtProgressBar()}}.}
 
 \item{file}{(connection) A \link[base:connection]{base::connection} to where output should be sent.}

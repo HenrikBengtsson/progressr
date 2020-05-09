@@ -33,6 +33,9 @@
 #' @param target (character vector) Specifies where progression updates are
 #'   rendered.
 #'
+#' @param \ldots Additional arguments passed to [make_progression_handler()]
+#' or not used.
+#'
 #' @return A function of class `progression_handler` that takes a
 #' [progression] condition as its first and only argument.
 #'
@@ -47,7 +50,7 @@
 #'
 #' @keywords internal
 #' @export
-make_progression_handler <- function(name, reporter = list(), handler = NULL, enable = getOption("progressr.enable", Sys.getenv("R_PROGRESSR_ENABLE", interactive())), enable_after = getOption("progressr.enable_after", Sys.getenv("R_PROGRESSR_ENABLE_AFTER", 0.0)), times = getOption("progressr.times", Sys.getenv("R_PROGRESSR_TIMES", +Inf)), interval = getOption("progressr.interval", Sys.getenv("R_PROGRESSR_INTERVAL", 0.0)), intrusiveness = 1.0, clear = getOption("progressr.clear",  Sys.getenv("R_PROGRESSR_CLEAR", TRUE)), target = "terminal") {
+make_progression_handler <- function(name, reporter = list(), handler = NULL, enable = getOption("progressr.enable", Sys.getenv("R_PROGRESSR_ENABLE", interactive())), enable_after = getOption("progressr.enable_after", Sys.getenv("R_PROGRESSR_ENABLE_AFTER", 0.0)), times = getOption("progressr.times", Sys.getenv("R_PROGRESSR_TIMES", +Inf)), interval = getOption("progressr.interval", Sys.getenv("R_PROGRESSR_INTERVAL", 0.0)), intrusiveness = 1.0, clear = getOption("progressr.clear",  Sys.getenv("R_PROGRESSR_CLEAR", TRUE)), target = "terminal", ...) {
   enable <- as.logical(enable)
   stop_if_not(is.logical(enable), length(enable) == 1L, !is.na(enable))
   if (!enable) times <- 0
@@ -382,3 +385,20 @@ print.progression_handler <- function(x, ...) {
   s <- paste(s, collapse = "\n")
   cat(s, "\n", sep = "")
 }
+
+
+# Additional arguments passed to the progress backend
+handler_backend_args <- function(...) {
+  args <- list(...)
+  if (length(args) == 0L) return(list())
+  
+  names <- names(args)
+  if (is.null(names) || !all(nzchar(names))) {
+    stop("Additional arguments must be named")
+  }
+  
+  ## Drop arguments passed to make_progression_handler()
+  names <- setdiff(names, names(formals(make_progression_handler)))
+  args[names]
+}
+

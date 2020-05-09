@@ -133,6 +133,27 @@ $ Rscript -e "library(progressr)" -e "with_progress(y <- slow_sum(1:10))"
 will.
 
 
+### Further configuration of progress handlers
+
+Above we have seen examples where the `handlers()` takes one or more strings as input, e.g. `handlers(c("progress", "beepr"))`.  This is short for a more flexible specification where we can pass a list of handler functions, e.g.
+
+```r
+handlers(list(
+  handler_progress(),
+  handler_beepr()
+))
+```
+
+With this construct, we can make adjustments to the default behavior of these progress handlers.  For example, we can configure the `width` and the `complete` arguments of `progress::progress_bar$new()` and changing the `finish` sound of the **beepr** handler as:
+
+```r
+handlers(list(
+  handler_progress(width = 40, complete = "+"),
+  handler_beepr(finish = 9)
+))
+```
+
+
 
 ## Support for progressr elsewhere
 

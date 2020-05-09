@@ -6,7 +6,6 @@
 \usage{
 handler_progress(
   format = "[:bar] :percent :message",
-  width = getOption("width", 80L) - 2L,
   show_after = 0,
   intrusiveness = getOption("progressr.intrusiveness.terminal", 1),
   target = "terminal",
@@ -15,8 +14,6 @@ handler_progress(
 }
 \arguments{
 \item{format}{(character string) The format of the progress bar.}
-
-\item{width}{(integer) The width of the progress bar.}
 
 \item{show_after}{(numeric) Number of seconds to wait before displaying
 the progress bar.}

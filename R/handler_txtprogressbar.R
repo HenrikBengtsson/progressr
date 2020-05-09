@@ -7,9 +7,6 @@
 #' @param style (integer) The progress-bar style according to
 #' [utils::txtProgressBar()].
 #'
-#' @param width (integer) The width of the progress bar for
-#' [utils::txtProgressBar()].
-#'
 #' @param file (connection) A [base::connection] to where output should be sent.
 #'
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
@@ -44,7 +41,10 @@
 #'
 #' @importFrom utils file_test flush.console txtProgressBar setTxtProgressBar
 #' @export
-handler_txtprogressbar <- function(style = 3L, width = NA_integer_, file = stderr(), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
+handler_txtprogressbar <- function(style = 3L, file = stderr(), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
+  ## Additional arguments passed to the progress-handler backend
+  backend_args <- handler_backend_args(...)
+
   reporter <- local({
     ## Import functions
     eraseTxtProgressBar <- function(pb) {
@@ -63,7 +63,8 @@ handler_txtprogressbar <- function(style = 3L, width = NA_integer_, file = stder
     pb <- NULL
 
     make_pb <- function(...) {
-      pb <<- txtProgressBar(..., width = width)
+      args <- c(list(...), backend_args)
+      pb <<- do.call(txtProgressBar, args = args)
       pb
     }
 

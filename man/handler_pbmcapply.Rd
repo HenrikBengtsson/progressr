@@ -7,7 +7,6 @@
 handler_pbmcapply(
   substyle = 3L,
   style = "ETA",
-  width = NA_integer_,
   file = stderr(),
   intrusiveness = getOption("progressr.intrusiveness.terminal", 1),
   target = "terminal",
@@ -18,8 +17,6 @@ handler_pbmcapply(
 \item{substyle}{(integer) The progress-bar substyle according to \code{\link[pbmcapply:progressBar]{pbmcapply::progressBar()}}.}
 
 \item{style}{(character) The progress-bar style according to \code{\link[pbmcapply:progressBar]{pbmcapply::progressBar()}}.}
-
-\item{width}{(integer) The width of the progress bar.}
 
 \item{file}{(connection) A \link[base:connection]{base::connection} to where output should be sent.}
 
