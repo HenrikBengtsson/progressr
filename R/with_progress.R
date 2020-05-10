@@ -170,6 +170,7 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
   }
 
   ## If buffering output, does all handlers support intermediate flushing?
+  flush_terminal <- FALSE 
   if (delay_terminal) {
     flush_terminal <- vapply(handlers, FUN = function(h) {
       env <- environment(h)
@@ -177,8 +178,6 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
       !inherits(env$reporter$hide, "null_function")
     }, FUN.VALUE = NA)
     flush_terminal <- all(flush_terminal, na.rm = TRUE)
-  } else {
-    flush_terminal <- FALSE 
   }
 
   if (length(handlers) > 1L) {
@@ -208,21 +207,19 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
     }, add = TRUE)
   }
 
-  ## Captured stdout output and conditions
-  stdout_file <- NULL
+  ## Delay standard output?
+  if (delay_stdout) {
+    stdout_file <- buffer_stdout()
+    on.exit(flush_stdout(stdout_file), add = TRUE)
+  } else {
+    stdout_file <- NULL
+  }
+  
+  ## Delay conditions?
   conditions <- list()
-  if (delay_stdout || length(delay_conditions) > 0) {
-    ## Delay standard output?
-    if (delay_stdout) {
-      stdout_file <- buffer_stdout()
-      on.exit(flush_stdout(stdout_file), add = TRUE)
-    }
-    
-    ## Delay conditions?
-    if (length(delay_conditions) > 0) {
-      on.exit(flush_conditions(conditions), add = TRUE)
-    }
-  } ## if (delay_stdout || length(delay_conditions) > 0)
+  if (length(delay_conditions) > 0) {
+    on.exit(flush_conditions(conditions), add = TRUE)
+  }
 
   ## Reset all handlers up start
   withCallingHandlers({
@@ -241,7 +238,7 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
       on.exit(capture_conditions <<- TRUE)
 
       ## Any buffered output to flush?
-      if (delay_terminal && flush_terminal) {
+      if (flush_terminal) {
         ## FIXME: Flush also buffered stdout /HB 2020-05-10
         if (length(conditions) > 0L) {
           calling_handler(control_progression("hide"))
