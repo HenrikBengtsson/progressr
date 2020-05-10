@@ -62,6 +62,26 @@
 #'
 #' @export
 with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE, delay_terminal = NULL, delay_stdout = NULL, delay_conditions = NULL, interval = NULL, enable = NULL) {
+  buffer_stdout <- function() {
+    stdout_file <- rawConnection(raw(0L), open = "w")
+    sink(stdout_file, type = "output", split = FALSE)
+    stdout_file
+  } ## buffer_stdout()
+  
+  flush_stdout <- function(stdout_file, close = TRUE) {
+    if (is.null(stdout_file)) return(NULL)
+    sink(type = "output", split = FALSE)
+    stdout <- rawToChar(rawConnectionValue(stdout_file))
+    if (length(stdout) > 0) cat(stdout, file = stdout())
+    if (close) {
+      close(stdout_file)
+      stdout_file <- NULL
+    } else {
+      stdout_file <- buffer_stdout()
+    }
+    stdout_file
+  } ## flush_stdout()
+  
   flush_conditions <- function(conditions) {
     for (c in conditions) {
       if (inherits(c, "message")) {
@@ -193,18 +213,11 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
   if (delay_stdout || length(delay_conditions) > 0) {
     ## Delay standard output?
     if (delay_stdout) {
-      stdout_file <- rawConnection(raw(0L), open = "w")
-      sink(stdout_file, type = "output", split = FALSE)
-      on.exit({
-        sink(type = "output", split = FALSE)
-        stdout <- rawToChar(rawConnectionValue(stdout_file))
-        close(stdout_file)
-        if (length(stdout) > 0) cat(stdout, file = stdout())
-      }, add = TRUE)
+      stdout_file <- buffer_stdout()
+      on.exit(flush_stdout(stdout_file), add = TRUE)
     }
     
     ## Delay conditions?
-    rawConnectionValue(stdout_file)
     if (length(delay_conditions) > 0) {
       on.exit(flush_conditions(conditions), add = TRUE)
     }
@@ -231,6 +244,7 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
         ## FIXME: Flush also buffered stdout /HB 2020-05-10
         if (length(conditions) > 0L) {
           calling_handler(control_progression("hide"))
+          stdout_file <<- flush_stdout(stdout_file, close = FALSE)
           conditions <<- flush_conditions(conditions)
           calling_handler(control_progression("unhide"))
         }
