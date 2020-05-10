@@ -112,6 +112,42 @@ handlers("void")
 ```
 
 
+### Output to terminal is automatically buffered (if needed)
+
+When reporting progress in the terminal, for instance as a progress bar, `with_progress()` will automatically buffer any output that otherwise may interfere with the progress information displayed and output it at the very end.  For example, say we have:
+
+```r
+my_sqrt <- function(xs) {
+  p <- progressor(along = xs)
+  lapply(xs, function(x) {
+    str(x)
+    p(sprintf("x=%g", x))
+    Sys.sleep(2)
+    sqrt(x)
+  })
+}
+```
+and run:
+```r
+> handlers("txtprogressbar")
+> with_progress(y <- my_sqrt(1:3))
+  |=================                                    |  33%
+```
+then we will only see the progress bar but not the output from `str()`; that will only appear afterward:
+```r
+> handlers("txtprogressbar")
+> with_progress(y <- my_sqrt(1:3))
+ int 1
+ int 2
+ int 3
+>
+```
+If this output would not have been "delayed", then there is a great risk that it would have been intertwined with the output of the progress bar.
+
+On the other hand, if we use a progress handler that does not output to the terminal, such as `handlers("beepr")`, then such output is _not_ buffered and it will be outputted immediately.
+
+
+
 ### Progress updates in non-interactive mode ("batch mode")
 
 When running R from the command line, R runs in a non-interactive mode
