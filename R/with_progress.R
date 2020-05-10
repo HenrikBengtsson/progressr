@@ -78,7 +78,11 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
     if (!close) stdout_file <- buffer_stdout()
     stdout_file
   } ## flush_stdout()
-  
+
+  has_buffered_stdout <- function(stdout_file) {
+    (length(rawConnectionValue(stdout_file)) > 0L)
+  }
+
   flush_conditions <- function(conditions) {
     for (c in conditions) {
       if (inherits(c, "message")) {
@@ -236,8 +240,7 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
 
       ## Any buffered output to flush?
       if (flush_terminal) {
-        ## FIXME: Flush also buffered stdout /HB 2020-05-10
-        if (length(conditions) > 0L) {
+        if (length(conditions) > 0L || has_buffered_stdout(stdout_file)) {
           calling_handler(control_progression("hide"))
           stdout_file <<- flush_stdout(stdout_file, close = FALSE)
           conditions <<- flush_conditions(conditions)
