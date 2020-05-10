@@ -56,13 +56,15 @@ handler_txtprogressbar <- function(style = 3L, file = stderr(), intrusiveness = 
           n <- 3L + nw * width + 6L
         }
         cat("\r", strrep(" ", times = n), "\r", sep = "", file = file)
+        .nb <- 0L
         flush.console()
       })
     }
 
     pb <- NULL
-
+    
     make_pb <- function(...) {
+      if (!is.null(pb)) return(pb)
       args <- c(list(...), backend_args)
       pb <<- do.call(txtProgressBar, args = args)
       pb
@@ -72,12 +74,22 @@ handler_txtprogressbar <- function(style = 3L, file = stderr(), intrusiveness = 
       reset = function(...) {
         pb <<- NULL
       },
-      
+
+      hide = function(...) {
+        if (is.null(pb)) return()
+        eraseTxtProgressBar(pb)
+      },
+
+      unhide = function(...) {
+        if (is.null(pb)) return()
+        setTxtProgressBar(pb, value = pb$getVal())
+      },
+
       initiate = function(config, state, progression, ...) {
         if (!state$enabled || config$times == 1L) return()
         make_pb(max = config$max_steps, style = style, file = file)
       },
-        
+
       update = function(config, state, progression, ...) {
         if (!state$enabled || progression$amount == 0 || config$times == 1L) return()
 	make_pb(max = config$max_steps, style = style, file = file)
