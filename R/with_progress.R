@@ -73,12 +73,9 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
     sink(type = "output", split = FALSE)
     stdout <- rawToChar(rawConnectionValue(stdout_file))
     if (length(stdout) > 0) cat(stdout, file = stdout())
-    if (close) {
-      close(stdout_file)
-      stdout_file <- NULL
-    } else {
-      stdout_file <- buffer_stdout()
-    }
+    close(stdout_file)
+    stdout_file <- NULL
+    if (!close) stdout_file <- buffer_stdout()
     stdout_file
   } ## flush_stdout()
   
