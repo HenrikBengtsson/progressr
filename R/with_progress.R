@@ -201,9 +201,9 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
 
   ## Reset all handlers up start
   withCallingHandlers({
-      withRestarts({
-        signalCondition(control_progression("reset"))
-      }, muffleProgression = function(p) NULL)
+    withRestarts({
+      signalCondition(control_progression("reset"))
+    }, muffleProgression = function(p) NULL)
   }, progression = calling_handler)
 
   ## Evaluate expression
