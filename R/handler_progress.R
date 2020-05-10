@@ -45,6 +45,17 @@ handler_progress <- function(format = "[:bar] :percent :message", show_after = 0
   
   if (!is_fake("handler_progress")) {
     progress_bar <- progress::progress_bar
+    erase_progress_bar <- function(pb) {
+      if (pb$finished) return()
+      private <- pb$.__enclos_env__$private
+      private$clear_line(private$width)
+      private$cursor_to_start()
+    }
+    redraw_progress_bar <- function(pb) {
+      if (pb$finished) return()
+      private <- pb$.__enclos_env__$private
+      private$render(list())
+    }
   } else {
     progress_bar <- list(
       new = function(...) list(
@@ -53,6 +64,8 @@ handler_progress <- function(format = "[:bar] :percent :message", show_after = 0
         update = function(...) NULL
       )
     )
+    erase_progress_bar <- function(pb) NULL
+    redraw_progress_bar <- function(pb) NULL
   }
   
   reporter <- local({
@@ -69,7 +82,17 @@ handler_progress <- function(format = "[:bar] :percent :message", show_after = 0
       reset = function(...) {
         pb <<- NULL
       },
-      
+
+      hide = function(...) {
+        if (is.null(pb)) return()
+        erase_progress_bar(pb)
+      },
+
+      unhide = function(...) {
+        if (is.null(pb)) return()
+        redraw_progress_bar(pb)
+      },
+
       initiate = function(config, state, progression, ...) {
         if (!state$enabled || config$times == 1L) return()
         make_pb(format = format, total = config$max_steps,
