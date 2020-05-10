@@ -46,21 +46,6 @@ handler_txtprogressbar <- function(style = 3L, file = stderr(), intrusiveness = 
   backend_args <- handler_backend_args(...)
 
   reporter <- local({
-    ## Import functions
-    eraseTxtProgressBar <- function(pb) {
-      pb_env <- environment(pb$getVal)
-      with(pb_env, {
-        if (style == 1L || style == 2L) {
-          n <- .nb
-        } else if (style == 3L) {
-          n <- 3L + nw * width + 6L
-        }
-        cat("\r", strrep(" ", times = n), "\r", sep = "", file = file)
-        .nb <- 0L
-        flush.console()
-      })
-    }
-
     pb <- NULL
     
     make_pb <- function(...) {
@@ -122,3 +107,21 @@ handler_txtprogressbar <- function(style = 3L, file = stderr(), intrusiveness = 
   
   make_progression_handler("txtprogressbar", reporter, intrusiveness = intrusiveness, target = target, ...)
 }
+
+
+
+## Erase a utils::txtProgressBar()
+eraseTxtProgressBar <- function(pb) {
+  pb_env <- environment(pb$getVal)
+  with(pb_env, {
+    if (style == 1L || style == 2L) {
+      n <- .nb
+    } else if (style == 3L) {
+      n <- 3L + nw * width + 6L
+    }
+    cat("\r", strrep(" ", times = n), "\r", sep = "", file = file)
+    .nb <- 0L
+    flush.console()
+  })
+}
+

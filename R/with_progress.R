@@ -151,24 +151,14 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
 
 
   ## Do we need to buffer terminal output?
-  flush_terminal <- FALSE 
   if (is.null(delay_terminal)) {
     delay_terminal <- vapply(handlers, FUN = function(h) {
       env <- environment(h)
       any(env$target == "terminal")
     }, FUN.VALUE = NA)
     delay_terminal <- any(delay_terminal, na.rm = TRUE)
-    ## If buffering output, does all handlers support intermediate flushing?
-    if (delay_terminal) {
-      flush_terminal <- vapply(handlers, FUN = function(h) {
-        env <- environment(h)
-        if (!any(env$target == "terminal")) return(TRUE)
-        !inherits(env$reporter$hide, "null_function")
-      }, FUN.VALUE = NA)
-      flush_terminal <- all(flush_terminal, na.rm = TRUE)
-    }
   }
-
+  
   if (is.null(delay_stdout)) {
     delay_stdout <- getOption("progressr.delay_stdout", delay_terminal)
   }
@@ -179,6 +169,17 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
     })
   }
 
+  ## If buffering output, does all handlers support intermediate flushing?
+  if (delay_terminal) {
+    flush_terminal <- vapply(handlers, FUN = function(h) {
+      env <- environment(h)
+      if (!any(env$target == "terminal")) return(TRUE)
+      !inherits(env$reporter$hide, "null_function")
+    }, FUN.VALUE = NA)
+    flush_terminal <- all(flush_terminal, na.rm = TRUE)
+  } else {
+    flush_terminal <- FALSE 
+  }
 
   if (length(handlers) > 1L) {
     calling_handler <- function(p) {
