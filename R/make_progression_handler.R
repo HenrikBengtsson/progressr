@@ -79,8 +79,8 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
   }
 
   ## Reporter
-  for (name in setdiff(c("reset", "initiate", "update", "finish"), names(reporter))) {
-    reporter[[name]] <- function(...) NULL
+  for (name in setdiff(c("reset", "initiate", "update", "finish", "hide", "unhide"), names(reporter))) {
+    reporter[[name]] <- structure(function(...) NULL, class = "null_function")
   }
 
   ## Progress state
@@ -184,6 +184,38 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
     if (debug) mprintf("update_reporter() ... done")
   }
 
+  hide_reporter <- function(p) {
+    args <- reporter_args(progression = p)
+    debug <- getOption("progressr.debug", FALSE)
+    if (debug) {
+      mprintf("hide_reporter() ...")
+      mstr(args)
+    }
+    if (is.null(reporter$hide)) {
+      if (debug) mprintf("hide_reporter() ... skipping; not supported")
+      return()
+    }
+    do.call(reporter$hide, args = args)
+    .validate_internal_state("hide_reporter() ... done")
+    if (debug) mprintf("hide_reporter() ... done")
+  }
+
+  unhide_reporter <- function(p) {
+    args <- reporter_args(progression = p)
+    debug <- getOption("progressr.debug", FALSE)
+    if (debug) {
+      mprintf("unhide_reporter() ...")
+      mstr(args)
+    }
+    if (is.null(reporter$unhide)) {
+      if (debug) mprintf("unhide_reporter() ... skipping; not supported")
+      return()
+    }
+    do.call(reporter$unhide, args = args)
+    .validate_internal_state("unhide_reporter() ... done")
+    if (debug) mprintf("unhide_reporter() ... done")
+  }
+
   finish_reporter <- function(p) {
     args <- reporter_args(progression = p)
     debug <- getOption("progressr.debug", FALSE)
@@ -240,6 +272,12 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
           .validate_internal_state(sprintf("handler(type=%s) ... end", type))
         } else if (type == "shutdown") {
           finish_reporter(p)
+          .validate_internal_state(sprintf("handler(type=%s) ... end", type))
+        } else if (type == "hide") {
+          hide_reporter(p)
+          .validate_internal_state(sprintf("handler(type=%s) ... end", type))
+        } else if (type == "unhide") {
+          unhide_reporter(p)
           .validate_internal_state(sprintf("handler(type=%s) ... end", type))
         } else {
 	  stop("Unknown control_progression type: ", sQuote(type))

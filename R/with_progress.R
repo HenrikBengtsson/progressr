@@ -62,6 +62,36 @@
 #'
 #' @export
 with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE, delay_terminal = NULL, delay_stdout = NULL, delay_conditions = NULL, interval = NULL, enable = NULL) {
+  buffer_stdout <- function() {
+    stdout_file <- rawConnection(raw(0L), open = "w")
+    sink(stdout_file, type = "output", split = FALSE)
+    stdout_file
+  } ## buffer_stdout()
+  
+  flush_stdout <- function(stdout_file, close = TRUE) {
+    if (is.null(stdout_file)) return(NULL)
+    sink(type = "output", split = FALSE)
+    stdout <- rawToChar(rawConnectionValue(stdout_file))
+    if (length(stdout) > 0) cat(stdout, file = stdout())
+    close(stdout_file)
+    stdout_file <- NULL
+    if (!close) stdout_file <- buffer_stdout()
+    stdout_file
+  } ## flush_stdout()
+  
+  flush_conditions <- function(conditions) {
+    for (c in conditions) {
+      if (inherits(c, "message")) {
+        message(c)
+      } else if (inherits(c, "warning")) {
+        warning(c)
+      } else if (inherits(c, "condition")) {
+        signalCondition(c)
+      }
+    }
+    list()
+  } ## flush_conditions()
+ 
   stop_if_not(is.logical(cleanup), length(cleanup) == 1L, !is.na(cleanup))
   
   ## FIXME: With zero handlers, progression conditions will be
@@ -125,7 +155,7 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
     }, FUN.VALUE = NA)
     delay_terminal <- any(delay_terminal, na.rm = TRUE)
   }
-
+  
   if (is.null(delay_stdout)) {
     delay_stdout <- getOption("progressr.delay_stdout", delay_terminal)
   }
@@ -136,6 +166,16 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
     })
   }
 
+  ## If buffering output, does all handlers support intermediate flushing?
+  flush_terminal <- FALSE 
+  if (delay_terminal) {
+    flush_terminal <- vapply(handlers, FUN = function(h) {
+      env <- environment(h)
+      if (!any(env$target == "terminal")) return(TRUE)
+      !inherits(env$reporter$hide, "null_function")
+    }, FUN.VALUE = NA)
+    flush_terminal <- all(flush_terminal, na.rm = TRUE)
+  }
 
   if (length(handlers) > 1L) {
     calling_handler <- function(p) {
@@ -164,40 +204,19 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
     }, add = TRUE)
   }
 
-  ## Captured stdout output and conditions
-  stdout_file <- NULL
+  ## Delay standard output?
+  if (delay_stdout) {
+    stdout_file <- buffer_stdout()
+    on.exit(flush_stdout(stdout_file), add = TRUE)
+  } else {
+    stdout_file <- NULL
+  }
+  
+  ## Delay conditions?
   conditions <- list()
-  if (delay_stdout || length(delay_conditions) > 0) {
-    ## Delay standard output?
-    if (delay_stdout) {
-      stdout_file <- rawConnection(raw(0L), open = "w")
-      sink(stdout_file, type = "output", split = FALSE)
-      on.exit({
-        sink(type = "output", split = FALSE)
-        stdout <- rawToChar(rawConnectionValue(stdout_file))
-        close(stdout_file)
-        if (length(stdout) > 0) cat(stdout, file = stdout())
-      }, add = TRUE)
-    }
-    
-    ## Delay conditions?
-    if (length(delay_conditions) > 0) {
-      on.exit({
-        if (length(conditions) > 0L) {
-          for (kk in seq_along(conditions)) {
-            c <- conditions[[kk]]
-            if (inherits(c, "message")) {
-              message(c)
-            } else if (inherits(c, "warning")) {
-              warning(c)
-            } else if (inherits(c, "condition")) {
-              signalCondition(c)
-            }
-          }
-        }
-      }, add = TRUE)
-    }
-  } ## if (delay_stdout || length(delay_conditions) > 0)
+  if (length(delay_conditions) > 0) {
+    on.exit(flush_conditions(conditions), add = TRUE)
+  }
 
   ## Reset all handlers up start
   withCallingHandlers({
@@ -214,6 +233,18 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
       ## Don't capture conditions that are produced by progression handlers
       capture_conditions <<- FALSE
       on.exit(capture_conditions <<- TRUE)
+
+      ## Any buffered output to flush?
+      if (flush_terminal) {
+        ## FIXME: Flush also buffered stdout /HB 2020-05-10
+        if (length(conditions) > 0L) {
+          calling_handler(control_progression("hide"))
+          stdout_file <<- flush_stdout(stdout_file, close = FALSE)
+          conditions <<- flush_conditions(conditions)
+          calling_handler(control_progression("unhide"))
+        }
+      }
+      
       calling_handler(p)
     },
     condition = function(c) {
