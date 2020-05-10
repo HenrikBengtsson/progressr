@@ -14,6 +14,8 @@
 handler_newline <- function(symbol = "\n", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.debug", 0), target = "terminal", ...) {
   reporter <- local({
     list(
+      hide     = function(...) NULL,
+      unhide   = function(...) NULL,
       initiate = function(...) cat(file = file, symbol),
       update   = function(...) cat(file = file, symbol),
       finish   = function(...) cat(file = file, symbol)
