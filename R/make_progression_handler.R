@@ -324,13 +324,19 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
         times <- max(times, 1L)
         interval <- interval * intrusiveness
 
+        ## Milestone steps that need to be reach in order to trigger an
+        ## update of the reporter
         milestones <<- if (times == 1L) {
           c(max_steps)
         } else {
           seq(from = 1L, to = max_steps, length.out = times)
         }
+
+        ## Timestamps for when steps where reached
+        ## Note that they will remain NA for "skipped" steps
         timestamps <<- rep(as.POSIXct(NA), times = max_steps)
         timestamps[1] <<- Sys.time()
+        
         step <<- 0L
         message <<- character(0L)
         if (debug) mstr(list(finished = finished, milestones = milestones))
@@ -351,6 +357,8 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
         if (length(msg) > 0) message <<- msg
         timestamps[step] <<- Sys.time()
         if (debug) mstr(list(finished = finished, step = step, milestones = milestones, prev_milestone = prev_milestone, interval = interval))
+
+        ## Only update if a new milestone step has been reached
         if (length(milestones) > 0L && step >= milestones[1]) {
           skip <- FALSE
           if (interval > 0) {
@@ -368,8 +376,6 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
             if (debug) mstr(list(type = "finish (auto)", milestones = milestones))
             finish_reporter(p)
           }
-        } else {
-          update_reporter(p)
         }
         .validate_internal_state(sprintf("handler(type=%s) ... end", type))
       } else {

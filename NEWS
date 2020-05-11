@@ -35,6 +35,9 @@ NEW FEATURES:
  
 BUG FIXES:
 
+ * Limiting the frequency of progress reporting via handler arguments 'times',
+   'interval' or 'intrusivness' did not work and was effectively ignored.
+   
  * The 'progress' handler, which uses progress::progress_bar(), did not support
    colorization of the 'format' string when done by the 'crayon' package.
 
