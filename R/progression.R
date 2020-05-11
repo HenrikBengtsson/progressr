@@ -91,6 +91,7 @@ print.progression <- function(x, ...) {
   s <- c(s, paste("- progression_time:", x$progression_time))
   s <- c(s, paste("- session_uuid:", x$session_uuid))
   s <- c(s, paste("- owner_session_uuid:", x$owner_session_uuid))
+  s <- c(s, paste("- classes:", paste(sQuote(class(x)), collapse = ", ")))
   s <- paste(s, collapse = "\n")
   cat(s, "\n", sep = "")
   

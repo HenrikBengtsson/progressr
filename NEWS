@@ -14,6 +14,10 @@ SIGNIFICANT CHANGES:
 
 NEW FEATURES:
 
+ * Signaling progress(msg, class = "sticky") will cause the message to be
+   sticky, e.g. for progress bars outputting to the terminal, the message
+   will be "pushed" above the progress bar.
+
  * with_progress() gained argument 'delay_terminal' whose default will be
    automatically inferred from inspecting the currently set handlers and
    whether they output to the terminal or not.

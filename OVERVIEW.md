@@ -112,6 +112,33 @@ handlers("void")
 ```
 
 
+### Sticky messages
+
+As seen above, some progress handlers present the progress message as part of its output, e.g. the "progress" handler will display the message as part of the progress bar.  It is also possible to "push" the message up together with other terminal output.  This can be done by add class attribute `"sticky"` to the progression signaled.  This works for several progress handlers that output to the terminal.  For example, with:
+
+```r
+slow_sum <- function(x) {
+  p <- progressr::progressor(along = x)
+  sum <- 0
+  for (kk in seq_along(x)) {
+    Sys.sleep(0.1)
+    sum <- sum + x[kk]
+    p(message = sprintf("Added %g", x[kk]), class = if (kk %% 5 == 0) "sticky")
+  }
+  sum
+}
+```
+we get
+```r
+> handlers("txtprogressbar")
+> with_progress(y <- slow_sum(1:30))
+  Added 5
+  Added 10
+  |=====================                                |  43%
+```
+
+
+
 ### Output is automatically buffered (if needed)
 
 In contrast to other progress-bar frameworks, output from `message()`, `cat()`, `print()` and so on, will _not_ interfere with progress reported via **progressr**.  For example, say we have:

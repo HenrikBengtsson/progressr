@@ -103,10 +103,12 @@ handler_progress <- function(format = "[:bar] :percent :message", show_after = 0
         
       update = function(config, state, progression, ...) {
         if (!state$enabled || config$times <= 2L) return()
+        make_pb(format = format, total = config$max_steps,
+                clear = config$clear, show_after = config$enable_after)
+        message <- paste0(state$message, "")
+        if (inherits(progression, "sticky")) pb$message(message)
         if (state$delta >= 0) {
-          make_pb(format = format, total = config$max_steps,
-                  clear = config$clear, show_after = config$enable_after)
-          tokens <- list(message = paste0(state$message, ""))
+          tokens <- list(message = message)
           pb$tick(state$delta, tokens = tokens)
         }
       },

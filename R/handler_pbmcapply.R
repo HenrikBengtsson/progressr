@@ -61,6 +61,7 @@ handler_pbmcapply <- function(substyle = 3L, style = "ETA", file = stderr(), int
     progressBar <- function(..., style, substyle) txtProgressBar(..., style = substyle)
     setTxtProgressBar <- function(...) NULL
     eraseTxtProgressBar <- function(pb) NULL
+    redrawTxtProgressBar <- function(pb) NULL
   }
   
   reporter <- local({
@@ -88,6 +89,11 @@ handler_pbmcapply <- function(substyle = 3L, style = "ETA", file = stderr(), int
       update = function(config, state, progression, ...) {
         if (!state$enabled || progression$amount == 0 || config$times <= 2L) return()
         make_pb(max = config$max_steps, style = style, substyle = substyle, file = file)
+        if (inherits(progression, "sticky")) {
+          eraseTxtProgressBar(pb)
+          message(paste0(state$message, ""))
+          redrawTxtProgressBar(pb)
+        }
         setTxtProgressBar(pb, value = state$step)
       },
         
