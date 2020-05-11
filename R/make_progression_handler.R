@@ -328,8 +328,10 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
         ## update of the reporter
         milestones <<- if (times == 1L) {
           c(max_steps)
+        } else if (times == 2L) {
+          c(0L, max_steps)
         } else {
-          seq(from = 1L, to = max_steps, length.out = times)
+          seq(from = 0L, to = max_steps, length.out = times + 1L)[-1]
         }
 
         ## Timestamps for when steps where reached
