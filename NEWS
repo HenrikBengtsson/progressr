@@ -43,6 +43,10 @@ BUG FIXES:
  * Argument 'target' was ignored for all handler functions.
 
  * Argument 'interval' was ignored for handler_debug().
+
+ * The class of handler_nnn() functions where all "reset_progression_handler"
+   rather than "nnn_progression_handler".  The same bug caused the reported
+   'name' field to be "reset" rather than "nnn".
  
 
 Version: 0.5.0 [2020-04-16]

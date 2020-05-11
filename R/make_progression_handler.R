@@ -64,7 +64,7 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
   stop_if_not(is.numeric(enable_after), length(enable_after),
               !is.na(enable_after), enable_after >= 0)
   times <- as.numeric(times)
-  stop_if_not(length(times) == 1L, is.numeric(times), !is.na(name),
+  stop_if_not(length(times) == 1L, is.numeric(times), !is.na(times),
               times >= 0)
   interval <- as.numeric(interval)
   stop_if_not(length(interval) == 1L, is.numeric(interval),
@@ -79,8 +79,8 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
   }
 
   ## Reporter
-  for (name in setdiff(c("reset", "initiate", "update", "finish", "hide", "unhide"), names(reporter))) {
-    reporter[[name]] <- structure(function(...) NULL, class = "null_function")
+  for (key in setdiff(c("reset", "initiate", "update", "finish", "hide", "unhide"), names(reporter))) {
+    reporter[[key]] <- structure(function(...) NULL, class = "null_function")
   }
 
   ## Progress state
