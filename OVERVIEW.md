@@ -123,7 +123,8 @@ slow_sum <- function(x) {
   for (kk in seq_along(x)) {
     Sys.sleep(0.1)
     sum <- sum + x[kk]
-    p(message = sprintf("Added %g", x[kk]), class = if (kk %% 5 == 0) "sticky")
+    p(amount = 0, message = sprintf("Step %d done", kk), class = if (kk %% 5 == 0) "sticky")
+    p(message = sprintf("Added %g", x[kk]))
   }
   sum
 }
@@ -477,3 +478,4 @@ To debug progress updates, use:
 [foreach]: https://cran.r-project.org/package=foreach
 [furrr]: https://cran.r-project.org/package=furrr
 [pbapply]: https://cran.r-project.org/package=pbapply
+[pbmcapply]: https://cran.r-project.org/package=pbmcapply

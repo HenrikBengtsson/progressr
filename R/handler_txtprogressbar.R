@@ -76,13 +76,14 @@ handler_txtprogressbar <- function(style = 3L, file = stderr(), intrusiveness = 
       },
 
       update = function(config, state, progression, ...) {
-        if (!state$enabled || progression$amount == 0 || config$times == 1L) return()
+        if (!state$enabled || config$times == 1L) return()
+        make_pb(max = config$max_steps, style = style, file = file)
         if (inherits(progression, "sticky")) {
           eraseTxtProgressBar(pb)
           message(paste0(state$message, ""))
           redrawTxtProgressBar(pb)
         }
-	make_pb(max = config$max_steps, style = style, file = file)
+        if (progression$amount == 0) return()
         setTxtProgressBar(pb, value = state$step)
       },
         
@@ -104,7 +105,7 @@ handler_txtprogressbar <- function(style = 3L, file = stderr(), intrusiveness = 
           setTxtProgressBar(pb, value = config$max_steps)
         }
         close(pb)
-	pb <<- NULL
+        pb <<- NULL
       }
     )
   })
