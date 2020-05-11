@@ -57,5 +57,5 @@ handler_debug <- function(interval = getOption("progressr.interval", 0), intrusi
     )
   })
   
-  make_progression_handler("debug", reporter, intrusiveness = intrusiveness, target = target, ...)
+  make_progression_handler("debug", reporter, interval = interval, intrusiveness = intrusiveness, target = target, ...)
 }

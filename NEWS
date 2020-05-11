@@ -1,7 +1,7 @@
 Package: progressr
 ==================
 
-Version: 0.5.0-9000 [2020-05-10]
+Version: 0.5.0-9000 [2020-05-11]
 
 SIGNIFICANT CHANGES:
 
@@ -41,6 +41,8 @@ BUG FIXES:
  * handlers() did not return invisible (as documented).
 
  * Argument 'target' was ignored for all handler functions.
+
+ * Argument 'interval' was ignored for handler_debug().
  
 
 Version: 0.5.0 [2020-04-16]
