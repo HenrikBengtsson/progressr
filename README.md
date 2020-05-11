@@ -151,7 +151,7 @@ Step 10
 ```
 
 
-### Output is automatically buffered (if needed)
+### Use regular output as usual alongside progress updates
 
 In contrast to other progress-bar frameworks, output from `message()`, `cat()`, `print()` and so on, will _not_ interfere with progress reported via **progressr**.  For example, say we have:
 
