@@ -80,7 +80,7 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
   } ## flush_stdout()
 
   has_buffered_stdout <- function(stdout_file) {
-    (length(rawConnectionValue(stdout_file)) > 0L)
+    !is.null(stdout_file) && (length(rawConnectionValue(stdout_file)) > 0L)
   }
 
   flush_conditions <- function(conditions) {

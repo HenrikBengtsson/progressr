@@ -5,10 +5,12 @@ Version: 0.5.0-9000 [2020-05-10]
 
 SIGNIFICANT CHANGES:
 
- * with_progress() flushes buffered ("delayed") output as soon as possible if
-   the active progress handlers supports it.  This means that for instance
-   message("Hello world") may output to the terminal immediately when called
-   rather than being held in the buffer and outputted at the end.
+ * Now with_progress() makes sure that any output produced while reporting on
+   progress will not interfer with the progress output and vice versa, which
+   otherwise is a common problem with progress frameworks that output to the
+   terminal, e.g. progress-bar output output is interweaved with printed
+   objects.  In contrast, when using 'progressr' we can use message() and
+   print() as usual regardless of progress being reported or not.
 
 NEW FEATURES:
 

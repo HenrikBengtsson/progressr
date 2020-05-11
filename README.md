@@ -114,39 +114,33 @@ handlers("void")
 ```
 
 
-### Output to terminal is automatically buffered (if needed)
+### Output is automatically buffered (if needed)
 
-When reporting progress in the terminal, for instance as a progress bar, `with_progress()` will automatically buffer any output that otherwise may interfere with the progress information displayed and output it at the very end.  For example, say we have:
+In contrast to other progress-bar frameworks, output from `message()`, `cat()`, `print()` and so on, will _not_ interfere with progress reported via **progressr**.  For example, say we have:
 
 ```r
 my_sqrt <- function(xs) {
   p <- progressor(along = xs)
   lapply(xs, function(x) {
-    str(x)
-    p(sprintf("x=%g", x))
+    message("Calculating the square root of ", x)
     Sys.sleep(2)
+    p(sprintf("x=%g", x))
     sqrt(x)
   })
 }
 ```
-and run:
-```r
-> handlers("txtprogressbar")
-> with_progress(y <- my_sqrt(1:3))
-  |=================                                    |  33%
-```
-then we will only see the progress bar but not the output from `str()`; that will only appear afterward:
-```r
-> handlers("txtprogressbar")
-> with_progress(y <- my_sqrt(1:3))
- int 1
- int 2
- int 3
->
-```
-If this output would not have been "delayed", then there is a great risk that it would have been intertwined with the output of the progress bar.
 
-On the other hand, if we use a progress handler that does not output to the terminal, such as `handlers("beepr")`, then such output is _not_ buffered and it will be outputted immediately.
+we will get:
+
+```r
+> library(progressr)
+> with_progress(y <- my_sqrt(1:3))
+Calculating the square root of 1
+Calculating the square root of 2
+  |=================                                    |  66%
+```
+
+This works because `with_progress()` will briefly buffer any output internally and only release it when the next progress update is received just before the progress is re-rendered in the terminal.  This is why you see a two second delay when running the above example.  Note that, if we use progress handlers that do not output to the terminal, such as `handlers("beepr")`, then output does not have to be buffered and will appear immediately.
 
 
 
