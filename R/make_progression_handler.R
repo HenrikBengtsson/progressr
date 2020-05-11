@@ -259,14 +259,14 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
         if (type == "reset") {
           max_steps <<- NULL
           step <<- NULL
-	  message <<- NULL
+          message <<- NULL
           auto_finish <<- TRUE
           timestamps <<- NULL
           milestones <<- NULL
           prev_milestone <<- NULL
           enabled <<- FALSE
           finished <<- FALSE
-	  owner <<- NULL
+          owner <<- NULL
           done <<- list()
           reset_reporter(p)
           .validate_internal_state(sprintf("handler(type=%s) ... end", type))
@@ -280,11 +280,11 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
           unhide_reporter(p)
           .validate_internal_state(sprintf("handler(type=%s) ... end", type))
         } else {
-	  stop("Unknown control_progression type: ", sQuote(type))
-	}
+          stop("Unknown control_progression type: ", sQuote(type))
+        }
         .validate_internal_state(sprintf("control_progression ... end", type))
         return(invisible())
-      }	
+      }        
 
       ## Ignore stray progressions coming from other sources, e.g.
       ## a function of a package that started to report on progression.
@@ -313,8 +313,8 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
 
       if (type == "initiate") {
         max_steps <<- p$steps
-	if (debug) mstr(list(max_steps=max_steps))
-	stop_if_not(!is.null(max_steps), is.numeric(max_steps), length(max_steps) == 1L, max_steps >= 1)
+        if (debug) mstr(list(max_steps=max_steps))
+        stop_if_not(!is.null(max_steps), is.numeric(max_steps), length(max_steps) == 1L, max_steps >= 1)
         auto_finish <<- p$auto_finish
         times <- min(times, max_steps)
         if (debug) mstr(list(auto_finish = auto_finish, times = times, interval = interval, intrusiveness = intrusiveness))
@@ -325,14 +325,14 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
         interval <- interval * intrusiveness
 
         milestones <<- if (times == 1L) {
-	  max_steps
-	} else {
-	  seq(from = 1L, to = max_steps, length.out = times)
-	}
+          c(max_steps)
+        } else {
+          seq(from = 1L, to = max_steps, length.out = times)
+        }
         timestamps <<- rep(as.POSIXct(NA), times = max_steps)
         timestamps[1] <<- Sys.time()
         step <<- 0L
-	message <<- character(0L)
+        message <<- character(0L)
         if (debug) mstr(list(finished = finished, milestones = milestones))
         initiate_reporter(p)
         prev_milestone <<- step
@@ -344,14 +344,14 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
         prev_milestone <<- max_steps
         .validate_internal_state()
       } else if (type == "update") {
-	if (debug) mstr(list(step=step, "p$amount"=p$amount, max_steps=max_steps))
+        if (debug) mstr(list(step=step, "p$amount"=p$amount, max_steps=max_steps))
         step <<- min(max(step + p$amount, 0L), max_steps)
-	stop_if_not(step >= 0L)
+        stop_if_not(step >= 0L)
         msg <- conditionMessage(p)
         if (length(msg) > 0) message <<- msg
         timestamps[step] <<- Sys.time()
         if (debug) mstr(list(finished = finished, step = step, milestones = milestones, prev_milestone = prev_milestone, interval = interval))
-	if (length(milestones) > 0L && step >= milestones[1]) {
+        if (length(milestones) > 0L && step >= milestones[1]) {
           skip <- FALSE
           if (interval > 0) {
             dt <- difftime(timestamps[step], timestamps[max(prev_milestone, 1L)], units = "secs")
@@ -385,8 +385,8 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
 
   class(handler) <- c(sprintf("%s_progression_handler", name),
                       "progression_handler", "calling_handler",
-		      class(handler))
-		      
+                      class(handler))
+      
   handler
 }
 
