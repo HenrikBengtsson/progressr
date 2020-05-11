@@ -125,9 +125,12 @@ eraseTxtProgressBar <- function(pb) {
     } else if (style == 3L) {
       n <- 3L + nw * width + 6L
     }
-    cat("\r", strrep(" ", times = n), "\r", sep = "", file = file)
-    .nb <- 0L
+    cat("\r", strrep(" ", times = n), "\r", sep = "", file = file)        
     flush.console()
+
+    ## Reset internal counter, cf. utils::txtProgressBar()
+    .nb <- 0L
+    .pc <- -1L
   })
 }
 
