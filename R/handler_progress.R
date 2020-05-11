@@ -54,6 +54,7 @@ handler_progress <- function(format = "[:bar] :percent :message", show_after = 0
     redraw_progress_bar <- function(pb) {
       if (pb$finished) return()
       private <- pb$.__enclos_env__$private
+      private$last_draw <- ""
       private$render(list())
     }
   } else {
