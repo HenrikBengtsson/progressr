@@ -132,7 +132,8 @@ slow_sum <- function(x) {
   for (kk in seq_along(x)) {
     Sys.sleep(0.1)
     sum <- sum + x[kk]
-    p(message = sprintf("Added %g", x[kk]), class = if (kk %% 5 == 0) "sticky")
+    p(sprintf("Step %d", kk), class = if (kk %% 5 == 0) "sticky", amount = 0)
+    p(message = sprintf("Added %g", x[kk]))
   }
   sum
 }
@@ -141,11 +142,20 @@ we get
 ```r
 > handlers("txtprogressbar")
 > with_progress(y <- slow_sum(1:30))
-  Added 5
-  Added 10
+  Step 5
+  Step 10
   |=====================                                |  43%
 ```
 
+and
+
+```r
+> handlers("progress")
+> with_progress(y <- slow_sum(1:30))
+Step 5                                                                                    
+Step 10                                                                                   
+[=================>----------------------------]  43% Added 13
+```
 
 
 ### Output is automatically buffered (if needed)
@@ -486,3 +496,4 @@ To debug progress updates, use:
 [foreach]: https://cran.r-project.org/package=foreach
 [furrr]: https://cran.r-project.org/package=furrr
 [pbapply]: https://cran.r-project.org/package=pbapply
+[pbmcapply]: https://cran.r-project.org/package=pbmcapply
