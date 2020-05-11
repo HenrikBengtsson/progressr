@@ -121,7 +121,28 @@ handlers("void")
 ```
 
 
-### Sticky messages
+### Further configuration of progress handlers
+
+Above we have seen examples where the `handlers()` takes one or more strings as input, e.g. `handlers(c("progress", "beepr"))`.  This is short for a more flexible specification where we can pass a list of handler functions, e.g.
+
+```r
+handlers(list(
+  handler_progress(),
+  handler_beepr()
+))
+```
+
+With this construct, we can make adjustments to the default behavior of these progress handlers.  For example, we can configure the `width` and the `complete` arguments of `progress::progress_bar$new()` and changing the `finish` sound of the **beepr** handler as:
+
+```r
+handlers(list(
+  handler_progress(width = 40, complete = "+"),
+  handler_beepr(finish = 9)
+))
+```
+
+
+## Sticky messages
 
 As seen above, some progress handlers present the progress message as part of its output, e.g. the "progress" handler will display the message as part of the progress bar.  It is also possible to "push" the message up together with other terminal output.  This can be done by add class attribute `"sticky"` to the progression signaled.  This works for several progress handlers that output to the terminal.  For example, with:
 
@@ -158,7 +179,7 @@ Step 10
 ```
 
 
-### Use regular output as usual alongside progress updates
+## Use regular output as usual alongside progress updates
 
 In contrast to other progress-bar frameworks, output from `message()`, `cat()`, `print()` and so on, will _not_ interfere with progress reported via **progressr**.  For example, say we have:
 
@@ -188,50 +209,9 @@ This works because `with_progress()` will briefly buffer any output internally a
 
 
 
-### Progress updates in non-interactive mode ("batch mode")
-
-When running R from the command line, R runs in a non-interactive mode
-(`interactive()` returns `FALSE`).  The default behavior of `with_progress()`
-is to _not_ report on progress in non-interactive mode.
-To reported on progress also then, set R options `progressr.enable` or
-environment variable `R_PROGRESSR_ENABLE` to `TRUE`.  For example,
-
-```sh
-$ Rscript -e "library(progressr)" -e "with_progress(y <- slow_sum(1:10))"
-```
-will _not_ report on progress, whereas
-```sh
-$ export R_PROGRESSR_ENABLE=TRUE
-$ Rscript -e "library(progressr)" -e "with_progress(y <- slow_sum(1:10))"
-```
-will.
-
-
-### Further configuration of progress handlers
-
-Above we have seen examples where the `handlers()` takes one or more strings as input, e.g. `handlers(c("progress", "beepr"))`.  This is short for a more flexible specification where we can pass a list of handler functions, e.g.
-
-```r
-handlers(list(
-  handler_progress(),
-  handler_beepr()
-))
-```
-
-With this construct, we can make adjustments to the default behavior of these progress handlers.  For example, we can configure the `width` and the `complete` arguments of `progress::progress_bar$new()` and changing the `finish` sound of the **beepr** handler as:
-
-```r
-handlers(list(
-  handler_progress(width = 40, complete = "+"),
-  handler_beepr(finish = 9)
-))
-```
-
-
-
 ## Support for progressr elsewhere
 
-Note that progression updates by **progressr** is designed to work out of the box for any _sequential_ iterator framework in R.  Below is an set of examples for the most common ones.
+Note that progression updates by **progressr** is designed to work out of the box for any iterator framework in R.  Below is an set of examples for the most common ones.
 
 
 ### Base R Apply Functions
@@ -290,9 +270,9 @@ with_progress({
 #  |=====================                                |  40%
 ```
 
+
 ### The plyr package
 
-The functions in the [**plyr**](https://cran.r-project.org/package=plyr) package take argument `.progress`, which can be used to produce progress updates.  To have them generate **progressr** 'progression' updates, use `.progress = "progressr"`. For example,
 ```r
 library(plyr)
 library(progressr)
@@ -300,18 +280,22 @@ library(progressr)
 xs <- 1:5
 
 with_progress({
+  p <- progressor(along = xs)
   y <- llply(xs, function(x, ...) {
+    p(sprintf("x=%g", x))
     Sys.sleep(0.1)
     sqrt(x)
-  }, .progress = "progressr")
+  })
 })
 #  |=====================                                |  40%
 ```
 
+_Note:_ This solution does not involved the `.progress = TRUE` argument that **plyr** implements.  Because **progressr** is more flexible, and because `.progress` is automatically disabled when running in parallel (see below), I recommended to use the above **progressr** approach instead.  Having said this, as proof-of-concept, the **progressr** package implements support `.progress = "progressr"` if you still prefer the **plyr** way of doing it.
+
 
 ## Parallel processing and progress updates
 
-The **[future]** framework, which provides a unified API for parallel and distributed processing in R, has built-in support for the kind of progression updates produced by the **progressr** package.  This means that you can use it with for instance **[future.apply]**, **[furrr]**, and **[foreach]** with **[doFuture]**.
+The **[future]** framework, which provides a unified API for parallel and distributed processing in R, has built-in support for the kind of progression updates produced by the **progressr** package.  This means that you can use it with for instance **[future.apply]**, **[furrr]**, and **[foreach]** with **[doFuture]**, and **[plyr]** with **doFuture**.
 
 
 ### future_lapply() - parallel lapply()
@@ -392,9 +376,32 @@ with_progress({
 _Note:_ This solution does not involved the `.progress = TRUE` argument that **furrr** implements.  Because **progressr** is more generic and because `.progress = TRUE` only works for certain future backends and produces errors on others, I recommended to stop using `.progress = TRUE` and use the **progressr** package instead.
 
 
-### The plyr package
+### plyr::llply(..., .parallel = TRUE) with doFuture
 
-Unfortunately, when using `.parallel = TRUE`, the **plyr** package resets `.progress` to the default `"none"` internally regardless how we set `.progress`.  This prevents **progressr** progression updates from being used with _parallel_ **plyr**.  If it was not for this forced reset, using `doFuture::registerDoFuture()` with `.parallel = TRUE` and `.progress = "progressr"` would indeed have reported on progress updates also when **plyr** runs in parallel.  See <https://github.com/HenrikBengtsson/progressr/issues/70> for a hack that works around this limitation.
+Here is an example that uses `llply()` of the **[plyr]** package to parallelize on the local machine while at the same time signaling progression updates:
+
+```r
+library(plyr)
+library(doFuture)
+registerDoFuture()
+plan(multisession)
+
+library(progressr)
+handlers("progress", "beepr")
+
+xs <- 1:5
+
+with_progress({
+  p <- progressor(along = xs)
+  y <- llply(xs, function(x, ...) {
+    p(sprintf("x=%g", x))
+    Sys.sleep(0.1)
+    sqrt(x)
+  }, .parallel = TRUE)
+})
+```
+
+_Note:_ Although **progressr** implements support for using `.progress = "progressr"` with **plyr**, unfortunately, this will _not_ work when using `.parallel = TRUE`.  This is because **plyr** resets `.progress` to the default `"none"` internally regardless how we set `.progress`. See <https://github.com/HenrikBengtsson/progressr/issues/70> for details and a hack that works around this limitation.
 
 
 ### Near-live versus buffered progress updates with futures
@@ -429,6 +436,25 @@ slow_sum <- function(x) {
 ```
 
 The overhead of progress signaling may depend on context.  For example, in parallel processing with near-live progress updates via 'multisession' futures, each progress update is communicated via a socket connections back to the main R session.  These connections might become clogged up if progress updates are too frequent.
+
+
+## Progress updates in non-interactive mode ("batch mode")
+
+When running R from the command line, R runs in a non-interactive mode
+(`interactive()` returns `FALSE`).  The default behavior of `with_progress()`
+is to _not_ report on progress in non-interactive mode.
+To reported on progress also then, set R options `progressr.enable` or
+environment variable `R_PROGRESSR_ENABLE` to `TRUE`.  For example,
+
+```sh
+$ Rscript -e "library(progressr)" -e "with_progress(y <- slow_sum(1:10))"
+```
+will _not_ report on progress, whereas
+```sh
+$ export R_PROGRESSR_ENABLE=TRUE
+$ Rscript -e "library(progressr)" -e "with_progress(y <- slow_sum(1:10))"
+```
+will.
 
 
 
@@ -497,3 +523,4 @@ To debug progress updates, use:
 [furrr]: https://cran.r-project.org/package=furrr
 [pbapply]: https://cran.r-project.org/package=pbapply
 [pbmcapply]: https://cran.r-project.org/package=pbmcapply
+[plyr]: https://cran.r-project.org/package=plyr
