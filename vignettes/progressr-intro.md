@@ -132,12 +132,12 @@ handlers(list(
 ))
 ```
 
-With this construct, we can make adjustments to the default behavior of these progress handlers.  For example, we can configure the `width` and the `complete` arguments of `progress::progress_bar$new()` and changing the `finish` sound of the **beepr** handler as:
+With this construct, we can make adjustments to the default behavior of these progress handlers.  For example, we can configure the `width` and the `complete` arguments of `progress::progress_bar$new()`, and tell **beepr** to use a different `finish` sound and generate sounds at most every two seconds by setting:
 
 ```r
 handlers(list(
   handler_progress(width = 40, complete = "+"),
-  handler_beepr(finish = 9)
+  handler_beepr(finish = 9, interval = 2.0)
 ))
 ```
 
@@ -207,6 +207,8 @@ Calculating the square root of 2
 
 This works because `with_progress()` will briefly buffer any output internally and only release it when the next progress update is received just before the progress is re-rendered in the terminal.  This is why you see a two second delay when running the above example.  Note that, if we use progress handlers that do not output to the terminal, such as `handlers("beepr")`, then output does not have to be buffered and will appear immediately.
 
+
+_Comment_: When signaling a warning using `warning(msg, immediate. = TRUE)` the message is immediately outputted to the standard-error stream.  However, this is not possible to emulate when warnings are intercepted using calling handlers, which are used by `with_progress()`.  This is a limitation of R that cannot be worked around.  Because of this, the above call will behave the same as `warning(msg)` - that is, all warnings will be buffered by R internally and released only when all computations are done.
 
 
 ## Support for progressr elsewhere
@@ -399,6 +401,7 @@ with_progress({
     sqrt(x)
   }, .parallel = TRUE)
 })
+## [=================>-----------------------------]  40% x=2
 ```
 
 _Note:_ Although **progressr** implements support for using `.progress = "progressr"` with **plyr**, unfortunately, this will _not_ work when using `.parallel = TRUE`.  This is because **plyr** resets `.progress` to the default `"none"` internally regardless how we set `.progress`. See <https://github.com/HenrikBengtsson/progressr/issues/70> for details and a hack that works around this limitation.
