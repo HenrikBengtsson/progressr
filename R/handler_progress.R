@@ -106,7 +106,7 @@ handler_progress <- function(format = "[:bar] :percent :message", show_after = 0
         if (!state$enabled || config$times == 1L) return()
         make_pb(format = format, total = config$max_steps,
                 clear = config$clear, show_after = config$enable_after)
-        pb_tick(0, message = state$message)
+        pb_tick(pb, 0, message = state$message)
       },
         
       update = function(config, state, progression, ...) {
@@ -115,7 +115,7 @@ handler_progress <- function(format = "[:bar] :percent :message", show_after = 0
                 clear = config$clear, show_after = config$enable_after)
         if (inherits(progression, "sticky") && !is.null(state$message))
           pb$message(state$message)
-        pb_tick(state$delta, message = state$message)
+        pb_tick(pb, state$delta, message = state$message)
       },
         
       finish = function(config, state, progression, ...) {
