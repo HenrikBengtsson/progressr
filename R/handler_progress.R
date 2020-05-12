@@ -51,11 +51,11 @@ handler_progress <- function(format = "[:bar] :percent :message", show_after = 0
       private$clear_line(private$width)
       private$cursor_to_start()
     }
-    redraw_progress_bar <- function(pb) {
+    redraw_progress_bar <- function(pb, tokens = list()) {
       if (pb$finished) return()
       private <- pb$.__enclos_env__$private
       private$last_draw <- ""
-      private$render(list())
+      private$render(tokens)
     }
   } else {
     progress_bar <- list(
@@ -66,7 +66,7 @@ handler_progress <- function(format = "[:bar] :percent :message", show_after = 0
       )
     )
     erase_progress_bar <- function(pb) NULL
-    redraw_progress_bar <- function(pb) NULL
+    redraw_progress_bar <- function(pb, ...) NULL
   }
   
   reporter <- local({
@@ -77,6 +77,14 @@ handler_progress <- function(format = "[:bar] :percent :message", show_after = 0
       args <- c(list(...), backend_args)
       pb <<- do.call(progress_bar$new, args = args)
       pb
+    }
+
+    last_tokens <- list()
+    pb_tick <- function(pb, delta = 0, message = NULL, ...) {
+      tokens <- list(message = paste0(message, ""))
+      last_tokens <<- tokens
+      if (delta <= 0) return()
+      pb$tick(delta, tokens = tokens)
     }
 
     list(
@@ -91,27 +99,23 @@ handler_progress <- function(format = "[:bar] :percent :message", show_after = 0
 
       unhide = function(...) {
         if (is.null(pb)) return()
-        redraw_progress_bar(pb)
+        redraw_progress_bar(pb, tokens = last_tokens)
       },
 
       initiate = function(config, state, progression, ...) {
         if (!state$enabled || config$times == 1L) return()
         make_pb(format = format, total = config$max_steps,
                 clear = config$clear, show_after = config$enable_after)
-        tokens <- list(message = paste0(state$message, ""))
-        pb$tick(0, tokens = tokens)
+        pb_tick(0, message = state$message)
       },
         
       update = function(config, state, progression, ...) {
         if (!state$enabled || config$times <= 2L) return()
         make_pb(format = format, total = config$max_steps,
                 clear = config$clear, show_after = config$enable_after)
-        message <- paste0(state$message, "")
-        if (inherits(progression, "sticky")) pb$message(message)
-        if (state$delta >= 0) {
-          tokens <- list(message = message)
-          pb$tick(state$delta, tokens = tokens)
-        }
+        if (inherits(progression, "sticky") && !is.null(state$message))
+          pb$message(state$message)
+        pb_tick(state$delta, message = state$message)
       },
         
       finish = function(config, state, progression, ...) {
