@@ -60,7 +60,7 @@ To get progress updates, we can call it as:
 ```r
 > library(progressr)
 > with_progress(y <- slow_sum(1:10))
-  |=====================                                |  40%
+  |====================                               |  40%
 ```
 
 
@@ -74,7 +74,7 @@ handlers("progress")
 This progress handler will present itself as:
 ```r
 > with_progress(y <- slow_sum(1:10))
-[==================>---------------------------]  40% Added 4
+[=================>---------------------------]  40% Added 4
 ```
 
 To set the default progress handler(s) in all your R sessions, call `progressr::handlers(...)` in your <code>~/.Rprofile</code> file.
@@ -156,9 +156,9 @@ we get
 ```r
 > handlers("txtprogressbar")
 > with_progress(y <- slow_sum(1:30))
-  Step 5
-  Step 10
-  |=====================                                |  43%
+Step 5
+Step 10
+  |====================                               |  43%
 ```
 
 and
@@ -166,9 +166,9 @@ and
 ```r
 > handlers("progress")
 > with_progress(y <- slow_sum(1:30))
-Step 5                                                                                    
-Step 10                                                                                   
-[=================>----------------------------]  43% Added 13
+Step 5
+Step 10
+[================>---------------------------]  43% Added 13
 ```
 
 
@@ -177,7 +177,7 @@ Step 10
 In contrast to other progress-bar frameworks, output from `message()`, `cat()`, `print()` and so on, will _not_ interfere with progress reported via **progressr**.  For example, say we have:
 
 ```r
-my_sqrt <- function(xs) {
+slow_sqrt <- function(xs) {
   p <- progressor(along = xs)
   lapply(xs, function(x) {
     message("Calculating the square root of ", x)
@@ -192,10 +192,11 @@ we will get:
 
 ```r
 > library(progressr)
-> with_progress(y <- my_sqrt(1:3))
+> handlers("progress")
+> with_progress(y <- slow_sqrt(1:8))
 Calculating the square root of 1
 Calculating the square root of 2
-  |=================                                    |  66%
+[===========>-------------------------------------]  25% x=2
 ```
 
 This works because `with_progress()` will briefly buffer any output internally and only release it when the next progress update is received just before the progress is re-rendered in the terminal.  This is why you see a two second delay when running the above example.  Note that, if we use progress handlers that do not output to the terminal, such as `handlers("beepr")`, then output does not have to be buffered and will appear immediately.
@@ -224,7 +225,7 @@ with_progress({
     sqrt(x)
   })
 })
-#  |=====================                                |  40%
+#  |====================                               |  40%
 ```
 
 ### The foreach package
@@ -243,7 +244,7 @@ with_progress({
     sqrt(x)
   }
 })
-#  |=====================                                |  40%
+#  |====================                               |  40%
 ```
 
 ### The purrr package
@@ -262,7 +263,7 @@ with_progress({
     sqrt(x)
   })
 })
-#  |=====================                                |  40%
+#  |====================                               |  40%
 ```
 
 
@@ -282,7 +283,7 @@ with_progress({
     sqrt(x)
   })
 })
-#  |=====================                                |  40%
+#  |====================                               |  40%
 ```
 
 _Note:_ This solution does not involved the `.progress = TRUE` argument that **plyr** implements.  Because **progressr** is more flexible, and because `.progress` is automatically disabled when running in parallel (see below), I recommended to use the above **progressr** approach instead.  Having said this, as proof-of-concept, the **progressr** package implements support `.progress = "progressr"` if you still prefer the **plyr** way of doing it.
@@ -314,7 +315,7 @@ with_progress({
     sqrt(x)
   })
 })
-## [=================>-----------------------------]  40% x=2
+# [=================>------------------------------]  40% x=2
 ```
 
 
@@ -340,7 +341,7 @@ with_progress({
     sqrt(x)
   }
 })
-## [=================>-----------------------------]  40% x=2
+# [=================>------------------------------]  40% x=2
 ```
 
 
@@ -365,7 +366,7 @@ with_progress({
     sqrt(x)
   })
 })
-## [=================>-----------------------------]  40% x=2
+# [=================>------------------------------]  40% x=2
 ```
 
 _Note:_ This solution does not involved the `.progress = TRUE` argument that **furrr** implements.  Because **progressr** is more generic and because `.progress = TRUE` only works for certain future backends and produces errors on others, I recommended to stop using `.progress = TRUE` and use the **progressr** package instead.
@@ -394,7 +395,7 @@ with_progress({
     sqrt(x)
   }, .parallel = TRUE)
 })
-## [=================>-----------------------------]  40% x=2
+# [=================>------------------------------]  40% x=2
 ```
 
 _Note:_ Although **progressr** implements support for using `.progress = "progressr"` with **plyr**, unfortunately, this will _not_ work when using `.parallel = TRUE`.  This is because **plyr** resets `.progress` to the default `"none"` internally regardless how we set `.progress`. See <https://github.com/HenrikBengtsson/progressr/issues/70> for details and a hack that works around this limitation.
