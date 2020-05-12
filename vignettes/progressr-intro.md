@@ -144,7 +144,7 @@ handlers(list(
 
 ## Sticky messages
 
-As seen above, some progress handlers present the progress message as part of its output, e.g. the "progress" handler will display the message as part of the progress bar.  It is also possible to "push" the message up together with other terminal output.  This can be done by add class attribute `"sticky"` to the progression signaled.  This works for several progress handlers that output to the terminal.  For example, with:
+As seen above, some progress handlers present the progress message as part of its output, e.g. the "progress" handler will display the message as part of the progress bar.  It is also possible to "push" the message up together with other terminal output.  This can be done by adding class attribute `"sticky"` to the progression signaled.  This works for several progress handlers that output to the terminal.  For example, with:
 
 ```r
 slow_sum <- function(x) {
