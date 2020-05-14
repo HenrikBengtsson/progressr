@@ -123,11 +123,14 @@ handlers(list(
 ))
 ```
 
-With this construct, we can make adjustments to the default behavior of these progress handlers.  For example, we can configure the `width` and the `complete` arguments of `progress::progress_bar$new()`, and tell **beepr** to use a different `finish` sound and generate sounds at most every two seconds by setting:
+With this construct, we can make adjustments to the default behavior of these progress handlers.  For example, we can configure the `format`, `width`, and `complete` arguments of `progress::progress_bar$new()`, and tell **beepr** to use a different `finish` sound and generate sounds at most every two seconds by setting:
 
 ```r
 handlers(list(
-  handler_progress(width = 40, complete = "+"),
+  handler_progress(
+    format="(:spin) :current/:total (:message) [:bar] :percent in :elapsed ETA: :eta",
+    width = 40, complete = "+"
+  ),
   handler_beepr(finish = 9, interval = 2.0)
 ))
 ```
