@@ -137,10 +137,14 @@ With this construct, we can make adjustments to the default behavior of these pr
 ```r
 handlers(list(
   handler_progress(
-    format="(:spin) :current/:total (:message) [:bar] :percent in :elapsed ETA: :eta",
-    width = 40, complete = "+"
+    format   = ":spin :current/:total (:message) [:bar] :percent in :elapsed ETA: :eta",
+    width    = 60,
+    complete = "+"
   ),
-  handler_beepr(finish = 9, interval = 2.0)
+  handler_beepr(
+    finish   = "wilhelm",
+    interval = 2.0
+  )
 ))
 ```
 
