@@ -66,7 +66,7 @@ handler_progress <- function(format = "[:bar] :percent :message", show_after = 0
       )
     )
     erase_progress_bar <- function(pb) NULL
-    redraw_progress_bar <- function(pb, ...) NULL
+    redraw_progress_bar <- function(pb, tokens = list()) NULL
   }
   
   reporter <- local({
