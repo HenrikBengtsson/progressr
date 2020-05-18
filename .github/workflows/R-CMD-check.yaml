@@ -31,7 +31,7 @@ jobs:
 
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
 
       - uses: r-lib/actions/setup-r@master
         with:
@@ -65,7 +65,7 @@ jobs:
           Rscript -e "install.packages('progressr')"  ## 'self' vignette engine
 
       - name: Check
-        run: Rscript -e "rcmdcheck::rcmdcheck(args = c('--as-cran', '--no-manual'), error_on = 'warning', check_dir = 'check')"
+        run: Rscript -e "rcmdcheck::rcmdcheck(args = c('--no-manual', '--as-cran'), error_on = 'warning', check_dir = 'check')"
 
       - name: Upload check results
         if: failure()
