@@ -61,5 +61,5 @@ handler_notifier <- function(intrusiveness = getOption("progressr.intrusiveness.
     )
   })
   
-  make_progression_handler("notifier", reporter, intrusiveness = intrusiveness, ...)
+  make_progression_handler("notifier", reporter, intrusiveness = intrusiveness, target = target, ...)
 }

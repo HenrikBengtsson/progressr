@@ -11,6 +11,9 @@
 #'
 #' @export
 handler_winprogressbar <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), target = "gui", ...) {
+  ## Additional arguments passed to the progress-handler backend
+  backend_args <- handler_backend_args(...)
+  
   ## Used for package testing purposes only when we want to perform
   ## everything except the last part where the backend is called
   if (!is_fake("handler_winprogressbar")) {
@@ -32,7 +35,8 @@ handler_winprogressbar <- function(intrusiveness = getOption("progressr.intrusiv
     make_pb <- function(..., label = NULL) {
       if (!is.null(pb)) return(pb)
       label <- paste0(label, "")
-      pb <<- winProgressBar(..., label = label)
+      args <- c(list(..., label = label), backend_args)
+      pb <<- do.call(winProgressBar, args = args)
       pb
     }
 
@@ -66,5 +70,5 @@ handler_winprogressbar <- function(intrusiveness = getOption("progressr.intrusiv
     )
   })
   
-  make_progression_handler("winprogressbar", reporter, intrusiveness = intrusiveness, ...)
+  make_progression_handler("winprogressbar", reporter, intrusiveness = intrusiveness, target = target, ...)
 }

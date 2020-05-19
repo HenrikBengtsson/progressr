@@ -1,6 +1,57 @@
 Package: progressr
 ==================
 
+Version: 0.6.0 [2020-05-18]
+
+SIGNIFICANT CHANGES:
+
+ * Now with_progress() makes sure that any output produced while reporting on
+   progress will not interfer with the progress output and vice versa, which
+   otherwise is a common problem with progress frameworks that output to the
+   terminal, e.g. progress-bar output output is interweaved with printed
+   objects.  In contrast, when using 'progressr' we can use message() and
+   print() as usual regardless of progress being reported or not.
+
+NEW FEATURES:
+
+ * Signaling progress(msg, class = "sticky") will cause the message to be
+   sticky, e.g. for progress bars outputting to the terminal, the message
+   will be "pushed" above the progress bar.
+
+ * with_progress() gained argument 'delay_terminal' whose default will be
+   automatically inferred from inspecting the currently set handlers and
+   whether they output to the terminal or not.
+
+ * Arguments 'delay_stdout' and 'delay_conditions' for with_progress() is
+   now agile to the effective value of the 'delay_terminal' argument.
+
+ * Now handler_nnn() functions pass additional arguments in '...' to the
+   underlying progress-handler backend, e.g. handler_progress(width = 40L)
+   will set up progress::progress_bar$new(width = 40L).
+ 
+ * Add environment variables 'R_PROGRESSR_CLEAR', 'R_PROGRESSR_ENABLE',
+   'R_PROGRESSR_ENABLE_AFTER', 'R_PROGRESSR_TIMES', and 'R_PROGRESSR_INTERVAL'
+   for controlling the default value of the corresponding 'progressr.*' options.
+ 
+BUG FIXES:
+
+ * Limiting the frequency of progress reporting via handler arguments 'times',
+   'interval' or 'intrusivness' did not work and was effectively ignored.
+   
+ * The 'progress' handler, which uses progress::progress_bar(), did not support
+   colorization of the 'format' string when done by the 'crayon' package.
+
+ * handlers() did not return invisible (as documented).
+
+ * Argument 'target' was ignored for all handler functions.
+
+ * Argument 'interval' was ignored for handler_debug().
+
+ * The class of handler_nnn() functions where all "reset_progression_handler"
+   rather than "nnn_progression_handler".  The same bug caused the reported
+   'name' field to be "reset" rather than "nnn".
+ 
+
 Version: 0.5.0 [2020-04-16]
 
 NEW FEATURES:

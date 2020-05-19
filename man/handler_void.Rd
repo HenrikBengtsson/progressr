@@ -4,11 +4,16 @@
 \alias{handler_void}
 \title{Progression Handler: No Progress Report}
 \usage{
-handler_void(intrusiveness = 0, ...)
+handler_void(intrusiveness = 0, target = "void", enable = FALSE, ...)
 }
 \arguments{
 \item{intrusiveness}{(numeric) A non-negative scalar on how intrusive
 (disruptive) the reporter to the user.}
+
+\item{target}{(character vector) Specifies where progression updates are
+rendered.}
+
+\item{enable}{(logical) If FALSE, then progress is not reported.}
 
 \item{\ldots}{Additional arguments passed to \code{\link[=make_progression_handler]{make_progression_handler()}}.}
 }

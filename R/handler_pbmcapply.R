@@ -34,6 +34,9 @@
 #' @importFrom utils file_test flush.console txtProgressBar setTxtProgressBar
 #' @export
 handler_pbmcapply <- function(substyle = 3L, style = "ETA", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
+  ## Additional arguments passed to the progress-handler backend
+  backend_args <- handler_backend_args(...)
+
   if (!is_fake("handler_pbmcapply")) {
     progressBar <- pbmcapply::progressBar
     eraseTxtProgressBar <- function(pb) {
@@ -51,6 +54,7 @@ handler_pbmcapply <- function(substyle = 3L, style = "ETA", file = stderr(), int
           n <- width
         }
         cat("\r", strrep(" ", times = n), "\r", sep = "", file = file)
+        .nb <- 0L
         flush.console()
       })
     }
@@ -58,6 +62,7 @@ handler_pbmcapply <- function(substyle = 3L, style = "ETA", file = stderr(), int
     progressBar <- function(..., style, substyle) txtProgressBar(..., style = substyle)
     setTxtProgressBar <- function(...) NULL
     eraseTxtProgressBar <- function(pb) NULL
+    redrawTxtProgressBar <- function(pb) NULL
   }
   
   reporter <- local({
@@ -67,7 +72,8 @@ handler_pbmcapply <- function(substyle = 3L, style = "ETA", file = stderr(), int
     
     make_pb <- function(...) {
       if (!is.null(pb)) return(pb)
-      pb <<- progressBar(...)
+      args <- c(list(...), backend_args)
+      pb <<- do.call(progressBar, args = args)
       pb
     }
 
@@ -75,15 +81,31 @@ handler_pbmcapply <- function(substyle = 3L, style = "ETA", file = stderr(), int
       reset = function(...) {
         pb <<- NULL
       },
-      
+
+      hide = function(...) {
+        if (is.null(pb)) return()
+        eraseTxtProgressBar(pb)
+      },
+
+      unhide = function(...) {
+        if (is.null(pb)) return()
+        redrawTxtProgressBar(pb)
+      },
+
       initiate = function(config, state, progression, ...) {
         if (!state$enabled || config$times == 1L) return()
         make_pb(max = config$max_steps, style = style, substyle = substyle, file = file)
       },
         
       update = function(config, state, progression, ...) {
-        if (!state$enabled || progression$amount == 0 || config$times <= 2L) return()
+        if (!state$enabled || config$times <= 2L) return()
         make_pb(max = config$max_steps, style = style, substyle = substyle, file = file)
+        if (inherits(progression, "sticky")) {
+          eraseTxtProgressBar(pb)
+          message(paste0(state$message, ""))
+          redrawTxtProgressBar(pb)
+        }
+        if (progression$amount == 0) return()
         setTxtProgressBar(pb, value = state$step)
       },
         
@@ -110,5 +132,5 @@ handler_pbmcapply <- function(substyle = 3L, style = "ETA", file = stderr(), int
     )
   })
   
-  make_progression_handler("pbmcapply", reporter, intrusiveness = intrusiveness, ...)
+  make_progression_handler("pbmcapply", reporter, intrusiveness = intrusiveness, target = target, ...)
 }

@@ -38,7 +38,11 @@ handler_debug <- function(interval = getOption("progressr.interval", 0), intrusi
       reset = function(...) {
         t_init <<- NULL
       },
+
+      hide = function(...) NULL,
       
+      unhide = function(...) NULL,
+
       initiate = function(...) {
         add_to_log("initiate", ...)
       },
@@ -53,5 +57,5 @@ handler_debug <- function(interval = getOption("progressr.interval", 0), intrusi
     )
   })
   
-  make_progression_handler("debug", reporter, intrusiveness = intrusiveness, ...)
+  make_progression_handler("debug", reporter, interval = interval, intrusiveness = intrusiveness, target = target, ...)
 }

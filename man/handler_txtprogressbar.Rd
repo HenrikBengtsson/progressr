@@ -13,7 +13,8 @@ handler_txtprogressbar(
 )
 }
 \arguments{
-\item{style}{(integer) The progress-bar style according to \code{\link[utils:txtProgressBar]{utils::txtProgressBar()}}.}
+\item{style}{(integer) The progress-bar style according to
+\code{\link[utils:txtProgressBar]{utils::txtProgressBar()}}.}
 
 \item{file}{(connection) A \link[base:connection]{base::connection} to where output should be sent.}
 

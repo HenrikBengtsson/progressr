@@ -4,7 +4,8 @@
 #'
 #' @inheritParams make_progression_handler
 #'
-#' @param style (integer) The progress-bar style according to [utils::txtProgressBar()].
+#' @param style (integer) The progress-bar style according to
+#' [utils::txtProgressBar()].
 #'
 #' @param file (connection) A [base::connection] to where output should be sent.
 #'
@@ -41,26 +42,16 @@
 #' @importFrom utils file_test flush.console txtProgressBar setTxtProgressBar
 #' @export
 handler_txtprogressbar <- function(style = 3L, file = stderr(), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
+  ## Additional arguments passed to the progress-handler backend
+  backend_args <- handler_backend_args(...)
+
   reporter <- local({
-    ## Import functions
-    eraseTxtProgressBar <- function(pb) {
-      pb_env <- environment(pb$getVal)
-      with(pb_env, {
-        if (style == 1L || style == 2L) {
-          n <- .nb
-        } else if (style == 3L) {
-          n <- 3L + nw * width + 6L
-        }
-        cat("\r", strrep(" ", times = n), "\r", sep = "", file = file)
-        flush.console()
-      })
-    }
-
     pb <- NULL
-
+    
     make_pb <- function(...) {
       if (!is.null(pb)) return(pb)
-      pb <<- txtProgressBar(...)
+      args <- c(list(...), backend_args)
+      pb <<- do.call(txtProgressBar, args = args)
       pb
     }
 
@@ -68,15 +59,31 @@ handler_txtprogressbar <- function(style = 3L, file = stderr(), intrusiveness = 
       reset = function(...) {
         pb <<- NULL
       },
-      
+
+      hide = function(...) {
+        if (is.null(pb)) return()
+        eraseTxtProgressBar(pb)
+      },
+
+      unhide = function(...) {
+        if (is.null(pb)) return()
+        redrawTxtProgressBar(pb)
+      },
+
       initiate = function(config, state, progression, ...) {
         if (!state$enabled || config$times == 1L) return()
         make_pb(max = config$max_steps, style = style, file = file)
       },
-        
+
       update = function(config, state, progression, ...) {
-        if (!state$enabled || progression$amount == 0 || config$times == 1L) return()
-	make_pb(max = config$max_steps, style = style, file = file)
+        if (!state$enabled || config$times == 1L) return()
+        make_pb(max = config$max_steps, style = style, file = file)
+        if (inherits(progression, "sticky")) {
+          eraseTxtProgressBar(pb)
+          message(paste0(state$message, ""))
+          redrawTxtProgressBar(pb)
+        }
+        if (progression$amount == 0) return()
         setTxtProgressBar(pb, value = state$step)
       },
         
@@ -98,10 +105,37 @@ handler_txtprogressbar <- function(style = 3L, file = stderr(), intrusiveness = 
           setTxtProgressBar(pb, value = config$max_steps)
         }
         close(pb)
-	pb <<- NULL
+        pb <<- NULL
       }
     )
   })
+
   
-  make_progression_handler("txtprogressbar", reporter, intrusiveness = intrusiveness, ...)
+  make_progression_handler("txtprogressbar", reporter, intrusiveness = intrusiveness, target = target, ...)
 }
+
+
+
+## Erase a utils::txtProgressBar()
+eraseTxtProgressBar <- function(pb) {
+  pb_env <- environment(pb$getVal)
+  with(pb_env, {
+    if (style == 1L || style == 2L) {
+      n <- .nb
+    } else if (style == 3L) {
+      n <- 3L + nw * width + 6L
+    }
+    cat("\r", strrep(" ", times = n), "\r", sep = "", file = file)        
+    flush.console()
+
+    ## Reset internal counter, cf. utils::txtProgressBar()
+    .nb <- 0L
+    .pc <- -1L
+  })
+}
+
+## Redraw a utils::txtProgressBar()
+redrawTxtProgressBar <- function(pb) {
+  setTxtProgressBar(pb, value = pb$getVal())
+}
+

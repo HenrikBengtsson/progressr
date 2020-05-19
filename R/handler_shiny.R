@@ -31,5 +31,5 @@ handler_shiny <- function(intrusiveness = getOption("progressr.intrusiveness.gui
     )
   })
   
-  make_progression_handler("shiny", reporter, intrusiveness = intrusiveness, ...)
+  make_progression_handler("shiny", reporter, intrusiveness = intrusiveness, target = target, ...)
 }

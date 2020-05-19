@@ -8,13 +8,16 @@ make_progression_handler(
   name,
   reporter = list(),
   handler = NULL,
-  enable = getOption("progressr.enable", interactive()),
-  enable_after = getOption("progressr.enable_after", 0),
-  times = getOption("progressr.times", +Inf),
-  interval = getOption("progressr.interval", 0),
+  enable = getOption("progressr.enable", Sys.getenv("R_PROGRESSR_ENABLE",
+    interactive())),
+  enable_after = getOption("progressr.enable_after",
+    Sys.getenv("R_PROGRESSR_ENABLE_AFTER", 0)),
+  times = getOption("progressr.times", Sys.getenv("R_PROGRESSR_TIMES", +Inf)),
+  interval = getOption("progressr.interval", Sys.getenv("R_PROGRESSR_INTERVAL", 0)),
   intrusiveness = 1,
-  clear = getOption("progressr.clear", TRUE),
-  target = "terminal"
+  clear = getOption("progressr.clear", Sys.getenv("R_PROGRESSR_CLEAR", TRUE)),
+  target = "terminal",
+  ...
 )
 }
 \arguments{
@@ -45,6 +48,9 @@ by a reporter will be cleared/removed upon completion, if possible.}
 
 \item{target}{(character vector) Specifies where progression updates are
 rendered.}
+
+\item{\ldots}{Additional arguments passed to \code{\link[=make_progression_handler]{make_progression_handler()}}
+or not used.}
 }
 \value{
 A function of class \code{progression_handler} that takes a

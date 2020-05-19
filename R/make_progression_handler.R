@@ -33,6 +33,9 @@
 #' @param target (character vector) Specifies where progression updates are
 #'   rendered.
 #'
+#' @param \ldots Additional arguments passed to [make_progression_handler()]
+#' or not used.
+#'
 #' @return A function of class `progression_handler` that takes a
 #' [progression] condition as its first and only argument.
 #'
@@ -47,7 +50,9 @@
 #'
 #' @keywords internal
 #' @export
-make_progression_handler <- function(name, reporter = list(), handler = NULL, enable = getOption("progressr.enable", interactive()), enable_after = getOption("progressr.enable_after", 0.0), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0.0), intrusiveness = 1.0, clear = getOption("progressr.clear", TRUE), target = "terminal") {
+make_progression_handler <- function(name, reporter = list(), handler = NULL, enable = getOption("progressr.enable", Sys.getenv("R_PROGRESSR_ENABLE", interactive())), enable_after = getOption("progressr.enable_after", Sys.getenv("R_PROGRESSR_ENABLE_AFTER", 0.0)), times = getOption("progressr.times", Sys.getenv("R_PROGRESSR_TIMES", +Inf)), interval = getOption("progressr.interval", Sys.getenv("R_PROGRESSR_INTERVAL", 0.0)), intrusiveness = 1.0, clear = getOption("progressr.clear",  Sys.getenv("R_PROGRESSR_CLEAR", TRUE)), target = "terminal", ...) {
+  enable <- as.logical(enable)
+  stop_if_not(is.logical(enable), length(enable) == 1L, !is.na(enable))
   if (!enable) times <- 0
   name <- as.character(name)
   stop_if_not(length(name) == 1L, !is.na(name), nzchar(name))
@@ -55,12 +60,17 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
 #  formals <- formals(handler)
 #  stop_if_not(length(formals) == 1L)
   stop_if_not(is.list(reporter))
+  enable_after <- as.numeric(enable_after)
   stop_if_not(is.numeric(enable_after), length(enable_after),
               !is.na(enable_after), enable_after >= 0)
-  stop_if_not(length(times) == 1L, is.numeric(times), !is.na(name),
+  times <- as.numeric(times)
+  stop_if_not(length(times) == 1L, is.numeric(times), !is.na(times),
               times >= 0)
+  interval <- as.numeric(interval)
   stop_if_not(length(interval) == 1L, is.numeric(interval),
               !is.na(interval), interval >= 0)
+  clear <- as.logical(clear)
+  stop_if_not(is.logical(clear), length(clear) == 1L, !is.na(clear))
   stop_if_not(is.character(target))
   
   ## Disable progress updates?
@@ -69,8 +79,8 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
   }
 
   ## Reporter
-  for (name in setdiff(c("reset", "initiate", "update", "finish"), names(reporter))) {
-    reporter[[name]] <- function(...) NULL
+  for (key in setdiff(c("reset", "initiate", "update", "finish", "hide", "unhide"), names(reporter))) {
+    reporter[[key]] <- structure(function(...) NULL, class = "null_function")
   }
 
   ## Progress state
@@ -174,6 +184,38 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
     if (debug) mprintf("update_reporter() ... done")
   }
 
+  hide_reporter <- function(p) {
+    args <- reporter_args(progression = p)
+    debug <- getOption("progressr.debug", FALSE)
+    if (debug) {
+      mprintf("hide_reporter() ...")
+      mstr(args)
+    }
+    if (is.null(reporter$hide)) {
+      if (debug) mprintf("hide_reporter() ... skipping; not supported")
+      return()
+    }
+    do.call(reporter$hide, args = args)
+    .validate_internal_state("hide_reporter() ... done")
+    if (debug) mprintf("hide_reporter() ... done")
+  }
+
+  unhide_reporter <- function(p) {
+    args <- reporter_args(progression = p)
+    debug <- getOption("progressr.debug", FALSE)
+    if (debug) {
+      mprintf("unhide_reporter() ...")
+      mstr(args)
+    }
+    if (is.null(reporter$unhide)) {
+      if (debug) mprintf("unhide_reporter() ... skipping; not supported")
+      return()
+    }
+    do.call(reporter$unhide, args = args)
+    .validate_internal_state("unhide_reporter() ... done")
+    if (debug) mprintf("unhide_reporter() ... done")
+  }
+
   finish_reporter <- function(p) {
     args <- reporter_args(progression = p)
     debug <- getOption("progressr.debug", FALSE)
@@ -217,26 +259,32 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
         if (type == "reset") {
           max_steps <<- NULL
           step <<- NULL
-	  message <<- NULL
+          message <<- NULL
           auto_finish <<- TRUE
           timestamps <<- NULL
           milestones <<- NULL
           prev_milestone <<- NULL
           enabled <<- FALSE
           finished <<- FALSE
-	  owner <<- NULL
+          owner <<- NULL
           done <<- list()
           reset_reporter(p)
           .validate_internal_state(sprintf("handler(type=%s) ... end", type))
         } else if (type == "shutdown") {
           finish_reporter(p)
           .validate_internal_state(sprintf("handler(type=%s) ... end", type))
+        } else if (type == "hide") {
+          hide_reporter(p)
+          .validate_internal_state(sprintf("handler(type=%s) ... end", type))
+        } else if (type == "unhide") {
+          unhide_reporter(p)
+          .validate_internal_state(sprintf("handler(type=%s) ... end", type))
         } else {
-	  stop("Unknown control_progression type: ", sQuote(type))
-	}
+          stop("Unknown control_progression type: ", sQuote(type))
+        }
         .validate_internal_state(sprintf("control_progression ... end", type))
         return(invisible())
-      }	
+      }        
 
       ## Ignore stray progressions coming from other sources, e.g.
       ## a function of a package that started to report on progression.
@@ -265,8 +313,8 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
 
       if (type == "initiate") {
         max_steps <<- p$steps
-	if (debug) mstr(list(max_steps=max_steps))
-	stop_if_not(!is.null(max_steps), is.numeric(max_steps), length(max_steps) == 1L, max_steps >= 1)
+        if (debug) mstr(list(max_steps=max_steps))
+        stop_if_not(!is.null(max_steps), is.numeric(max_steps), length(max_steps) == 1L, max_steps >= 1)
         auto_finish <<- p$auto_finish
         times <- min(times, max_steps)
         if (debug) mstr(list(auto_finish = auto_finish, times = times, interval = interval, intrusiveness = intrusiveness))
@@ -276,15 +324,23 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
         times <- max(times, 1L)
         interval <- interval * intrusiveness
 
+        ## Milestone steps that need to be reach in order to trigger an
+        ## update of the reporter
         milestones <<- if (times == 1L) {
-	  max_steps
-	} else {
-	  seq(from = 1L, to = max_steps, length.out = times)
-	}
+          c(max_steps)
+        } else if (times == 2L) {
+          c(0L, max_steps)
+        } else {
+          seq(from = 0L, to = max_steps, length.out = times + 1L)[-1]
+        }
+
+        ## Timestamps for when steps where reached
+        ## Note that they will remain NA for "skipped" steps
         timestamps <<- rep(as.POSIXct(NA), times = max_steps)
         timestamps[1] <<- Sys.time()
+        
         step <<- 0L
-	message <<- character(0L)
+        message <<- character(0L)
         if (debug) mstr(list(finished = finished, milestones = milestones))
         initiate_reporter(p)
         prev_milestone <<- step
@@ -296,14 +352,16 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
         prev_milestone <<- max_steps
         .validate_internal_state()
       } else if (type == "update") {
-	if (debug) mstr(list(step=step, "p$amount"=p$amount, max_steps=max_steps))
+        if (debug) mstr(list(step=step, "p$amount"=p$amount, max_steps=max_steps))
         step <<- min(max(step + p$amount, 0L), max_steps)
-	stop_if_not(step >= 0L)
+        stop_if_not(step >= 0L)
         msg <- conditionMessage(p)
         if (length(msg) > 0) message <<- msg
         timestamps[step] <<- Sys.time()
         if (debug) mstr(list(finished = finished, step = step, milestones = milestones, prev_milestone = prev_milestone, interval = interval))
-	if (length(milestones) > 0L && step >= milestones[1]) {
+
+        ## Only update if a new milestone step has been reached
+        if (length(milestones) > 0L && step >= milestones[1]) {
           skip <- FALSE
           if (interval > 0) {
             dt <- difftime(timestamps[step], timestamps[max(prev_milestone, 1L)], units = "secs")
@@ -320,8 +378,6 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
             if (debug) mstr(list(type = "finish (auto)", milestones = milestones))
             finish_reporter(p)
           }
-        } else {
-          update_reporter(p)
         }
         .validate_internal_state(sprintf("handler(type=%s) ... end", type))
       } else {
@@ -337,8 +393,8 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
 
   class(handler) <- c(sprintf("%s_progression_handler", name),
                       "progression_handler", "calling_handler",
-		      class(handler))
-		      
+                      class(handler))
+      
   handler
 }
 
@@ -375,3 +431,20 @@ print.progression_handler <- function(x, ...) {
   s <- paste(s, collapse = "\n")
   cat(s, "\n", sep = "")
 }
+
+
+# Additional arguments passed to the progress backend
+handler_backend_args <- function(...) {
+  args <- list(...)
+  if (length(args) == 0L) return(list())
+  
+  names <- names(args)
+  if (is.null(names) || !all(nzchar(names))) {
+    stop("Additional arguments must be named")
+  }
+  
+  ## Drop arguments passed to make_progression_handler()
+  names <- setdiff(names, names(formals(make_progression_handler)))
+  args[names]
+}
+
