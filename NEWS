@@ -13,9 +13,9 @@ SIGNIFICANT CHANGES:
  * Now with_progress() makes sure that any output produced while reporting on
    progress will not interfer with the progress output and vice versa, which
    otherwise is a common problem with progress frameworks that output to the
-   terminal, e.g. progress-bar output output is interweaved with printed
-   objects.  In contrast, when using 'progressr' we can use message() and
-   print() as usual regardless of progress being reported or not.
+   terminal, e.g. progress-bar output is interweaved with printed objects.
+   In contrast, when using 'progressr' we can use message() and print() as
+   usual regardless of progress being reported or not.
 
 NEW FEATURES:
 
