@@ -16,7 +16,7 @@ progress <- function(..., call = sys.call()) {
   args <- list(...)
   if (length(args) == 1L && inherits(args[[1L]], "condition")) {
     cond <- args[[1L]]
-    stopifnot(inherits(cond, "progression"))
+    stop_if_not(inherits(cond, "progression"))
   } else {
     cond <- progression(..., call = call)
   }

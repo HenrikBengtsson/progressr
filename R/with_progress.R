@@ -131,10 +131,11 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
 
   for (kk in seq_along(handlers)) {
     handler <- handlers[[kk]]
-    stopifnot(is.function(handler))
+    stop_if_not(is.function(handler))
     if (!inherits(handler, "progression_handler")) {
       handler <- handler()
-      stopifnot(is.function(handler), inherits(handler, "progression_handler"))
+      stop_if_not(is.function(handler),
+                  inherits(handler, "progression_handler"))
       handlers[[kk]] <- handler
     }
   }

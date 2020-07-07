@@ -52,8 +52,8 @@ progression <- function(message = character(0L), amount = 1.0, step = NULL, time
   nargs <- length(args)
   if (nargs > 0L) {
     names <- names(args)
-    stopifnot(!is.null(names), all(nzchar(names)),
-              length(unique(names)) == nargs)
+    stop_if_not(!is.null(names), all(nzchar(names)),
+                length(unique(names)) == nargs)
   }
   
   structure(

@@ -252,7 +252,7 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
   
   if (is.null(handler)) {
     handler <- function(p) {
-      stopifnot(inherits(p, "progression"))
+      stop_if_not(inherits(p, "progression"))
 
       if (inherits(p, "control_progression")) {
         type <- p$type
