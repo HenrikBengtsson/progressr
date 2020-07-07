@@ -230,22 +230,22 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
   }
 
   is_owner <- function(p) {
-    progressor_uuid <- p$progressor_uuid
+    progressor_uuid <- p[["progressor_uuid"]]
     if (is.null(owner)) owner <<- progressor_uuid
     (owner == progressor_uuid)
   }
 
   is_duplicated <- function(p) {
-    progressor_uuid <- p$progressor_uuid
-    session_uuid <- p$session_uuid
-    progression_index <- p$progression_index
-    progression_time <- p$progression_time
+    progressor_uuid <- p[["progressor_uuid"]]
+    session_uuid <- p[["session_uuid"]]
+    progression_index <- p[["progression_index"]]
+    progression_time <- p[["progression_time"]]
     progression_id <- sprintf("%s-%d-%s", session_uuid, progression_index, progression_time)
-    db <- done[[progressor_uuid]]
+    db <- done[["progressor_uuid"]]
     res <- is.element(progression_id, db)
     if (!res) {
       db <- c(db, progression_id)
-      done[[progressor_uuid]] <<- db
+      done[["progressor_uuid"]] <<- db
     }
     res
   }
@@ -255,7 +255,7 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
       stop_if_not(inherits(p, "progression"))
 
       if (inherits(p, "control_progression")) {
-        type <- p$type
+        type <- p[["type"]]
         if (type == "reset") {
           max_steps <<- NULL
           step <<- NULL
@@ -292,14 +292,14 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
       
       duplicated <- is_duplicated(p)
       
-      type <- p$type
+      type <- p[["type"]]
       debug <- getOption("progressr.debug", FALSE)
       if (debug) {
         mprintf("Progression calling handler %s ...", sQuote(type))
         mprintf("- progression:")
         mstr(p)
-        mprintf("- progressor_uuid: %s", p$progressor_uuid)
-        mprintf("- progression_index: %s", p$progression_index)
+        mprintf("- progressor_uuid: %s", p[["progressor_uuid"]])
+        mprintf("- progression_index: %s", p[["progression_index"]])
         mprintf("- duplicated: %s", duplicated)
       }
 
@@ -312,10 +312,10 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
       }
 
       if (type == "initiate") {
-        max_steps <<- p$steps
+        max_steps <<- p[["steps"]]
         if (debug) mstr(list(max_steps=max_steps))
         stop_if_not(!is.null(max_steps), is.numeric(max_steps), length(max_steps) == 1L, max_steps >= 1)
-        auto_finish <<- p$auto_finish
+        auto_finish <<- p[["auto_finish"]]
         times <- min(times, max_steps)
         if (debug) mstr(list(auto_finish = auto_finish, times = times, interval = interval, intrusiveness = intrusiveness))
         
@@ -352,8 +352,8 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
         prev_milestone <<- max_steps
         .validate_internal_state()
       } else if (type == "update") {
-        if (debug) mstr(list(step=step, "p$amount"=p$amount, max_steps=max_steps))
-        step <<- min(max(step + p$amount, 0L), max_steps)
+        if (debug) mstr(list(step=step, "p$amount"=p[["amount"]], max_steps=max_steps))
+        step <<- min(max(step + p[["amount"]], 0L), max_steps)
         stop_if_not(step >= 0L)
         msg <- conditionMessage(p)
         if (length(msg) > 0) message <<- msg
