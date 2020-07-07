@@ -16,7 +16,7 @@ handler_newline(
 \item{symbol}{(character string) The character symbol to be outputted,
 which by default is the ASCII NL character (\code{'\\n'} = \code{'\\013'}) character.}
 
-\item{file}{(connection) A \link[base:connection]{base::connection} to where output should be sent.}
+\item{file}{(connection) A \link[base:connections]{base::connection} to where output should be sent.}
 
 \item{intrusiveness}{(numeric) A non-negative scalar on how intrusive
 (disruptive) the reporter to the user.}

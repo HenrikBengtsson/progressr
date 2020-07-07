@@ -49,13 +49,13 @@ unique for the \R session where the progressor was created.}
 \item{\ldots}{Additional named elements.}
 }
 \value{
-A \link[base:condition]{base::condition} of class \code{progression}.
+A \link[base:conditions]{base::condition} of class \code{progression}.
 }
 \description{
 A progression condition represents a progress in an \R program.
 }
 \seealso{
-To signal a progression condition, use \code{\link[base:signalCondition]{base::signalCondition()}}.
+To signal a progression condition, use \code{\link[base:conditions]{base::signalCondition()}}.
 To create and signal a progression condition at once, use \code{\link[=progress]{progress()}}.
 }
 \keyword{internal}
