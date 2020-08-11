@@ -25,7 +25,7 @@
 #' default is to report progress in interactive mode but not batch mode.
 #' See below for more details.
 #'
-#' @return Return nothing (reserved for future usage).
+#' @return The value of evaluating `expr`.
 #'
 #' @example incl/with_progress.R
 #'

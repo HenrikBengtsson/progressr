@@ -45,7 +45,7 @@ default is to report progress in interactive mode but not batch mode.
 See below for more details.}
 }
 \value{
-Return nothing (reserved for future usage).
+The value of evaluating \code{expr}.
 }
 \description{
 Report on Progress while Evaluating an R Expression
