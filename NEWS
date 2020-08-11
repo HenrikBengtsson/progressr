@@ -3,8 +3,9 @@ Package: progressr
 
 Version: 0.6.0-9000 [2020-05-18]
 
- * ...
- 
+ * with_progress() and without_progress() now return the result of evaluating
+   'expr'.
+
 
 Version: 0.6.0 [2020-05-18]
 

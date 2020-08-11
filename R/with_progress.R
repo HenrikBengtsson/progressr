@@ -232,55 +232,61 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
 
   ## Evaluate expression
   capture_conditions <- TRUE
-  withCallingHandlers(
-    expr,
-    progression = function(p) {
-      ## Don't capture conditions that are produced by progression handlers
-      capture_conditions <<- FALSE
-      on.exit(capture_conditions <<- TRUE)
+  res <- withVisible(
+    withCallingHandlers(
+      expr,
+      progression = function(p) {
+        ## Don't capture conditions that are produced by progression handlers
+        capture_conditions <<- FALSE
+        on.exit(capture_conditions <<- TRUE)
 
-      ## Any buffered output to flush?
-      if (flush_terminal) {
-        if (length(conditions) > 0L || has_buffered_stdout(stdout_file)) {
-          calling_handler(control_progression("hide"))
-          stdout_file <<- flush_stdout(stdout_file, close = FALSE)
-          conditions <<- flush_conditions(conditions)
-          calling_handler(control_progression("unhide"))
+        ## Any buffered output to flush?
+        if (flush_terminal) {
+          if (length(conditions) > 0L || has_buffered_stdout(stdout_file)) {
+            calling_handler(control_progression("hide"))
+            stdout_file <<- flush_stdout(stdout_file, close = FALSE)
+            conditions <<- flush_conditions(conditions)
+            calling_handler(control_progression("unhide"))
+          }
         }
-      }
-      
-      calling_handler(p)
-    },
-    condition = function(c) {
-      if (!capture_conditions || inherits(c, c("progression", "error"))) return()
-      if (inherits(c, delay_conditions)) {
-        ## Record
-        conditions[[length(conditions) + 1L]] <<- c
-        ## Muffle
-        if (inherits(c, "message")) {
-          invokeRestart("muffleMessage")
-        } else if (inherits(c, "warning")) {
-          invokeRestart("muffleWarning")
-        } else if (inherits(c, "condition")) {
-          ## If there is a "muffle" restart for this condition,
-          ## then invoke that restart, i.e. "muffle" the condition
-          restarts <- computeRestarts(c)
-          for (restart in restarts) {
-            name <- restart$name
-            if (is.null(name)) next
-            if (!grepl("^muffle", name)) next
-            invokeRestart(restart)
-            break
+
+        calling_handler(p)
+      },
+      condition = function(c) {
+        if (!capture_conditions || inherits(c, c("progression", "error"))) return()
+        if (inherits(c, delay_conditions)) {
+          ## Record
+          conditions[[length(conditions) + 1L]] <<- c
+          ## Muffle
+          if (inherits(c, "message")) {
+            invokeRestart("muffleMessage")
+          } else if (inherits(c, "warning")) {
+            invokeRestart("muffleWarning")
+          } else if (inherits(c, "condition")) {
+            ## If there is a "muffle" restart for this condition,
+            ## then invoke that restart, i.e. "muffle" the condition
+            restarts <- computeRestarts(c)
+            for (restart in restarts) {
+              name <- restart$name
+              if (is.null(name)) next
+              if (!grepl("^muffle", name)) next
+              invokeRestart(restart)
+              break
+            }
           }
         }
       }
-    }
+    )
   )
-  
+
   ## Success
   status <- "ok"
-  
-  invisible(NULL)
+
+  if (res$visible) {
+    res$value
+  } else {
+    invisible(res$value)
+  }
 }
 
 
