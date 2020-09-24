@@ -112,11 +112,6 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
     options[["progressr.interval"]] <- interval
   }
   
-  if (length(options) > 0L) {  
-    oopts <- options(options)
-    on.exit(options(oopts))
-  }
-
   ## Enabled or not?
   if (!is.null(enable)) {
     stop_if_not(is.logical(enable), length(enable) == 1L, !is.na(enable))
@@ -125,6 +120,11 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
     if (!enable) return(expr)
 
     options[["progressr.enable"]] <- enable
+  }
+
+  if (length(options) > 0L) {  
+    oopts <- options(options)
+    on.exit(options(oopts))
   }
 
   if (!is.list(handlers)) handlers <- list(handlers)
