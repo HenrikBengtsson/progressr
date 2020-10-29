@@ -33,7 +33,7 @@
 |fabletools                                          |0.2.1   |      |        |     |
 |funGp                                               |0.1.0   |      |        |     |
 |furrr                                               |0.2.1   |      |        |     |
-|gtfs2gps                                            |1.3-0   |      |        |     |
+|[gtfs2gps](problems.md#gtfs2gps)                    |1.3-0   |1     |        |     |
 |lightr                                              |1.3     |      |        |     |
 |[lmtp](problems.md#lmtp)                            |0.0.5   |1     |        |2    |
 |mlr3                                                |0.8.0   |      |        |     |

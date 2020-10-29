@@ -91,6 +91,48 @@ Run `revdep_details(, "EpiNow2")` for more info
         libs  104.8Mb
     ```
 
+# gtfs2gps
+
+<details>
+
+* Version: 1.3-0
+* GitHub: https://github.com/ipeaGIT/gtfs2gps
+* Source code: https://github.com/cran/gtfs2gps
+* Date/Publication: 2020-09-15 19:50:02 UTC
+* Number of recursive dependencies: 71
+
+Run `revdep_details(, "gtfs2gps")` for more info
+
+</details>
+
+## In both
+
+*   checking tests ...
+    ```
+    ...
+      > test_check("gtfs2gps")
+      ── 1. Error: gtfs2gps (@test_gtfs2gps.R#70)  ───────────────────────────────────
+      'workers >= 1L' is not TRUE
+      Backtrace:
+        1. gtfs2gps::read_gtfs(sp)
+        1. gtfs2gps::filter_by_shape_id(., 52000:52200)
+        1. gtfs2gps::filter_week_days(.)
+        1. gtfs2gps::filter_single_trip(.)
+        9. gtfs2gps::gtfs2gps(., parallel = TRUE, spatial_resolution = 15)
+       10. future::plan(strategy, workers = cores)
+       11. future:::plan_set(...)
+       13. future:::nbrOfWorkers.NULL()
+       15. future:::nbrOfWorkers.multiprocess(plan("next"))
+       16. future:::stop_if_not(...)
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      [ OK: 153 | SKIPPED: 0 | WARNINGS: 0 | FAILED: 1 ]
+      1. Error: gtfs2gps (@test_gtfs2gps.R#70) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
 # lmtp
 
 <details>
