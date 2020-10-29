@@ -1,8 +1,14 @@
 Package: progressr
 ==================
 
-Version: 0.6.0-9000 [2020-09-23]
+Version: 0.6.0-9000 [2020-10-29]
 
+NEW FEATURES:
+
+ * progressor() gained argument 'on_exit = TRUE'.
+
+ * Progression handlers now return invisibly whether or not they are finished.
+ 
 BUG FIXES:
 
  * Argument 'enable' for with_progress() had no effect.

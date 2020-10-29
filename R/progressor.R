@@ -20,13 +20,17 @@
 #' @param auto_finish (logical) If TRUE, then the progressor will signal a
 #' [progression] 'finish' condition as soon as the last step has been reached.
 #'
+#' @param on_exit,envir (logical) If TRUE, then the created progressor will
+#' signal a [progression] 'finish' condition when the calling frame exits.
+#' This is ignored if the calling frame (`envir`) is the global environment.
+#'
 #' @return A function of class `progressor`.
 #'
 #' @export
 progressor <- local({
   progressor_count <- 0L
   
-  function(steps = length(along), along = NULL, offset = 0L, scale = 1L, transform = function(steps) scale * steps + offset, label = NA_character_, initiate = TRUE, auto_finish = TRUE) {
+  function(steps = length(along), along = NULL, offset = 0L, scale = 1L, transform = function(steps) scale * steps + offset, label = NA_character_, initiate = TRUE, auto_finish = TRUE, on_exit = TRUE, envir = parent.frame()) {
     stop_if_not(!is.null(steps) || !is.null(along))
     stop_if_not(length(steps) == 1L, is.numeric(steps), !is.na(steps),
                 steps >= 0)
@@ -40,6 +44,8 @@ progressor <- local({
     steps <- transform(steps)
     stop_if_not(length(steps) == 1L, is.numeric(steps), !is.na(steps),
                 steps >= 0)
+
+    stop_if_not(is.logical(on_exit), length(on_exit) == 1L, !is.na(on_exit))
 
     owner_session_uuid <- session_uuid(attributes = TRUE)
     progressor_count <<- progressor_count + 1L
@@ -57,7 +63,15 @@ progressor <- local({
     class(fcn) <- c("progressor", class(fcn))
   
     if (initiate) fcn(type = "initiate", steps = steps, auto_finish = auto_finish)
-    
+
+    ## Add on.exit(...progressor(type = "finish"))
+    if (on_exit && !identical(envir, globalenv())) {
+      assign("...progressor", value = fcn, envir = envir)
+      lockBinding("...progressor", env = envir)
+      call <- call("...progressor", type = "finish")
+      do.call(base::on.exit, args = list(call, add = TRUE), envir = envir)
+    }
+
     fcn
   }
 })

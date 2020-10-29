@@ -12,7 +12,9 @@ progressor(
   transform = function(steps) scale * steps + offset,
   label = NA_character_,
   initiate = TRUE,
-  auto_finish = TRUE
+  auto_finish = TRUE,
+  on_exit = TRUE,
+  envir = parent.frame()
 )
 }
 \arguments{
@@ -35,6 +37,10 @@ number of steps.}
 
 \item{auto_finish}{(logical) If TRUE, then the progressor will signal a
 \link{progression} 'finish' condition as soon as the last step has been reached.}
+
+\item{on_exit, envir}{(logical) If TRUE, then the created progressor will
+signal a \link{progression} 'finish' condition when the calling frame exits.
+This is ignored if the calling frame (\code{envir}) is the global environment.}
 }
 \value{
 A function of class \code{progressor}.

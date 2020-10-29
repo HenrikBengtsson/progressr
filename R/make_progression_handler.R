@@ -283,12 +283,12 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
           stop("Unknown control_progression type: ", sQuote(type))
         }
         .validate_internal_state(sprintf("control_progression ... end", type))
-        return(invisible())
+        return(invisible(finished))
       }        
 
       ## Ignore stray progressions coming from other sources, e.g.
       ## a function of a package that started to report on progression.
-      if (!is_owner(p)) return(FALSE)
+      if (!is_owner(p)) return(invisible(finished))
       
       duplicated <- is_duplicated(p)
       
@@ -305,10 +305,10 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
 
       if (duplicated) {
         if (debug) mprintf("Progression calling handler %s ... already done", sQuote(type))
-        return(invisible())
+        return(invisible(finished))
       } else if (finished) {
         if (debug) mprintf("Progression calling handler %s ... already finished", sQuote(type))
-        return(invisible())
+        return(invisible(finished))
       }
 
       if (type == "initiate") {
@@ -388,6 +388,7 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
       .validate_internal_state(sprintf("handler() ... end", type))
 
       if (debug) mprintf("Progression calling handler %s ... done", sQuote(type))
+      invisible(finished)
     } ## handler()
   }
 
