@@ -230,8 +230,8 @@ xs <- 1:5
 with_progress({
   p <- progressor(along = xs)
   y <- lapply(xs, function(x) {
-    p(sprintf("x=%g", x))
     Sys.sleep(0.1)
+    p(sprintf("x=%g", x))
     sqrt(x)
   })
 })
@@ -249,8 +249,8 @@ xs <- 1:5
 with_progress({
   p <- progressor(along = xs)
   y <- foreach(x = xs) %do% {
-    p(sprintf("x=%g", x))
     Sys.sleep(0.1)
+    p(sprintf("x=%g", x))
     sqrt(x)
   }
 })
@@ -268,8 +268,8 @@ xs <- 1:5
 with_progress({
   p <- progressor(along = xs)
   y <- map(xs, function(x) {
-    p(sprintf("x=%g", x))
     Sys.sleep(0.1)
+    p(sprintf("x=%g", x))
     sqrt(x)
   })
 })
@@ -288,8 +288,8 @@ xs <- 1:5
 with_progress({
   p <- progressor(along = xs)
   y <- llply(xs, function(x, ...) {
-    p(sprintf("x=%g", x))
     Sys.sleep(0.1)
+    p(sprintf("x=%g", x))
     sqrt(x)
   })
 })
@@ -320,8 +320,8 @@ xs <- 1:5
 with_progress({
   p <- progressor(along = xs)
   y <- future_lapply(xs, function(x, ...) {
-    p(sprintf("x=%g", x))
     Sys.sleep(6.0-x)
+    p(sprintf("x=%g", x))
     sqrt(x)
   })
 })
@@ -346,8 +346,8 @@ xs <- 1:5
 with_progress({
   p <- progressor(along = xs)
   y <- foreach(x = xs) %dopar% {
-    p(sprintf("x=%g", x))
     Sys.sleep(6.0-x)
+    p(sprintf("x=%g", x))
     sqrt(x)
   }
 })
@@ -371,8 +371,8 @@ xs <- 1:5
 with_progress({
   p <- progressor(along = xs)
   y <- future_map(xs, function(x) {
-    p(sprintf("x=%g", x))
     Sys.sleep(6.0-x)
+    p(sprintf("x=%g", x))
     sqrt(x)
   })
 })
@@ -400,8 +400,8 @@ xs <- 1:5
 with_progress({
   p <- progressor(along = xs)
   y <- llply(xs, function(x, ...) {
-    p(sprintf("x=%g", x))
     Sys.sleep(0.1)
+    p(sprintf("x=%g", x))
     sqrt(x)
   }, .parallel = TRUE)
 })

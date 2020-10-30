@@ -44,8 +44,8 @@ app <- shinyApp(
                         detail = "This may take a while ...", value = 0, {
         p <- progressor(along = X)
         y <- lapply(X, FUN=function(x) {
-          p()
           Sys.sleep(0.25)
+          p()
         })
       })
       
