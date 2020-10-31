@@ -43,11 +43,12 @@ handler_pbcol <- function(adjust = 0.0, pad = 1L, done_col = "blue", todo_col = 
   
   reporter <- local({
     list(
-      reset = function(...) {
-        erase_progress_bar()
+      initiate = function(config, state, ...) {
+        if (!state$enabled || config$times <= 2L) return()
+        redraw_progress_bar(ratio = state$step / config$max_steps, message = state$message)
       },
       
-      finish = function(...) {
+      reset = function(...) {
         erase_progress_bar()
       },
       
@@ -59,11 +60,15 @@ handler_pbcol <- function(adjust = 0.0, pad = 1L, done_col = "blue", todo_col = 
         if (!state$enabled || config$times <= 2L) return()
         redraw_progress_bar(ratio = state$step / config$max_steps, message = state$message)
       },
-      
+
       update = function(config, state, progression, ...) {
         if (!state$enabled || config$times <= 2L) return()
         if (state$delta <= 0) return()
         redraw_progress_bar(ratio = state$step / config$max_steps, message = state$message)
+      },
+
+      finish = function(...) {
+        erase_progress_bar()
       }
     )
   })
