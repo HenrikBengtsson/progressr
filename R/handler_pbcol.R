@@ -88,24 +88,33 @@ pbcol <- function(fraction = 0.0, msg = "", adjust = 0, pad = 1L, width = getOpt
     )
     bgFcn(s)
   }
-  
+
+  if (length(msg) == 0L) msg <- ""
+  stop_if_not(length(msg) == 1L, is.character(msg))
+
   fraction <- as.numeric(fraction)
-  stopifnot(length(fraction) == 1L, !is.na(fraction),
+  stop_if_not(length(fraction) == 1L, !is.na(fraction),
             fraction >= 0, fraction <= 1)
   width <- as.integer(width)
-  stopifnot(length(width) == 1L, !is.na(width), width > 0L)
-  
+  stop_if_not(length(width) == 1L, !is.na(width), width > 0L)
+
+  ## Pad 'msg' to align horizontally
   msgpad <- (width - 2 * pad) - nchar(msg)
+
+  ## Truncate 'msg'?
   if (msgpad < 0) {
     msg <- substr(msg, start = pad, stop = nchar(msg) + msgpad - pad)
     msg <- substr(msg, start = 1L, stop = nchar(msg) - 3L)
     msg <- paste(msg, "...", sep = "")
     msgpad <- (width - 2 * pad) - nchar(msg)
   }
+
+  ## Pad 'msg'
   lpad <- floor(adjust * msgpad) + pad
   rpad <- (msgpad - lpad) + pad
   pmsg <- sprintf("%*s%s%*s", lpad, "", msg, rpad, "")
 
+  ## Make progress bar
   len <- round(fraction * nchar(pmsg), digits = 0L)
   lmsg <- substr(pmsg, start = 1L, stop = len)
   rmsg <- substr(pmsg, start = len + 1L, stop = nchar(pmsg))
