@@ -1,11 +1,14 @@
 Package: progressr
 ==================
 
-Version: 0.6.0-9000 [2020-10-29]
+Version: 0.6.0-9000 [2020-10-30]
 
 NEW FEATURES:
 
  * progressor() gained argument 'on_exit = TRUE'.
+
+ * Add the 'pbcol' handler, which renders the progress as a colored progress
+   bar in the terminal with any messages written in the front.
 
  * Progression handlers now return invisibly whether or not they are finished.
  

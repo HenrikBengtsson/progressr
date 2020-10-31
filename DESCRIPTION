@@ -13,6 +13,7 @@ Suggests:
     graphics,
     tcltk,
     beepr,
+    crayon,
     pbmcapply,
     progress,
     purrr,
