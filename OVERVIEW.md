@@ -408,15 +408,16 @@ _Note:_ Although **progressr** implements support for using `.progress = "progre
 
 ### Near-live versus buffered progress updates with futures
 
-As of May 2020, there are three types of **future** backends that are known(*) to provide near-live progress updates:
+As of November 2020, there are four types of **future** backends that are known(*) to provide near-live progress updates:
 
  1. `sequential`,
- 2. `multisession`, and
- 3. `cluster` (local and remote)
+ 2. `multicore`,
+ 3. `multisession`, and
+ 4. `cluster` (local and remote)
 
 Here "near-live" means that the progress handlers will report on progress almost immediately when the progress is signaled on the worker.   For all other future backends, the progress updates are only relayed back to the main machine and reported together with the results of the futures.  For instance, if `future_lapply(X, FUN)` chunks up the processing of, say, 100 elements in `X` into eight futures, we will see progress from each of the 100 elements as they are done when using a future backend supporting "near-live" updates, whereas we will only see those updated to be flushed eight times when using any other types of future backends.
 
-(*) Other future backends, including [`multicore`](https://github.com/HenrikBengtsson/future/issues/419), may gain support for "near-live" progress updating later.  Adding support for those is independent of the **progressr** package.  Feature requests for adding that support should go to those future-backend packages.
+(*) Other future backends may gain support for "near-live" progress updating later.  Adding support for those is independent of the **progressr** package.  Feature requests for adding that support should go to those future-backend packages.
 
 
 

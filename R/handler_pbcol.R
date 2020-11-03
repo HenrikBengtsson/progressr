@@ -63,7 +63,11 @@ handler_pbcol <- function(adjust = 0.0, pad = 1L, done_col = "blue", todo_col = 
 
       update = function(config, state, progression, ...) {
         if (!state$enabled || config$times <= 2L) return()
-        if (state$delta <= 0) return()
+        if (state$delta < 0) return()
+        if (state$delta == 0) {
+          cat_("\r.")
+          Sys.sleep(0.5)
+        }
         redraw_progress_bar(ratio = state$step / config$max_steps, message = state$message)
       },
 
