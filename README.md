@@ -471,7 +471,7 @@ Because this project is under active development, the progressr API is currently
 
 1. Provide minimal API for producing progress updates, i.e. `progressor()` and `with_progress()`
 
-2. Add support for global progress handlers removing the need user having to specify `with_progress()`
+2. Add support for global progress handlers removing the need for the user having to specify `with_progress()`
 
 3. Add support for nested progress updates
 
