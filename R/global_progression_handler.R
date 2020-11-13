@@ -63,6 +63,8 @@ register_global_progression_handler <- function(action = c("add", "remove", "que
 global_progression_handler <- local({
   current_progressor_uuid <- NULL
   calling_handler <- NULL
+  delays <- NULL
+  stdout_file <- NULL
   genv <- globalenv()
   
   update_calling_handler <- function() {
@@ -76,7 +78,7 @@ global_progression_handler <- local({
     if (length(handlers) == 0L) return(NULL)
 
     ## Do we need to buffer?
-    delays <- use_delays(handlers)
+    delays <<- use_delays(handlers)
 
     calling_handler <<- make_calling_handler(handlers)
   }
@@ -101,7 +103,19 @@ global_progression_handler <- local({
       if (debug) message(" - action: ignoring, already listening to another")
       return()
     }
-  
+
+
+    if (!is.null(calling_handler) && !is.null(delays)) {
+      ## Any buffered output to flush?
+      if (isTRUE(attr(delays$terminal, "flush"))) {
+        if (has_buffered_stdout(stdout_file)) {
+          calling_handler(control_progression("hide"))
+          stdout_file <<- flush_stdout(stdout_file, close = FALSE)
+          calling_handler(control_progression("unhide"))
+        }
+      }
+    }
+
     type <- progression[["type"]]
     if (debug) message(" - type: ", type)
   
@@ -113,7 +127,8 @@ global_progression_handler <- local({
       current_progressor_uuid <<- progressor_uuid
       if (debug) message(" - reset progression handlers")
       update_calling_handler()
-      if (!is.null(calling_handler)) {
+      if (!is.null(calling_handler)) {      
+        stdout_file <<- delay_stdout(delays, stdout_file = stdout_file)
         calling_handler(control_progression("reset"))
         if (debug) message(" - initiate progression handlers")
         finished <- calling_handler(progression)
@@ -130,6 +145,7 @@ global_progression_handler <- local({
       }
       if (debug) message(" - update progression handlers")
       if (!is.null(calling_handler)) {
+        stdout_file <<- delay_stdout(delays, stdout_file = stdout_file)
         finished <- calling_handler(progression)
         if (debug) message(" - finished: ", finished)
         if (finished) {
@@ -142,11 +158,14 @@ global_progression_handler <- local({
       if (!is.null(current_progressor_uuid)) {
         if (debug) message(" - shutdown progression handlers")
         if (!is.null(calling_handler)) {
+          stdout_file <<- delay_stdout(delays, stdout_file = stdout_file)
           finished <- calling_handler(progression)
+          stdout_file <<- flush_stdout(stdout_file, close = TRUE)
           if (debug) message(" - finished: ", finished)
         }
         current_progressor_uuid <<- NULL
         calling_handler <<- NULL
+        stop_if_not(is.null(stdout_file))
       }
     }
     if (debug) message(" - done")
@@ -262,6 +281,15 @@ use_delays <- function(handlers, terminal = NULL, stdout = NULL, conditions = NU
   }
 
   list(terminal = terminal, stdout = stdout, conditions = conditions)
+}
+
+
+delay_stdout <- function(delays, stdout_file) {
+  ## Delay standard output?
+  if (is.null(stdout_file) && delays$stdout) {
+    stdout_file <- buffer_stdout()
+  }
+  stdout_file
 }
 
 

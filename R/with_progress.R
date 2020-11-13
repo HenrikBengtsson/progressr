@@ -124,12 +124,8 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
   }
 
   ## Delay standard output?
-  if (delays$stdout) {
-    stdout_file <- buffer_stdout()
-    on.exit(flush_stdout(stdout_file), add = TRUE)
-  } else {
-    stdout_file <- NULL
-  }
+  stdout_file <- delay_stdout(delays, stdout_file = NULL)
+  on.exit(flush_stdout(stdout_file), add = TRUE)
   
   ## Delay conditions?
   conditions <- list()

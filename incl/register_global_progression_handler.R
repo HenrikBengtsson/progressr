@@ -5,7 +5,7 @@ register_global_progression_handler("add")
 for (ii in 1:3) {
   xs <- seq_len(ii + 3)
   message(sprintf("%d. slow_sum()", ii))
-  y <- slow_sum(xs, message = FALSE)
+  y <- slow_sum(xs, stdout = TRUE, message = FALSE)
   print(y)
 }
 
