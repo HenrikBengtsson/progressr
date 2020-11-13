@@ -36,4 +36,7 @@ for (ii in 1:3) {
   y <- slow_sum(xs, message = FALSE)
   print(y)
 }
+
+\dontshow{if (getRversion() >= "4.0.0")}
+register_global_progression_handler("remove")
 }

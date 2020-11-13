@@ -70,44 +70,15 @@ global_progression_handler <- local({
     # Nothing to do?
     if (length(handlers) == 0L) return(NULL)
 
-    ## FIXME(?)
-    if (!is.list(handlers)) handlers <- list(handlers)
-
-    for (kk in seq_along(handlers)) {
-      handler <- handlers[[kk]]
-      stop_if_not(is.function(handler))
-      if (!inherits(handler, "progression_handler")) {
-        handler <- handler()
-        stop_if_not(is.function(handler),
-                    inherits(handler, "progression_handler"))
-        handlers[[kk]] <- handler
-      }
-    }
-
-    ## Keep only enabled handlers
-    enabled <- vapply(handlers, FUN = function(h) {
-      env <- environment(h)
-      value <- env$enable
-      isTRUE(value) || is.null(value)
-    }, FUN.VALUE = TRUE)
-    handlers <- handlers[enabled]
+    handlers <- as_progression_handler(handlers)
 
     # Nothing to do?
     if (length(handlers) == 0L) return(NULL)
 
-    if (length(handlers) > 1L) {
-      calling_handler <<- function(p) {
-        finished <- rep(NA, times = length(handlers))
-        for (kk in seq_along(handlers)) {
-          handler <- handlers[[kk]]
-          finished[kk] <- handler(p)
-        }
-        stop_if_not(all(finished == finished[1]))
-        finished[1]
-      }
-    } else {
-      calling_handler <<- handlers[[1]]
-    }
+    ## Do we need to buffer?
+    delays <- use_delays(handlers)
+
+    calling_handler <<- make_calling_handler(handlers)
   }
 
   function(progression) {
@@ -190,4 +161,120 @@ if (getRversion() < "4.0.0") {
   globalCallingHandlers <- function(...) {
     stop("register_global_progression_handler() requires R (>= 4.0.0)")
   }
+}
+
+
+
+buffer_stdout <- function() {
+  stdout_file <- rawConnection(raw(0L), open = "w")
+  sink(stdout_file, type = "output", split = FALSE)
+  stdout_file
+} ## buffer_stdout()
+
+flush_stdout <- function(stdout_file, close = TRUE) {
+  if (is.null(stdout_file)) return(NULL)
+  sink(type = "output", split = FALSE)
+  stdout <- rawToChar(rawConnectionValue(stdout_file))
+  if (length(stdout) > 0) cat(stdout, file = stdout())
+  close(stdout_file)
+  stdout_file <- NULL
+  if (!close) stdout_file <- buffer_stdout()
+  stdout_file
+} ## flush_stdout()
+
+has_buffered_stdout <- function(stdout_file) {
+  !is.null(stdout_file) && (length(rawConnectionValue(stdout_file)) > 0L)
+}
+
+flush_conditions <- function(conditions) {
+  for (c in conditions) {
+    if (inherits(c, "message")) {
+      message(c)
+    } else if (inherits(c, "warning")) {
+      warning(c)
+    } else if (inherits(c, "condition")) {
+      signalCondition(c)
+    }
+  }
+  list()
+} ## flush_conditions()
+ 
+
+
+as_progression_handler <- function(handlers, drop = TRUE) {
+  ## FIXME(?)
+  if (!is.list(handlers)) handlers <- list(handlers)
+  
+  for (kk in seq_along(handlers)) {
+    handler <- handlers[[kk]]
+    stop_if_not(is.function(handler))
+    if (!inherits(handler, "progression_handler")) {
+      handler <- handler()
+      stop_if_not(is.function(handler),
+                  inherits(handler, "progression_handler"))
+      handlers[[kk]] <- handler
+    }
+  }
+
+  ## Keep only enabled handlers?
+  if (drop) {
+    enabled <- vapply(handlers, FUN = function(h) {
+      env <- environment(h)
+      value <- env$enable
+      isTRUE(value) || is.null(value)
+    }, FUN.VALUE = TRUE)
+    handlers <- handlers[enabled]
+  }
+
+  handlers
+}
+
+
+
+use_delays <- function(handlers, terminal = NULL, stdout = NULL, conditions = NULL) {
+  ## Do we need to buffer terminal output?
+  if (is.null(terminal)) {
+    delay <- vapply(handlers, FUN = function(h) {
+      env <- environment(h)
+      any(env$target == "terminal")
+    }, FUN.VALUE = NA)
+    terminal <- any(delay, na.rm = TRUE)
+    
+    ## If buffering output, does all handlers support intermediate flushing?
+    if (terminal) {
+      flush <- vapply(handlers, FUN = function(h) {
+        env <- environment(h)
+        if (!any(env$target == "terminal")) return(TRUE)
+        !inherits(env$reporter$hide, "null_function")
+      }, FUN.VALUE = NA)
+      attr(terminal, "flush") <- all(flush, na.rm = TRUE)
+    }
+  }
+
+  if (is.null(stdout)) {
+    stdout <- getOption("progressr.delay_stdout", terminal)
+  }
+
+  if (is.null(conditions)) {
+    conditions <- getOption("progressr.delay_conditions", {
+      if (terminal) c("condition") else character(0L)
+    })
+  }
+
+  list(terminal = terminal, stdout = stdout, conditions = conditions)
+}
+
+
+make_calling_handler <- function(handlers) {
+  if (length(handlers) > 1L) {
+    calling_handler <- function(p) {
+      for (kk in seq_along(handlers)) {
+        handler <- handlers[[kk]]
+        handler(p)
+      }
+    }
+  } else {
+    calling_handler <- handlers[[1]]
+  }
+  calling_handler
 }
