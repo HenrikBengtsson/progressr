@@ -1,5 +1,5 @@
 \dontshow{if (getRversion() >= "4.0.0")}
-register_global_progression_handler("add")
+register_global_progression_handler()
 
 ## This renders progress updates for each of the three calls slow_sum()
 for (ii in 1:3) {
