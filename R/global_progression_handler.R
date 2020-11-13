@@ -33,7 +33,7 @@ register_global_progression_handler <- function(action = c("add", "remove", "que
   
   if (action == "add") {
     if (!any(exists)) {
-      globalCallingHandlers(progression = global_progression_handler)
+      globalCallingHandlers(condition = global_progression_handler)
     }
     invisible(TRUE)
   } else  if (action == "remove") {
@@ -65,6 +65,8 @@ global_progression_handler <- local({
   calling_handler <- NULL
   delays <- NULL
   stdout_file <- NULL
+  capture_conditions <- TRUE
+  conditions <- list()
   genv <- globalenv()
   
   update_calling_handler <- function() {
@@ -83,10 +85,14 @@ global_progression_handler <- local({
     calling_handler <<- make_calling_handler(handlers)
   }
 
-  function(progression) {
+  handle_progression <- function(progression) {
     ## To please R CMD check
     calling_handler <- NULL; rm(list = "calling_handler")
-    
+
+    ## Don't capture conditions that are produced by progression handlers
+    capture_conditions <<- FALSE
+    on.exit(capture_conditions <<- TRUE)
+
     stop_if_not(inherits(progression, "progression"))
     
     assign(".Last.progression", value = progression, envir = genv, inherits = FALSE)
@@ -108,9 +114,10 @@ global_progression_handler <- local({
     if (!is.null(calling_handler) && !is.null(delays)) {
       ## Any buffered output to flush?
       if (isTRUE(attr(delays$terminal, "flush"))) {
-        if (has_buffered_stdout(stdout_file)) {
+        if (length(conditions) > 0L || has_buffered_stdout(stdout_file)) {
           calling_handler(control_progression("hide"))
           stdout_file <<- flush_stdout(stdout_file, close = FALSE)
+          conditions <<- flush_conditions(conditions)
           calling_handler(control_progression("unhide"))
         }
       }
@@ -161,16 +168,52 @@ global_progression_handler <- local({
           stdout_file <<- delay_stdout(delays, stdout_file = stdout_file)
           finished <- calling_handler(progression)
           stdout_file <<- flush_stdout(stdout_file, close = TRUE)
+          conditions <<- flush_conditions(conditions)
           if (debug) message(" - finished: ", finished)
         }
         current_progressor_uuid <<- NULL
         calling_handler <<- NULL
-        stop_if_not(is.null(stdout_file))
+        stop_if_not(is.null(stdout_file), length(conditions) == 0L)
       }
     }
     if (debug) message(" - done")
 
     return()
+  } ## handle_progression()
+
+
+  function(condition) {
+    ## Nothing do to?
+    if (!capture_conditions || inherits(condition, "error")) return()
+    
+    ## A 'progression' update?
+    if (inherits(condition, "progression")) {
+      return(handle_progression(condition))
+    }
+
+    ## Nothing more do to?
+    if (is.null(delays) || !inherits(condition, delays$conditions)) return()
+
+    ## Record non-progression condition to be flushed later
+    conditions[[length(conditions) + 1L]] <<- condition
+    
+    ## Muffle it for now
+    if (inherits(condition, "message")) {
+      invokeRestart("muffleMessage")
+    } else if (inherits(condition, "warning")) {
+      invokeRestart("muffleWarning")
+    } else if (inherits(condition, "condition")) {
+      ## If there is a "muffle" restart for this condition,
+      ## then invoke that restart, i.e. "muffle" the condition
+      restarts <- computeRestarts(condition)
+      for (restart in restarts) {
+        name <- restart$name
+        if (is.null(name)) next
+        if (!grepl("^muffle", name)) next
+        invokeRestart(restart)
+        break
+      }
+    }
   }
 }) ## global_progression_handler()
 

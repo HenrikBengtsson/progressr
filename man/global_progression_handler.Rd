@@ -4,7 +4,7 @@
 \alias{global_progression_handler}
 \title{A Global Calling Handler For 'progression':s}
 \usage{
-global_progression_handler(progression)
+global_progression_handler(condition)
 }
 \arguments{
 \item{progression}{A \link{progression} conditions.}
