@@ -1,9 +1,11 @@
 Package: progressr
 ==================
 
-Version: 0.6.0-9000 [2020-10-30]
+Version: 0.6.0-9000 [2020-11-12]
 
 NEW FEATURES:
+
+ * Add register_global_progression_handler().
 
  * progressor() gained argument 'on_exit = TRUE'.
 
