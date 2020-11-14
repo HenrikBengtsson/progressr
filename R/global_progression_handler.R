@@ -85,6 +85,24 @@ global_progression_handler <- local({
     calling_handler <<- make_calling_handler(handlers)
   }
 
+  finish <- function(progression, debug = FALSE) {
+    ## Already shutdown?  Do nothing
+    if (is.null(current_progressor_uuid)) return()
+
+    if (debug) message(" - shutdown progression handlers")
+    if (!is.null(calling_handler)) {
+      stdout_file <<- delay_stdout(delays, stdout_file = stdout_file)
+      finished <- calling_handler(progression)
+      stdout_file <<- flush_stdout(stdout_file, close = TRUE)
+      conditions <<- flush_conditions(conditions)
+      delays <<- NULL
+      if (debug) message(" - finished: ", finished)
+    }
+    current_progressor_uuid <<- NULL
+    calling_handler <<- NULL
+    stop_if_not(is.null(stdout_file), length(conditions) == 0L, is.null(delays))
+  }
+
   handle_progression <- function(progression) {
     ## To please R CMD check
     calling_handler <- NULL; rm(list = "calling_handler")
@@ -161,20 +179,7 @@ global_progression_handler <- local({
         }
       }
     } else if (type == "finish") {
-      ## Already shutdown?  Do nothing
-      if (!is.null(current_progressor_uuid)) {
-        if (debug) message(" - shutdown progression handlers")
-        if (!is.null(calling_handler)) {
-          stdout_file <<- delay_stdout(delays, stdout_file = stdout_file)
-          finished <- calling_handler(progression)
-          stdout_file <<- flush_stdout(stdout_file, close = TRUE)
-          conditions <<- flush_conditions(conditions)
-          if (debug) message(" - finished: ", finished)
-        }
-        current_progressor_uuid <<- NULL
-        calling_handler <<- NULL
-        stop_if_not(is.null(stdout_file), length(conditions) == 0L)
-      }
+      finish(progression, debug = debug)
     }
     if (debug) message(" - done")
 
@@ -183,13 +188,21 @@ global_progression_handler <- local({
 
 
   function(condition) {
-    ## Nothing do to?
-    if (!capture_conditions || inherits(condition, "error")) return()
-    
+    ## Shut down progression handling?
+    if (inherits(condition, c("interrupt", "error"))) {
+      progression <- control_progression("shutdown")
+      finish(progression)
+      stop_if_not(is.null(stdout_file), length(conditions) == 0L, capture_conditions)
+      return() 
+    }
+
     ## A 'progression' update?
     if (inherits(condition, "progression")) {
       return(handle_progression(condition))
     }
+
+    ## Nothing do to?
+    if (!capture_conditions) return()
 
     ## Nothing more do to?
     if (is.null(delays) || !inherits(condition, delays$conditions)) return()
