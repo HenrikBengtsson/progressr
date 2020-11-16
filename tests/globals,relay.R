@@ -2,7 +2,7 @@ if (getRversion() >= "4.0.0") {
 
 source("incl/start.R")
 
-options(progressr.clear = TRUE)
+options(progressr.clear = FALSE)
 
 delay <- getOption("progressr.demo.delay", 0.1)
 message("- delay: ", delay, " seconds")
@@ -44,10 +44,22 @@ for (kk in seq_along(handlers)) {
           p(message = sprintf("(%s)", paste(letters[1:ii], collapse=",")))
         }
       }, classes = type)
+      status <- register_global_progression_handler("status")
+      tryCatch({
       stopifnot(
         identical(relay$stdout, truth),
-        identical(gsub("\n$", "", relay$msgs), truth)
+        identical(gsub("\n$", "", relay$msgs), truth),
+        is.null(status$current_progressor_uuid),
+        is.null(status$delays),
+        is.null(status$stdout_file),
+        !isTRUE(status$capture_conditions),
+        length(status$conditions) == 0L
       )
+      }, error = function(ex) {
+        console_msg(capture.output(utils::str(status)))
+        signalCondition(ex)
+      })
+
     } ## for (delta ...)
   } ## for (signal ...)
 

@@ -16,7 +16,7 @@
 #'
 #' @export
 register_global_progression_handler <- function(action = c("add", "remove", "query")) {
-  action <- match.arg(action)
+  action <- match.arg(action[1], choices = c("add", "remove", "query", "status"))
 
   if (getRversion() < "4.0.0") {
     warning("register_global_progression_handler() requires R (>= 4.0.0)")
@@ -36,15 +36,17 @@ register_global_progression_handler <- function(action = c("add", "remove", "que
       globalCallingHandlers(condition = global_progression_handler)
     }
     invisible(TRUE)
-  } else  if (action == "remove") {
+  } else if (action == "remove") {
     handlers <- handlers[!exists]
     ## Remove all
     globalCallingHandlers(NULL)
     ## Add back the ones we didn't drop
     globalCallingHandlers(handlers)
     invisible(FALSE)
-  } else  if (action == "query") {
+  } else if (action == "query") {
     any(exists)
+  } else if (action == "status") {
+    global_progression_handler(control_progression("status"))
   }
 }
 
@@ -180,7 +182,19 @@ global_progression_handler <- local({
       }
     } else if (type == "finish") {
       finish(progression, debug = debug)
+    } else if (type == "status") {
+      status <- list(
+        current_progressor_uuid = current_progressor_uuid,
+        calling_handler = calling_handler,
+        delays = delays,
+        stdout_file = stdout_file,
+        capture_conditions = capture_conditions,
+        conditions = conditions
+      )
+      if (debug) message(" - done")
+      return(status)
     }
+
     if (debug) message(" - done")
 
     return()
