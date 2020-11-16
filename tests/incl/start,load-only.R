@@ -42,6 +42,13 @@ non_supported_progression_handlers <- function() {
 }
 
 
+supported_progress_handlers <- function(exclude = non_supported_progression_handlers()) {
+  handlers <- known_progression_handlers()
+  drop <- na.omit(match(exclude, names(handlers)))
+  if (length(drop) > 0L) handlers <- handlers[-drop]
+  handlers
+}
+
 ## Settings
 options(progressr.clear = TRUE)
 options(progressr.debug = FALSE)
