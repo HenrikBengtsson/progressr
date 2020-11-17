@@ -18,6 +18,8 @@
 #' @section Requirements:
 #' This progression handler requires the \pkg{crayon} package.
 #'
+#' @example incl/handler_pbcol.R
+#'
 #' @export
 handler_pbcol <- function(adjust = 0.0, pad = 1L, done_col = "blue", todo_col = "cyan", intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
   cat_ <- function(...) {
@@ -25,7 +27,7 @@ handler_pbcol <- function(adjust = 0.0, pad = 1L, done_col = "blue", todo_col = 
   }
   
   erase_progress_bar <- function() {
-    cat_(c("\r", rep(" ", times = getOption("width") - 1L), "\r"))
+    cat_(c("\r", rep(" ", times = getOption("width")), "\r"))
   }
   
   redraw_progress_bar <- function(ratio, message) {
@@ -104,24 +106,30 @@ pbcol <- function(fraction = 0.0, msg = "", adjust = 0, pad = 1L, width = getOpt
   fraction <- as.numeric(fraction)
   stop_if_not(length(fraction) == 1L, !is.na(fraction),
             fraction >= 0, fraction <= 1)
+            
   width <- as.integer(width)
   stop_if_not(length(width) == 1L, !is.na(width), width > 0L)
 
-  ## Pad 'msg' to align horizontally
-  msgpad <- (width - 2 * pad) - nchar(msg)
+  msgfraction <- sprintf(" %3.0f%%", 100 * fraction)
+  
+  ## Pad 'fullmsg' to align horizontally
+  nmsg <- nchar(msg) + nchar(msgfraction)
+  msgpad <- (width - 2 * pad) - nmsg
 
   ## Truncate 'msg'?
   if (msgpad < 0) {
     msg <- substr(msg, start = pad, stop = nchar(msg) + msgpad - pad)
     msg <- substr(msg, start = 1L, stop = nchar(msg) - 3L)
     msg <- paste(msg, "...", sep = "")
-    msgpad <- (width - 2 * pad) - nchar(msg)
+    msgpad <- (width - 2 * pad) - nchar(msg) - nchar(msgfraction)
+    stop_if_not(msgpad >= 0)
   }
 
   ## Pad 'msg'
-  lpad <- floor(adjust * msgpad) + pad
-  rpad <- (msgpad - lpad) + pad
-  pmsg <- sprintf("%*s%s%*s", lpad, "", msg, rpad, "")
+  lpad <- floor(   adjust  * msgpad) + pad
+  rpad <- floor((1-adjust) * msgpad)
+  stop_if_not(lpad >= 0L, rpad >= 0L)
+  pmsg <- sprintf("%*s%s%*s%s%*s", lpad, "", msg, rpad, "", msgfraction, pad, "")
 
   ## Make progress bar
   len <- round(fraction * nchar(pmsg), digits = 0L)
