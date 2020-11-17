@@ -5,6 +5,9 @@
 #' @rdname with_progress
 #' @export
 without_progress <- function(expr) {
+  progressr_in_globalenv("allow")
+  on.exit(progressr_in_globalenv("disallow"))
+
   withCallingHandlers(expr, progression = function(p) {
     invokeRestart("muffleProgression")
   })

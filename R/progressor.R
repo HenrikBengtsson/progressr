@@ -47,6 +47,10 @@ progressor <- local({
 
     stop_if_not(is.logical(on_exit), length(on_exit) == 1L, !is.na(on_exit))
 
+    if (identical(envir, globalenv()) && !progressr_in_globalenv()) {
+      stop("A progressor must not be created in the global environment unless wrapped in a with_progress() or without_progress() call, otherwise make sure to created inside a function or in a local() environment to make sure there is a finite life span of the progressor")
+    }
+
     owner_session_uuid <- session_uuid(attributes = TRUE)
     progressor_count <<- progressor_count + 1L
     progressor_uuid <- progressor_uuid(progressor_count)
@@ -100,3 +104,16 @@ print.progressor <- function(x, ...) {
   
   invisible(x)
 }
+
+
+progressr_in_globalenv <- local({
+  state <- FALSE
+  
+  function(action = c("query", "allow", "disallow")) {
+    action <- match.arg(action)
+    if (action == "query") return(state)
+    old_state <- state
+    state <<- switch(action, allow = TRUE, disallow = FALSE)
+    invisible(old_state)
+  }
+})

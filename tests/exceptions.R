@@ -18,12 +18,14 @@ message("- progress_aggregator()")
 
 invalid <- progression(type = "unknown", session_uuid = "dummy", progressor_uuid = "dummy", progression_index = 0L)
 print(invalid)
-progress <- progress_aggregator(progressor(2L))
-res <- tryCatch(progress({
-  signalCondition(invalid)
-}), error = identity)
-str(res)
-stopifnot(inherits(res, "error"))
+local({
+  progress <- progress_aggregator(progressor(2L))
+  res <- tryCatch(progress({
+    signalCondition(invalid)
+  }), error = identity)
+  str(res)
+  stopifnot(inherits(res, "error"))
+})
 
 
 message("Exceptions ... done")

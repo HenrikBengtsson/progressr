@@ -93,6 +93,9 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
     on.exit(options(oopts))
   }
 
+  progressr_in_globalenv("allow")
+  on.exit(progressr_in_globalenv("disallow"), add = TRUE)
+
   handlers <- as_progression_handler(handlers)
 
   ## Nothing to do?
