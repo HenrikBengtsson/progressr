@@ -13,7 +13,7 @@ progressor(
   label = NA_character_,
   initiate = TRUE,
   auto_finish = TRUE,
-  on_exit = TRUE,
+  on_exit = !identical(envir, globalenv()),
   envir = parent.frame()
 )
 }
