@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2020-10-29                   |
+|date     |2020-11-17                   |
 
 # Dependencies
 
@@ -21,26 +21,29 @@
 
 # Revdeps
 
-## All (19)
+## All (22)
 
 |package                                             |version |error |warning |note |
 |:---------------------------------------------------|:-------|:-----|:-------|:----|
 |[cSEM](problems.md#csem)                            |0.3.0   |      |        |1    |
 |dipsaus                                             |0.1.1   |      |        |     |
-|[econet](problems.md#econet)                        |0.1.92  |      |1       |     |
+|econet                                              |0.1.92  |      |        |     |
+|[EFAtools](problems.md#efatools)                    |0.3.0   |      |        |2    |
 |[EpiNow2](problems.md#epinow2)                      |1.2.1   |      |        |2    |
 |epwshiftr                                           |0.1.1   |      |        |     |
 |fabletools                                          |0.2.1   |      |        |     |
-|funGp                                               |0.1.0   |      |        |     |
+|[funGp](problems.md#fungp)                          |0.2.0   |      |        |1    |
 |furrr                                               |0.2.1   |      |        |     |
-|[gtfs2gps](problems.md#gtfs2gps)                    |1.3-0   |1     |        |     |
+|gtfs2gps                                            |1.3-2   |      |        |     |
 |lightr                                              |1.3     |      |        |     |
-|[lmtp](problems.md#lmtp)                            |0.0.5   |1     |        |2    |
+|[lmtp](problems.md#lmtp)                            |0.0.5   |      |        |2    |
 |mlr3                                                |0.8.0   |      |        |     |
-|[modeltime](problems.md#modeltime)                  |0.3.0   |1     |        |     |
-|[modeltime.ensemble](problems.md#modeltimeensemble) |0.2.0   |      |        |1    |
+|[modeltime](problems.md#modeltime)                  |0.3.1   |1     |        |     |
+|[modeltime.ensemble](problems.md#modeltimeensemble) |0.3.0   |      |        |1    |
+|[modeltime.resample](problems.md#modeltimeresample) |0.1.0   |      |        |1    |
 |nflfastR                                            |3.1.1   |      |        |     |
-|[pavo](problems.md#pavo)                            |2.4.0   |      |1       |     |
+|nlrx                                                |0.4.2   |      |        |     |
+|[pavo](problems.md#pavo)                            |2.5.0   |      |1       |     |
 |poppr                                               |2.8.6   |      |        |     |
 |rainette                                            |0.1.1   |      |        |     |
 |trundler                                            |0.1.19  |      |        |     |
