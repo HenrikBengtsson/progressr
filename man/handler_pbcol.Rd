@@ -42,3 +42,8 @@ Progression Handler: Progress Reported as an ANSI Background Color in the Termin
 This progression handler requires the \pkg{crayon} package.
 }
 
+\examples{
+handlers(handler_pbcol)
+with_progress({ y <- slow_sum(1:10) })
+print(y)
+}
