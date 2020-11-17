@@ -26,6 +26,19 @@ for (kk in seq_along(handlers)) {
     message(sprintf("  - stdout + %ss", type))
     for (delta in c(0L, +1L, -1L)) {
       message(sprintf("    - delta = %+d", delta))
+
+      register_global_progression_handler("remove")
+      register_global_progression_handler("add")
+
+      status <- register_global_progression_handler("status")
+      stopifnot(
+        is.null(status$current_progressor_uuid),
+        is.null(status$delays),
+        is.null(status$stdout_file),
+         length(status$conditions) == 0L,
+         is.na(status$capture_conditions)
+      )
+
       truth <- c()
       relay <- record_relay({
         p <- progressor(n)
@@ -44,21 +57,26 @@ for (kk in seq_along(handlers)) {
           p(message = sprintf("(%s)", paste(letters[1:ii], collapse=",")))
         }
       }, classes = type)
-      status <- register_global_progression_handler("status")
-      tryCatch({
       stopifnot(
         identical(relay$stdout, truth),
-        identical(gsub("\n$", "", relay$msgs), truth),
-        is.null(status$current_progressor_uuid),
-        is.null(status$delays),
-        is.null(status$stdout_file),
-        !isTRUE(status$capture_conditions),
-        length(status$conditions) == 0L
+        identical(gsub("\n$", "", relay$msgs), truth)
       )
-      }, error = function(ex) {
-        console_msg(capture.output(utils::str(status)))
-        signalCondition(ex)
-      })
+      status <- register_global_progression_handler("status")
+      console_msg(capture.output(utils::str(status)))
+      if (delta == 0L) {
+        withCallingHandlers({
+          stopifnot(
+            is.null(status$current_progressor_uuid),
+            is.null(status$delays),
+            is.null(status$stdout_file),
+            length(status$conditions) == 0L,
+            is.na(status$capture_conditions)
+          )
+        }, error = function(ex) {
+          console_msg(paste("An error occurred:", conditionMessage(ex)))
+          console_msg(capture.output(utils::str(status)))
+        })
+      }
 
     } ## for (delta ...)
   } ## for (signal ...)
