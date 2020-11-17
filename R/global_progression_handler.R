@@ -37,6 +37,7 @@ register_global_progression_handler <- function(action = c("add", "remove", "que
     }
     invisible(TRUE)
   } else if (action == "remove") {
+    global_progression_handler(control_progression("shutdown"))
     handlers <- handlers[!exists]
     ## Remove all
     globalCallingHandlers(NULL)
@@ -87,7 +88,7 @@ global_progression_handler <- local({
     calling_handler <<- make_calling_handler(handlers)
   }
 
-  finish <- function(progression, debug = FALSE) {
+  finish <- function(progression = control_progression("shutdown"), debug = FALSE) {
     finished <- FALSE
     
     ## Is progress handler active?
@@ -97,6 +98,7 @@ global_progression_handler <- local({
         stdout_file <<- delay_stdout(delays, stdout_file = stdout_file)
         finished <- calling_handler(progression)
         stdout_file <<- flush_stdout(stdout_file, close = TRUE)
+        stop_if_not(is.null(stdout_file))
         conditions <<- flush_conditions(conditions)
         delays <<- NULL
         if (debug) message(" - finished: ", finished)
@@ -154,6 +156,7 @@ global_progression_handler <- local({
         if (length(conditions) > 0L || has_buffered_stdout(stdout_file)) {
           calling_handler(control_progression("hide"))
           stdout_file <<- flush_stdout(stdout_file, close = FALSE)
+          stop_if_not(inherits(stdout_file, "connection"))
           conditions <<- flush_conditions(conditions)
           calling_handler(control_progression("unhide"))
         }
@@ -178,7 +181,7 @@ global_progression_handler <- local({
         finished <- calling_handler(progression)
         if (debug) message(" - finished: ", finished)
         if (finished) {
-          finished <- finish(progression, debug = debug)
+          finished <- finish(debug = debug)
           stop_if_not(is.null(stdout_file), length(conditions) == 0L,
                       is.na(capture_conditions), isTRUE(finished))
         }
@@ -191,7 +194,9 @@ global_progression_handler <- local({
         if (!is.numeric(amount) || amount > 0) {
           warning(sprintf("[progressr]: Received a progression %s request (amount=%g) but is not listening to this progressor. This can happen when code signals more progress updates than it configured the progressor to do. When the progressor completes all steps, it shuts down resulting in the global progression handler to no longer listen to it", sQuote(type), amount))
         }
+        return()
       }
+      
       if (debug) message(" - update progression handlers")
       if (!is.null(calling_handler)) {
         stdout_file <<- delay_stdout(delays, stdout_file = stdout_file)
@@ -199,13 +204,13 @@ global_progression_handler <- local({
         if (debug) message(" - finished: ", finished)
         if (finished) {
           calling_handler(control_progression("shutdown"))
-          finished <- finish(progression, debug = debug)
+          finished <- finish(debug = debug)
           stop_if_not(is.null(stdout_file), length(conditions) == 0L,
                       is.na(capture_conditions), isTRUE(finished))
         }
       }
     } else if (type == "finish") {
-      finished <- finish(progression, debug = debug)
+      finished <- finish(debug = debug)
       stop_if_not(is.null(stdout_file), length(conditions) == 0L,
                   is.na(capture_conditions), isTRUE(finished))
     } else if (type == "status") {
@@ -229,7 +234,7 @@ global_progression_handler <- local({
     ## Shut down progression handling?
     if (inherits(condition, c("interrupt", "error"))) {
       progression <- control_progression("shutdown")
-      finished <- finish(progression)
+      finished <- finish()
       stop_if_not(is.null(stdout_file), length(conditions) == 0L,
                   is.na(capture_conditions), isTRUE(finished))
       return()
@@ -282,12 +287,27 @@ if (getRversion() < "4.0.0") {
 buffer_stdout <- function() {
   stdout_file <- rawConnection(raw(0L), open = "w")
   sink(stdout_file, type = "output", split = FALSE)
+  attr(stdout_file, "sink_index") <- sink.number(type = "output")
   stdout_file
 } ## buffer_stdout()
 
-flush_stdout <- function(stdout_file, close = TRUE) {
+flush_stdout <- function(stdout_file, close = TRUE, must_work = FALSE) {
   if (is.null(stdout_file)) return(NULL)
-  sink(type = "output", split = FALSE)
+
+  ## Can we close the sink we opened?
+  ## It could be that a progressor completes while there is a surrounding
+  ## sink active, e.g. an active capture.output(), or when signalled within
+  ## a sequential future.  Because of this, we might not be able to flush
+  ## close the sink here.
+  sink_index <- attr(stdout_file, "sink_index")
+  if (sink_index != sink.number("output")) {
+    if (must_work) {
+      stop(sprintf("[progressr] Cannot flush stdout because the current sink index (%d) is out of sync with the sink we want to close (%d)", sink.number("output"), sink_index))
+    }
+    return(stdout_file)
+  }
+  
+  sink(split = FALSE, type = "output")
   stdout <- rawToChar(rawConnectionValue(stdout_file))
   if (length(stdout) > 0) cat(stdout, file = stdout())
   close(stdout_file)

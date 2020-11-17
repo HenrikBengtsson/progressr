@@ -2,6 +2,8 @@ if (getRversion() >= "4.0.0") {
 
 source("incl/start.R")
 
+nsinks0 <- sink.number(type = "output")
+
 options(progressr.clear = FALSE)
 
 delay <- getOption("progressr.demo.delay", 0.1)
@@ -12,7 +14,10 @@ handlers("txtprogressbar")
 handlers <- supported_progress_handlers()
 
 register_global_progression_handler("remove")
+stopifnot(sink.number(type = "output") == nsinks0)
+
 register_global_progression_handler("add")
+stopifnot(sink.number(type = "output") == nsinks0)
 
 message("global progress handlers - standard output, messages, warnings ...")
 
@@ -28,7 +33,9 @@ for (kk in seq_along(handlers)) {
       message(sprintf("    - delta = %+d", delta))
 
       register_global_progression_handler("remove")
+      stopifnot(sink.number(type = "output") == nsinks0)
       register_global_progression_handler("add")
+      stopifnot(sink.number(type = "output") == nsinks0)
 
       status <- register_global_progression_handler("status")
       stopifnot(
@@ -39,8 +46,11 @@ for (kk in seq_along(handlers)) {
          is.na(status$capture_conditions)
       )
 
+      nsinks <- sink.number(type = "output")
+      stopifnot(nsinks == nsinks0)
+      
       truth <- c()
-      relay <- record_relay({
+      relay <- record_relay(local({
         p <- progressor(n)
         for (ii in seq_len(n + delta)) {
           ## Zero-amount progress with empty message
@@ -56,11 +66,17 @@ for (kk in seq_along(handlers)) {
           ## One-step progress with non-empty message
           p(message = sprintf("(%s)", paste(letters[1:ii], collapse=",")))
         }
-      }, classes = type)
+      }), classes = type)
       stopifnot(
         identical(relay$stdout, truth),
         identical(gsub("\n$", "", relay$msgs), truth)
       )
+      
+      ## Assert sinks are balanced
+      stopifnot(sink.number(type = "output") == nsinks)
+      
+      cat(paste(c(relay$stdout, ""), collapse = "\n"))
+      message(relay$message, append = FALSE)
       status <- register_global_progression_handler("status")
       console_msg(capture.output(utils::str(status)))
       if (delta == 0L) {
