@@ -71,7 +71,7 @@ global_progression_handler <- local({
   capture_conditions <- NA
   conditions <- list()
   genv <- globalenv()
-  
+
   update_calling_handler <- function() {
     handlers <- handlers()
     # Nothing to do?
@@ -122,7 +122,6 @@ global_progression_handler <- local({
 
     ## Don't capture conditions that are produced by progression handlers
     last_capture_conditions <- capture_conditions
-    
     capture_conditions <<- FALSE
     on.exit({
       if (is.null(current_progressor_uuid)) {
@@ -135,7 +134,7 @@ global_progression_handler <- local({
     stop_if_not(inherits(progression, "progression"))
     
     assign(".Last.progression", value = progression, envir = genv, inherits = FALSE)
-  
+
     debug <- getOption("progressr.global.debug", FALSE)
     
     if (debug) message(sprintf("*** Caught a %s condition:", sQuote(class(progression)[1])))
@@ -246,7 +245,7 @@ global_progression_handler <- local({
     }
 
     ## Nothing do to?
-    if (!is.na(capture_conditions) || !isTRUE(capture_conditions)) return()
+    if (is.na(capture_conditions) || !isTRUE(capture_conditions)) return()
 
     ## Nothing do to?
     if (is.null(delays) || !inherits(condition, delays$conditions)) return()
