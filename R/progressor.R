@@ -30,7 +30,7 @@
 progressor <- local({
   progressor_count <- 0L
   
-  function(steps = length(along), along = NULL, offset = 0L, scale = 1L, transform = function(steps) scale * steps + offset, label = NA_character_, initiate = TRUE, auto_finish = TRUE, on_exit = TRUE, envir = parent.frame()) {
+  function(steps = length(along), along = NULL, offset = 0L, scale = 1L, transform = function(steps) scale * steps + offset, label = NA_character_, initiate = TRUE, auto_finish = TRUE, on_exit = !identical(envir, globalenv()), envir = parent.frame()) {
     stop_if_not(!is.null(steps) || !is.null(along))
     stop_if_not(length(steps) == 1L, is.numeric(steps), !is.na(steps),
                 steps >= 0)
@@ -46,6 +46,15 @@ progressor <- local({
                 steps >= 0)
 
     stop_if_not(is.logical(on_exit), length(on_exit) == 1L, !is.na(on_exit))
+
+    if (identical(envir, globalenv())) {
+      if (!progressr_in_globalenv()) {
+        stop("A progressor must not be created in the global environment unless wrapped in a with_progress() or without_progress() call, otherwise make sure to created inside a function or in a local() environment to make sure there is a finite life span of the progressor")
+      }
+      if (on_exit) {
+        stop("It is not possible to create a progressor in the global environment with on_exit = TRUE")
+      }
+    }
 
     owner_session_uuid <- session_uuid(attributes = TRUE)
     progressor_count <<- progressor_count + 1L
@@ -65,7 +74,7 @@ progressor <- local({
     if (initiate) fcn(type = "initiate", steps = steps, auto_finish = auto_finish)
 
     ## Add on.exit(...progressor(type = "finish"))
-    if (on_exit && !identical(envir, globalenv())) {
+    if (on_exit) {
       assign("...progressor", value = fcn, envir = envir)
       lockBinding("...progressor", env = envir)
       call <- call("...progressor", type = "finish")
@@ -100,3 +109,16 @@ print.progressor <- function(x, ...) {
   
   invisible(x)
 }
+
+
+progressr_in_globalenv <- local({
+  state <- FALSE
+  
+  function(action = c("query", "allow", "disallow")) {
+    action <- match.arg(action)
+    if (action == "query") return(state)
+    old_state <- state
+    state <<- switch(action, allow = TRUE, disallow = FALSE)
+    invisible(old_state)
+  }
+})

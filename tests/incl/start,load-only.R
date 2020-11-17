@@ -126,3 +126,19 @@ muffle_condition <- function(cond) {
   }
   invisible(muffled)
 }
+
+## Adopted from R.utils::cmsg()
+console_msg <- function(..., collapse = "\n", sep = "\n", appendLF = TRUE) {
+  fh <- tempfile()
+  on.exit(file.remove(fh))
+  cat(..., collapse = sep, sep = sep, file = fh)
+  if (appendLF) 
+    cat("\n", file = fh, append = TRUE)
+  if (.Platform$OS.type == "windows") {
+    file.show(fh, pager = "console", header = "", title = "",
+              delete.file = FALSE)
+  } else {
+    system(sprintf("cat %s", fh))
+  }
+  invisible()
+}

@@ -1,9 +1,17 @@
 Package: progressr
 ==================
 
-Version: 0.6.0-9000 [2020-10-30]
+Version: 0.6.0-9000 [2020-11-16]
 
+SIGNIFICANT CHANGES:
+
+ * A progressor must not be created in the global environment unless wrapped
+   in with_progress() or without_progress() call.  Ideally, a progressor is
+   created within a function or a local() environment.
+ 
 NEW FEATURES:
+
+ * Add register_global_progression_handler().
 
  * progressor() gained argument 'on_exit = TRUE'.
 

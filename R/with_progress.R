@@ -62,40 +62,6 @@
 #'
 #' @export
 with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE, delay_terminal = NULL, delay_stdout = NULL, delay_conditions = NULL, interval = NULL, enable = NULL) {
-  buffer_stdout <- function() {
-    stdout_file <- rawConnection(raw(0L), open = "w")
-    sink(stdout_file, type = "output", split = FALSE)
-    stdout_file
-  } ## buffer_stdout()
-  
-  flush_stdout <- function(stdout_file, close = TRUE) {
-    if (is.null(stdout_file)) return(NULL)
-    sink(type = "output", split = FALSE)
-    stdout <- rawToChar(rawConnectionValue(stdout_file))
-    if (length(stdout) > 0) cat(stdout, file = stdout())
-    close(stdout_file)
-    stdout_file <- NULL
-    if (!close) stdout_file <- buffer_stdout()
-    stdout_file
-  } ## flush_stdout()
-
-  has_buffered_stdout <- function(stdout_file) {
-    !is.null(stdout_file) && (length(rawConnectionValue(stdout_file)) > 0L)
-  }
-
-  flush_conditions <- function(conditions) {
-    for (c in conditions) {
-      if (inherits(c, "message")) {
-        message(c)
-      } else if (inherits(c, "warning")) {
-        warning(c)
-      } else if (inherits(c, "condition")) {
-        signalCondition(c)
-      }
-    }
-    list()
-  } ## flush_conditions()
- 
   stop_if_not(is.logical(cleanup), length(cleanup) == 1L, !is.na(cleanup))
   
   ## FIXME: With zero handlers, progression conditions will be
@@ -127,72 +93,23 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
     on.exit(options(oopts))
   }
 
-  if (!is.list(handlers)) handlers <- list(handlers)
+  progressr_in_globalenv("allow")
+  on.exit(progressr_in_globalenv("disallow"), add = TRUE)
 
-  for (kk in seq_along(handlers)) {
-    handler <- handlers[[kk]]
-    stop_if_not(is.function(handler))
-    if (!inherits(handler, "progression_handler")) {
-      handler <- handler()
-      stop_if_not(is.function(handler),
-                  inherits(handler, "progression_handler"))
-      handlers[[kk]] <- handler
-    }
-  }
+  handlers <- as_progression_handler(handlers)
 
-  ## Keep only enabled handlers
-  enabled <- vapply(handlers, FUN = function(h) {
-    env <- environment(h)
-    value <- env$enable
-    isTRUE(value) || is.null(value)
-  }, FUN.VALUE = TRUE)
-  handlers <- handlers[enabled]
-  
   ## Nothing to do?
   if (length(handlers) == 0L) return(expr)
-
-
-  ## Do we need to buffer terminal output?
-  if (is.null(delay_terminal)) {
-    delay_terminal <- vapply(handlers, FUN = function(h) {
-      env <- environment(h)
-      any(env$target == "terminal")
-    }, FUN.VALUE = NA)
-    delay_terminal <- any(delay_terminal, na.rm = TRUE)
-  }
   
-  if (is.null(delay_stdout)) {
-    delay_stdout <- getOption("progressr.delay_stdout", delay_terminal)
-  }
+  ## Do we need to buffer?
+  delays <- use_delays(handlers,
+    terminal   = delay_terminal,
+    stdout     = delay_stdout,
+    conditions = delay_conditions
+  )
 
-  if (is.null(delay_conditions)) {
-    delay_conditions <- getOption("progressr.delay_conditions", {
-      if (delay_terminal) c("condition") else character(0L)
-    })
-  }
-
-  ## If buffering output, does all handlers support intermediate flushing?
-  flush_terminal <- FALSE 
-  if (delay_terminal) {
-    flush_terminal <- vapply(handlers, FUN = function(h) {
-      env <- environment(h)
-      if (!any(env$target == "terminal")) return(TRUE)
-      !inherits(env$reporter$hide, "null_function")
-    }, FUN.VALUE = NA)
-    flush_terminal <- all(flush_terminal, na.rm = TRUE)
-  }
-
-  if (length(handlers) > 1L) {
-    calling_handler <- function(p) {
-      for (kk in seq_along(handlers)) {
-        handler <- handlers[[kk]]
-        handler(p)
-      }
-    }
-  } else {
-    calling_handler <- handlers[[1]]
-  }
-
+  calling_handler <- make_calling_handler(handlers)
+  
   ## Flag indicating whether with_progress() exited due to
   ## an error or not.
   status <- "incomplete"
@@ -210,16 +127,12 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
   }
 
   ## Delay standard output?
-  if (delay_stdout) {
-    stdout_file <- buffer_stdout()
-    on.exit(flush_stdout(stdout_file), add = TRUE)
-  } else {
-    stdout_file <- NULL
-  }
+  stdout_file <- delay_stdout(delays, stdout_file = NULL)
+  on.exit(flush_stdout(stdout_file), add = TRUE)
   
   ## Delay conditions?
   conditions <- list()
-  if (length(delay_conditions) > 0) {
+  if (length(delays$conditions) > 0) {
     on.exit(flush_conditions(conditions), add = TRUE)
   }
 
@@ -240,7 +153,7 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
       on.exit(capture_conditions <<- TRUE)
 
       ## Any buffered output to flush?
-      if (flush_terminal) {
+      if (isTRUE(attr(delays$terminal, "flush"))) {
         if (length(conditions) > 0L || has_buffered_stdout(stdout_file)) {
           calling_handler(control_progression("hide"))
           stdout_file <<- flush_stdout(stdout_file, close = FALSE)
@@ -253,7 +166,7 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
     },
     condition = function(c) {
       if (!capture_conditions || inherits(c, c("progression", "error"))) return()
-      if (inherits(c, delay_conditions)) {
+      if (inherits(c, delays$conditions)) {
         ## Record
         conditions[[length(conditions) + 1L]] <<- c
         ## Muffle
