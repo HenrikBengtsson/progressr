@@ -23,7 +23,7 @@ if (requireNamespace("future.apply", quietly = TRUE)) {
     local({
       p <- progressor(4)
       y <- future.apply::future_lapply(3:6, function(n) {
-#        p()
+        p()
         slow_sum(1:n, stdout=TRUE, message=TRUE)
       })
     })

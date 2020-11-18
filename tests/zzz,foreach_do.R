@@ -20,7 +20,7 @@ if (requireNamespace("foreach", quietly = TRUE)) {
   local({
     p <- progressor(4)
     y <- foreach(n = 3:6) %do% {
-#      p()
+      p()
       slow_sum(1:n, stdout=TRUE, message=TRUE)
     }
   })

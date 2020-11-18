@@ -19,7 +19,7 @@ if (requireNamespace("purrr", quietly = TRUE)) {
   local({
     p <- progressor(4)
     y <- purrr::map(3:6, function(n) {
-#      p()
+      p()
       slow_sum(1:n, stdout=TRUE, message=TRUE)
     })
   })

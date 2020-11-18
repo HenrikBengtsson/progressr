@@ -23,7 +23,7 @@ if (requireNamespace("furrr", quietly = TRUE)) {
     local({
       p <- progressor(4)
       y <- furrr::future_map(3:6, function(n) {
-#        p()
+        p()
         slow_sum(1:n, stdout=TRUE, message=TRUE)
       })
     })
