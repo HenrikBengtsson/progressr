@@ -67,7 +67,7 @@ mstr <- function(..., appendLF = TRUE, debug = getOption("progressr.debug", FALS
   message(paste(now(), capture_output(str(...)), sep = "", collapse = "\n"), appendLF = appendLF)
 }
 
-stop_if_not <- function(...) {
+stop_if_not <- function(..., calls = sys.calls()) {
   res <- list(...)
   n <- length(res)
   if (n == 0L) return()
@@ -78,7 +78,9 @@ stop_if_not <- function(...) {
         mc <- match.call()
         call <- deparse(mc[[ii + 1]], width.cutoff = 60L)
         if (length(call) > 1L) call <- paste(call[1L], "...")
-        stop(sQuote(call), " is not TRUE", call. = FALSE, domain = NA)
+        callstack <- paste(as.character(calls), collapse = " -> ")
+        stop(sQuote(call), " is not TRUE [call stack: ", callstack, "]",
+             call. = FALSE, domain = NA)
     }
   }
 }
