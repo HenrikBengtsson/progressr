@@ -78,9 +78,12 @@ stop_if_not <- function(..., calls = sys.calls()) {
         mc <- match.call()
         call <- deparse(mc[[ii + 1]], width.cutoff = 60L)
         if (length(call) > 1L) call <- paste(call[1L], "...")
-        callstack <- paste(as.character(calls), collapse = " -> ")
-        stop(sQuote(call), " is not TRUE [call stack: ", callstack, "]",
-             call. = FALSE, domain = NA)
+        msg <- sprintf("%s is not TRUE", sQuote(call))
+        if (FALSE) {
+          callstack <- paste(as.character(calls), collapse = " -> ")
+          msg <- sprintf("%s [call stack: %s]", msg, callstack)
+        }
+        stop(msg, call. = FALSE, domain = NA)
     }
   }
 }
