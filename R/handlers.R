@@ -16,9 +16,15 @@
 #' @param default The default progression calling handler to use if none
 #' are set.
 #'
+#' @param global If TRUE, then the global progression handler is enabled.
+#' If FALSE, it is disabled.  If NA, then TRUE is returned if it is enabled,
+#' otherwise FALSE.  Argument `global` must not used with other arguments.
+#'
 #' @return (invisibly) the previous list of progression handlers set.
 #' If no arguments are specified, then the current set of progression
 #' handlers is returned.
+#' If `global` is specified, then TRUE is returned if the global progression
+#' handlers is enabled, otherwise false.
 #'
 #' @details
 #' This function provides a convenient alternative for getting and setting
@@ -32,19 +38,37 @@
 #' @example incl/handlers.R
 #'
 #' @export
-handlers <- function(..., append = FALSE, on_missing = c("error", "warning", "ignore"), default = handler_txtprogressbar) {
+handlers <- function(..., append = FALSE, on_missing = c("error", "warning", "ignore"), default = handler_txtprogressbar, global = NULL) {
+  stop_if_not(
+    is.null(global) ||
+    ( is.logical(global) && length(global) == 1L )
+  )
   args <- list(...)
+  nargs <- length(args)
 
-  ## Get the current set of progression handlers?
-  if (length(args) == 0L) {
-    if (!is.list(default) && !is.null(default)) default <- list(default)
-    return(getOption("progressr.handlers", default))
+  if (nargs == 0L) {
+    ## Get the current set of progression handlers?
+    if (is.null(global)) {
+      if (!is.list(default) && !is.null(default)) default <- list(default)
+      return(getOption("progressr.handlers", default))
+    }
+
+    ## Check, register, or reset global calling handlers?
+    if (is.na(global)) {
+      return(register_global_progression_handler(action = "query"))
+    }
+    action <- if (isTRUE(global)) "add" else "remove"
+    return(invisible(register_global_progression_handler(action = action)))
+  }
+
+  if (!is.null(global)) {
+    stop("Argument 'global' must not be specified when also registering progress handlers")
   }
 
   on_missing <- match.arg(on_missing)
   
   ## Was a list specified?
-  if (length(args) == 1L && is.vector(args[[1]])) {
+  if (nargs == 1L && is.vector(args[[1]])) {
     args <- args[[1]]
   }
 
