@@ -14,7 +14,7 @@
 #'
 #' @example incl/register_global_progression_handler.R
 #'
-#' @export
+#' @keywords internal
 register_global_progression_handler <- function(action = c("add", "remove", "query")) {
   action <- match.arg(action[1], choices = c("add", "remove", "query", "status"))
 

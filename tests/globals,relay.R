@@ -13,10 +13,10 @@ handlers("txtprogressbar")
 
 handlers <- supported_progress_handlers()
 
-register_global_progression_handler("remove")
+handlers(global = FALSE)
 stopifnot(sink.number(type = "output") == nsinks0)
 
-register_global_progression_handler("add")
+handlers(global = TRUE)
 stopifnot(sink.number(type = "output") == nsinks0)
 
 message("global progress handlers - standard output, messages, warnings ...")
@@ -32,12 +32,12 @@ for (kk in seq_along(handlers)) {
     for (delta in c(0L, +1L, -1L)) {
       message(sprintf("    - delta = %+d", delta))
 
-      register_global_progression_handler("remove")
+      handlers(global = FALSE)
       stopifnot(sink.number(type = "output") == nsinks0)
-      register_global_progression_handler("add")
+      handlers(global = TRUE)
       stopifnot(sink.number(type = "output") == nsinks0)
 
-      status <- register_global_progression_handler("status")
+      status <- progressr:::register_global_progression_handler("status")
       stopifnot(
         is.null(status$current_progressor_uuid),
         is.null(status$delays),
@@ -77,7 +77,7 @@ for (kk in seq_along(handlers)) {
       
       cat(paste(c(relay$stdout, ""), collapse = "\n"))
       message(relay$message, append = FALSE)
-      status <- register_global_progression_handler("status")
+      status <- progressr:::register_global_progression_handler("status")
       console_msg(capture.output(utils::str(status)))
       if (delta == 0L) {
         withCallingHandlers({
@@ -103,7 +103,7 @@ for (kk in seq_along(handlers)) {
 
 message("global progress handlers - standard output, messages, warnings ... done")
 
-register_global_progression_handler("remove")
+handlers(global = FALSE)
 
 source("incl/end.R")
 

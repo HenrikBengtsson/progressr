@@ -21,7 +21,7 @@ if (requireNamespace("doFuture", quietly = TRUE)) {
 
     message("* global progression handler")
 
-    register_global_progression_handler("add")
+    handlers(global = TRUE)
     
     local({
       p <- progressor(4)
@@ -31,7 +31,7 @@ if (requireNamespace("doFuture", quietly = TRUE)) {
       }
     })
     
-    register_global_progression_handler("remove")
+    handlers(global = FALSE)
   }
 }
 

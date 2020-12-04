@@ -13,7 +13,7 @@ if (requireNamespace("plyr", quietly = TRUE)) {
 
   message("* global progression handler")
 
-  register_global_progression_handler("add")
+  handlers(global = TRUE)
     
   local({
     y <- plyr::llply(3:6, function(n, ...) {
@@ -21,7 +21,7 @@ if (requireNamespace("plyr", quietly = TRUE)) {
     }, .progress = "progressr")
   })
     
-  register_global_progression_handler("remove")
+  handlers(global = FALSE)
 }
 
 source("incl/end.R")
