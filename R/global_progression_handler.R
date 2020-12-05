@@ -241,15 +241,20 @@ global_progression_handler <- local({
     
     ## Shut down progression handling?
     if (inherits(condition, c("interrupt", "error"))) {
-      progression <- control_progression("shutdown")
-      finished <- finish(debug = debug)
-      stop_if_not(length(conditions) == 0L, is.na(capture_conditions), isTRUE(finished))
+      suspendInterrupts({
+        progression <- control_progression("shutdown")
+        finished <- finish(debug = debug)
+        stop_if_not(length(conditions) == 0L, is.na(capture_conditions), isTRUE(finished))
+      })
       return()
     }
 
     ## A 'progression' update?
     if (inherits(condition, "progression")) {
-      return(handle_progression(condition, debug = debug))
+      suspendInterrupts({
+        res <- handle_progression(condition, debug = debug)
+      })
+      return(res)
     }
 
     ## Nothing do to?

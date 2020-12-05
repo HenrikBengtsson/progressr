@@ -12,7 +12,9 @@ SIGNIFICANT CHANGES:
  * A progressor must not be created in the global environment unless wrapped
    in with_progress() or without_progress() call.  Ideally, a progressor is
    created within a function or a local() environment.
- 
+
+ * Package now requires R (>= 3.5.0) in order to protect against interrupts.
+
 NEW FEATURES:
 
  * progressor() gained argument 'on_exit = TRUE'.
