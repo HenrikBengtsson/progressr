@@ -19,6 +19,8 @@ NEW FEATURES:
 
  * progressor() gained argument 'on_exit = TRUE'.
 
+ * Now the 'progress' handler shows also a spinner by default.
+ 
  * Add the 'pbcol' handler, which renders the progress as a colored progress
    bar in the terminal with any messages written in the front.
 
