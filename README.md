@@ -77,7 +77,7 @@ handlers("progress")
 This progress handler will present itself as:
 ```r
 > with_progress(y <- slow_sum(1:10))
-[=================>---------------------------]  40% Added 4
+/ [================>--------------------------]  40% Added 4
 ```
 
 To set the default progress handler(s) in all your R sessions, call `progressr::handlers(...)` in your <code>~/.Rprofile</code> file.
@@ -178,7 +178,7 @@ and
 > with_progress(y <- slow_sum(1:30))
 Step 5
 Step 10
-[================>---------------------------]  43% Added 13
+/ [===============>--------------------------]  43% Added 13
 ```
 
 
@@ -206,7 +206,7 @@ we will get:
 > with_progress(y <- slow_sqrt(1:8))
 Calculating the square root of 1
 Calculating the square root of 2
-[===========>-------------------------------------]  25% x=2
+- [===========>-----------------------------------]  25% x=2
 ```
 
 This works because `with_progress()` will briefly buffer any output internally and only release it when the next progress update is received just before the progress is re-rendered in the terminal.  This is why you see a two second delay when running the above example.  Note that, if we use progress handlers that do not output to the terminal, such as `handlers("beepr")`, then output does not have to be buffered and will appear immediately.
@@ -325,7 +325,7 @@ with_progress({
     sqrt(x)
   })
 })
-# [=================>------------------------------]  40% x=2
+# / [================>-----------------------------]  40% x=2
 ```
 
 
@@ -351,7 +351,7 @@ with_progress({
     sqrt(x)
   }
 })
-# [=================>------------------------------]  40% x=2
+# / [================>-----------------------------]  40% x=2
 ```
 
 
@@ -376,7 +376,7 @@ with_progress({
     sqrt(x)
   })
 })
-# [=================>------------------------------]  40% x=2
+# / [================>-----------------------------]  40% x=2
 ```
 
 _Note:_ This solution does not involved the `.progress = TRUE` argument that **furrr** implements.  Because **progressr** is more generic and because `.progress = TRUE` only works for certain future backends and produces errors on others, I recommended to stop using `.progress = TRUE` and use the **progressr** package instead.
@@ -405,7 +405,7 @@ with_progress({
     sqrt(x)
   }, .parallel = TRUE)
 })
-# [=================>------------------------------]  40% x=2
+# / [================>-----------------------------]  40% x=2
 ```
 
 _Note:_ Although **progressr** implements support for using `.progress = "progressr"` with **plyr**, unfortunately, this will _not_ work when using `.parallel = TRUE`.  This is because **plyr** resets `.progress` to the default `"none"` internally regardless how we set `.progress`. See <https://github.com/HenrikBengtsson/progressr/issues/70> for details and a hack that works around this limitation.
@@ -501,20 +501,27 @@ _Figure: Sequence diagram illustrating how signaled progression conditions are c
 To debug progress updates, use:
 ```r
 > handlers("debug")
-> with_progress(y <- slow_sum(1:10))
-[13:33:49.743] (0.000s => +0.002s) initiate: 0/10 (+0) '' {clear=TRUE, enabled=TRUE, status=}
-[13:33:49.847] (0.104s => +0.001s) update: 1/10 (+1) 'Added 1' {clear=TRUE, enabled=TRUE, status=}
-[13:33:49.950] (0.206s => +0.001s) update: 2/10 (+1) 'Added 2' {clear=TRUE, enabled=TRUE, status=}
-[13:33:50.052] (0.309s => +0.000s) update: 3/10 (+1) 'Added 3' {clear=TRUE, enabled=TRUE, status=}
-[13:33:50.154] (0.411s => +0.001s) update: 4/10 (+1) 'Added 4' {clear=TRUE, enabled=TRUE, status=}
-[13:33:50.257] (0.514s => +0.001s) update: 5/10 (+1) 'Added 5' {clear=TRUE, enabled=TRUE, status=}
-[13:33:50.361] (0.618s => +0.002s) update: 6/10 (+1) 'Added 6' {clear=TRUE, enabled=TRUE, status=}
-[13:33:50.464] (0.721s => +0.001s) update: 7/10 (+1) 'Added 7' {clear=TRUE, enabled=TRUE, status=}
-[13:33:50.567] (0.824s => +0.001s) update: 8/10 (+1) 'Added 8' {clear=TRUE, enabled=TRUE, status=}
-[13:33:50.670] (0.927s => +0.001s) update: 9/10 (+1) 'Added 9' {clear=TRUE, enabled=TRUE, status=}
-[13:33:50.773] (1.030s => +0.001s) update: 10/10 (+1) 'Added 10' {clear=TRUE, enabled=TRUE, status=}
-[13:33:50.774] (1.031s => +0.003s) update: 10/10 (+0) 'Added 10' {clear=TRUE, enabled=TRUE, status=}
-[13:33:50.776] (1.033s => +0.001s) shutdown: 10/10 (+0) '' {clear=TRUE, enabled=TRUE, status=ok}
+> with_progress(y <- slow_sum(1:3))
+[23:19:52.738] (0.000s => +0.002s) initiate: 0/3 (+0) '' {clear=TRUE, enabled=TRUE, status=}
+[23:19:52.739] (0.001s => +0.000s) update: 0/3 (+0) '' {clear=TRUE, enabled=TRUE, status=}
+[23:19:52.942] (0.203s => +0.002s) update: 0/3 (+0) '' {clear=TRUE, enabled=TRUE, status=}
+[23:19:53.145] (0.407s => +0.001s) update: 0/3 (+0) '' {clear=TRUE, enabled=TRUE, status=}
+[23:19:53.348] (0.610s => +0.002s) update: 1/3 (+1) 'P: Adding 1' {clear=TRUE, enabled=TRUE, status=}
+M: Added value 1
+[23:19:53.555] (0.817s => +0.004s) update: 1/3 (+0) 'P: Adding 1' {clear=TRUE, enabled=TRUE, status=}
+[23:19:53.758] (1.020s => +0.001s) update: 1/3 (+0) 'P: Adding 1' {clear=TRUE, enabled=TRUE, status=}
+[23:19:53.961] (1.223s => +0.001s) update: 1/3 (+0) 'P: Adding 1' {clear=TRUE, enabled=TRUE, status=}
+[23:19:54.165] (1.426s => +0.001s) update: 1/3 (+0) 'P: Adding 1' {clear=TRUE, enabled=TRUE, status=}
+[23:19:54.368] (1.630s => +0.001s) update: 2/3 (+1) 'P: Adding 2' {clear=TRUE, enabled=TRUE, status=}
+M: Added value 2
+[23:19:54.574] (1.835s => +0.003s) update: 2/3 (+0) 'P: Adding 2' {clear=TRUE, enabled=TRUE, status=}
+[23:19:54.777] (2.039s => +0.001s) update: 2/3 (+0) 'P: Adding 2' {clear=TRUE, enabled=TRUE, status=}
+[23:19:54.980] (2.242s => +0.001s) update: 2/3 (+0) 'P: Adding 2' {clear=TRUE, enabled=TRUE, status=}
+[23:19:55.183] (2.445s => +0.001s) update: 2/3 (+0) 'P: Adding 2' {clear=TRUE, enabled=TRUE, status=}
+[23:19:55.387] (2.649s => +0.001s) update: 3/3 (+1) 'P: Adding 3' {clear=TRUE, enabled=TRUE, status=}
+[23:19:55.388] (2.650s => +0.003s) update: 3/3 (+0) 'P: Adding 3' {clear=TRUE, enabled=TRUE, status=}
+M: Added value 3
+[23:19:55.795] (3.057s => +0.000s) shutdown: 3/3 (+0) 'P: Adding 3' {clear=TRUE, enabled=TRUE, status=ok}
 ```
 
 

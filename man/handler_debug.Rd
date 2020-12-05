@@ -8,6 +8,7 @@ handler_debug(
   interval = getOption("progressr.interval", 0),
   intrusiveness = getOption("progressr.intrusiveness.debug", 0),
   target = "terminal",
+  uuid = FALSE,
   ...
 )
 }
@@ -20,6 +21,9 @@ successive progression updates from this handler.}
 
 \item{target}{(character vector) Specifies where progression updates are
 rendered.}
+
+\item{uuid}{If TRUE, then the progressor UUID and the owner UUID are shown,
+otherwise not (default).}
 
 \item{\ldots}{Additional arguments passed to \code{\link[=make_progression_handler]{make_progression_handler()}}.}
 }
