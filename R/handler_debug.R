@@ -30,7 +30,7 @@ handler_debug <- function(interval = getOption("progressr.interval", 0), intrusi
       delay <- difftime(t, progression$time, units = "secs")
       message <- paste(c(state$message, ""), collapse = "")
       entry <- list(now(t), dt, delay, progression$type, state$step, config$max_steps, state$delta, message, config$clear, state$enabled, paste0(progression$status, ""), progression$progressor_uuid, progression$owner_session_uuid)
-      msg <- do.call(sprintf, args = c(list("%s(%.3fs => +%.3fs) %s: %d/%d (%+d) '%s' {clear=%s, enabled=%s, status=%s, progressor=%s, owner=%s}"), entry))
+      msg <- do.call(sprintf, args = c(list("%s(%.3fs => +%.3fs) %s: %.0f/%.0f (%+g) '%s' {clear=%s, enabled=%s, status=%s, progressor=%s, owner=%s}"), entry))
       message(msg)
     }
 
