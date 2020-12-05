@@ -71,12 +71,6 @@ if (covr) {
 
 
 
-## WORKAROUND: capture.output() gained argument 'split' in R 3.3.0
-if (getRversion() >= "3.3.0") {
-  capture.output <- utils::capture.output 
-} else {
-  capture.output <- function(..., split = FALSE) utils::capture.output(...)
-}
 capture_output <- function(..., split = FALSE, collapse = NULL) {
   bfr <- capture.output(..., split = split)
   if (!is.null(collapse)) bfr <- paste(c(bfr, ""), collapse = "\n")
