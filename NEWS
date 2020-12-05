@@ -1,7 +1,7 @@
 Package: progressr
 ==================
 
-Version: 0.6.0-9000 [2020-12-04]
+Version: 0.6.0-9000 [2020-12-05]
 
 SIGNIFICANT CHANGES:
 
@@ -16,6 +16,9 @@ SIGNIFICANT CHANGES:
  * Package now requires R (>= 3.5.0) in order to protect against interrupts.
 
 NEW FEATURES:
+
+ * progressor() gained argument 'message' to set the default message of all
+   progression updates, unless otherwise specified.
 
  * progressor() gained argument 'on_exit = TRUE'.
 

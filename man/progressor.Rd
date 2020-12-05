@@ -10,6 +10,7 @@ progressor(
   offset = 0L,
   scale = 1L,
   transform = function(steps) scale * steps + offset,
+  message = character(0L),
   label = NA_character_,
   initiate = TRUE,
   auto_finish = TRUE,
@@ -29,6 +30,9 @@ progressor(
 \item{transform}{(function; optional) A function that takes the effective
 number of \code{steps} as input and returns another finite and non-negative
 number of steps.}
+
+\item{message}{(character) The default progress message used in all
+progression updated, unless otherwise specified.}
 
 \item{label}{(character) A label.}
 
