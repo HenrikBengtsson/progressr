@@ -30,7 +30,7 @@ handler_pbcol <- function(adjust = 0.0, pad = 1L, done_col = "blue", todo_col = 
     cat_(c("\r", rep(" ", times = getOption("width")), "\r"))
   }
   
-  redraw_progress_bar <- function(ratio, message) {
+  redraw_progress_bar <- function(ratio, message, spin = " ") {
     stop_if_not(ratio >= 0, ratio <= 1)
     pbstr <- pbcol(
       fraction = ratio,
@@ -38,16 +38,19 @@ handler_pbcol <- function(adjust = 0.0, pad = 1L, done_col = "blue", todo_col = 
       adjust = adjust,
       pad = pad,
       done_col = done_col,
-      todo_col = todo_col
+      todo_col = todo_col,
+      spin = spin,
     )
     cat_("\r", pbstr)
   }
   
   reporter <- local({
+    spin_state <- 0L
+    spinner <- c("-", "\\", "|", "/", "-", "\\", "|", "/")
     list(
       initiate = function(config, state, ...) {
         if (!state$enabled || config$times <= 2L) return()
-        redraw_progress_bar(ratio = state$step / config$max_steps, message = state$message)
+        redraw_progress_bar(ratio = state$step / config$max_steps, message = state$message, spin = spinner[spin_state+1L])
       },
       
       reset = function(...) {
@@ -60,17 +63,14 @@ handler_pbcol <- function(adjust = 0.0, pad = 1L, done_col = "blue", todo_col = 
 
       unhide = function(config, state, ...) {
         if (!state$enabled || config$times <= 2L) return()
-        redraw_progress_bar(ratio = state$step / config$max_steps, message = state$message)
+        redraw_progress_bar(ratio = state$step / config$max_steps, message = state$message, spin = spinner[spin_state+1L])
       },
 
       update = function(config, state, progression, ...) {
         if (!state$enabled || config$times <= 2L) return()
         if (state$delta < 0) return()
-        if (state$delta == 0) {
-          cat_("\r.")
-          Sys.sleep(0.5)
-        }
-        redraw_progress_bar(ratio = state$step / config$max_steps, message = state$message)
+        spin_state <<- (spin_state+1L) %% length(spinner)
+        redraw_progress_bar(ratio = state$step / config$max_steps, message = state$message, spin = spinner[spin_state+1L])
       },
 
       finish = function(...) {
@@ -84,7 +84,7 @@ handler_pbcol <- function(adjust = 0.0, pad = 1L, done_col = "blue", todo_col = 
 
 
 
-pbcol <- function(fraction = 0.0, msg = "", adjust = 0, pad = 1L, width = getOption("width"), done_col = "blue", todo_col = "cyan") {
+pbcol <- function(fraction = 0.0, msg = "", adjust = 0, pad = 1L, width = getOption("width") - 1L, done_col = "blue", todo_col = "cyan", spin = " ") {
   bgColor <- function(s, col) {
     bgFcn <- switch(col,
       black   = crayon::bgBlack,
@@ -129,7 +129,7 @@ pbcol <- function(fraction = 0.0, msg = "", adjust = 0, pad = 1L, width = getOpt
   lpad <- floor(   adjust  * msgpad) + pad
   rpad <- floor((1-adjust) * msgpad)
   stop_if_not(lpad >= 0L, rpad >= 0L)
-  pmsg <- sprintf("%*s%s%*s%s%*s", lpad, "", msg, rpad, "", msgfraction, pad, "")
+  pmsg <- sprintf("%*s%s%*s%s%s%*s", lpad, "", msg, rpad, "", msgfraction, spin, pad, "")
 
   ## Make progress bar
   len <- round(fraction * nchar(pmsg), digits = 0L)
