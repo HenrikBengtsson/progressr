@@ -83,7 +83,7 @@ handler_progress <- function(format = "[:bar] :percent :message", show_after = 0
     pb_tick <- function(pb, delta = 0, message = NULL, ...) {
       tokens <- list(message = paste0(message, ""))
       last_tokens <<- tokens
-      if (delta <= 0) return()
+      if (delta < 0) return()
       pb$tick(delta, tokens = tokens)
     }
 

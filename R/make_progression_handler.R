@@ -360,10 +360,12 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
         timestamps[step] <<- Sys.time()
         if (debug) mstr(list(finished = finished, step = step, milestones = milestones, prev_milestone = prev_milestone, interval = interval))
 
-        ## Only update if a new milestone step has been reached
-        if (length(milestones) > 0L && step >= milestones[1]) {
+        ## Only update if a new milestone step has been reached ...
+        ## ... or if we want to send a zero-amount update
+        if ((length(milestones) > 0L && step >= milestones[1]) ||
+            p[["amount"]] == 0) {
           skip <- FALSE
-          if (interval > 0) {
+          if (interval > 0 && step > 0) {
             dt <- difftime(timestamps[step], timestamps[max(prev_milestone, 1L)], units = "secs")
             skip <- (dt < interval)
             if (debug) mstr(list(dt = dt, timestamps[step], timestamps[prev_milestone], skip = skip))
@@ -371,12 +373,14 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
           if (!skip) {
             if (debug) mstr(list(milestones = milestones))
             update_reporter(p)
-            prev_milestone <<- step
+            if (p[["amount"]] > 0) prev_milestone <<- step
           }
-          milestones <<- milestones[milestones > step]
-          if (auto_finish && step == max_steps) {
-            if (debug) mstr(list(type = "finish (auto)", milestones = milestones))
-            finish_reporter(p)
+          if (p[["amount"]] > 0) {
+            milestones <<- milestones[milestones > step]
+            if (auto_finish && step == max_steps) {
+              if (debug) mstr(list(type = "finish (auto)", milestones = milestones))
+              finish_reporter(p)
+            }
           }
         }
         .validate_internal_state(sprintf("handler(type=%s) ... end", type))

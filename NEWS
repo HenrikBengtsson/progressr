@@ -26,6 +26,8 @@ NEW FEATURES:
  
 BUG FIXES:
 
+ * Zero-amount progress updates never reached the progress handlers.
+ 
  * Argument 'enable' for with_progress() had no effect.
  
 
