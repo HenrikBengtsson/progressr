@@ -15,6 +15,8 @@
 #' @param message (character) The default progress message used in all
 #' progression updated, unless otherwise specified.
 #'
+#' @param calls,frames (pairlist) All active calls and the corresponding frames.
+#'
 #' @param label (character) A label.
 #'
 #' @param initiate (logical) If TRUE, the progressor will signal a
@@ -33,7 +35,7 @@
 progressor <- local({
   progressor_count <- 0L
   
-  function(steps = length(along), along = NULL, offset = 0L, scale = 1L, transform = function(steps) scale * steps + offset, message = character(0L), label = NA_character_, initiate = TRUE, auto_finish = TRUE, on_exit = !identical(envir, globalenv()), envir = parent.frame()) {
+  function(steps = length(along), along = NULL, offset = 0L, scale = 1L, transform = function(steps) scale * steps + offset, message = character(0L), calls = sys.calls(), frames = sys.frames(), label = NA_character_, initiate = TRUE, auto_finish = TRUE, on_exit = !identical(envir, globalenv()), envir = parent.frame()) {
     stop_if_not(!is.null(steps) || !is.null(along))
     stop_if_not(length(steps) == 1L, is.numeric(steps), !is.na(steps),
                 steps >= 0)
@@ -66,16 +68,20 @@ progressor <- local({
     progressor_uuid <- progressor_uuid(progressor_count)
     progression_index <- 0L
     
-    fcn <- function(message = character(0L), ..., type = "update") {
+    fcn <- function(message = character(0L), ..., calls = sys.calls(), frames = sys.frames(), type = "update") {
       progression_index <<- progression_index + 1L
       progress(type = type,
                message = message,
                ...,
+               calls = calls,
+               frames = frames,
                progressor_uuid = progressor_uuid,
                progression_index = progression_index,
                owner_session_uuid = owner_session_uuid)
     }
     formals(fcn)$message <- message
+    formals(fcn)$calls <- calls
+    formals(fcn)$frames <- frames
     class(fcn) <- c("progressor", class(fcn))
   
     if (initiate) {
@@ -113,6 +119,9 @@ print.progressor <- function(x, ...) {
 
   s <- c(s, paste("- default message:",
                      paste(sQuote(e$message), collapse = ", ")))
+
+  call <- vapply(e$calls, FUN = function(call) deparse(call[1]), FUN.VALUE = "")
+  s <- c(s, paste("- call stack:", paste(call, collapse = " -> ")))
 
   s <- c(s, paste("- progressor_uuid:", e$progressor_uuid))
   s <- c(s, paste("- progressor_count:", pe$progressor_count))

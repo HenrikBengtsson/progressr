@@ -11,6 +11,8 @@ progressor(
   scale = 1L,
   transform = function(steps) scale * steps + offset,
   message = character(0L),
+  calls = sys.calls(),
+  frames = sys.frames(),
   label = NA_character_,
   initiate = TRUE,
   auto_finish = TRUE,
@@ -33,6 +35,8 @@ number of steps.}
 
 \item{message}{(character) The default progress message used in all
 progression updated, unless otherwise specified.}
+
+\item{calls, frames}{(pairlist) All active calls and the corresponding frames.}
 
 \item{label}{(character) A label.}
 
