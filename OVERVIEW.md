@@ -37,6 +37,8 @@ p("loading ...")  # pass on a message
 </pre>
 </td>
 
+</br></br></br></br></br>
+</br></br></br></br></br>
 <td>
 <p>
 1a. Subscribe to progress updates from everywhere:
@@ -68,7 +70,7 @@ with_progress({
 handlers("progress")
 handlers("txtprogressbar", "beepr")
 handlers(handler_pbcol(enable_after = 3.0))
-handlers(handler_progress(format = "[:bar] :percent eta: :eta"))
+handlers(handler_progress(complete = "#"))
 </pre>
 </td>
 </table>
@@ -561,7 +563,7 @@ For a more up-to-date view on what features might be added, see <https://github.
 
 ### Known issues
 
-It is not possible to create a progressor in the global environment, e.g. in the the top-level of a script.  It has to be created inside a function, within `with_progress({ ... })`, `local({ ... }), or a similar construct.  For example, the following:
+It is not possible to create a progressor in the global environment, e.g. in the the top-level of a script.  It has to be created inside a function, within `with_progress({ ... })`, `local({ ... })`, or a similar construct.  For example, the following:
 
 ```r
 library(progressr)
