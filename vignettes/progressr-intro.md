@@ -19,14 +19,68 @@ Design motto:
 > The developer is responsible for providing progress updates but it's only the end user who decides if, when, and how progress should be presented. No exceptions will be allowed.
 
 
-## Two Minimal APIs
+## Two Minimal APIs - One For Developers and One For End-Users
 
- | Developer's API               | End-user's API              |
- |-------------------------------|-----------------------------|
- | `p <- progressor(n)`          | `with_progress(expr)`       |
- | `p <- progressor(along = x)`  | `handlers(...)`             |
- | `p(msg, ...)`                 |                             |
+<table>
+<tr>
+ <th>Developer's API</th><th>End-user's API</th>  
+</tr>
+<tr style="vertical-align: top">
+<td>
+<p>
+1. Set up a progressor with a certain number of steps:
+</p>
+<pre>
+p <- progressor(nsteps)
+p <- progressor(along = x)
+</pre>
 
+<p>
+2. Signal progress:
+</p>
+
+<pre>
+p()               # one-step progress
+p(amount = 0)     # "still alive"
+p("loading ...")  # pass on a message
+</pre>
+</td>
+
+<td>
+<p>
+1a. Subscribe to progress updates from everywhere:
+</p>
+
+<pre>
+handler(global = TRUE)
+
+y <- slow_sum(1:5)
+y <- slow_sum(6:10)
+</pre>
+
+<p>
+1b. Subscribe to a specific expression:
+</p>
+
+<pre>
+with_progress({
+  y <- slow_sum(1:3)
+  y <- slow_sum(6:10)
+})
+</pre>
+
+<p>
+2. Configure how progress is presented:
+</p>
+
+<pre>
+handlers("progress")
+handlers("txtprogressbar", "beepr")
+handlers("pbcol")
+handlers(handler_progress(show_after = 3.0))
+</pre>
+</td>
+</table>
 
 
 ## A simple example
@@ -49,7 +103,7 @@ slow_sum <- function(x) {
 Note how there are _no_ arguments in the code that specifies how progress is presented.  The only task for the developer is to decide on where in the code it makes sense to signal that progress has been made.  As we will see next, it is up to the end user of this code to decide whether they want to receive progress updates or not, and, if so, in what format.
 
 
-### Without reporting progress
+### Without reporting on progress
 
 When calling this function as in:
 ```r
@@ -61,14 +115,39 @@ When calling this function as in:
 it will behave as any function and there will be no progress updates displayed.
 
 
-### Reporting progress
+### Reporting on progress
 
-To get progress updates, we can call it as:
+If we are only interested in progress for a particular call, we can do:
+
 ```r
 > library(progressr)
 > with_progress(y <- slow_sum(1:10))
   |====================                               |  40%
 ```
+
+However, if we want to report on progress from _every_ call, wrapping the calls in `with_progress()` might become too cumbersome.  If so, we can enable the global progress handler:
+
+```r
+> library(progressr)
+> handlers(global = TRUE)
+```
+
+so that progress updates are reported on wherever signaled, e.g.
+
+```r
+> y <- slow_sum(1:10)
+  |====================                               |  40%
+> y <- slow_sum(10:1)
+  |========================================           |  80%
+```
+
+This requires R 4.0.0 or newer.  To disable this again, do:
+
+```r
+> handlers(global = FALSE)
+```
+
+In the below examples, we will assume `handlers(global = TRUE)` is already set.
 
 
 ## Customizing how progress is reported
@@ -80,7 +159,7 @@ handlers("progress")
 ```
 This progress handler will present itself as:
 ```r
-> with_progress(y <- slow_sum(1:10))
+> y <- slow_sum(1:10)
 / [================>--------------------------]  40% Added 4
 ```
 
@@ -97,7 +176,7 @@ handlers("beepr")
 ```
 will present itself as sounds played at the beginning, while progressing, and at the end (using different **[beepr]** sounds).  There will be _no_ output written to the terminal;
 ```r
-> with_progress(y <- slow_sum(1:10))
+> y <- slow_sum(1:10)
 > y
 [1] 55
 >
@@ -169,7 +248,7 @@ slow_sum <- function(x) {
 we get
 ```r
 > handlers("txtprogressbar")
-> with_progress(y <- slow_sum(1:30))
+> y <- slow_sum(1:30)
 Step 5
 Step 10
   |====================                               |  43%
@@ -179,7 +258,7 @@ and
 
 ```r
 > handlers("progress")
-> with_progress(y <- slow_sum(1:30))
+> y <- slow_sum(1:30)
 Step 5
 Step 10
 / [===============>--------------------------]  43% Added 13
@@ -207,13 +286,13 @@ we will get:
 ```r
 > library(progressr)
 > handlers("progress")
-> with_progress(y <- slow_sqrt(1:8))
+> y <- slow_sqrt(1:8)
 Calculating the square root of 1
 Calculating the square root of 2
 - [===========>-----------------------------------]  25% x=2
 ```
 
-This works because `with_progress()` will briefly buffer any output internally and only release it when the next progress update is received just before the progress is re-rendered in the terminal.  This is why you see a two second delay when running the above example.  Note that, if we use progress handlers that do not output to the terminal, such as `handlers("beepr")`, then output does not have to be buffered and will appear immediately.
+This works because **progressr** will briefly buffer any output internally and only release it when the next progress update is received just before the progress is re-rendered in the terminal.  This is why you see a two second delay when running the above example.  Note that, if we use progress handlers that do not output to the terminal, such as `handlers("beepr")`, then output does not have to be buffered and will appear immediately.
 
 
 _Comment_: When signaling a warning using `warning(msg, immediate. = TRUE)` the message is immediately outputted to the standard-error stream.  However, this is not possible to emulate when warnings are intercepted using calling handlers, which are used by `with_progress()`.  This is a limitation of R that cannot be worked around.  Because of this, the above call will behave the same as `warning(msg)` - that is, all warnings will be buffered by R internally and released only when all computations are done.
@@ -229,9 +308,7 @@ Note that progression updates by **progressr** is designed to work out of the bo
 ```r
 library(progressr)
 
-xs <- 1:5
-
-with_progress({
+my_fcn <- function(xs) {
   p <- progressor(along = xs)
   y <- lapply(xs, function(x) {
     Sys.sleep(0.1)
@@ -239,8 +316,11 @@ with_progress({
     sqrt(x)
   })
 })
+
+my_fcn(1:5)
 #  |====================                               |  40%
 ```
+
 
 ### The foreach package
 
@@ -248,16 +328,16 @@ with_progress({
 library(foreach)
 library(progressr)
 
-xs <- 1:5
-
-with_progress({
+my_fcn <- function(xs) {
   p <- progressor(along = xs)
   y <- foreach(x = xs) %do% {
     Sys.sleep(0.1)
     p(sprintf("x=%g", x))
     sqrt(x)
   }
-})
+}
+
+my_fcn(1:5)
 #  |====================                               |  40%
 ```
 
@@ -267,9 +347,7 @@ with_progress({
 library(purrr)
 library(progressr)
 
-xs <- 1:5
-
-with_progress({
+my_fcn <- function(xs) {
   p <- progressor(along = xs)
   y <- map(xs, function(x) {
     Sys.sleep(0.1)
@@ -277,6 +355,8 @@ with_progress({
     sqrt(x)
   })
 })
+
+my_fcn(1:5)
 #  |====================                               |  40%
 ```
 
@@ -287,9 +367,7 @@ with_progress({
 library(plyr)
 library(progressr)
 
-xs <- 1:5
-
-with_progress({
+my_fcn <- function(xs) {
   p <- progressor(along = xs)
   y <- llply(xs, function(x, ...) {
     Sys.sleep(0.1)
@@ -297,6 +375,8 @@ with_progress({
     sqrt(x)
   })
 })
+
+my_fcn(1:5)
 #  |====================                               |  40%
 ```
 
@@ -319,9 +399,7 @@ plan(multisession)
 library(progressr)
 handlers("progress", "beepr")
 
-xs <- 1:5
-
-with_progress({
+my_fcn <- function(xs) {
   p <- progressor(along = xs)
   y <- future_lapply(xs, function(x, ...) {
     Sys.sleep(6.0-x)
@@ -329,6 +407,8 @@ with_progress({
     sqrt(x)
   })
 })
+
+my_fcn(1:5)
 # / [================>-----------------------------]  40% x=2
 ```
 
@@ -345,9 +425,7 @@ plan(multisession)
 library(progressr)
 handlers("progress", "beepr")
 
-xs <- 1:5
-
-with_progress({
+my_fcn <- function(xs) {
   p <- progressor(along = xs)
   y <- foreach(x = xs) %dopar% {
     Sys.sleep(6.0-x)
@@ -355,6 +433,8 @@ with_progress({
     sqrt(x)
   }
 })
+
+my_fcn(1:5)
 # / [================>-----------------------------]  40% x=2
 ```
 
@@ -370,9 +450,7 @@ plan(multisession)
 library(progressr)
 handlers("progress", "beepr")
 
-xs <- 1:5
-
-with_progress({
+my_fcn <- function(xs) {
   p <- progressor(along = xs)
   y <- future_map(xs, function(x) {
     Sys.sleep(6.0-x)
@@ -380,6 +458,8 @@ with_progress({
     sqrt(x)
   })
 })
+
+my_fcn(1:5)
 # / [================>-----------------------------]  40% x=2
 ```
 
@@ -399,9 +479,7 @@ plan(multisession)
 library(progressr)
 handlers("progress", "beepr")
 
-xs <- 1:5
-
-with_progress({
+my_fcn <- function(xs) {
   p <- progressor(along = xs)
   y <- llply(xs, function(x, ...) {
     Sys.sleep(0.1)
@@ -409,6 +487,8 @@ with_progress({
     sqrt(x)
   }, .parallel = TRUE)
 })
+
+my_fcn(1:5)
 # / [================>-----------------------------]  40% x=2
 ```
 
@@ -452,7 +532,7 @@ The overhead of progress signaling may depend on context.  For example, in paral
 ## Progress updates in non-interactive mode ("batch mode")
 
 When running R from the command line, R runs in a non-interactive mode
-(`interactive()` returns `FALSE`).  The default behavior of `with_progress()`
+(`interactive()` returns `FALSE`).  The default behavior of **progressr**
 is to _not_ report on progress in non-interactive mode.
 To reported on progress also then, set R options `progressr.enable` or
 environment variable `R_PROGRESSR_ENABLE` to `TRUE`.  For example,
@@ -473,18 +553,67 @@ will.
 
 Because this project is under active development, the progressr API is currently kept at a very minimum.  This will allow for the framework and the API to evolve while minimizing the risk for breaking code that depends on it.  The roadmap for developing the API is roughly:
 
-1. Provide minimal API for producing progress updates, i.e. `progressor()` and `with_progress()`
+* [x] Provide minimal API for producing progress updates, i.e. `progressor()`, `with_progress()`, `handlers()`
 
-2. Add support for global progress handlers removing the need for the user having to specify `with_progress()`
+* [x] Add support for global progress handlers removing the need for the user having to specify `with_progress()`, i.e. `handlers(global = TRUE)` and `handlers(global = FALSE)`
 
-3. Add support for nested progress updates
+* [ ] Make it possible to create a progressor also in the global environment (see 'Known issues' below)
 
-4. Add API to allow users and package developers to design additional progression handlers
+* [ ] Add support for nested progress updates
+
+* [ ] Add API to allow users and package developers to design additional progression handlers
 
 For a more up-to-date view on what features might be added, see <https://github.com/HenrikBengtsson/progressr/issues>.
 
 
 ## Appendix
+
+### Known issues
+
+It is not possible to create a progressor in the global environment, e.g. in the the top-level of a script.  It has to be created inside a function, within `with_progress({ ... })`, `local({ ... }), or a similar construct.  For example, the following:
+
+```r
+library(progressr)
+handlers(global = TRUE)
+
+xs <- 1:5
+p <- progressor(along = xs)
+y <- lapply(xs, function(x) {
+  Sys.sleep(0.1)
+  p(sprintf("x=%g", x))
+  sqrt(x)
+})
+```
+
+results in an error if tried:
+
+```
+Error in progressor(along = xs) : 
+  A progressor must not be created in the global environment unless wrapped in a with_progress()
+or without_progress() call, otherwise make sure to created inside a function or in a local()
+environment to make sure there is a finite life span of the progressor
+```
+
+The solution is to wrap it in a `local({ ... })` call, or more explicitly, in a `with_progress({ ... })` call:
+
+```r
+library(progressr)
+handlers(global = TRUE)
+
+xs <- 1:5
+with_progress({
+  p <- progressor(along = xs)
+  y <- lapply(xs, function(x) {
+    Sys.sleep(0.1)
+    p(sprintf("x=%g", x))
+    sqrt(x)
+  })
+})
+#  |====================                               |  40%
+```
+
+The main reason for this is to limit the life span of each progressor.  If we created it in the global environment, there is a significant risk it would never finish and block all of the following progressors.
+
 
 ### Under the hood
 
@@ -497,7 +626,7 @@ When using the **progressr** package, progression updates are communicated via R
 
 ![](imgs/slow_sum.svg)
 
-_Figure: Sequence diagram illustrating how signaled progression conditions are captured by `with_progress()` and relayed to the two progression handlers 'progress' (a progress bar in the terminal) and 'beepr' (auditory) that the end user has chosen._
+_Figure: Sequence diagram illustrating how signaled progression conditions are captured by `with_progress()`, or the global progression handler, and relayed to the two progression handlers 'progress' (a progress bar in the terminal) and 'beepr' (auditory) that the end user has chosen._
 
 
 ### Debugging
