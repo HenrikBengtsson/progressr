@@ -423,10 +423,12 @@ delay_stdout <- function(delays, stdout_file) {
 make_calling_handler <- function(handlers) {
   if (length(handlers) > 1L) {
     calling_handler <- function(p) {
+      finished <- FALSE
       for (kk in seq_along(handlers)) {
         handler <- handlers[[kk]]
-        handler(p)
+        finished <- finished || handler(p)
       }
+      finished
     }
   } else {
     calling_handler <- handlers[[1]]
