@@ -91,8 +91,11 @@ conditionMessage.progression <- function(c) {
     message_fcn <- message
     message <- message_fcn(c)
   }
+
+  message <- as.character(message)
+  if (length(message) > 0L) message <- paste(message, collapse = "")
   
-  paste(as.character(message), collapse = "")
+  message
 }
 
 
