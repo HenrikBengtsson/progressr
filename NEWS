@@ -9,6 +9,9 @@ SIGNIFICANT CHANGES:
    everywhere without having to use with_progress().  This works on in
    R (>= 4.0.0) because it relies on global calling handlers.
 
+ * with_progress() now reports on progress from multiple consecutive
+   progressors, e.g. with_progress({ a <- slow_sum(1:3); b <- slow_sum(1:3) }).
+
  * Now with_progress() and without_progress() returns the value of the
    evaluated expression.
    
