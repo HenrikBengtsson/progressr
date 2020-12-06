@@ -76,8 +76,8 @@ with_progress({
 <pre>
 handlers("progress")
 handlers("txtprogressbar", "beepr")
-handlers("pbcol")
-handlers(handler_progress(show_after = 3.0))
+handlers(handler_pbcol(enable_after = 3.0))
+handlers(handler_progress(format = "[:bar] :percent eta: :eta"))
 </pre>
 </td>
 </table>
