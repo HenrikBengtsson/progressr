@@ -35,6 +35,7 @@
 #'
 #' In the terminal:
 #' * [handler_txtprogressbar] (default)
+#' * [handler_pbcol]
 #' * [handler_pbmcapply]
 #' * [handler_progress]
 #' * [handler_ascii_alert]
@@ -44,7 +45,7 @@
 #' * [handler_tkprogressbar]
 #' * [handler_winprogressbar]
 #'
-#' Via audio:
+#' As sound:
 #' * [handler_beepr]
 #' * [handler_ascii_alert]
 #'

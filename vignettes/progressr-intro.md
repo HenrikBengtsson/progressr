@@ -21,10 +21,10 @@ Design motto:
 
 ## Two Minimal APIs - One For Developers and One For End-Users
 
-<table>
-<tr>
- <th>Developer's API</th><th>End-user's API</th>  
-</tr>
+<div style="overflow: hidden">
+<div style="float: left">
+<table style="border: 1px solid #999; box-shadow: 2px 2px 2px #999;">
+<tr><th>Developer's API</th></tr>
 <tr style="vertical-align: top">
 <td>
 <p>
@@ -45,9 +45,14 @@ p(amount = 0)     # "still alive"
 p("loading ...")  # pass on a message
 </pre>
 </td>
-
-</br></br></br></br></br>
-</br></br></br></br></br>
+</tr>
+</table>
+</div>
+<div style="float: left">&nbsp;&nbsp;&nbsp;&nbsp;</div>
+<div style="float: left">
+<table style="border: 1px solid #999; box-shadow: 2px 2px 2px #999;">
+<tr><th>End-user's API</th></tr>
+<tr style="vertical-align: top">
 <td>
 <p>
 1a. Subscribe to progress updates from everywhere:
@@ -83,7 +88,8 @@ handlers(handler_progress(complete = "#"))
 </pre>
 </td>
 </table>
-
+</div>
+</div>
 
 ## A simple example
 
