@@ -16,11 +16,17 @@ progression(
   progression_index = NULL,
   progression_time = Sys.time(),
   call = NULL,
+  calls = sys.calls(),
+  frames = sys.frames(),
   owner_session_uuid = NULL
 )
 }
 \arguments{
-\item{message}{(character) A progress message.}
+\item{message}{(character vector or a function) If a character vector, then
+it is pasted together into a single string using an empty separator.
+If a function, then the message is constructed by \code{conditionMessage(p)}
+calling this function with the progression condition \code{p} itself as the
+first argument.}
 
 \item{amount}{(numeric) The total amount of progress made.}
 
@@ -42,6 +48,9 @@ incremented by one for each progression condition created.}
 when the progression condition was created.}
 
 \item{call}{(expression) A call expression.}
+
+\item{calls, frames}{(pairlist) The calls and the corresponding frames
+that lead up to this progression update.}
 
 \item{owner_session_uuid}{(character string) A character string that is
 unique for the \R session where the progressor was created.}

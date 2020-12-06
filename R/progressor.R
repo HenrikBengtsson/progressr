@@ -1,5 +1,7 @@
 #' Create a Progressor Function that Signals Progress Updates
 #'
+#' @inheritParams progression
+#'
 #' @param steps (integer) Number of progressing steps.
 #'
 #' @param along (vector; alternative) Alternative that sets
@@ -11,11 +13,6 @@
 #' @param transform (function; optional) A function that takes the effective
 #' number of `steps` as input and returns another finite and non-negative
 #' number of steps.
-#'
-#' @param message (character) The default progress message used in all
-#' progression updated, unless otherwise specified.
-#'
-#' @param calls,frames (pairlist) All active calls and the corresponding frames.
 #'
 #' @param label (character) A label.
 #'
@@ -35,15 +32,13 @@
 progressor <- local({
   progressor_count <- 0L
   
-  function(steps = length(along), along = NULL, offset = 0L, scale = 1L, transform = function(steps) scale * steps + offset, message = character(0L), calls = sys.calls(), frames = sys.frames(), label = NA_character_, initiate = TRUE, auto_finish = TRUE, on_exit = !identical(envir, globalenv()), envir = parent.frame()) {
+  function(steps = length(along), along = NULL, offset = 0L, scale = 1L, transform = function(steps) scale * steps + offset, message = character(0L), label = NA_character_, initiate = TRUE, auto_finish = TRUE, on_exit = !identical(envir, globalenv()), envir = parent.frame()) {
     stop_if_not(!is.null(steps) || !is.null(along))
     stop_if_not(length(steps) == 1L, is.numeric(steps), !is.na(steps),
                 steps >= 0)
     stop_if_not(length(offset) == 1L, is.numeric(offset), !is.na(offset))
     stop_if_not(length(scale) == 1L, is.numeric(scale), !is.na(scale))
     stop_if_not(is.function(transform))
-
-    message <- as.character(message)
 
     label <- as.character(label)
     stop_if_not(length(label) == 1L)
@@ -68,20 +63,16 @@ progressor <- local({
     progressor_uuid <- progressor_uuid(progressor_count)
     progression_index <- 0L
     
-    fcn <- function(message = character(0L), ..., calls = sys.calls(), frames = sys.frames(), type = "update") {
+    fcn <- function(message = character(0L), ..., type = "update") {
       progression_index <<- progression_index + 1L
       progress(type = type,
                message = message,
                ...,
-               calls = calls,
-               frames = frames,
                progressor_uuid = progressor_uuid,
                progression_index = progression_index,
                owner_session_uuid = owner_session_uuid)
     }
     formals(fcn)$message <- message
-    formals(fcn)$calls <- calls
-    formals(fcn)$frames <- frames
     class(fcn) <- c("progressor", class(fcn))
   
     if (initiate) {
@@ -117,8 +108,12 @@ print.progressor <- function(x, ...) {
   s <- c(s, paste("- initiate:", e$initiate))
   s <- c(s, paste("- auto_finish:", e$auto_finish))
 
-  s <- c(s, paste("- default message:",
-                     paste(sQuote(e$message), collapse = ", ")))
+  if (is.function(e$message)) {
+    message <- "<a function>"
+  } else {
+    message <- hpaste(deparse(e$message))
+  }
+  s <- c(s, paste("- default message:", message))
 
   call <- vapply(e$calls, FUN = function(call) deparse(call[1]), FUN.VALUE = "")
   s <- c(s, paste("- call stack:", paste(call, collapse = " -> ")))

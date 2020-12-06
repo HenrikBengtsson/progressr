@@ -11,8 +11,6 @@ progressor(
   scale = 1L,
   transform = function(steps) scale * steps + offset,
   message = character(0L),
-  calls = sys.calls(),
-  frames = sys.frames(),
   label = NA_character_,
   initiate = TRUE,
   auto_finish = TRUE,
@@ -33,10 +31,11 @@ progressor(
 number of \code{steps} as input and returns another finite and non-negative
 number of steps.}
 
-\item{message}{(character) The default progress message used in all
-progression updated, unless otherwise specified.}
-
-\item{calls, frames}{(pairlist) All active calls and the corresponding frames.}
+\item{message}{(character vector or a function) If a character vector, then
+it is pasted together into a single string using an empty separator.
+If a function, then the message is constructed by \code{conditionMessage(p)}
+calling this function with the progression condition \code{p} itself as the
+first argument.}
 
 \item{label}{(character) A label.}
 

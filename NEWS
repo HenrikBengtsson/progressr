@@ -5,7 +5,7 @@ Version: 0.6.0-9000 [2020-12-05]
 
 SIGNIFICANT CHANGES:
 
- * The user can how use handlers(globals = TRUE) to enable progress reports
+ * The user can how use handlers(global = TRUE) to enable progress reports
    everywhere without having to use with_progress().  This works on in
    R (>= 4.0.0) because it relies on global calling handlers.
 
@@ -17,6 +17,14 @@ SIGNIFICANT CHANGES:
 
 NEW FEATURES:
 
+ * The progression message can now be created dynamically based on the
+   information in the 'progression' condition.  Specifically, if 'message' is
+   a function, then that function will called with the 'progression' condition
+   as the first argument. This function should return a character string.
+   Importantly, it is only when the progression handler receives the
+   progression update and calls conditionMessage(p) on it that this function
+   is called.
+   
  * progressor() gained argument 'message' to set the default message of all
    progression updates, unless otherwise specified.
 
