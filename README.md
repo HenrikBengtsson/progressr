@@ -67,7 +67,7 @@ y <- slow_sum(6:10)
 
 <pre>
 with_progress({
-  y <- slow_sum(1:3)
+  y <- slow_sum(1:5)
   y <- slow_sum(6:10)
 })
 </pre>
