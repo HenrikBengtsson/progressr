@@ -167,6 +167,20 @@ if (requireNamespace("utils", quietly = TRUE)) {
 message("with_progress() - multiple handlers ... done")
 
 
+message("with_progress() - return value and visibility ...")
+
+res <- with_progress(x)
+stopifnot(identical(x, res))
+
+res <- withVisible(with_progress(x))
+stopifnot(identical(res$visible, TRUE))
+
+res <- withVisible(with_progress(y <- x))
+stopifnot(identical(res$visible, FALSE))
+
+message("with_progress() - return value and visibility ... done")
+
+
 message("with_progress() ... done")
 
 source("incl/end.R")
