@@ -1,7 +1,7 @@
 Package: progressr
 ==================
 
-Version: 0.6.0-9000 [2020-12-05]
+Version: 0.6.0-9000 [2020-12-06]
 
 SIGNIFICANT CHANGES:
 
@@ -9,6 +9,9 @@ SIGNIFICANT CHANGES:
    everywhere without having to use with_progress().  This works on in
    R (>= 4.0.0) because it relies on global calling handlers.
 
+ * Now with_progress() and without_progress() returns the value of the
+   evaluated expression.
+   
  * A progressor must not be created in the global environment unless wrapped
    in with_progress() or without_progress() call.  Ideally, a progressor is
    created within a function or a local() environment.

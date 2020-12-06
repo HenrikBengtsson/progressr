@@ -25,7 +25,7 @@
 #' default is to report progress in interactive mode but not batch mode.
 #' See below for more details.
 #'
-#' @return Return nothing (reserved for future usage).
+#' @return Returns the value of the expression.
 #'
 #' @example incl/with_progress.R
 #'
@@ -145,9 +145,9 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
 
   ## Evaluate expression
   capture_conditions <- TRUE
-  withCallingHandlers(
-    expr,
-    progression = function(p) {
+  withCallingHandlers({
+    res <- withVisible(expr)
+  }, progression = function(p) {
       ## Don't capture conditions that are produced by progression handlers
       capture_conditions <<- FALSE
       on.exit(capture_conditions <<- TRUE)
@@ -192,8 +192,12 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
   
   ## Success
   status <- "ok"
-  
-  invisible(NULL)
+
+  if (isTRUE(res$visible)) {
+    res$value
+  } else {
+    invisible(res$value)
+  }
 }
 
 
