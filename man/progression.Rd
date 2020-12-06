@@ -17,7 +17,6 @@ progression(
   progression_time = Sys.time(),
   call = NULL,
   calls = sys.calls(),
-  frames = sys.frames(),
   owner_session_uuid = NULL
 )
 }
@@ -49,8 +48,7 @@ when the progression condition was created.}
 
 \item{call}{(expression) A call expression.}
 
-\item{calls, frames}{(pairlist) The calls and the corresponding frames
-that lead up to this progression update.}
+\item{calls}{(pairlist) The calls that lead up to this progression update.}
 
 \item{owner_session_uuid}{(character string) A character string that is
 unique for the \R session where the progressor was created.}

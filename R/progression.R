@@ -34,8 +34,7 @@
 #'
 #' @param call (expression) A call expression.
 #'
-#' @param calls,frames (pairlist) The calls and the corresponding frames
-#' that lead up to this progression update.
+#' @param calls (pairlist) The calls that lead up to this progression update.
 #'
 #' @return A [base::condition] of class `progression`.
 #'
@@ -45,7 +44,7 @@
 #'
 #' @keywords internal
 #' @export
-progression <- function(message = character(0L), amount = 1.0, step = NULL, time = progression_time, ..., type = "update", class = NULL, progressor_uuid = NULL, progression_index = NULL, progression_time = Sys.time(), call = NULL, calls = sys.calls(), frames = sys.frames(), owner_session_uuid = NULL) {
+progression <- function(message = character(0L), amount = 1.0, step = NULL, time = progression_time, ..., type = "update", class = NULL, progressor_uuid = NULL, progression_index = NULL, progression_time = Sys.time(), call = NULL, calls = sys.calls(), owner_session_uuid = NULL) {
   amount <- as.numeric(amount)
   time <- as.POSIXct(time)
   stop_if_not(is.character(type), length(type) == 1L, !is.na(type))
@@ -76,8 +75,7 @@ progression <- function(message = character(0L), amount = 1.0, step = NULL, time
       time = time,
       ...,
       call = call,
-      calls = calls,
-      frames = frames
+      calls = calls
     ),
     class = c(class, "progression", "immediateCondition", "condition")
   )
