@@ -63,13 +63,22 @@
 #' @export
 with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE, delay_terminal = NULL, delay_stdout = NULL, delay_conditions = NULL, interval = NULL, enable = NULL) {
   stop_if_not(is.logical(cleanup), length(cleanup) == 1L, !is.na(cleanup))
+
+  debug <- getOption("progressr.debug", FALSE)
+  if (debug) {
+    message("with_progress() ...")
+    on.exit(message("with_progress() ... done"), add = TRUE)
+  }
   
   ## FIXME: With zero handlers, progression conditions will be
   ##        passed on upstream just as without with_progress().
   ##        Is that what we want? /HB 2019-05-17
 
   # Nothing to do?
-  if (length(handlers) == 0L) return(expr)
+  if (length(handlers) == 0L) {
+    if (debug) message("No progress handlers - skipping")
+    return(expr)
+  }
 
   ## Temporarily set progressr options
   options <- list()
@@ -83,14 +92,17 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
     stop_if_not(is.logical(enable), length(enable) == 1L, !is.na(enable))
     
     # Nothing to do?
-    if (!enable) return(expr)
+    if (!enable) {
+      if (debug) message("Progress disabled - skipping")
+      return(expr)
+    }
 
     options[["progressr.enable"]] <- enable
   }
 
   if (length(options) > 0L) {  
     oopts <- options(options)
-    on.exit(options(oopts))
+    on.exit(options(oopts), add = TRUE)
   }
 
   progressr_in_globalenv("allow")
@@ -99,7 +111,10 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
   handlers <- as_progression_handler(handlers)
 
   ## Nothing to do?
-  if (length(handlers) == 0L) return(expr)
+  if (length(handlers) == 0L) {
+    if (debug) message("No remaining progress handlers - skipping")
+    return(expr)
+  }
   
   ## Do we need to buffer?
   delays <- use_delays(handlers,
@@ -107,17 +122,25 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
     stdout     = delay_stdout,
     conditions = delay_conditions
   )
+  if (debug) {
+    what <- c(
+      if (delays$terminal) "terminal",
+      if (delays$stdout) "stdout",
+      delays$conditions
+    )
+    message("- Buffering: ", paste(sQuote(what), collapse = ", "))
+  }
 
   calling_handler <- make_calling_handler(handlers)
   
-  ## Flag indicating whether with_progress() exited due to
-  ## an error or not.
+  ## Flag indicating whether nor not with_progress() exited due to an error
   status <- "incomplete"
 
   ## Tell all progression handlers to shutdown at the end and
   ## the status of the evaluation.
   if (cleanup) {
     on.exit({
+      if (debug) message("- signaling 'shutdown' to all handlers")
       withCallingHandlers({
         withRestarts({
           signalCondition(control_progression("shutdown", status = status))
@@ -136,59 +159,67 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
     on.exit(flush_conditions(conditions), add = TRUE)
   }
 
-  ## Reset all handlers up start
+  ## Reset all handlers upfront
+  if (debug) message("- signaling 'reset' to all handlers")
   withCallingHandlers({
     withRestarts({
       signalCondition(control_progression("reset"))
     }, muffleProgression = function(p) NULL)
   }, progression = calling_handler)
 
+  ## Just for debugging purposes
+  progression_counter <- 0
+  
   ## Evaluate expression
   capture_conditions <- TRUE
   withCallingHandlers({
     res <- withVisible(expr)
   }, progression = function(p) {
-      ## Don't capture conditions that are produced by progression handlers
-      capture_conditions <<- FALSE
-      on.exit(capture_conditions <<- TRUE)
+    progression_counter <<- progression_counter + 1
+    if (debug) message(sprintf("- received a %s (n=%g)", sQuote(class(p)[1]), progression_counter))
+    
+    ## Don't capture conditions that are produced by progression handlers
+    capture_conditions <<- FALSE
+    on.exit(capture_conditions <<- TRUE)
 
-      ## Any buffered output to flush?
-      if (isTRUE(attr(delays$terminal, "flush"))) {
-        if (length(conditions) > 0L || has_buffered_stdout(stdout_file)) {
-          calling_handler(control_progression("hide"))
-          stdout_file <<- flush_stdout(stdout_file, close = FALSE)
-          conditions <<- flush_conditions(conditions)
-          calling_handler(control_progression("unhide"))
-        }
+    ## Any buffered output to flush?
+    if (isTRUE(attr(delays$terminal, "flush"))) {
+      if (length(conditions) > 0L || has_buffered_stdout(stdout_file)) {
+        calling_handler(control_progression("hide"))
+        stdout_file <<- flush_stdout(stdout_file, close = FALSE)
+        conditions <<- flush_conditions(conditions)
+        calling_handler(control_progression("unhide"))
       }
-      
-      calling_handler(p)
-    },
-    condition = function(c) {
-      if (!capture_conditions || inherits(c, c("progression", "error"))) return()
-      if (inherits(c, delays$conditions)) {
-        ## Record
-        conditions[[length(conditions) + 1L]] <<- c
-        ## Muffle
-        if (inherits(c, "message")) {
-          invokeRestart("muffleMessage")
-        } else if (inherits(c, "warning")) {
-          invokeRestart("muffleWarning")
-        } else if (inherits(c, "condition")) {
-          ## If there is a "muffle" restart for this condition,
-          ## then invoke that restart, i.e. "muffle" the condition
-          restarts <- computeRestarts(c)
-          for (restart in restarts) {
-            name <- restart$name
-            if (is.null(name)) next
-            if (!grepl("^muffle", name)) next
-            invokeRestart(restart)
-            break
-          }
+    }
+    
+    calling_handler(p)
+  },
+  condition = function(c) {
+    if (!capture_conditions || inherits(c, c("progression", "error"))) return()
+    if (debug) message("- received a ", sQuote(class(c)[1]))
+    
+    if (inherits(c, delays$conditions)) {
+      ## Record
+      conditions[[length(conditions) + 1L]] <<- c
+      ## Muffle
+      if (inherits(c, "message")) {
+        invokeRestart("muffleMessage")
+      } else if (inherits(c, "warning")) {
+        invokeRestart("muffleWarning")
+      } else if (inherits(c, "condition")) {
+        ## If there is a "muffle" restart for this condition,
+        ## then invoke that restart, i.e. "muffle" the condition
+        restarts <- computeRestarts(c)
+        for (restart in restarts) {
+          name <- restart$name
+          if (is.null(name)) next
+          if (!grepl("^muffle", name)) next
+          invokeRestart(restart)
+          break
         }
       }
     }
-  )
+  })
   
   ## Success
   status <- "ok"
