@@ -59,7 +59,7 @@ p("loading ...")  # pass on a message
 </p>
 
 <pre>
-handler(global = TRUE)
+handlers(global = TRUE)
 
 y <- slow_sum(1:5)
 y <- slow_sum(6:10)
@@ -171,7 +171,7 @@ This progress handler will present itself as:
 / [================>--------------------------]  40% Added 4
 ```
 
-To set the default progress handler(s) in all your R sessions, call `progressr::handlers(...)` in your <code>~/.Rprofile</code> file.
+To set the default progress handler, or handlers, in all your R sessions, call `progressr::handlers(...)` in your <code>~/.Rprofile</code> file.
 
 
 
