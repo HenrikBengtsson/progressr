@@ -23,6 +23,9 @@
 #' @importFrom utils flush.console
 #' @export
 handler_pbcol <- function(adjust = 0.0, pad = 1L, done_col = "blue", todo_col = "cyan", intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
+  crayon_enabled <- getOption("crayon.enabled", NA)
+  if (is.na(crayon_enabled)) crayon_enabled <- crayon::has_color()
+
   cat_ <- function(...) {
     cat(..., sep = "", collapse = "", file = stderr())
     flush.console()
@@ -34,6 +37,10 @@ handler_pbcol <- function(adjust = 0.0, pad = 1L, done_col = "blue", todo_col = 
   
   redraw_progress_bar <- function(ratio, message, spin = " ") {
     stop_if_not(ratio >= 0, ratio <= 1)
+    if (crayon_enabled) {
+      options(crayon.enabled = TRUE)
+      on.exit(options(crayon.enabled = TRUE), add = TRUE)
+    }
     pbstr <- pbcol(
       fraction = ratio,
       msg = message,
