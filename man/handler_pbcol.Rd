@@ -7,6 +7,7 @@
 handler_pbcol(
   adjust = 0,
   pad = 1L,
+  text_col = "white",
   done_col = "blue",
   todo_col = "cyan",
   intrusiveness = getOption("progressr.intrusiveness.terminal", 1),

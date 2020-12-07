@@ -22,7 +22,7 @@
 #'
 #' @importFrom utils flush.console
 #' @export
-handler_pbcol <- function(adjust = 0.0, pad = 1L, done_col = "blue", todo_col = "cyan", intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
+handler_pbcol <- function(adjust = 0.0, pad = 1L, text_col = "white", done_col = "blue", todo_col = "cyan", intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
   crayon_enabled <- getOption("crayon.enabled", NA)
   if (is.na(crayon_enabled)) crayon_enabled <- crayon::has_color()
 
@@ -46,6 +46,7 @@ handler_pbcol <- function(adjust = 0.0, pad = 1L, done_col = "blue", todo_col = 
       msg = message,
       adjust = adjust,
       pad = pad,
+      text_col = text_col,
       done_col = done_col,
       todo_col = todo_col,
       spin = spin,
@@ -93,7 +94,7 @@ handler_pbcol <- function(adjust = 0.0, pad = 1L, done_col = "blue", todo_col = 
 
 
 
-pbcol <- function(fraction = 0.0, msg = "", adjust = 0, pad = 1L, width = getOption("width") - 1L, done_col = "blue", todo_col = "cyan", spin = " ") {
+pbcol <- function(fraction = 0.0, msg = "", adjust = 0, pad = 1L, width = getOption("width") - 1L, text_col = "white", done_col = "blue", todo_col = "cyan", spin = " ") {
   bgColor <- function(s, col) {
     bgFcn <- switch(col,
       black   = crayon::bgBlack,
@@ -107,6 +108,22 @@ pbcol <- function(fraction = 0.0, msg = "", adjust = 0, pad = 1L, width = getOpt
       stop("Unknown 'crayon' background color: ", sQuote(col))
     )
     bgFcn(s)
+  }
+
+  fgColor <- function(s, col) {
+    fgFcn <- switch(col,
+      black   = crayon::black,
+      blue    = crayon::blue,
+      cyan    = crayon::cyan,
+      green   = crayon::green,
+      magenta = crayon::magenta,
+      red     = crayon::red,
+      silver  = crayon::silver,
+      yellow  = crayon::yellow,
+      white   = crayon::white,
+      stop("Unknown 'crayon' foreground color: ", sQuote(col))
+    )
+    fgFcn(s)
   }
 
   if (length(msg) == 0L) msg <- ""
@@ -146,5 +163,9 @@ pbcol <- function(fraction = 0.0, msg = "", adjust = 0, pad = 1L, width = getOpt
   rmsg <- substr(pmsg, start = len + 1L, stop = nchar(pmsg))
   lmsg <- bgColor(lmsg, done_col)
   rmsg <- bgColor(rmsg, todo_col)
-  paste(lmsg, rmsg, sep = "")
+  lmsg <- fgColor(lmsg, text_col)
+  rmsg <- fgColor(rmsg, text_col)
+  bar <- paste(lmsg, rmsg, sep = "")
+  
+  bar
 }
