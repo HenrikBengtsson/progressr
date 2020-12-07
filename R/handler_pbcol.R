@@ -9,9 +9,11 @@
 #' @param pad (integer) Amount of padding on each side of the message,
 #' where padding is done by spaces.
 #'
-#' @param done_col,todo_col (character string) The \pkg{crayon} background
-#' colors used for the progress bar, where `done_col` is used for the part
-#' of the progress bar that is already done and `todo_col` for what remains.
+#' @param text_col,done_col,todo_col (character string) The \pkg{crayon}
+#' foreground and background colors used for the progress bar, where
+#' `text_col` is used for all of the progress bar, `done_col` is used for the
+#' part of the progress bar that is already done and `todo_col` for what
+#' remains.
 #' 
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
 #'

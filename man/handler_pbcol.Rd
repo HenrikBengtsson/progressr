@@ -23,9 +23,11 @@ where \code{adjust = 0} positions the message to the very left, and
 \item{pad}{(integer) Amount of padding on each side of the message,
 where padding is done by spaces.}
 
-\item{done_col, todo_col}{(character string) The \pkg{crayon} background
-colors used for the progress bar, where \code{done_col} is used for the part
-of the progress bar that is already done and \code{todo_col} for what remains.}
+\item{text_col, done_col, todo_col}{(character string) The \pkg{crayon}
+foreground and background colors used for the progress bar, where
+\code{text_col} is used for all of the progress bar, \code{done_col} is used for the
+part of the progress bar that is already done and \code{todo_col} for what
+remains.}
 
 \item{intrusiveness}{(numeric) A non-negative scalar on how intrusive
 (disruptive) the reporter to the user.}
