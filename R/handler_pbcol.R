@@ -20,10 +20,12 @@
 #'
 #' @example incl/handler_pbcol.R
 #'
+#' @importFrom utils flush.console
 #' @export
 handler_pbcol <- function(adjust = 0.0, pad = 1L, done_col = "blue", todo_col = "cyan", intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
   cat_ <- function(...) {
     cat(..., sep = "", collapse = "", file = stderr())
+    flush.console()
   }
   
   erase_progress_bar <- function() {
