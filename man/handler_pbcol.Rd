@@ -7,9 +7,8 @@
 handler_pbcol(
   adjust = 0,
   pad = 1L,
-  text_col = "white",
-  done_col = "blue",
-  todo_col = "cyan",
+  complete = function(s) crayon::bgBlue(crayon::white(s)),
+  incomplete = function(s) crayon::bgCyan(crayon::white(s)),
   intrusiveness = getOption("progressr.intrusiveness.terminal", 1),
   target = "terminal",
   ...
@@ -23,11 +22,11 @@ where \code{adjust = 0} positions the message to the very left, and
 \item{pad}{(integer) Amount of padding on each side of the message,
 where padding is done by spaces.}
 
-\item{text_col, done_col, todo_col}{(character string) The \pkg{crayon}
-foreground and background colors used for the progress bar, where
-\code{text_col} is used for all of the progress bar, \code{done_col} is used for the
-part of the progress bar that is already done and \code{todo_col} for what
-remains.}
+\item{complete, incomplete}{(function) Functions that take "complete" and
+"incomplete" strings that comprise the progress bar as input and annotate
+them to reflect their two different parts.  The default is to annotation
+them with two different background colors and the same foreground color
+using the \pkg{crayon} package.}
 
 \item{intrusiveness}{(numeric) A non-negative scalar on how intrusive
 (disruptive) the reporter to the user.}

@@ -9,11 +9,11 @@
 #' @param pad (integer) Amount of padding on each side of the message,
 #' where padding is done by spaces.
 #'
-#' @param text_col,done_col,todo_col (character string) The \pkg{crayon}
-#' foreground and background colors used for the progress bar, where
-#' `text_col` is used for all of the progress bar, `done_col` is used for the
-#' part of the progress bar that is already done and `todo_col` for what
-#' remains.
+#' @param complete,incomplete (function) Functions that take "complete" and
+#' "incomplete" strings that comprise the progress bar as input and annotate
+#' them to reflect their two different parts.  The default is to annotation
+#' them with two different background colors and the same foreground color
+#' using the \pkg{crayon} package.
 #' 
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
 #'
@@ -24,9 +24,9 @@
 #'
 #' @importFrom utils flush.console
 #' @export
-handler_pbcol <- function(adjust = 0.0, pad = 1L, text_col = "white", done_col = "blue", todo_col = "cyan", intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
-  crayon_enabled <- getOption("crayon.enabled", NA)
-  if (is.na(crayon_enabled)) crayon_enabled <- crayon::has_color()
+handler_pbcol <- function(adjust = 0.0, pad = 1L, complete = function(s) crayon::bgBlue(crayon::white(s)), incomplete = function(s) crayon::bgCyan(crayon::white(s)), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
+  crayon_enabled <- getOption("crayon.enabled", NULL)
+  if (is.null(crayon_enabled)) crayon_enabled <- crayon::has_color()
 
   cat_ <- function(...) {
     cat(..., sep = "", collapse = "", file = stderr())
@@ -39,7 +39,7 @@ handler_pbcol <- function(adjust = 0.0, pad = 1L, text_col = "white", done_col =
   
   redraw_progress_bar <- function(ratio, message, spin = " ") {
     stop_if_not(ratio >= 0, ratio <= 1)
-    if (crayon_enabled) {
+    if (crayon_enabled && !is.null(getOption("crayon.enabled", NULL))) {
       options(crayon.enabled = TRUE)
       on.exit(options(crayon.enabled = TRUE), add = TRUE)
     }
@@ -48,9 +48,8 @@ handler_pbcol <- function(adjust = 0.0, pad = 1L, text_col = "white", done_col =
       msg = message,
       adjust = adjust,
       pad = pad,
-      text_col = text_col,
-      done_col = done_col,
-      todo_col = todo_col,
+      complete = complete,
+      incomplete = incomplete,
       spin = spin,
     )
     cat_("\r", pbstr)
@@ -96,38 +95,7 @@ handler_pbcol <- function(adjust = 0.0, pad = 1L, text_col = "white", done_col =
 
 
 
-pbcol <- function(fraction = 0.0, msg = "", adjust = 0, pad = 1L, width = getOption("width") - 1L, text_col = "white", done_col = "blue", todo_col = "cyan", spin = " ") {
-  bgColor <- function(s, col) {
-    bgFcn <- switch(col,
-      black   = crayon::bgBlack,
-      blue    = crayon::bgBlue,
-      cyan    = crayon::bgCyan,
-      green   = crayon::bgGreen,
-      magenta = crayon::bgMagenta,
-      red     = crayon::bgRed,
-      yellow  = crayon::bgYellow,
-      white   = crayon::bgWhite,
-      stop("Unknown 'crayon' background color: ", sQuote(col))
-    )
-    bgFcn(s)
-  }
-
-  fgColor <- function(s, col) {
-    fgFcn <- switch(col,
-      black   = crayon::black,
-      blue    = crayon::blue,
-      cyan    = crayon::cyan,
-      green   = crayon::green,
-      magenta = crayon::magenta,
-      red     = crayon::red,
-      silver  = crayon::silver,
-      yellow  = crayon::yellow,
-      white   = crayon::white,
-      stop("Unknown 'crayon' foreground color: ", sQuote(col))
-    )
-    fgFcn(s)
-  }
-
+pbcol <- function(fraction = 0.0, msg = "", adjust = 0, pad = 1L, width = getOption("width") - 1L, complete = function(s) crayon::bgBlue(crayon::white(s)), incomplete = function(s) crayon::bgCyan(crayon::white(s)), spin = " ") {
   if (length(msg) == 0L) msg <- ""
   stop_if_not(length(msg) == 1L, is.character(msg))
 
@@ -163,10 +131,8 @@ pbcol <- function(fraction = 0.0, msg = "", adjust = 0, pad = 1L, width = getOpt
   len <- round(fraction * nchar(pmsg), digits = 0L)
   lmsg <- substr(pmsg, start = 1L, stop = len)
   rmsg <- substr(pmsg, start = len + 1L, stop = nchar(pmsg))
-  lmsg <- bgColor(lmsg, done_col)
-  rmsg <- bgColor(rmsg, todo_col)
-  lmsg <- fgColor(lmsg, text_col)
-  rmsg <- fgColor(rmsg, text_col)
+  if (!is.null(complete)) lmsg <- complete(lmsg)
+  if (!is.null(incomplete)) rmsg <- incomplete(rmsg)
   bar <- paste(lmsg, rmsg, sep = "")
   
   bar
