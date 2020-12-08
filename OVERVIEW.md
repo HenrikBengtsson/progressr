@@ -284,6 +284,7 @@ we will get:
 
 ```r
 > library(progressr)
+> handlers(global = TRUE)
 > handlers("progress")
 > y <- slow_sqrt(1:8)
 Calculating the square root of 1
@@ -306,6 +307,7 @@ Note that progression updates by **progressr** is designed to work out of the bo
 
 ```r
 library(progressr)
+handlers(global = TRUE)
 
 my_fcn <- function(xs) {
   p <- progressor(along = xs)
@@ -314,7 +316,7 @@ my_fcn <- function(xs) {
     p(sprintf("x=%g", x))
     sqrt(x)
   })
-})
+}
 
 my_fcn(1:5)
 #  |====================                               |  40%
@@ -326,6 +328,7 @@ my_fcn(1:5)
 ```r
 library(foreach)
 library(progressr)
+handlers(global = TRUE)
 
 my_fcn <- function(xs) {
   p <- progressor(along = xs)
@@ -345,6 +348,7 @@ my_fcn(1:5)
 ```r
 library(purrr)
 library(progressr)
+handlers(global = TRUE)
 
 my_fcn <- function(xs) {
   p <- progressor(along = xs)
@@ -353,7 +357,7 @@ my_fcn <- function(xs) {
     p(sprintf("x=%g", x))
     sqrt(x)
   })
-})
+}
 
 my_fcn(1:5)
 #  |====================                               |  40%
@@ -365,6 +369,7 @@ my_fcn(1:5)
 ```r
 library(plyr)
 library(progressr)
+handlers(global = TRUE)
 
 my_fcn <- function(xs) {
   p <- progressor(along = xs)
@@ -373,7 +378,7 @@ my_fcn <- function(xs) {
     p(sprintf("x=%g", x))
     sqrt(x)
   })
-})
+}
 
 my_fcn(1:5)
 #  |====================                               |  40%
@@ -396,6 +401,7 @@ library(future.apply)
 plan(multisession)
 
 library(progressr)
+handlers(global = TRUE)
 handlers("progress", "beepr")
 
 my_fcn <- function(xs) {
@@ -405,7 +411,7 @@ my_fcn <- function(xs) {
     p(sprintf("x=%g", x))
     sqrt(x)
   })
-})
+}
 
 my_fcn(1:5)
 # / [================>-----------------------------]  40% x=2
@@ -422,6 +428,7 @@ registerDoFuture()
 plan(multisession)
 
 library(progressr)
+handlers(global = TRUE)
 handlers("progress", "beepr")
 
 my_fcn <- function(xs) {
@@ -431,7 +438,7 @@ my_fcn <- function(xs) {
     p(sprintf("x=%g", x))
     sqrt(x)
   }
-})
+}
 
 my_fcn(1:5)
 # / [================>-----------------------------]  40% x=2
@@ -447,6 +454,7 @@ library(furrr)
 plan(multisession)
 
 library(progressr)
+handlers(global = TRUE)
 handlers("progress", "beepr")
 
 my_fcn <- function(xs) {
@@ -456,7 +464,7 @@ my_fcn <- function(xs) {
     p(sprintf("x=%g", x))
     sqrt(x)
   })
-})
+}
 
 my_fcn(1:5)
 # / [================>-----------------------------]  40% x=2
@@ -476,6 +484,7 @@ registerDoFuture()
 plan(multisession)
 
 library(progressr)
+handlers(global = TRUE)
 handlers("progress", "beepr")
 
 my_fcn <- function(xs) {
@@ -485,7 +494,7 @@ my_fcn <- function(xs) {
     p(sprintf("x=%g", x))
     sqrt(x)
   }, .parallel = TRUE)
-})
+}
 
 my_fcn(1:5)
 # / [================>-----------------------------]  40% x=2
