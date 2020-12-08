@@ -6,7 +6,7 @@
 * GitHub: https://github.com/M-E-Rademaker/cSEM
 * Source code: https://github.com/cran/cSEM
 * Date/Publication: 2020-10-12 16:40:03 UTC
-* Number of recursive dependencies: 120
+* Number of recursive dependencies: 119
 
 Run `revdep_details(, "cSEM")` for more info
 
@@ -54,11 +54,11 @@ Run `revdep_details(, "EFAtools")` for more info
 
 <details>
 
-* Version: 1.2.1
+* Version: 1.3.1
 * GitHub: NA
 * Source code: https://github.com/cran/EpiNow2
-* Date/Publication: 2020-10-20 14:50:09 UTC
-* Number of recursive dependencies: 146
+* Date/Publication: 2020-11-22 14:20:05 UTC
+* Number of recursive dependencies: 149
 
 Run `revdep_details(, "EpiNow2")` for more info
 
@@ -73,32 +73,9 @@ Run `revdep_details(, "EpiNow2")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 107.4Mb
+      installed size is 137.8Mb
       sub-directories of 1Mb or more:
-        help    2.3Mb
-        libs  104.8Mb
-    ```
-
-# funGp
-
-<details>
-
-* Version: 0.2.0
-* GitHub: NA
-* Source code: https://github.com/cran/funGp
-* Date/Publication: 2020-11-17 09:10:03 UTC
-* Number of recursive dependencies: 35
-
-Run `revdep_details(, "funGp")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘plyr’
-      All declared Imports should be used.
+        libs  136.4Mb
     ```
 
 # lmtp
@@ -133,10 +110,10 @@ Run `revdep_details(, "lmtp")` for more info
 
 <details>
 
-* Version: 0.3.1
+* Version: 0.4.0
 * GitHub: https://github.com/business-science/modeltime
 * Source code: https://github.com/cran/modeltime
-* Date/Publication: 2020-11-09 21:50:02 UTC
+* Date/Publication: 2020-11-23 08:50:05 UTC
 * Number of recursive dependencies: 195
 
 Run `revdep_details(, "modeltime")` for more info
@@ -166,9 +143,15 @@ Run `revdep_details(, "modeltime")` for more info
       ══ testthat results  ═══════════════════════════════════════════════════════════
       ERROR (test-results-forecast-plots.R:34:1): (code run outside of `test_that()`)
       
-      [ FAIL 1 | WARN 0 | SKIP 7 | PASS 465 ]
+      [ FAIL 1 | WARN 0 | SKIP 7 | PASS 473 ]
       Error: Test failures
       Execution halted
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘slider’
+      All declared Imports should be used.
     ```
 
 # modeltime.ensemble
@@ -225,7 +208,7 @@ Run `revdep_details(, "modeltime.resample")` for more info
 * GitHub: https://github.com/rmaia/pavo
 * Source code: https://github.com/cran/pavo
 * Date/Publication: 2020-11-12 09:00:02 UTC
-* Number of recursive dependencies: 100
+* Number of recursive dependencies: 101
 
 Run `revdep_details(, "pavo")` for more info
 

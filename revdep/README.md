@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2020-11-17                   |
+|date     |2020-12-07                   |
 
 # Dependencies
 
@@ -29,19 +29,19 @@
 |dipsaus                                             |0.1.1   |      |        |     |
 |econet                                              |0.1.92  |      |        |     |
 |[EFAtools](problems.md#efatools)                    |0.3.0   |      |        |2    |
-|[EpiNow2](problems.md#epinow2)                      |1.2.1   |      |        |2    |
+|[EpiNow2](problems.md#epinow2)                      |1.3.1   |      |        |2    |
 |epwshiftr                                           |0.1.1   |      |        |     |
 |fabletools                                          |0.2.1   |      |        |     |
-|[funGp](problems.md#fungp)                          |0.2.0   |      |        |1    |
+|funGp                                               |0.2.1   |      |        |     |
 |furrr                                               |0.2.1   |      |        |     |
 |gtfs2gps                                            |1.3-2   |      |        |     |
 |lightr                                              |1.3     |      |        |     |
 |[lmtp](problems.md#lmtp)                            |0.0.5   |      |        |2    |
-|mlr3                                                |0.8.0   |      |        |     |
-|[modeltime](problems.md#modeltime)                  |0.3.1   |1     |        |     |
+|mlr3                                                |0.9.0   |      |        |     |
+|[modeltime](problems.md#modeltime)                  |0.4.0   |1     |        |1    |
 |[modeltime.ensemble](problems.md#modeltimeensemble) |0.3.0   |      |        |1    |
 |[modeltime.resample](problems.md#modeltimeresample) |0.1.0   |      |        |1    |
-|nflfastR                                            |3.1.1   |      |        |     |
+|nflfastR                                            |3.2.0   |      |        |     |
 |nlrx                                                |0.4.2   |      |        |     |
 |[pavo](problems.md#pavo)                            |2.5.0   |      |1       |     |
 |poppr                                               |2.8.6   |      |        |     |
