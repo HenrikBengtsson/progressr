@@ -15,6 +15,7 @@ progressor(
   initiate = TRUE,
   auto_finish = TRUE,
   on_exit = !identical(envir, globalenv()),
+  enable = getOption("progressr.enable", TRUE),
   envir = parent.frame()
 )
 }
@@ -48,6 +49,11 @@ first argument.}
 \item{on_exit, envir}{(logical) If TRUE, then the created progressor will
 signal a \link{progression} 'finish' condition when the calling frame exits.
 This is ignored if the calling frame (\code{envir}) is the global environment.}
+
+\item{enable}{(logical) If TRUE, \link{progression} conditions are signaled when
+calling the progressor function created by this function.
+If FALSE, no \link{progression} conditions is signaled because the progressor
+function is an empty function that does nothing.}
 }
 \value{
 A function of class \code{progressor}.

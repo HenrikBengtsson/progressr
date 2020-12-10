@@ -22,6 +22,11 @@
 #' @param auto_finish (logical) If TRUE, then the progressor will signal a
 #' [progression] 'finish' condition as soon as the last step has been reached.
 #'
+#' @param enable (logical) If TRUE, [progression] conditions are signaled when
+#' calling the progressor function created by this function.
+#' If FALSE, no [progression] conditions is signaled because the progressor
+#' function is an empty function that does nothing.
+#'
 #' @param on_exit,envir (logical) If TRUE, then the created progressor will
 #' signal a [progression] 'finish' condition when the calling frame exits.
 #' This is ignored if the calling frame (`envir`) is the global environment.
@@ -31,8 +36,17 @@
 #' @export
 progressor <- local({
   progressor_count <- 0L
-  
-  function(steps = length(along), along = NULL, offset = 0L, scale = 1L, transform = function(steps) scale * steps + offset, message = character(0L), label = NA_character_, initiate = TRUE, auto_finish = TRUE, on_exit = !identical(envir, globalenv()), envir = parent.frame()) {
+
+  void_progressor <- function(...) NULL
+  environment(void_progressor)$enable <- FALSE
+  class(void_progressor) <- c("progressor", class(void_progressor))
+
+  function(steps = length(along), along = NULL, offset = 0L, scale = 1L, transform = function(steps) scale * steps + offset, message = character(0L), label = NA_character_, initiate = TRUE, auto_finish = TRUE, on_exit = !identical(envir, globalenv()), enable = getOption("progressr.enable", TRUE), envir = parent.frame()) {
+    stop_if_not(is.logical(enable), length(enable) == 1L, !is.na(enable))
+
+    ## Quickly return a moot progressor function?
+    if (!enable) return(void_progressor)
+    
     stop_if_not(!is.null(steps) || !is.null(along))
     stop_if_not(length(steps) == 1L, is.numeric(steps), !is.na(steps),
                 steps >= 0)
@@ -123,6 +137,8 @@ print.progressor <- function(x, ...) {
   s <- c(s, paste("- progression_index:", e$progression_index))
   owner_session_uuid <- e$owner_session_uuid
   s <- c(s, paste("- owner_session_uuid:", owner_session_uuid))
+  
+  s <- c(s, paste("- enable:", e$enable))
 
   s <- paste(s, collapse = "\n")
   cat(s, "\n", sep = "")

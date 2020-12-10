@@ -1,7 +1,7 @@
 Package: progressr
 ==================
 
-Version: 0.6.0-9000 [2020-12-07]
+Version: 0.6.0-9000 [2020-12-10]
 
 SIGNIFICANT CHANGES:
 
@@ -19,6 +19,16 @@ SIGNIFICANT CHANGES:
  * Package now requires R (>= 3.5.0) in order to protect against interrupts.
 
 NEW FEATURES:
+
+ * progressor() gained argument 'enable' to control whether or not the
+   progressor signals 'progression' conditions.  It defaults to option
+   'progressr.enable' so that progress updates can be disabled globally.
+   The 'enable' argument makes it easy for package developers who already
+   provide a 'progress = TRUE/FALSE' argument in their functions to migrate
+   to the 'progressr' package without having to change their existing API,
+   e.g. the setup becomes 'p <- progressor(along = x, enabled = progress)'.
+   The p() function created by p <- progressor(..., enable = FALSE) is an
+   empty function with near-zero overhead.
 
  * Now with_progress() and without_progress() returns the value of the
    evaluated expression.
