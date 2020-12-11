@@ -20,22 +20,22 @@
 #' 
 #' With `handlers(handler_progress())`:
 #' ```r
-#' [-------------------------------------------------]   0% 
-#' [====>--------------------------------------------]  10% 
-#' [================================================>]  99% 
+#' - [-------------------------------------------------]   0% 
+#' \ [====>--------------------------------------------]  10% 
+#' | [================================================>]  99% 
 #' ```
 #'
 #' If the progression updates have messages, they will appear like:
 #' ```r
-#' [-----------------------------------------]   0% Starting
-#' [===========>----------------------------]  30% Importing
-#' [=====================================>]  99% Summarizing
+#' - [-----------------------------------------]   0% Starting
+#' \ [===========>----------------------------]  30% Importing
+#' | [=====================================>]  99% Summarizing
 #' ```
 #'
 #' @example incl/handler_progress.R
 #'
 #' @export
-handler_progress <- function(format = "[:bar] :percent :message", show_after = 0.0, intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
+handler_progress <- function(format = ":spin [:bar] :percent :message", show_after = 0.0, intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
   ## Additional arguments passed to the progress-handler backend
   backend_args <- handler_backend_args(...)
 
@@ -83,7 +83,7 @@ handler_progress <- function(format = "[:bar] :percent :message", show_after = 0
     pb_tick <- function(pb, delta = 0, message = NULL, ...) {
       tokens <- list(message = paste0(message, ""))
       last_tokens <<- tokens
-      if (delta <= 0) return()
+      if (delta < 0) return()
       pb$tick(delta, tokens = tokens)
     }
 

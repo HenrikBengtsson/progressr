@@ -84,6 +84,7 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
   }
 
   ## Progress state
+  active <- FALSE
   max_steps <- NULL
   step <- NULL
   message <- NULL
@@ -105,7 +106,10 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
       stop(sprintf(".validate_internal_state(%s): %s", sQuote(label), msg))
     }
     if (!is.null(timestamps)) {
-      if (length(timestamps) == 0L) error("length(timestamp) == 0L")
+      if (length(timestamps) == 0L) {
+        error(paste("length(timestamps) == 0L but not is.null(timestamps):",
+                    sQuote(deparse(timestamps))))
+      }
     }
   }
   
@@ -145,6 +149,24 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
     ))    
   }
 
+  reset_internal_state <- function() {
+    ## Progress state
+    active <<- FALSE
+    max_steps <<- NULL
+    step <<- NULL
+    message <<- NULL
+    auto_finish <<- TRUE
+    timestamps <<- NULL
+    milestones <<- NULL
+    prev_milestone <<- NULL
+    finished <<- FALSE
+    enabled <<- FALSE
+  
+    ## Progress cache
+    owner <<- NULL
+    done <<- list()
+  }
+
   reset_reporter <- function(p) {
     args <- reporter_args(progression = p)
     debug <- getOption("progressr.debug", FALSE)
@@ -164,8 +186,10 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
       mprintf("initiate_reporter() ...")
       mstr(args)
     }
+    stop_if_not(!isTRUE(active))
     stop_if_not(is.null(prev_milestone), length(milestones) > 0L)
     do.call(reporter$initiate, args = args)
+    active <<- TRUE
     finished <<- FALSE
     .validate_internal_state("initiate_reporter() ... done")
     if (debug) mprintf("initiate_reporter() ... done")
@@ -178,6 +202,7 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
       mprintf("update_reporter() ...")
       mstr(args)
     }
+    stop_if_not(isTRUE(active))
     stop_if_not(!is.null(step), length(milestones) > 0L)
     do.call(reporter$update, args = args)
     .validate_internal_state("update_reporter() ... done")
@@ -191,6 +216,7 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
       mprintf("hide_reporter() ...")
       mstr(args)
     }
+#    stop_if_not(isTRUE(active))
     if (is.null(reporter$hide)) {
       if (debug) mprintf("hide_reporter() ... skipping; not supported")
       return()
@@ -207,6 +233,7 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
       mprintf("unhide_reporter() ...")
       mstr(args)
     }
+#    stop_if_not(isTRUE(active))
     if (is.null(reporter$unhide)) {
       if (debug) mprintf("unhide_reporter() ... skipping; not supported")
       return()
@@ -223,51 +250,51 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
       mprintf("finish_reporter() ...")
       mstr(args)
     }
-    do.call(reporter$finish, args = args)
+
+    ## Signal 'finish' if active and not already finished
+    ## because it could already have been auto-finished before
+    if (active && !finished) {
+      do.call(reporter$finish, args = args)
+    } else {
+      if (debug) message("- Hmm ... got a request to 'finish' handler, but it's not active. Oh well, will finish it then")
+    }
+    
+    reset_internal_state()
     finished <<- TRUE
+    if (debug) message("- owner: ", deparse(owner))
     .validate_internal_state("finish_reporter() ... done")
     if (debug) mprintf("finish_reporter() ... done")
   }
 
   is_owner <- function(p) {
-    progressor_uuid <- p$progressor_uuid
+    progressor_uuid <- p[["progressor_uuid"]]
     if (is.null(owner)) owner <<- progressor_uuid
     (owner == progressor_uuid)
   }
 
   is_duplicated <- function(p) {
-    progressor_uuid <- p$progressor_uuid
-    session_uuid <- p$session_uuid
-    progression_index <- p$progression_index
-    progression_time <- p$progression_time
+    progressor_uuid <- p[["progressor_uuid"]]
+    session_uuid <- p[["session_uuid"]]
+    progression_index <- p[["progression_index"]]
+    progression_time <- p[["progression_time"]]
     progression_id <- sprintf("%s-%d-%s", session_uuid, progression_index, progression_time)
-    db <- done[[progressor_uuid]]
+    db <- done[["progressor_uuid"]]
     res <- is.element(progression_id, db)
     if (!res) {
       db <- c(db, progression_id)
-      done[[progressor_uuid]] <<- db
+      done[["progressor_uuid"]] <<- db
     }
     res
   }
   
   if (is.null(handler)) {
     handler <- function(p) {
-      stopifnot(inherits(p, "progression"))
+      stop_if_not(inherits(p, "progression"))
 
       if (inherits(p, "control_progression")) {
-        type <- p$type
+        type <- p[["type"]]
         if (type == "reset") {
-          max_steps <<- NULL
-          step <<- NULL
-          message <<- NULL
-          auto_finish <<- TRUE
-          timestamps <<- NULL
-          milestones <<- NULL
-          prev_milestone <<- NULL
-          enabled <<- FALSE
-          finished <<- FALSE
-          owner <<- NULL
-          done <<- list()
+          reset_internal_state()
           reset_reporter(p)
           .validate_internal_state(sprintf("handler(type=%s) ... end", type))
         } else if (type == "shutdown") {
@@ -283,39 +310,47 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
           stop("Unknown control_progression type: ", sQuote(type))
         }
         .validate_internal_state(sprintf("control_progression ... end", type))
-        return(invisible())
+        return(invisible(finished))
       }        
+
+      debug <- getOption("progressr.debug", FALSE)
 
       ## Ignore stray progressions coming from other sources, e.g.
       ## a function of a package that started to report on progression.
-      if (!is_owner(p)) return(FALSE)
+      if (!is_owner(p)) {
+        if (debug) message("- not owner of this progression. Skipping")
+        return(invisible(finished))
+      }
       
       duplicated <- is_duplicated(p)
       
-      type <- p$type
-      debug <- getOption("progressr.debug", FALSE)
+      type <- p[["type"]]
       if (debug) {
         mprintf("Progression calling handler %s ...", sQuote(type))
         mprintf("- progression:")
         mstr(p)
-        mprintf("- progressor_uuid: %s", p$progressor_uuid)
-        mprintf("- progression_index: %s", p$progression_index)
+        mprintf("- progressor_uuid: %s", p[["progressor_uuid"]])
+        mprintf("- progression_index: %s", p[["progression_index"]])
         mprintf("- duplicated: %s", duplicated)
       }
 
       if (duplicated) {
-        if (debug) mprintf("Progression calling handler %s ... already done", sQuote(type))
-        return(invisible())
-      } else if (finished) {
-        if (debug) mprintf("Progression calling handler %s ... already finished", sQuote(type))
-        return(invisible())
+        if (debug) mprintf("Progression calling handler %s ... condition already done", sQuote(type))
+        return(invisible(finished))
+      } else if (active && finished) {
+        if (debug) mprintf("Progression calling handler %s ... active but already finished", sQuote(type))
+        return(invisible(finished))
       }
 
       if (type == "initiate") {
-        max_steps <<- p$steps
+        if (active) {
+          if (debug) message("- cannot 'initiate' handler, because it is already active")
+          return(invisible(finished))
+        }
+        max_steps <<- p[["steps"]]
         if (debug) mstr(list(max_steps=max_steps))
         stop_if_not(!is.null(max_steps), is.numeric(max_steps), length(max_steps) == 1L, max_steps >= 1)
-        auto_finish <<- p$auto_finish
+        auto_finish <<- p[["auto_finish"]]
         times <- min(times, max_steps)
         if (debug) mstr(list(auto_finish = auto_finish, times = times, interval = interval, intrusiveness = intrusiveness))
         
@@ -348,22 +383,27 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
       } else if (type == "finish") {
         if (debug) mstr(list(finished = finished, milestones = milestones))
         finish_reporter(p)
-        timestamps[max_steps] <<- Sys.time()
-        prev_milestone <<- max_steps
-        .validate_internal_state()
+        .validate_internal_state("type=finish")
       } else if (type == "update") {
-        if (debug) mstr(list(step=step, "p$amount"=p$amount, max_steps=max_steps))
-        step <<- min(max(step + p$amount, 0L), max_steps)
+        if (!active) {
+          if (debug) message("- cannot 'update' handler, because it is not active")
+          return(invisible(finished))
+        }
+        if (debug) mstr(list(step=step, "p$amount"=p[["amount"]], max_steps=max_steps))
+        step <<- min(max(step + p[["amount"]], 0L), max_steps)
         stop_if_not(step >= 0L)
         msg <- conditionMessage(p)
         if (length(msg) > 0) message <<- msg
-        timestamps[step] <<- Sys.time()
+        if (step > 0) timestamps[step] <<- Sys.time()
         if (debug) mstr(list(finished = finished, step = step, milestones = milestones, prev_milestone = prev_milestone, interval = interval))
+        .validate_internal_state("type=update")
 
-        ## Only update if a new milestone step has been reached
-        if (length(milestones) > 0L && step >= milestones[1]) {
+        ## Only update if a new milestone step has been reached ...
+        ## ... or if we want to send a zero-amount update
+        if ((length(milestones) > 0L && step >= milestones[1]) ||
+            p[["amount"]] == 0) {
           skip <- FALSE
-          if (interval > 0) {
+          if (interval > 0 && step > 0) {
             dt <- difftime(timestamps[step], timestamps[max(prev_milestone, 1L)], units = "secs")
             skip <- (dt < interval)
             if (debug) mstr(list(dt = dt, timestamps[step], timestamps[prev_milestone], skip = skip))
@@ -371,12 +411,14 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
           if (!skip) {
             if (debug) mstr(list(milestones = milestones))
             update_reporter(p)
-            prev_milestone <<- step
+            if (p[["amount"]] > 0) prev_milestone <<- step
           }
-          milestones <<- milestones[milestones > step]
-          if (auto_finish && step == max_steps) {
-            if (debug) mstr(list(type = "finish (auto)", milestones = milestones))
-            finish_reporter(p)
+          if (p[["amount"]] > 0) {
+            milestones <<- milestones[milestones > step]
+            if (auto_finish && step == max_steps) {
+              if (debug) mstr(list(type = "finish (auto)", milestones = milestones))
+              finish_reporter(p)
+            }
           }
         }
         .validate_internal_state(sprintf("handler(type=%s) ... end", type))
@@ -388,6 +430,7 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
       .validate_internal_state(sprintf("handler() ... end", type))
 
       if (debug) mprintf("Progression calling handler %s ... done", sQuote(type))
+      invisible(finished)
     } ## handler()
   }
 

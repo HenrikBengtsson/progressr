@@ -2,7 +2,11 @@
 #'
 #' A progression condition represents a progress in an \R program.
 #'
-#' @param message (character) A progress message.
+#' @param message (character vector or a function) If a character vector, then
+#' it is pasted together into a single string using an empty separator.
+#' If a function, then the message is constructed by `conditionMessage(p)`
+#' calling this function with the progression condition `p` itself as the
+#' first argument.
 #'
 #' @param amount (numeric) The total amount of progress made.
 #'
@@ -30,6 +34,8 @@
 #'
 #' @param call (expression) A call expression.
 #'
+#' @param calls (pairlist) The calls that lead up to this progression update.
+#'
 #' @return A [base::condition] of class `progression`.
 #'
 #' @seealso
@@ -38,8 +44,7 @@
 #'
 #' @keywords internal
 #' @export
-progression <- function(message = character(0L), amount = 1.0, step = NULL, time = progression_time, ..., type = "update", class = NULL, progressor_uuid = NULL, progression_index = NULL, progression_time = Sys.time(), call = NULL, owner_session_uuid = NULL) {
-  message <- as.character(message)
+progression <- function(message = character(0L), amount = 1.0, step = NULL, time = progression_time, ..., type = "update", class = NULL, progressor_uuid = NULL, progression_index = NULL, progression_time = Sys.time(), call = NULL, calls = sys.calls(), owner_session_uuid = NULL) {
   amount <- as.numeric(amount)
   time <- as.POSIXct(time)
   stop_if_not(is.character(type), length(type) == 1L, !is.na(type))
@@ -52,8 +57,8 @@ progression <- function(message = character(0L), amount = 1.0, step = NULL, time
   nargs <- length(args)
   if (nargs > 0L) {
     names <- names(args)
-    stopifnot(!is.null(names), all(nzchar(names)),
-              length(unique(names)) == nargs)
+    stop_if_not(!is.null(names), all(nzchar(names)),
+                length(unique(names)) == nargs)
   }
   
   structure(
@@ -69,12 +74,29 @@ progression <- function(message = character(0L), amount = 1.0, step = NULL, time
       step = step,
       time = time,
       ...,
-      call = call
+      call = call,
+      calls = calls
     ),
     class = c(class, "progression", "immediateCondition", "condition")
   )
 }
 
+
+#' @export
+conditionMessage.progression <- function(c) {
+  message <- NextMethod("conditionMessage")  ## == c$message
+
+  ## Dynamically generate message from the 'progression' condition?
+  if (is.function(message)) {
+    message_fcn <- message
+    message <- message_fcn(c)
+  }
+
+  message <- as.character(message)
+  if (length(message) > 0L) message <- paste(message, collapse = "")
+  
+  message
+}
 
 
 #' @export

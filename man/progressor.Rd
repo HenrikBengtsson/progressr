@@ -10,9 +10,13 @@ progressor(
   offset = 0L,
   scale = 1L,
   transform = function(steps) scale * steps + offset,
+  message = character(0L),
   label = NA_character_,
   initiate = TRUE,
-  auto_finish = TRUE
+  auto_finish = TRUE,
+  on_exit = !identical(envir, globalenv()),
+  enable = getOption("progressr.enable", TRUE),
+  envir = parent.frame()
 )
 }
 \arguments{
@@ -28,6 +32,12 @@ progressor(
 number of \code{steps} as input and returns another finite and non-negative
 number of steps.}
 
+\item{message}{(character vector or a function) If a character vector, then
+it is pasted together into a single string using an empty separator.
+If a function, then the message is constructed by \code{conditionMessage(p)}
+calling this function with the progression condition \code{p} itself as the
+first argument.}
+
 \item{label}{(character) A label.}
 
 \item{initiate}{(logical) If TRUE, the progressor will signal a
@@ -35,6 +45,15 @@ number of steps.}
 
 \item{auto_finish}{(logical) If TRUE, then the progressor will signal a
 \link{progression} 'finish' condition as soon as the last step has been reached.}
+
+\item{on_exit, envir}{(logical) If TRUE, then the created progressor will
+signal a \link{progression} 'finish' condition when the calling frame exits.
+This is ignored if the calling frame (\code{envir}) is the global environment.}
+
+\item{enable}{(logical) If TRUE, \link{progression} conditions are signaled when
+calling the progressor function created by this function.
+If FALSE, no \link{progression} conditions is signaled because the progressor
+function is an empty function that does nothing.}
 }
 \value{
 A function of class \code{progressor}.

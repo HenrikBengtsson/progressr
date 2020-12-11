@@ -44,6 +44,7 @@ The \pkg{progressr} package is compatible with Shiny applications.
 In the terminal:
 \itemize{
 \item \link{handler_txtprogressbar} (default)
+\item \link{handler_pbcol}
 \item \link{handler_pbmcapply}
 \item \link{handler_progress}
 \item \link{handler_ascii_alert}
@@ -56,7 +57,7 @@ In the graphical user interface (GUI):
 \item \link{handler_winprogressbar}
 }
 
-Via audio:
+As sound:
 \itemize{
 \item \link{handler_beepr}
 \item \link{handler_ascii_alert}
@@ -81,8 +82,8 @@ xs <- 1:5
 with_progress({
   p <- progressor(along = xs)
   y <- lapply(xs, function(x) {
-    p(sprintf("x=\%g", x))
     Sys.sleep(0.1)
+    p(sprintf("x=\%g", x))
     sqrt(x)
   })
 })

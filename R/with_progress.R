@@ -25,7 +25,7 @@
 #' default is to report progress in interactive mode but not batch mode.
 #' See below for more details.
 #'
-#' @return Return nothing (reserved for future usage).
+#' @return Returns the value of the expression.
 #'
 #' @example incl/with_progress.R
 #'
@@ -62,48 +62,23 @@
 #'
 #' @export
 with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE, delay_terminal = NULL, delay_stdout = NULL, delay_conditions = NULL, interval = NULL, enable = NULL) {
-  buffer_stdout <- function() {
-    stdout_file <- rawConnection(raw(0L), open = "w")
-    sink(stdout_file, type = "output", split = FALSE)
-    stdout_file
-  } ## buffer_stdout()
-  
-  flush_stdout <- function(stdout_file, close = TRUE) {
-    if (is.null(stdout_file)) return(NULL)
-    sink(type = "output", split = FALSE)
-    stdout <- rawToChar(rawConnectionValue(stdout_file))
-    if (length(stdout) > 0) cat(stdout, file = stdout())
-    close(stdout_file)
-    stdout_file <- NULL
-    if (!close) stdout_file <- buffer_stdout()
-    stdout_file
-  } ## flush_stdout()
-
-  has_buffered_stdout <- function(stdout_file) {
-    !is.null(stdout_file) && (length(rawConnectionValue(stdout_file)) > 0L)
-  }
-
-  flush_conditions <- function(conditions) {
-    for (c in conditions) {
-      if (inherits(c, "message")) {
-        message(c)
-      } else if (inherits(c, "warning")) {
-        warning(c)
-      } else if (inherits(c, "condition")) {
-        signalCondition(c)
-      }
-    }
-    list()
-  } ## flush_conditions()
- 
   stop_if_not(is.logical(cleanup), length(cleanup) == 1L, !is.na(cleanup))
+
+  debug <- getOption("progressr.debug", FALSE)
+  if (debug) {
+    message("with_progress() ...")
+    on.exit(message("with_progress() ... done"), add = TRUE)
+  }
   
   ## FIXME: With zero handlers, progression conditions will be
   ##        passed on upstream just as without with_progress().
   ##        Is that what we want? /HB 2019-05-17
 
   # Nothing to do?
-  if (length(handlers) == 0L) return(expr)
+  if (length(handlers) == 0L) {
+    if (debug) message("No progress handlers - skipping")
+    return(expr)
+  }
 
   ## Temporarily set progressr options
   options <- list()
@@ -112,94 +87,60 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
     options[["progressr.interval"]] <- interval
   }
   
-  if (length(options) > 0L) {  
-    oopts <- options(options)
-    on.exit(options(oopts))
-  }
-
   ## Enabled or not?
   if (!is.null(enable)) {
     stop_if_not(is.logical(enable), length(enable) == 1L, !is.na(enable))
     
     # Nothing to do?
-    if (!enable) return(expr)
+    if (!enable) {
+      if (debug) message("Progress disabled - skipping")
+      return(expr)
+    }
 
     options[["progressr.enable"]] <- enable
   }
 
-  if (!is.list(handlers)) handlers <- list(handlers)
-
-  for (kk in seq_along(handlers)) {
-    handler <- handlers[[kk]]
-    stopifnot(is.function(handler))
-    if (!inherits(handler, "progression_handler")) {
-      handler <- handler()
-      stopifnot(is.function(handler), inherits(handler, "progression_handler"))
-      handlers[[kk]] <- handler
-    }
+  if (length(options) > 0L) {  
+    oopts <- options(options)
+    on.exit(options(oopts), add = TRUE)
   }
 
-  ## Keep only enabled handlers
-  enabled <- vapply(handlers, FUN = function(h) {
-    env <- environment(h)
-    value <- env$enable
-    isTRUE(value) || is.null(value)
-  }, FUN.VALUE = TRUE)
-  handlers <- handlers[enabled]
-  
+  progressr_in_globalenv("allow")
+  on.exit(progressr_in_globalenv("disallow"), add = TRUE)
+
+  handlers <- as_progression_handler(handlers)
+
   ## Nothing to do?
-  if (length(handlers) == 0L) return(expr)
-
-
-  ## Do we need to buffer terminal output?
-  if (is.null(delay_terminal)) {
-    delay_terminal <- vapply(handlers, FUN = function(h) {
-      env <- environment(h)
-      any(env$target == "terminal")
-    }, FUN.VALUE = NA)
-    delay_terminal <- any(delay_terminal, na.rm = TRUE)
+  if (length(handlers) == 0L) {
+    if (debug) message("No remaining progress handlers - skipping")
+    return(expr)
   }
   
-  if (is.null(delay_stdout)) {
-    delay_stdout <- getOption("progressr.delay_stdout", delay_terminal)
+  ## Do we need to buffer?
+  delays <- use_delays(handlers,
+    terminal   = delay_terminal,
+    stdout     = delay_stdout,
+    conditions = delay_conditions
+  )
+  if (debug) {
+    what <- c(
+      if (delays$terminal) "terminal",
+      if (delays$stdout) "stdout",
+      delays$conditions
+    )
+    message("- Buffering: ", paste(sQuote(what), collapse = ", "))
   }
 
-  if (is.null(delay_conditions)) {
-    delay_conditions <- getOption("progressr.delay_conditions", {
-      if (delay_terminal) c("condition") else character(0L)
-    })
-  }
-
-  ## If buffering output, does all handlers support intermediate flushing?
-  flush_terminal <- FALSE 
-  if (delay_terminal) {
-    flush_terminal <- vapply(handlers, FUN = function(h) {
-      env <- environment(h)
-      if (!any(env$target == "terminal")) return(TRUE)
-      !inherits(env$reporter$hide, "null_function")
-    }, FUN.VALUE = NA)
-    flush_terminal <- all(flush_terminal, na.rm = TRUE)
-  }
-
-  if (length(handlers) > 1L) {
-    calling_handler <- function(p) {
-      for (kk in seq_along(handlers)) {
-        handler <- handlers[[kk]]
-        handler(p)
-      }
-    }
-  } else {
-    calling_handler <- handlers[[1]]
-  }
-
-  ## Flag indicating whether with_progress() exited due to
-  ## an error or not.
+  calling_handler <- make_calling_handler(handlers)
+  
+  ## Flag indicating whether nor not with_progress() exited due to an error
   status <- "incomplete"
 
   ## Tell all progression handlers to shutdown at the end and
   ## the status of the evaluation.
   if (cleanup) {
     on.exit({
+      if (debug) message("- signaling 'shutdown' to all handlers")
       withCallingHandlers({
         withRestarts({
           signalCondition(control_progression("shutdown", status = status))
@@ -209,77 +150,85 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
   }
 
   ## Delay standard output?
-  if (delay_stdout) {
-    stdout_file <- buffer_stdout()
-    on.exit(flush_stdout(stdout_file), add = TRUE)
-  } else {
-    stdout_file <- NULL
-  }
+  stdout_file <- delay_stdout(delays, stdout_file = NULL)
+  on.exit(flush_stdout(stdout_file), add = TRUE)
   
   ## Delay conditions?
   conditions <- list()
-  if (length(delay_conditions) > 0) {
+  if (length(delays$conditions) > 0) {
     on.exit(flush_conditions(conditions), add = TRUE)
   }
 
-  ## Reset all handlers up start
+  ## Reset all handlers upfront
+  if (debug) message("- signaling 'reset' to all handlers")
   withCallingHandlers({
     withRestarts({
       signalCondition(control_progression("reset"))
     }, muffleProgression = function(p) NULL)
   }, progression = calling_handler)
 
+  ## Just for debugging purposes
+  progression_counter <- 0
+  
   ## Evaluate expression
   capture_conditions <- TRUE
-  withCallingHandlers(
-    expr,
-    progression = function(p) {
-      ## Don't capture conditions that are produced by progression handlers
-      capture_conditions <<- FALSE
-      on.exit(capture_conditions <<- TRUE)
+  withCallingHandlers({
+    res <- withVisible(expr)
+  }, progression = function(p) {
+    progression_counter <<- progression_counter + 1
+    if (debug) message(sprintf("- received a %s (n=%g)", sQuote(class(p)[1]), progression_counter))
+    
+    ## Don't capture conditions that are produced by progression handlers
+    capture_conditions <<- FALSE
+    on.exit(capture_conditions <<- TRUE)
 
-      ## Any buffered output to flush?
-      if (flush_terminal) {
-        if (length(conditions) > 0L || has_buffered_stdout(stdout_file)) {
-          calling_handler(control_progression("hide"))
-          stdout_file <<- flush_stdout(stdout_file, close = FALSE)
-          conditions <<- flush_conditions(conditions)
-          calling_handler(control_progression("unhide"))
-        }
+    ## Any buffered output to flush?
+    if (isTRUE(attr(delays$terminal, "flush"))) {
+      if (length(conditions) > 0L || has_buffered_stdout(stdout_file)) {
+        calling_handler(control_progression("hide"))
+        stdout_file <<- flush_stdout(stdout_file, close = FALSE)
+        conditions <<- flush_conditions(conditions)
+        calling_handler(control_progression("unhide"))
       }
-      
-      calling_handler(p)
-    },
-    condition = function(c) {
-      if (!capture_conditions || inherits(c, c("progression", "error"))) return()
-      if (inherits(c, delay_conditions)) {
-        ## Record
-        conditions[[length(conditions) + 1L]] <<- c
-        ## Muffle
-        if (inherits(c, "message")) {
-          invokeRestart("muffleMessage")
-        } else if (inherits(c, "warning")) {
-          invokeRestart("muffleWarning")
-        } else if (inherits(c, "condition")) {
-          ## If there is a "muffle" restart for this condition,
-          ## then invoke that restart, i.e. "muffle" the condition
-          restarts <- computeRestarts(c)
-          for (restart in restarts) {
-            name <- restart$name
-            if (is.null(name)) next
-            if (!grepl("^muffle", name)) next
-            invokeRestart(restart)
-            break
-          }
+    }
+    
+    calling_handler(p)
+  },
+  condition = function(c) {
+    if (!capture_conditions || inherits(c, c("progression", "error"))) return()
+    if (debug) message("- received a ", sQuote(class(c)[1]))
+    
+    if (inherits(c, delays$conditions)) {
+      ## Record
+      conditions[[length(conditions) + 1L]] <<- c
+      ## Muffle
+      if (inherits(c, "message")) {
+        invokeRestart("muffleMessage")
+      } else if (inherits(c, "warning")) {
+        invokeRestart("muffleWarning")
+      } else if (inherits(c, "condition")) {
+        ## If there is a "muffle" restart for this condition,
+        ## then invoke that restart, i.e. "muffle" the condition
+        restarts <- computeRestarts(c)
+        for (restart in restarts) {
+          name <- restart$name
+          if (is.null(name)) next
+          if (!grepl("^muffle", name)) next
+          invokeRestart(restart)
+          break
         }
       }
     }
-  )
+  })
   
   ## Success
   status <- "ok"
-  
-  invisible(NULL)
+
+  if (isTRUE(res$visible)) {
+    res$value
+  } else {
+    invisible(res$value)
+  }
 }
 
 

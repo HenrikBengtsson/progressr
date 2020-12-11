@@ -2,6 +2,9 @@
 #'
 #' @inheritParams make_progression_handler
 #'
+#' @param uuid If TRUE, then the progressor UUID and the owner UUID are shown,
+#' otherwise not (default).
+#'
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
 #'
 #' @example incl/handler_debug.R
@@ -19,7 +22,7 @@
 #' [21:27:16.246] (5.010s => +0.003s) update: 100/100 (+0) 'Summarizing' {clear=TRIE, enabled=TRUE, status=}
 #' ```
 #' @export
-handler_debug <- function(interval = getOption("progressr.interval", 0), intrusiveness = getOption("progressr.intrusiveness.debug", 0), target = "terminal", ...) {
+handler_debug <- function(interval = getOption("progressr.interval", 0), intrusiveness = getOption("progressr.intrusiveness.debug", 0), target = "terminal", uuid = FALSE, ...) {
   reporter <- local({
     t_init <- NULL
     
@@ -30,7 +33,11 @@ handler_debug <- function(interval = getOption("progressr.interval", 0), intrusi
       delay <- difftime(t, progression$time, units = "secs")
       message <- paste(c(state$message, ""), collapse = "")
       entry <- list(now(t), dt, delay, progression$type, state$step, config$max_steps, state$delta, message, config$clear, state$enabled, paste0(progression$status, ""))
-      msg <- do.call(sprintf, args = c(list("%s(%.3fs => +%.3fs) %s: %d/%d (%+d) '%s' {clear=%s, enabled=%s, status=%s}"), entry))
+      
+      msg <- do.call(sprintf, args = c(list("%s(%.3fs => +%.3fs) %s: %.0f/%.0f (%+g) '%s' {clear=%s, enabled=%s, status=%s}"), entry))
+      if (uuid) {
+        msg <- sprintf("%s [progressor=%s, owner=%s]", msg, progression$progressor_uuid, progression$owner_session_uuid)
+      }
       message(msg)
     }
 

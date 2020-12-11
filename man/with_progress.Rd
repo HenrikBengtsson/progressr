@@ -33,7 +33,7 @@ the terminal will delayed.}
 \item{delay_stdout}{If TRUE, standard output is captured and relayed
 at the end just before any captured conditions are relayed.}
 
-\item{delay_conditions}{A character vector specifying \link[base:condition]{base::condition}
+\item{delay_conditions}{A character vector specifying \link[base:conditions]{base::condition}
 classes to be captured and relayed at the end after any captured
 standard output is relayed.}
 
@@ -45,7 +45,7 @@ default is to report progress in interactive mode but not batch mode.
 See below for more details.}
 }
 \value{
-Return nothing (reserved for future usage).
+Returns the value of the expression.
 }
 \description{
 Report on Progress while Evaluating an R Expression
@@ -136,5 +136,5 @@ with_progress({
 })
 }
 \seealso{
-\code{\link[base:withCallingHandlers]{base::withCallingHandlers()}}
+\code{\link[base:conditions]{base::withCallingHandlers()}}
 }

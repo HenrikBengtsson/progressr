@@ -33,7 +33,7 @@ Below are all \R options that are currently used by the \pkg{progressr} package.
 \describe{
 \item{\option{progressr.handlers}:}{
 (function or list of functions)
-Zero or more progression handlers that will report on any progression updates.  If empty list, progress updates are ignored.  If NULL, the default (\code{handler_txtprogressbar}) progression handlers is used.  The recommended way to set this option is via \code{\link[progressr:handlers]{progressr::handlers()}}. (Default: NULL)
+Zero or more progression handlers that will report on any progression updates.  If empty list, progress updates are ignored.  If NULL, the default (\code{handler_txtprogressbar}) progression handlers is used.  The recommended way to set this option is via \code{\link[=handlers]{handlers()}}. (Default: NULL)
 }
 }
 }

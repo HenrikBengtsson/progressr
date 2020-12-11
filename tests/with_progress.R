@@ -35,7 +35,7 @@ message("with_progress() - filesize ...")
 
 with_progress({
   sum <- slow_sum(x)
-}, handler_filesize())
+}, handlers = handler_filesize())
 print(sum)
 stopifnot(sum == truth)
 
@@ -47,7 +47,7 @@ message("with_progress() - utils::txtProgressBar() ...")
 if (requireNamespace("utils")) {
   with_progress({
     sum <- slow_sum(x)
-  }, handler_txtprogressbar(style = 2L))
+  }, handlers = handler_txtprogressbar(style = 2L))
   print(sum)
   stopifnot(sum == truth)
 }
@@ -59,7 +59,7 @@ message("with_progress() - tcltk::tkProgressBar() ...")
 
 with_progress({
   sum <- slow_sum(x)
-}, handler_tkprogressbar)
+}, handlers = handler_tkprogressbar)
 
 message("with_progress() - tcltk::tkProgressBar() ... done")
 
@@ -68,7 +68,7 @@ message("with_progress() - utils::winProgressBar() ...")
 
 with_progress({
   sum <- slow_sum(x)
-}, handler_winprogressbar)
+}, handlers = handler_winprogressbar)
 
 message("with_progress() - utils::winProgressBar() ... done")
 
@@ -79,7 +79,7 @@ if (requireNamespace("progress")) {
   ## Display progress using default handler
   with_progress({
     sum <- slow_sum(x)
-  }, handler_progress(clear = FALSE))
+  }, handlers = handler_progress(clear = FALSE))
   print(sum)
   stopifnot(sum == truth)
 }
@@ -91,7 +91,7 @@ message("with_progress() - pbmcapply::progressBar() ...")
 
 with_progress({
   sum <- slow_sum(x)
-}, handler_pbmcapply)
+}, handlers = handler_pbmcapply)
 
 message("with_progress() - pbmcapply::progressBar() ... done")
 
@@ -100,7 +100,7 @@ message("with_progress() - ascii_alert ...")
 
 with_progress({
   sum <- slow_sum(x)
-}, handler_ascii_alert())
+}, handlers = handler_ascii_alert())
 print(sum)
 stopifnot(sum == truth)
 
@@ -111,7 +111,7 @@ message("with_progress() - beepr::beep() ...")
 
 with_progress({
   sum <- slow_sum(x)
-}, handler_beepr)
+}, handlers = handler_beepr)
 print(sum)
 stopifnot(sum == truth)
 
@@ -122,7 +122,7 @@ message("with_progress() - notifier::notify() ...")
 
 with_progress({
   sum <- slow_sum(x)
-}, handler_notifier)
+}, handlers = handler_notifier)
 print(sum)
 stopifnot(sum == truth)
 
@@ -134,7 +134,7 @@ message("with_progress() - void ...")
 ## Mute progress updates
 with_progress({
   sum <- slow_sum(x)
-}, NULL)
+}, handlers = NULL)
 print(sum)
 stopifnot(sum == truth)
 
@@ -165,6 +165,20 @@ if (requireNamespace("utils", quietly = TRUE)) {
 }
 
 message("with_progress() - multiple handlers ... done")
+
+
+message("with_progress() - return value and visibility ...")
+
+res <- with_progress(x)
+stopifnot(identical(x, res))
+
+res <- withVisible(with_progress(x))
+stopifnot(identical(res$visible, TRUE))
+
+res <- withVisible(with_progress(y <- x))
+stopifnot(identical(res$visible, FALSE))
+
+message("with_progress() - return value and visibility ... done")
 
 
 message("with_progress() ... done")

@@ -10,13 +10,13 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2020-12-10                   |
+|date     |2020-12-11                   |
 
 # Dependencies
 
 |package   |old    |new        |Δ  |
 |:---------|:------|:----------|:--|
-|progressr |0.6.0  |0.6.0-9000 |*  |
+|progressr |0.6.0  |0.6.0-9001 |*  |
 |digest    |0.6.27 |0.6.27     |   |
 
 # Revdeps

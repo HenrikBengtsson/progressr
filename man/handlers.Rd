@@ -8,7 +8,8 @@ handlers(
   ...,
   append = FALSE,
   on_missing = c("error", "warning", "ignore"),
-  default = handler_txtprogressbar
+  default = handler_txtprogressbar,
+  global = NULL
 )
 }
 \arguments{
@@ -27,11 +28,17 @@ missing handlers is ignored.}
 
 \item{default}{The default progression calling handler to use if none
 are set.}
+
+\item{global}{If TRUE, then the global progression handler is enabled.
+If FALSE, it is disabled.  If NA, then TRUE is returned if it is enabled,
+otherwise FALSE.  Argument \code{global} must not used with other arguments.}
 }
 \value{
 (invisibly) the previous list of progression handlers set.
 If no arguments are specified, then the current set of progression
 handlers is returned.
+If \code{global} is specified, then TRUE is returned if the global progression
+handlers is enabled, otherwise false.
 }
 \description{
 Control How Progress is Reported
@@ -50,6 +57,15 @@ handlers("txtprogressbar")
 if (requireNamespace("beepr", quietly = TRUE))
   handlers("beepr", append = TRUE)
 
-with_progress({ y <- slow_sum(10) })
+with_progress({ y <- slow_sum(1:5) })
 print(y)
+
+
+if (getRversion() >= "4.0.0") {
+  handlers(global = TRUE)
+  y <- slow_sum(1:4)
+  z <- slow_sum(6:9)
+  handlers(global = FALSE)
+}
+
 }

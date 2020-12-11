@@ -5,7 +5,7 @@
 \title{Progression Handler: Progress Reported via 'progress' Progress Bars (Text) in the Terminal}
 \usage{
 handler_progress(
-  format = "[:bar] :percent :message",
+  format = ":spin [:bar] :percent :message",
   show_after = 0,
   intrusiveness = getOption("progressr.intrusiveness.terminal", 1),
   target = "terminal",
@@ -39,14 +39,14 @@ This progression handler requires the \pkg{progress} package.
 Below is how this progress handler renders by default at 0\%, 30\% and 99\%
 progress:
 
-With \code{handlers(handler_progress())}:\if{html}{\out{<div class="r">}}\preformatted{[-------------------------------------------------]   0\% 
-[====>--------------------------------------------]  10\% 
-[================================================>]  99\% 
+With \code{handlers(handler_progress())}:\if{html}{\out{<div class="r">}}\preformatted{- [-------------------------------------------------]   0\% 
+\\ [====>--------------------------------------------]  10\% 
+| [================================================>]  99\% 
 }\if{html}{\out{</div>}}
 
-If the progression updates have messages, they will appear like:\if{html}{\out{<div class="r">}}\preformatted{[-----------------------------------------]   0\% Starting
-[===========>----------------------------]  30\% Importing
-[=====================================>]  99\% Summarizing
+If the progression updates have messages, they will appear like:\if{html}{\out{<div class="r">}}\preformatted{- [-----------------------------------------]   0\% Starting
+\\ [===========>----------------------------]  30\% Importing
+| [=====================================>]  99\% Summarizing
 }\if{html}{\out{</div>}}
 }
 

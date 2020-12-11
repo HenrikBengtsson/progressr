@@ -67,7 +67,7 @@ mstr <- function(..., appendLF = TRUE, debug = getOption("progressr.debug", FALS
   message(paste(now(), capture_output(str(...)), sep = "", collapse = "\n"), appendLF = appendLF)
 }
 
-stop_if_not <- function(...) {
+stop_if_not <- function(..., calls = sys.calls()) {
   res <- list(...)
   n <- length(res)
   if (n == 0L) return()
@@ -78,7 +78,12 @@ stop_if_not <- function(...) {
         mc <- match.call()
         call <- deparse(mc[[ii + 1]], width.cutoff = 60L)
         if (length(call) > 1L) call <- paste(call[1L], "...")
-        stop(sQuote(call), " is not TRUE", call. = FALSE, domain = NA)
+        msg <- sprintf("%s is not TRUE", sQuote(call))
+        if (FALSE) {
+          callstack <- paste(as.character(calls), collapse = " -> ")
+          msg <- sprintf("%s [call stack: %s]", msg, callstack)
+        }
+        stop(msg, call. = FALSE, domain = NA)
     }
   }
 }
@@ -102,7 +107,7 @@ is_fake <- local({
 known_progression_handlers <- function(exclude = NULL) {
   ns <- asNamespace(.packageName)
   handlers <- ls(envir = ns, pattern = "^handler_")
-  handlers <- setdiff(handlers, c("make_progression_handler", "print.progression_handler"))
+  handlers <- setdiff(handlers, c("handler_backend_args", "make_progression_handler", "print.progression_handler"))
   handlers <- setdiff(handlers, exclude)
   handlers <- mget(handlers, envir = ns, inherits = FALSE)
   handlers

@@ -2,11 +2,19 @@ source("incl/start.R")
 
 message("progressor() ...")
 
-p <- progressor(3L)
-print(p)
+local({
+  p <- progressor(3L)
+  print(p)
+  p()
+  p("A message")
+})
 
-p <- progressor(along = 1:3)
-print(p)
+local({
+  p <- progressor(along = 1:3, message = "A default message")
+  print(p)
+  p()
+  p("A message")
+})
 
 message("progressor() ... DONE")
 

@@ -15,7 +15,7 @@ progress_aggregator <- function(progress) {
   max_steps <- environment(progress)$steps
   
   handler <- function(p) {
-    stopifnot(inherits(p, "progression"))
+    stop_if_not(inherits(p, "progression"))
     type <- p$type
     debug <- getOption("progressr.debug", FALSE)
     if (debug) {

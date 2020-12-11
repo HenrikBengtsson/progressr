@@ -5,9 +5,18 @@
 #' @rdname with_progress
 #' @export
 without_progress <- function(expr) {
-  withCallingHandlers(expr, progression = function(p) {
+  progressr_in_globalenv("allow")
+  on.exit(progressr_in_globalenv("disallow"))
+
+  withCallingHandlers({
+    res <- withVisible(expr)
+  }, progression = function(p) {
     invokeRestart("muffleProgression")
   })
   
-  invisible(NULL)
+  if (isTRUE(res$visible)) {
+    res$value
+  } else {
+    invisible(res$value)
+  }
 }

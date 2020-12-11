@@ -57,9 +57,9 @@ A function of class \code{progression_handler} that takes a
 \link{progression} condition as its first and only argument.
 }
 \description{
-A progression calling handler is a function that takes a \link[base:condition]{base::condition}
+A progression calling handler is a function that takes a \link[base:conditions]{base::condition}
 as its first argument and that can be use together with
-\code{\link[base:withCallingHandlers]{base::withCallingHandlers()}}.  This function helps creating such
+\code{\link[base:conditions]{base::withCallingHandlers()}}.  This function helps creating such
 progression calling handler functions.
 }
 \details{
@@ -69,6 +69,6 @@ handlers for how it is used, e.g. \code{progressr::handler_txtprogressbar}.
 Please use with care as things might change.
 }
 \seealso{
-\code{\link[base:withCallingHandlers]{base::withCallingHandlers()}}.
+\code{\link[base:conditions]{base::withCallingHandlers()}}.
 }
 \keyword{internal}

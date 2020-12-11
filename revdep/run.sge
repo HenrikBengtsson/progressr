@@ -25,6 +25,9 @@ if [[ $SGE_CLUSTER_NAME == *wynton* ]]; then
     ## Some packages require non-default system libraries
     module load gdal geos gsl hdf5 jags
 
+    ## Report on what modules are in use
+    module list
+    
     ## Install all packages to toward $TMPDIR, if revdep/library doesn't already exist.
     ## This will avoid some of the slowness on the global file system
     #if [[ ! -d revdep/library ]]; then

@@ -1,16 +1,75 @@
 Package: progressr
 ==================
 
+Version: 0.7.0 [2020-12-11]
+
+SIGNIFICANT CHANGES:
+
+ * The user can how use handlers(global = TRUE) to enable progress reports
+   everywhere without having to use with_progress().  This only works in
+   R (>= 4.0.0) because it requires global calling handlers.
+
+ * with_progress() now reports on progress from multiple consecutive
+   progressors, e.g. with_progress({ a <- slow_sum(1:3); b <- slow_sum(1:3) }).
+
+ * A progressor must not be created in the global environment unless wrapped
+   in with_progress() or without_progress() call.  Ideally, a progressor is
+   created within a function or a local() environment.
+
+ * Package now requires R (>= 3.5.0) in order to protect against interrupts.
+
+NEW FEATURES:
+
+ * progressor() gained argument 'enable' to control whether or not the
+   progressor signals 'progression' conditions.  It defaults to option
+   'progressr.enable' so that progress updates can be disabled globally.
+   The 'enable' argument makes it easy for package developers who already
+   provide a 'progress = TRUE/FALSE' argument in their functions to migrate
+   to the 'progressr' package without having to change their existing API,
+   e.g. the setup becomes 'p <- progressor(along = x, enabled = progress)'.
+   The p() function created by p <- progressor(..., enable = FALSE) is an
+   empty function with near-zero overhead.
+
+ * Now with_progress() and without_progress() returns the value of the
+   evaluated expression.
+   
+ * The progression message can now be created dynamically based on the
+   information in the 'progression' condition.  Specifically, if 'message' is
+   a function, then that function will called with the 'progression' condition
+   as the first argument. This function should return a character string.
+   Importantly, it is only when the progression handler receives the
+   progression update and calls conditionMessage(p) on it that this function
+   is called.
+   
+ * progressor() gained argument 'message' to set the default message of all
+   progression updates, unless otherwise specified.
+
+ * progressor() gained argument 'on_exit = TRUE'.
+
+ * Now the 'progress' handler shows also a spinner by default.
+ 
+ * Add the 'pbcol' handler, which renders the progress as a colored progress
+   bar in the terminal with any messages written in the front.
+
+ * Progression handlers now return invisibly whether or not they are finished.
+ 
+BUG FIXES:
+
+ * Zero-amount progress updates never reached the progress handlers.
+ 
+ * Argument 'enable' for with_progress() had no effect.
+ 
+
 Version: 0.6.0 [2020-05-18]
 
 SIGNIFICANT CHANGES:
 
  * Now with_progress() makes sure that any output produced while reporting on
-   progress will not interfer with the progress output and vice versa, which
+   progress will not interfere with the progress output and vice versa, which
    otherwise is a common problem with progress frameworks that output to the
-   terminal, e.g. progress-bar output output is interweaved with printed
-   objects.  In contrast, when using 'progressr' we can use message() and
-   print() as usual regardless of progress being reported or not.
+   terminal, e.g. progress-bar output is interweaved with printed objects.
+   In contrast, when using 'progressr' we can use message() and print() as
+   usual regardless of progress being reported or not.
 
 NEW FEATURES:
 
@@ -36,7 +95,7 @@ NEW FEATURES:
 BUG FIXES:
 
  * Limiting the frequency of progress reporting via handler arguments 'times',
-   'interval' or 'intrusivness' did not work and was effectively ignored.
+   'interval' or 'intrusiveness' did not work and was effectively ignored.
    
  * The 'progress' handler, which uses progress::progress_bar(), did not support
    colorization of the 'format' string when done by the 'crayon' package.
@@ -109,7 +168,7 @@ Version: 0.1.5 [2019-10-26]
 
 NEW FEATURES:
 
- * Add withProgress2(), which is a plug-in backward compatibily replacement
+ * Add withProgress2(), which is a plug-in backward compatibility replacement
    for shiny::withProgress() wrapped in progressr::with_progress() where the
    the "shiny" progression handler is by default added to the list of
    progression handlers used.
@@ -208,7 +267,7 @@ NEW FEATURES:
  * Add support for times = 1L for progression handlers which when used will
    cause the progression to only be presented upon completion (= last step).
 
- * The 'shutdown' control_progression signalled by with_progress() on exit
+ * The 'shutdown' control_progression signaled by with_progress() on exit
    now contains the 'status' of the evaluation.  If the evaluation was
    successful, then status = "ok", otherwise "incomplete".  Examples
    of incomplete evaluations are errors and interrupts.
@@ -302,7 +361,7 @@ NEW FEATURES:
  * Visual progression handler will now always render the complete update state
    when 'clear' is FALSE.
 
- * Now progression handlers ignore a re-signalled progression condition if it
+ * Now progression handlers ignore a re-signaled progression condition if it
    has already been processed previously.
  
  * Now each progression condition holds unique identifiers for the R session
@@ -351,7 +410,7 @@ NEW FEATURES:
 
  * Add 'intrusiveness' parameter that specifies how intrusive/disruptive a
    certain progress reporter is.  For instance, an auditory reporter is
-   relatively more distruptive than a visual progress bar part of the
+   relatively more disruptive than a visual progress bar part of the
    status bar.
 
  * Simplified the API for creating new types of progress reporters.
@@ -382,7 +441,7 @@ NEW FEATURES:
    updates are rendered.
 
  * Add 'progressr.interval' for controlling the minimum number of seconds
-   that needs to ellapse before reporting on the next update.
+   that needs to elapse before reporting on the next update.
  
 
 Version: 0.0.0-9000 [2019-04-11]

@@ -10,7 +10,7 @@ message("*** Demos ...")
 
 message("*** Mandelbrot demo ...")
 
-if (getRversion() >= "3.2.0" && !isWin32) {
+if (!isWin32) {
   options(future.demo.mandelbrot.nrow = 2L)
   options(future.demo.mandelbrot.resolution = 50L)
   options(future.demo.mandelbrot.delay = FALSE)
