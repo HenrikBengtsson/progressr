@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2020-12-07                   |
+|date     |2020-12-10                   |
 
 # Dependencies
 
@@ -43,7 +43,7 @@
 |[modeltime.resample](problems.md#modeltimeresample) |0.1.0   |      |        |1    |
 |nflfastR                                            |3.2.0   |      |        |     |
 |nlrx                                                |0.4.2   |      |        |     |
-|[pavo](problems.md#pavo)                            |2.5.0   |      |1       |     |
+|[pavo](problems.md#pavo)                            |2.5.0   |1     |1       |     |
 |poppr                                               |2.8.6   |      |        |     |
 |rainette                                            |0.1.1   |      |        |     |
 |trundler                                            |0.1.19  |      |        |     |
