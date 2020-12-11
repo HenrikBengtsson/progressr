@@ -34,9 +34,9 @@ for (delay in c(FALSE, TRUE)) {
   message(sprintf("- with_progress() - delay = %s ...", delay))
   output <- record_output({
     with_progress({
-     y <- slow_sum(x, stdout=TRUE, message=TRUE)
+      y <- slow_sum(x, stdout=TRUE, message=TRUE)
     }, delay_stdout = delay,
-       delay_conditions = if (delay) "condition" else character(0L))
+      delay_conditions = if (delay) "condition" else character(0L))
   })
   stopifnot(identical(output$stdout, output_truth$stdout))
   stopifnot(identical(output$conditions, output_truth$conditions))
