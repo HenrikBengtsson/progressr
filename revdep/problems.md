@@ -216,6 +216,32 @@ Run `revdep_details(, "pavo")` for more info
 
 ## In both
 
+*   checking tests ...
+    ```
+    ...
+      Warning (test-images.R:97:3): classify
+      Warning (test-images.R:102:3): classify
+      Warning (test-images.R:121:3): classify
+      Warning (test-images.R:149:3): classify
+      Warning (test-images.R:194:3): adjacency
+      Warning (test-images.R:195:3): adjacency
+      Warning (test-images.R:214:3): adjacency
+      Warning (test-images.R:225:3): adjacency
+      Warning (test-images.R:250:3): adjacency
+      Warning (test-images.R:272:3): adjacency
+      Warning (test-images.R:286:3): summary
+      Warning (test-images.R:288:3): summary
+      FAILURE (test-images.R:291:3): summary
+      Warning (test-processing.R:12:3): Procspec
+      Warning (test-processing.R:56:3): Aggregation
+      Warning (test-vismodel.R:12:3): Warnings
+      Warning (test-vismodel.R:67:3): sensdata()
+      
+      [ FAIL 1 | WARN 1069 | SKIP 6 | PASS 377 ]
+      Error: Test failures
+      Execution halted
+    ```
+
 *   checking whether package ‘pavo’ can be installed ... WARNING
     ```
     Found the following significant warnings:
