@@ -45,6 +45,13 @@ local({
     if (!is.null(logfile)) cat(msg, file = logfile, append = TRUE)
   }
 
+  debug <- nzchar(Sys.getenv("R_BASE_STARTUP_DEBUG"))
+  if (debug) {
+    log_("R_BASE_STARTUP_DEBUG=%s", Sys.getenv("R_BASE_STARTUP_DEBUG"))
+    log_("R_BASE_STARTUP=%s", Sys.getenv("R_BASE_STARTUP"))
+    log_("R_BASE_STARTUP_FILE=%s", Sys.getenv("R_BASE_STARTUP_FILE"))
+  }
+
   ## R CMD check package tests?
   if (nzchar(testfile <- Sys.getenv("R_TESTS"))) {
     log_("commandArgs()=%s", paste(commandArgs(), collapse = " "))
