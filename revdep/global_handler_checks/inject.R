@@ -1,7 +1,7 @@
 #' Run Reverse Package Dependency Checks with the Global Progression Handler Enabled
 #'
 #' @usage
-#' R_BASE_STARTUP="$PWD/revdep/test_with_global_handlers.R" revdep/run.R
+#' R_BASE_STARTUP="$PWD/revdep/global_handler_checks/inject.R" revdep/run.R
 #'
 #' @param R_BASE_STARTUP (environment variable) An absolute path to an R
 #' script that should be loaded when the \pkg{base} package is loaded.
@@ -25,9 +25,6 @@
 #' ```
 #'
 #' This requires write permissions to that file.
-#'
-#' @examples
-#' R_BASE_STARTUP="$PWD/revdep/test_with_global_handlers.R" revdep/run.R
 #'
 #' @importFrom utils packageVersion
 #' @importFrom progressr handlers
