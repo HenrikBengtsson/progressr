@@ -39,7 +39,7 @@ handler_pbcol <- function(adjust = 0.0, pad = 1L, complete = function(s) crayon:
   
   redraw_progress_bar <- function(ratio, message, spin = " ") {
     stop_if_not(ratio >= 0, ratio <= 1)
-    if (crayon_enabled && !is.null(getOption("crayon.enabled", NULL))) {
+    if (crayon_enabled) {
       options(crayon.enabled = TRUE)
       on.exit(options(crayon.enabled = TRUE), add = TRUE)
     }
