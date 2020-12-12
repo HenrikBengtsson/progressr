@@ -1,6 +1,14 @@
 Package: progressr
 ==================
 
+Version: 0.7.0-9000 [2020-12-12]
+
+NEW FEATURES:
+
+ * Add handlers("rstudio") to report on progress in the RStudio Console via
+   the RStudio Job interface.
+
+
 Version: 0.7.0 [2020-12-11]
 
 SIGNIFICANT CHANGES:

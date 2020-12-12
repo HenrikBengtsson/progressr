@@ -21,6 +21,10 @@ stop_if_not <- progressr:::stop_if_not
 printf <- function(...) cat(sprintf(...))
 known_progression_handlers <- progressr:::known_progression_handlers
 
+is_rstudio_console <- function() {
+  (Sys.getenv("RSTUDIO") == "1") && !nzchar(Sys.getenv("RSTUDIO_TERM"))
+}
+
 non_supported_progression_handlers <- function() {
   names <- character(0L)
   for (pkg in c("beepr", "notifier", "pbmcapply", "progress", "shiny")) {
@@ -32,6 +36,9 @@ non_supported_progression_handlers <- function() {
   }
   if (.Platform$OS.type != "windows") {
     names <- c(names, "winprogressbar")
+  }
+  if (!is_rstudio_console()) {
+    names <- c(names, "rstudio")
   }
   if (!check_full) {
     names <- c(names, "notifier")

@@ -62,3 +62,5 @@ withProgressShiny
 withRestart
 pbcol
 conditionMessage
+rstudio
+RStudio

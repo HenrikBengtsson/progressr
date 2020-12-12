@@ -25,6 +25,7 @@ Suggests:
     future,
     future.apply,
     furrr,
+    rstudioapi,
     shiny,
     commonmark,
     base64enc,

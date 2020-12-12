@@ -51,8 +51,9 @@ In the terminal:
 \item \link{handler_debug}
 }
 
-In the graphical user interface (GUI):
+In a graphical user interface (GUI):
 \itemize{
+\item \link{handler_rstudio}
 \item \link{handler_tkprogressbar}
 \item \link{handler_winprogressbar}
 }
