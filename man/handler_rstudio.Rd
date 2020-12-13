@@ -7,6 +7,7 @@
 handler_rstudio(
   intrusiveness = getOption("progressr.intrusiveness.gui", 1),
   target = "gui",
+  title = function() format(Sys.time(), "Console \%X"),
   ...
 )
 }
@@ -16,6 +17,11 @@ handler_rstudio(
 
 \item{target}{(character vector) Specifies where progression updates are
 rendered.}
+
+\item{title}{(character or a function) The "name" of the progressor, which
+is displayed in front of the progress bar.  If a function, then the name
+is created dynamically by calling the function when the progressor is
+created.}
 
 \item{\ldots}{Additional arguments passed to \code{\link[=make_progression_handler]{make_progression_handler()}}.}
 }

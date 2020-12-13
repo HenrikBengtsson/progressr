@@ -2,6 +2,11 @@
 #'
 #' @inheritParams make_progression_handler 
 #'
+#' @param title (character or a function) The "name" of the progressor, which
+#' is displayed in front of the progress bar.  If a function, then the name
+#' is created dynamically by calling the function when the progressor is
+#' created.
+#'
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
 #'
 #' @section Requirements:
@@ -22,21 +27,33 @@
 #' @example incl/handler_rstudio.R
 #'
 #' @export
-handler_rstudio <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), target = "gui", ...) {
+handler_rstudio <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), target = "gui", title = function() format(Sys.time(), "Console %X"), ...) {
   reporter <- local({
     job_id <- NULL
     list(
       initiate = function(config, state, ...) {
         if (!state$enabled || config$times <= 2L) return()
-        title <- state$message
-        if (length(title) == 0L) title <- "Console"
-        stop_if_not(is.null(job_id))
+        name <- state$message
+        if (length(name) == 0L) {
+          if (is.null(title)) {
+            name <- "Console"
+          } else if (is.character(title)) {
+            name <- title
+          } else if (is.function(title)) {
+            name <- title()
+          }
+        }
+        stop_if_not(
+          is.null(job_id),
+          is.character(name),
+          length(name) == 1L
+        )
         job_id <<- rstudioapi::jobAdd(
-          name = title,
+          name          = name,
           progressUnits = as.integer(config$max_steps),
-          status = "running",
-          autoRemove = FALSE,
-          show = FALSE
+          status        = "running",
+          autoRemove    = FALSE,
+          show          = FALSE
         )
       },
       
