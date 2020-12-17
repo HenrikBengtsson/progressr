@@ -393,7 +393,7 @@ my_fcn(1:5)
 #  |====================                               |  40%
 ```
 
-_Note:_ This solution does not involved the `.progress = TRUE` argument that **plyr** implements.  Because **progressr** is more flexible, and because `.progress` is automatically disabled when running in parallel (see below), I recommended to use the above **progressr** approach instead.  Having said this, as proof-of-concept, the **progressr** package implements support `.progress = "progressr"` if you still prefer the **plyr** way of doing it.
+_Note:_ This solution does not involved the `.progress = TRUE` argument that **plyr** implements.  Because **progressr** is more flexible, and because `.progress` is automatically disabled when running in parallel (see below), I recommend to use the above **progressr** approach instead.  Having said this, as proof-of-concept, the **progressr** package implements support `.progress = "progressr"` if you still prefer the **plyr** way of doing it.
 
 
 ## Parallel processing and progress updates
@@ -433,7 +433,7 @@ Here is an example that uses `foreach()` of the **[foreach]** package to paralle
 
 ```r
 library(doFuture)
-registerDoFuture()
+registerDoFuture()      ## %dopar% parallelizes via future
 plan(multisession)
 
 library(progressr)
@@ -482,6 +482,35 @@ my_fcn(1:5)
 _Note:_ This solution does not involved the `.progress = TRUE` argument that **furrr** implements.  Because **progressr** is more generic and because `.progress = TRUE` only works for certain future backends and produces errors on others, I recommended to stop using `.progress = TRUE` and use the **progressr** package instead.
 
 
+### BiocParallel::bplapply() - parallel lapply()
+
+Here is an example that uses `bplapply()` of the **[BiocParallel]** package to parallelize on the local machine while at the same time signaling progression updates:
+
+```r
+library(BiocParallel)
+library(doFuture)
+register(DoparParam())  ## BiocParallel parallelizes via %dopar%
+registerDoFuture()      ## %dopar% parallelizes via future
+plan(multisession)
+
+library(progressr)
+handlers(global = TRUE)
+handlers("progress", "beepr")
+
+my_fcn <- function(xs) {
+  p <- progressor(along = xs)
+  y <- bplapply(xs, function(x) {
+    Sys.sleep(6.0-x)
+    p(sprintf("x=%g", x))
+    sqrt(x)
+  })
+}
+
+my_fcn(1:5)
+# / [================>-----------------------------]  40% x=2
+```
+
+
 ### plyr::llply(..., .parallel = TRUE) with doFuture
 
 Here is an example that uses `llply()` of the **[plyr]** package to parallelize on the local machine while at the same time signaling progression updates:
@@ -489,7 +518,7 @@ Here is an example that uses `llply()` of the **[plyr]** package to parallelize 
 ```r
 library(plyr)
 library(doFuture)
-registerDoFuture()
+registerDoFuture()      ## %dopar% parallelizes via future
 plan(multisession)
 
 library(progressr)
@@ -606,9 +635,10 @@ results in an error if tried:
 
 ```
 Error in progressor(along = xs) : 
-  A progressor must not be created in the global environment unless wrapped in a with_progress()
-or without_progress() call, otherwise make sure to created inside a function or in a local()
-environment to make sure there is a finite life span of the progressor
+  A progressor must not be created in the global environment unless wrapped in a
+  with_progress() or without_progress() call. Alternatively, create it inside a
+  function or in a local() environment to make sure there is a finite life span
+  of the progressor
 ```
 
 The solution is to wrap it in a `local({ ... })` call, or more explicitly, in a `with_progress({ ... })` call:
@@ -690,3 +720,5 @@ M: Added value 3
 [pbapply]: https://cran.r-project.org/package=pbapply
 [pbmcapply]: https://cran.r-project.org/package=pbmcapply
 [plyr]: https://cran.r-project.org/package=plyr
+[BiocParallel]: https://www.bioconductor.org/packages/BiocParallel/
+
