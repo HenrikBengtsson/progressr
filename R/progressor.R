@@ -65,7 +65,7 @@ progressor <- local({
 
     if (identical(envir, globalenv())) {
       if (!progressr_in_globalenv()) {
-        stop("A progressor must not be created in the global environment unless wrapped in a with_progress() or without_progress() call, otherwise make sure to created inside a function or in a local() environment to make sure there is a finite life span of the progressor")
+        stop("A progressor must not be created in the global environment unless wrapped in a with_progress() or without_progress() call. Alternatively, create it inside a function or in a local() environment to make sure there is a finite life span of the progressor")
       }
       if (on_exit) {
         stop("It is not possible to create a progressor in the global environment with on_exit = TRUE")

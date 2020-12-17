@@ -389,7 +389,7 @@ my_fcn(1:5)
 #  |====================                               |  40%
 ```
 
-_Note:_ This solution does not involved the `.progress = TRUE` argument that **plyr** implements.  Because **progressr** is more flexible, and because `.progress` is automatically disabled when running in parallel (see below), I recommended to use the above **progressr** approach instead.  Having said this, as proof-of-concept, the **progressr** package implements support `.progress = "progressr"` if you still prefer the **plyr** way of doing it.
+_Note:_ This solution does not involved the `.progress = TRUE` argument that **plyr** implements.  Because **progressr** is more flexible, and because `.progress` is automatically disabled when running in parallel (see below), I recommend to use the above **progressr** approach instead.  Having said this, as proof-of-concept, the **progressr** package implements support `.progress = "progressr"` if you still prefer the **plyr** way of doing it.
 
 
 ## Parallel processing and progress updates
@@ -602,9 +602,10 @@ results in an error if tried:
 
 ```
 Error in progressor(along = xs) : 
-  A progressor must not be created in the global environment unless wrapped in a with_progress()
-or without_progress() call, otherwise make sure to created inside a function or in a local()
-environment to make sure there is a finite life span of the progressor
+  A progressor must not be created in the global environment unless wrapped in a
+  with_progress() or without_progress() call. Alternatively, create it inside a
+  function or in a local() environment to make sure there is a finite life span
+  of the progressor
 ```
 
 The solution is to wrap it in a `local({ ... })` call, or more explicitly, in a `with_progress({ ... })` call:
