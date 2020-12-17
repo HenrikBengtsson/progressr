@@ -398,7 +398,7 @@ _Note:_ This solution does not involved the `.progress = TRUE` argument that **p
 
 ## Parallel processing and progress updates
 
-The **[future]** framework, which provides a unified API for parallel and distributed processing in R, has built-in support for the kind of progression updates produced by the **progressr** package.  This means that you can use it with for instance **[future.apply]**, **[furrr]**, and **[foreach]** with **[doFuture]**, and **[plyr]** with **doFuture**.
+The **[future]** framework, which provides a unified API for parallel and distributed processing in R, has built-in support for the kind of progression updates produced by the **progressr** package.  This means that you can use it with for instance **[future.apply]**, **[furrr]**, and **[foreach]** with **[doFuture]**, and **[plyr]** or **[BiocParallel]** with **doFuture**.
 
 
 ### future_lapply() - parallel lapply()
@@ -528,7 +528,7 @@ handlers("progress", "beepr")
 my_fcn <- function(xs) {
   p <- progressor(along = xs)
   y <- llply(xs, function(x, ...) {
-    Sys.sleep(0.1)
+    Sys.sleep(6.0-x)
     p(sprintf("x=%g", x))
     sqrt(x)
   }, .parallel = TRUE)
