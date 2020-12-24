@@ -1,6 +1,6 @@
 source("incl/start.R")
 
-if (requireNamespace("foreach", quietly = TRUE)) {
+if (requireNamespace("foreach", quietly = TRUE) && requireNamespace("doFuture", quietly = TRUE)) {
   library("doFuture", character.only = TRUE)
   
   message("* with_progress()")
