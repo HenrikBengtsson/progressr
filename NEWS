@@ -13,7 +13,7 @@ Version: 0.7.0 [2020-12-11]
 
 SIGNIFICANT CHANGES:
 
- * The user can how use handlers(global = TRUE) to enable progress reports
+ * The user can now use handlers(global = TRUE) to enable progress reports
    everywhere without having to use with_progress().  This only works in
    R (>= 4.0.0) because it requires global calling handlers.
 
