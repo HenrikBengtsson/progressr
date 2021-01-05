@@ -64,3 +64,6 @@ pbcol
 conditionMessage
 rstudio
 RStudio
+BiocParallel
+bplapply
+txtprogressbar
