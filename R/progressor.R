@@ -97,12 +97,25 @@ progressor <- local({
       )
     }
 
+    ## Is there already be an active '...progressr'?
+    ## If so, make sure it is finished and then remove it
+    if (exists("...progressor", mode = "function", envir = envir)) {
+      ...progressor <- get("...progressor", mode = "function", envir = envir)
+      
+      ## Ideally, we produce a warning or an error here if the existing
+      ## progressor is not finished.  Currently, we don't have a way to
+      ## query that, so we leave that for the future. /HB 2021-02-28
+
+      ## Finish it (although it might already have been done via auto-finish)
+      ...progressor(type = "finish")
+
+      ## Remove it (while avoiding false 'R CMD check' NOTE)
+      do.call(unlockBinding, args = list("...progressor", env = envir))
+      rm("...progressor", envir = envir)
+    }
+
     ## Add on.exit(...progressor(type = "finish"))
     if (on_exit) {
-      ## There might already be an '...progressr' assigned.
-      if (exists("...progressor", envir = envir)) {
-        stop("Cannot create progressor because there is already an active progressor in the calling environment")
-      }
       assign("...progressor", value = fcn, envir = envir)
       lockBinding("...progressor", env = envir)
       call <- call("...progressor", type = "finish")

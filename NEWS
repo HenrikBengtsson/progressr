@@ -1,12 +1,25 @@
 Package: progressr
 ==================
 
-Version: 0.7.0-9000 [2020-12-12]
+Version: 0.7.0-9000 [2021-02-28]
 
+SIGNIFICANT CHANGES:
+
+ * Creating a new progressor() will now automatically finish an existing
+   progressor in the environment.  The previous behavior was to give an error
+   (see below bug fix).
+ 
 NEW FEATURES:
 
  * Add handlers("rstudio") to report on progress in the RStudio Console via
    the RStudio Job interface.
+
+BUG FIXES:
+
+ * In progressr 0.7.0, any attempt to use more than one progressor inside a
+   function or a local() call would result in: Error in assign("...progressor",
+   value = fcn, envir = envir) : cannot change value of locked binding for
+   '...progressor'.
 
 
 Version: 0.7.0 [2020-12-11]
