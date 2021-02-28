@@ -6,8 +6,8 @@ Version: 0.7.0-9000 [2021-02-28]
 SIGNIFICANT CHANGES:
 
  * Creating a new progressor() will now automatically finish an existing
-   progressor in the environment.  The previous behavior was to give an error
-   (see below bug fix).
+   progressor in the same environment.  The previous behavior was to give an
+   error (see below bug fix).
  
 NEW FEATURES:
 
