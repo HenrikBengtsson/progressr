@@ -99,6 +99,10 @@ progressor <- local({
 
     ## Add on.exit(...progressor(type = "finish"))
     if (on_exit) {
+      ## There might already be an '...progressr' assigned.
+      if (exists("...progressor", envir = envir)) {
+        stop("Cannot create progressor because there is already an active progressor in the calling environment")
+      }
       assign("...progressor", value = fcn, envir = envir)
       lockBinding("...progressor", env = envir)
       call <- call("...progressor", type = "finish")
