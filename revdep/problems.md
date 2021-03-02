@@ -2,11 +2,11 @@
 
 <details>
 
-* Version: 0.3.0
+* Version: 0.3.1
 * GitHub: https://github.com/M-E-Rademaker/cSEM
 * Source code: https://github.com/cran/cSEM
-* Date/Publication: 2020-10-12 16:40:03 UTC
-* Number of recursive dependencies: 119
+* Date/Publication: 2021-02-14 22:50:20 UTC
+* Number of recursive dependencies: 123
 
 Run `revdep_details(, "cSEM")` for more info
 
@@ -17,6 +17,33 @@ Run `revdep_details(, "cSEM")` for more info
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘Rdpack’
+      All declared Imports should be used.
+    ```
+
+# easyalluvial
+
+<details>
+
+* Version: 0.3.0
+* GitHub: https://github.com/erblast/easyalluvial
+* Source code: https://github.com/cran/easyalluvial
+* Date/Publication: 2021-01-13 10:40:09 UTC
+* Number of recursive dependencies: 177
+
+Run `revdep_details(, "easyalluvial")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘parcats’
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘progress’
       All declared Imports should be used.
     ```
 
@@ -38,10 +65,10 @@ Run `revdep_details(, "EFAtools")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.4Mb
+      installed size is  7.1Mb
       sub-directories of 1Mb or more:
         doc    1.0Mb
-        libs   5.5Mb
+        libs   5.3Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -54,11 +81,11 @@ Run `revdep_details(, "EFAtools")` for more info
 
 <details>
 
-* Version: 1.3.1
-* GitHub: NA
+* Version: 1.3.2
+* GitHub: https://github.com/epiforecasts/EpiNow2
 * Source code: https://github.com/cran/EpiNow2
-* Date/Publication: 2020-11-22 14:20:05 UTC
-* Number of recursive dependencies: 149
+* Date/Publication: 2020-12-14 09:00:15 UTC
+* Number of recursive dependencies: 152
 
 Run `revdep_details(, "EpiNow2")` for more info
 
@@ -73,31 +100,48 @@ Run `revdep_details(, "EpiNow2")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 137.8Mb
+      installed size is 155.0Mb
       sub-directories of 1Mb or more:
-        libs  136.4Mb
+        libs  153.4Mb
+    ```
+
+# fxTWAPLS
+
+<details>
+
+* Version: 0.0.5
+* GitHub: https://github.com/special-uor/fxTWAPLS
+* Source code: https://github.com/cran/fxTWAPLS
+* Date/Publication: 2021-01-29 12:10:02 UTC
+* Number of recursive dependencies: 63
+
+Run `revdep_details(, "fxTWAPLS")` for more info
+
+</details>
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘progress’
+      All declared Imports should be used.
     ```
 
 # lmtp
 
 <details>
 
-* Version: 0.0.5
+* Version: 0.9.0
 * GitHub: NA
 * Source code: https://github.com/cran/lmtp
-* Date/Publication: 2020-07-18 09:10:02 UTC
-* Number of recursive dependencies: 86
+* Date/Publication: 2021-02-22 15:50:02 UTC
+* Number of recursive dependencies: 92
 
 Run `revdep_details(, "lmtp")` for more info
 
 </details>
 
 ## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package which this enhances but not available for checking: ‘sl3’
-    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -106,17 +150,17 @@ Run `revdep_details(, "lmtp")` for more info
       All declared Imports should be used.
     ```
 
-# modeltime
+# mlr3
 
 <details>
 
-* Version: 0.4.0
-* GitHub: https://github.com/business-science/modeltime
-* Source code: https://github.com/cran/modeltime
-* Date/Publication: 2020-11-23 08:50:05 UTC
-* Number of recursive dependencies: 195
+* Version: 0.10.0
+* GitHub: https://github.com/mlr-org/mlr3
+* Source code: https://github.com/cran/mlr3
+* Date/Publication: 2021-01-21 08:50:06 UTC
+* Number of recursive dependencies: 60
 
-Run `revdep_details(, "modeltime")` for more info
+Run `revdep_details(, "mlr3")` for more info
 
 </details>
 
@@ -124,29 +168,44 @@ Run `revdep_details(, "modeltime")` for more info
 
 *   checking tests ...
     ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > if (requireNamespace("testthat", quietly = TRUE)) {
+      +   library(checkmate)
+      +   library(testthat)
+      +   library(mlr3)
+      + 
+      +   test_check("mlr3")
+      + }
     ...
-      Error: unable to start device PNG
-      Backtrace:
-          █
-       1. ├─base::suppressWarnings(...) test-results-forecast-plots.R:34:0
-       2. │ └─base::withCallingHandlers(...)
-       3. ├─forecast_tbl %>% mutate_at(vars(.value:.conf_hi), exp) %>% plot_modeltime_forecast(.interactive = TRUE) test-results-forecast-plots.R:36:4
-       4. └─modeltime::plot_modeltime_forecast(., .interactive = TRUE)
-       5.   ├─plotly::ggplotly(g, dynamicTicks = TRUE)
-       6.   └─plotly:::ggplotly.ggplot(g, dynamicTicks = TRUE)
-       7.     └─plotly::gg2list(...)
-       8.       └─grDevices:::dev_fun(...)
+      `expected` is an S3 object of class <POSIXct/POSIXt>, a logical vector
+      ── Failure (test_auto_convert.R:231:3): POSIXct ────────────────────────────────
+      auto_convert(...) (`actual`) not identical to .POSIXct(NA, "") (`expected`).
       
-      ── Skipped tests  ──────────────────────────────────────────────────────────────
-      ● On CRAN (7)
+      `actual` is an S3 object of class <POSIXct/POSIXt>, a double vector
+      `expected` is an S3 object of class <POSIXct/POSIXt>, a logical vector
       
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      ERROR (test-results-forecast-plots.R:34:1): (code run outside of `test_that()`)
-      
-      [ FAIL 1 | WARN 0 | SKIP 7 | PASS 473 ]
+      [ FAIL 3 | WARN 0 | SKIP 0 | PASS 9428 ]
       Error: Test failures
       Execution halted
     ```
+
+# modeltime
+
+<details>
+
+* Version: 0.4.1
+* GitHub: https://github.com/business-science/modeltime
+* Source code: https://github.com/cran/modeltime
+* Date/Publication: 2021-01-17 14:30:13 UTC
+* Number of recursive dependencies: 194
+
+Run `revdep_details(, "modeltime")` for more info
+
+</details>
+
+## In both
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -162,7 +221,7 @@ Run `revdep_details(, "modeltime")` for more info
 * GitHub: https://github.com/business-science/modeltime.ensemble
 * Source code: https://github.com/cran/modeltime.ensemble
 * Date/Publication: 2020-11-06 18:00:02 UTC
-* Number of recursive dependencies: 190
+* Number of recursive dependencies: 189
 
 Run `revdep_details(, "modeltime.ensemble")` for more info
 
@@ -185,7 +244,7 @@ Run `revdep_details(, "modeltime.ensemble")` for more info
 * GitHub: https://github.com/business-science/modeltime.resample
 * Source code: https://github.com/cran/modeltime.resample
 * Date/Publication: 2020-11-05 07:40:09 UTC
-* Number of recursive dependencies: 194
+* Number of recursive dependencies: 193
 
 Run `revdep_details(, "modeltime.resample")` for more info
 
@@ -204,11 +263,11 @@ Run `revdep_details(, "modeltime.resample")` for more info
 
 <details>
 
-* Version: 2.5.0
+* Version: 2.6.1
 * GitHub: https://github.com/rmaia/pavo
 * Source code: https://github.com/cran/pavo
-* Date/Publication: 2020-11-12 09:00:02 UTC
-* Number of recursive dependencies: 101
+* Date/Publication: 2020-12-18 22:20:02 UTC
+* Number of recursive dependencies: 106
 
 Run `revdep_details(, "pavo")` for more info
 
@@ -216,36 +275,56 @@ Run `revdep_details(, "pavo")` for more info
 
 ## In both
 
-*   checking tests ...
-    ```
-    ...
-      Warning (test-images.R:97:3): classify
-      Warning (test-images.R:102:3): classify
-      Warning (test-images.R:121:3): classify
-      Warning (test-images.R:149:3): classify
-      Warning (test-images.R:194:3): adjacency
-      Warning (test-images.R:195:3): adjacency
-      Warning (test-images.R:214:3): adjacency
-      Warning (test-images.R:225:3): adjacency
-      Warning (test-images.R:250:3): adjacency
-      Warning (test-images.R:272:3): adjacency
-      Warning (test-images.R:286:3): summary
-      Warning (test-images.R:288:3): summary
-      FAILURE (test-images.R:291:3): summary
-      Warning (test-processing.R:12:3): Procspec
-      Warning (test-processing.R:56:3): Aggregation
-      Warning (test-vismodel.R:12:3): Warnings
-      Warning (test-vismodel.R:67:3): sensdata()
-      
-      [ FAIL 1 | WARN 1069 | SKIP 6 | PASS 377 ]
-      Error: Test failures
-      Execution halted
-    ```
-
 *   checking whether package ‘pavo’ can be installed ... WARNING
     ```
     Found the following significant warnings:
       Warning: no DISPLAY variable so Tk is not available
     See ‘/c4/home/henrik/repositories/progressr/revdep/checks/pavo/new/pavo.Rcheck/00install.out’ for details.
+    ```
+
+# spNetwork
+
+<details>
+
+* Version: 0.1.1
+* GitHub: https://github.com/JeremyGelb/spNetwork
+* Source code: https://github.com/cran/spNetwork
+* Date/Publication: 2021-01-21 23:30:02 UTC
+* Number of recursive dependencies: 119
+
+Run `revdep_details(, "spNetwork")` for more info
+
+</details>
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  9.9Mb
+      sub-directories of 1Mb or more:
+        extdata   5.6Mb
+        libs      3.3Mb
+    ```
+
+# terrainr
+
+<details>
+
+* Version: 0.3.1
+* GitHub: https://github.com/ropensci/terrainr
+* Source code: https://github.com/cran/terrainr
+* Date/Publication: 2021-02-23 08:30:02 UTC
+* Number of recursive dependencies: 94
+
+Run `revdep_details(, "terrainr")` for more info
+
+</details>
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘grDevices’
+      All declared Imports should be used.
     ```
 
