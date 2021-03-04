@@ -13,8 +13,6 @@ register_vignette_engine_during_build_only <- function(pkgname) {
       title <- grep("%\\VignetteIndexEntry{", md, fixed = TRUE, value = TRUE)
       title <- gsub(".*[{](.*)[}].*", "\\1", title)
 
-      md <- grep("%\\\\Vignette", md, invert = TRUE, value = TRUE)
-
       ## Inject vignette title
       md <- c(sprintf("# %s\n\n", title), md)
 
