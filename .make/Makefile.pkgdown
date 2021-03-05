@@ -29,9 +29,10 @@ $(PKGDOWN_DIR): $(PKGDOWN_ROOT)
 
 $(PKGDOWN_DIR)/vignettes/.tweaked: $(PKGDOWN_DIR)
 # Turn *.md files into *.Rmd
-	[[ -f "$@" ]] || for ff in "$(@D)"/*.md; do \
+	[[ -f "$@" ]] || for ff in "$(@D)"/*.md*; do \
 	  echo "Vignette: $$ff"; \
-	  make "$${ff/.md/.Rmd}"; \
+          tt="$${ff/.rsp/}"; \
+	  make "$${tt/.md/.Rmd}"; \
 	done
 	touch "$@"
 
@@ -39,7 +40,7 @@ $(PKGDOWN_DIR)/.built: $(PKGDOWN_DIR)/vignettes/.tweaked
 	cd "$(@D)"; Rscript -e "pkgdown::build_site(preview = FALSE)"
 	touch "$@"
 
-$(PKGDOWN_DIR)/vignettes/%.Rmd:
+$(PKGDOWN_DIR)/vignettes/%.Rmd: $(PKGDOWN_DIR)/vignettes/%.md
 	ff="$@"; \
 	ss="$${ff/.Rmd/.md}"; \
 	title=$$(sed -n '/.*%\\VignetteIndexEntry{.*}/p' "$$ss" | sed -E 's/.*\{(.*)\}/\1/' | sed -E 's/$(PACKAGE):[[:space:]]*//'); \
@@ -54,6 +55,21 @@ $(PKGDOWN_DIR)/vignettes/%.Rmd:
 	   cat "$$ss"; \
 	} >> "$$ff"; \
 	rm "$$ss"
+
+$(PKGDOWN_DIR)/vignettes/%.md:
+	ff="$@"; \
+	ss="$${ff/.md/.md.rsp}"; \
+	dd="$${ss/.md/.Rmd}"; \
+        echo "ff=$$ff"; echo "ss=$$ss"; \
+        meta=$$(Rscript -e R.rsp::rfile "$$ss" --postprocess=FALSE); \
+	{ \
+           echo "<!--"; \
+	   grep -F "%\Vignette" "$$ss"; \
+           echo "-->"; \
+	   cat "$(@F)"; \
+	} >> "$@"
+	rm "$(@F)"
+        
 
 $(PKGDOWN_DIR)/docs/articles/.pruned: $(PKGDOWN_DIR)/.built
 	ls -l "$(@D)"/*.html
