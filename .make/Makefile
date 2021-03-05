@@ -286,7 +286,7 @@ check_Rex:
 
 
 covr:
-	$(R_SCRIPT) -e "source('.covr.R'); covr::shine(covr)"
+	$(R_SCRIPT) -e "c <- covr::package_coverage(quiet = FALSE); saveRDS(c, '.covr.rds'); print(c); covr::report(c)"
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -423,9 +423,6 @@ win-builder-devel: $(R_OUTDIR)/$(PKG_TARBALL)
 win-builder-release: $(R_OUTDIR)/$(PKG_TARBALL)
 	curl -v -T $? ftp://anonymous@$(WIN_BUILDER)/R-release/
 
-win-builder-oldrelease: $(R_OUTDIR)/$(PKG_TARBALL)
-	curl -v -T $? ftp://anonymous@$(WIN_BUILDER)/R-oldrelease/
-
 win-builder: win-builder-devel win-builder-release
 
 
@@ -494,3 +491,10 @@ appveyor.yml: .make/appveyor.yml.rsp
 	$(R_SCRIPT) -e "R.rsp::rfile('$<', postprocess=FALSE)"
 
 config: .travis.yml appveyor.yml README.md
+
+## Include any other Makefile.*, if they exists
+INCLUDES := $(wildcard .make/Makefile.*)
+ifneq ($(strip $(INCLUDES)),)
+  include $(INCLUDES)
+endif
+
