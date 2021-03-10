@@ -3,5 +3,5 @@
 **/*~
 .local
 inst/doc
-.make/README.md.rsp
+.make/*.md.rsp
 revdep/
