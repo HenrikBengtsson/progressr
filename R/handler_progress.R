@@ -113,7 +113,7 @@ handler_progress <- function(format = ":spin [:bar] :percent :message", show_aft
         if (!state$enabled || config$times <= 2L) return()
         make_pb(format = format, total = config$max_steps,
                 clear = config$clear, show_after = config$enable_after)
-        if (inherits(progression, "sticky") && !is.null(state$message))
+        if (inherits(progression, "sticky") && length(state$message) != 0)
           pb$message(state$message)
         pb_tick(pb, state$delta, message = state$message)
       },
