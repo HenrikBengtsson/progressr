@@ -9,7 +9,9 @@
 ^OVERVIEW[.]md$
 ^README[.]md$
 ^CONDUCT[.]md$
+^CONTRIBUTING[.]md$
 ^docs/
+^pkgdown/
 
 #----------------------------
 # devtools

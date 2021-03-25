@@ -5,3 +5,5 @@
 inst/doc
 .make/*.md.rsp
 revdep/
+docs/
+pkgdown/
