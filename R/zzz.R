@@ -4,6 +4,12 @@
     options(progressr.demo.delay = 0.0)
   }
 
+  value <- Sys.getenv("R_PROGRESSR_DEMO_DELAY", NA_character_)
+  if (!is.na(value)) {
+    value <- as.numeric(value)
+    if (!is.na(value)) options(progressr.demo.delay = value)
+  }
+
   ## R CMD build
   register_vignette_engine_during_build_only(pkgname)
 
