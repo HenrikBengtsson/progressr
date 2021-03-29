@@ -1,9 +1,15 @@
 
 
+<div id="badges"><!-- pkgdown markup -->
+<a href="https://CRAN.R-project.org/web/checks/check_results_progressr.html"><img border="0" src="https://www.r-pkg.org/badges/version/progressr" alt="CRAN check status"></a></a>
+<a href="https://github.com/HenrikBengtsson/progressr/actions?query=workflow%3AR-CMD-check"><img border="0" src="https://github.com/HenrikBengtsson/progressr/workflows/R-CMD-check/badge.svg?branch=develop" alt="Build status"></a></a>
+<a href="https://travis-ci.org/HenrikBengtsson/progressr"><img border="0" src="https://travis-ci.org/HenrikBengtsson/progressr.svg" alt="Build status"></a></a>
+<a href="https://ci.appveyor.com/project/HenrikBengtsson/progressr"><img border="0" src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/progressr?svg=true" alt="Build status"></a></a>
+<a href="https://codecov.io/gh/HenrikBengtsson/progressr"><img border="0" src="https://codecov.io/gh/HenrikBengtsson/progressr/branch/develop/graph/badge.svg" alt="Coverage Status"></a></a>
+<a href="https://lifecycle.r-lib.org/articles/stages.html"><img border="0" src="man/figures/lifecycle-maturing-blue.svg" alt="Life cycle: maturing"></a></a>
+</div>
 
-# progressr: An Inclusive, Unifying API for Progress Updates
-
-![Life cycle: experimental](vignettes/imgs/lifecycle-maturing-blue.svg)
+# progressr: An Inclusive, Unifying API for Progress Updates 
 
 The **[progressr]** package provides a minimal API for reporting progress updates in [R](https://www.r-project.org/).  The design is to separate the representation of progress updates from how they are presented.  What type of progress to signal is controlled by the developer.  How these progress updates are rendered is controlled by the end user.  For instance, some users may prefer visual feedback such as a horizontal progress bar in the terminal, whereas others may prefer auditory feedback.
 
@@ -735,19 +741,8 @@ remotes::install_github("HenrikBengtsson/progressr", ref="develop")
 This will install the package from source.  
 
 
-<div id="badges"><!-- pkgdown markup -->
+<!-- pkgdown-drop-below -->
 
 ## Contributing
 
 To contribute to this package, please see [CONTRIBUTING.md](CONTRIBUTING.md).
-
-
-## Software status
-
-| Resource      | CRAN        | GitHub Actions      | Travis CI       | AppVeyor CI      |
-| ------------- | ------------------- | ------------------- | --------------- | ---------------- |
-| _Platforms:_  | _Multiple_          | _Multiple_          | _Linux & macOS_ | _Windows_        |
-| R CMD check   | <a href="https://cran.r-project.org/web/checks/check_results_progressr.html"><img border="0" src="http://www.r-pkg.org/badges/version/progressr" alt="CRAN version"></a> | <a href="https://github.com/HenrikBengtsson/progressr/actions?query=workflow%3AR-CMD-check"><img src="https://github.com/HenrikBengtsson/progressr/workflows/R-CMD-check/badge.svg?branch=develop" alt="Build status"></a>       | <a href="https://travis-ci.org/HenrikBengtsson/progressr"><img src="https://travis-ci.org/HenrikBengtsson/progressr.svg" alt="Build status"></a>   | <a href="https://ci.appveyor.com/project/HenrikBengtsson/progressr"><img src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/progressr?svg=true" alt="Build status"></a> |
-| Test coverage |                     |                     | <a href="https://codecov.io/gh/HenrikBengtsson/progressr"><img src="https://codecov.io/gh/HenrikBengtsson/progressr/branch/develop/graph/badge.svg" alt="Coverage Status"/></a>     |                  |
-
-</div>
