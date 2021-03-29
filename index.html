@@ -6,6 +6,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>An Inclusive, Unifying API for Progress Updates • progressr</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
@@ -83,10 +89,11 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
+
+
 <div id="progressr-an-inclusive-unifying-api-for-progress-updates" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#progressr-an-inclusive-unifying-api-for-progress-updates" class="anchor"></a>progressr: An Inclusive, Unifying API for Progress Updates</h1></div>
-<p><img src="articles/imgs/lifecycle-maturing-blue.svg" alt="Life cycle: experimental"></p>
 <p>The <strong><a href="https://cran.r-project.org/package=progressr" class="external-link">progressr</a></strong> package provides a minimal API for reporting progress updates in <a href="https://www.r-project.org/" class="external-link">R</a>. The design is to separate the representation of progress updates from how they are presented. What type of progress to signal is controlled by the developer. How these progress updates are rendered is controlled by the end user. For instance, some users may prefer visual feedback such as a horizontal progress bar in the terminal, whereas others may prefer auditory feedback.</p>
 <p><img src="articles/imgs/three_in_chinese.gif" alt="Three strokes writing three in Chinese" style="float: right; margin-right: 1ex; margin-left: 1ex;"></p>
 <p>Design motto:</p>
@@ -686,10 +693,10 @@ M<span class="op">:</span><span class="st"> </span>Added value <span class="dv">
 <div class="sourceCode"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"HenrikBengtsson/progressr"</span>, ref<span class="op">=</span><span class="st">"develop"</span><span class="op">)</span></code></pre></div>
 <p>This will install the package from source.</p>
+</div>
+</div>
+</div>
 
-</div>
-</div>
-</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -731,11 +738,12 @@ M<span class="op">:</span><span class="st"> </span>Added value <span class="dv">
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://cran.r-project.org/web/checks/check_results_progressr.html" class="external-link"><img border="0" src="http://www.r-pkg.org/badges/version/progressr" alt="CRAN version"></a></li>
-<li><a href="https://github.com/HenrikBengtsson/progressr/actions?query=workflow%3AR-CMD-check" class="external-link"><img src="https://github.com/HenrikBengtsson/progressr/workflows/R-CMD-check/badge.svg?branch=develop" alt="Build status"></a></li>
-<li><a href="https://travis-ci.org/HenrikBengtsson/progressr" class="external-link"><img src="https://travis-ci.org/HenrikBengtsson/progressr.svg" alt="Build status"></a></li>
-<li><a href="https://ci.appveyor.com/project/HenrikBengtsson/progressr" class="external-link"><img src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/progressr?svg=true" alt="Build status"></a></li>
-<li><a href="https://codecov.io/gh/HenrikBengtsson/progressr" class="external-link"><img src="https://codecov.io/gh/HenrikBengtsson/progressr/branch/develop/graph/badge.svg" alt="Coverage Status"></a></li>
+<li><a href="https://CRAN.R-project.org/web/checks/check_results_progressr.html" class="external-link"><img border="0" src="https://www.r-pkg.org/badges/version/progressr" alt="CRAN check status"></a></li>
+<li><a href="https://github.com/HenrikBengtsson/progressr/actions?query=workflow%3AR-CMD-check" class="external-link"><img border="0" src="https://github.com/HenrikBengtsson/progressr/workflows/R-CMD-check/badge.svg?branch=develop" alt="Build status"></a></li>
+<li><a href="https://travis-ci.org/HenrikBengtsson/progressr" class="external-link"><img border="0" src="https://travis-ci.org/HenrikBengtsson/progressr.svg" alt="Build status"></a></li>
+<li><a href="https://ci.appveyor.com/project/HenrikBengtsson/progressr" class="external-link"><img border="0" src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/progressr?svg=true" alt="Build status"></a></li>
+<li><a href="https://codecov.io/gh/HenrikBengtsson/progressr" class="external-link"><img border="0" src="https://codecov.io/gh/HenrikBengtsson/progressr/branch/develop/graph/badge.svg" alt="Coverage Status"></a></li>
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html" class="external-link"><img border="0" src="reference/figures/lifecycle-maturing-blue.svg" alt="Life cycle: maturing"></a></li>
 </ul>
 </div>
 
