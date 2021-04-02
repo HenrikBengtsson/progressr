@@ -20,8 +20,8 @@ Design motto:
 1. Set up a progressor with a certain number of steps:
 </p>
 <pre>
-p <- progressor(nsteps)
-p <- progressor(along = x)
+p &lt;- progressor(nsteps)
+p &lt;- progressor(along = x)
 </pre>
 
 <p>
@@ -50,8 +50,8 @@ p("loading ...")  # pass on a message
 <pre>
 handlers(global = TRUE)
 
-y <- slow_sum(1:5)
-y <- slow_sum(6:10)
+y &lt;- slow_sum(1:5)
+y &lt;- slow_sum(6:10)
 </pre>
 
 <p>
@@ -60,8 +60,8 @@ y <- slow_sum(6:10)
 
 <pre>
 with_progress({
-  y <- slow_sum(1:5)
-  y <- slow_sum(6:10)
+  y &lt;- slow_sum(1:5)
+  y &lt;- slow_sum(6:10)
 })
 </pre>
 
@@ -704,7 +704,6 @@ M: Added value 3
 [future.apply]: https://cran.r-project.org/package=future.apply
 [doParallel]: https://cran.r-project.org/package=doParallel
 [doFuture]: https://cran.r-project.org/package=doFuture
-[foreach]: https://cran.r-project.org/package=foreach
 [furrr]: https://cran.r-project.org/package=furrr
 [pbapply]: https://cran.r-project.org/package=pbapply
 [pbmcapply]: https://cran.r-project.org/package=pbmcapply
