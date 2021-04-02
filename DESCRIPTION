@@ -31,7 +31,7 @@ Suggests:
     base64enc,
     tools
 VignetteBuilder: progressr
-URL: https://github.com/HenrikBengtsson/progressr
+URL: https://progressr.futureverse.org, https://github.com/HenrikBengtsson/progressr
 BugReports: https://github.com/HenrikBengtsson/progressr/issues
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
