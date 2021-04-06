@@ -222,7 +222,9 @@
 1. Set up a progressor with a certain number of steps:
 </p>
 <pre>
-p 
+p &lt;- progressor(nsteps)
+p &lt;- progressor(along = x)
+</pre>
 
 <p>
 2. Signal progress:
@@ -232,7 +234,6 @@ p
 p()               # one-step progress
 p(amount = 0)     # "still alive"
 p("loading ...")  # pass on a message
-</pre>
 </pre>
 </td>
 </tr>
@@ -251,7 +252,9 @@ p("loading ...")  # pass on a message
 <pre>
 handlers(global = TRUE)
 
-y 
+y &lt;- slow_sum(1:5)
+y &lt;- slow_sum(6:10)
+</pre>
 
 <p>
 1b. Subscribe to a specific expression:
@@ -259,7 +262,10 @@ y
 
 <pre>
 with_progress({
-  y 
+  y &lt;- slow_sum(1:5)
+  y &lt;- slow_sum(6:10)
+})
+</pre>
 
 <p>
 2. Configure how progress is presented:
@@ -271,7 +277,6 @@ handlers("txtprogressbar", "beepr")
 handlers(handler_pbcol(enable_after = 3.0))
 handlers(handler_progress(complete = "#"))
 </pre>
-</pre></pre>
 </td>
 </tr>
 </table>
@@ -446,7 +451,7 @@ Calculating the square root of <span class="dv">2</span>
 <h3 class="hasAnchor">
 <a href="#base-r-apply-functions" class="anchor"></a>Base R Apply Functions</h3>
 <div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/progressr" class="external-link">progressr</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span>
 <span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="va">my_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">xs</span><span class="op">)</span> <span class="op">{</span>
@@ -466,7 +471,7 @@ Calculating the square root of <span class="dv">2</span>
 <a href="#the-foreach-package" class="anchor"></a>The foreach package</h3>
 <div class="sourceCode"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RevolutionAnalytics/foreach" class="external-link">foreach</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/progressr" class="external-link">progressr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span>
 <span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="va">my_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">xs</span><span class="op">)</span> <span class="op">{</span>
@@ -486,7 +491,7 @@ Calculating the square root of <span class="dv">2</span>
 <a href="#the-purrr-package" class="anchor"></a>The purrr package</h3>
 <div class="sourceCode"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://purrr.tidyverse.org" class="external-link">purrr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/progressr" class="external-link">progressr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span>
 <span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="va">my_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">xs</span><span class="op">)</span> <span class="op">{</span>
@@ -506,7 +511,7 @@ Calculating the square root of <span class="dv">2</span>
 <a href="#the-plyr-package" class="anchor"></a>The plyr package</h3>
 <div class="sourceCode"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://had.co.nz/plyr" class="external-link">plyr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/progressr" class="external-link">progressr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span>
 <span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="va">my_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">xs</span><span class="op">)</span> <span class="op">{</span>
@@ -535,7 +540,7 @@ Calculating the square root of <span class="dv">2</span>
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/future.apply" class="external-link">future.apply</a></span><span class="op">)</span>
 <span class="fu">plan</span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
 
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/progressr" class="external-link">progressr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span>
 <span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span><span class="st">"progress"</span>, <span class="st">"beepr"</span><span class="op">)</span>
 
@@ -560,7 +565,7 @@ Calculating the square root of <span class="dv">2</span>
 <span class="fu"><a href="https://rdrr.io/pkg/doFuture/man/registerDoFuture.html" class="external-link">registerDoFuture</a></span><span class="op">(</span><span class="op">)</span>      <span class="co">## %dopar% parallelizes via future</span>
 <span class="fu">plan</span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
 
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/progressr" class="external-link">progressr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span>
 <span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span><span class="st">"progress"</span>, <span class="st">"beepr"</span><span class="op">)</span>
 
@@ -584,7 +589,7 @@ Calculating the square root of <span class="dv">2</span>
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/DavisVaughan/furrr" class="external-link">furrr</a></span><span class="op">)</span>
 <span class="fu">plan</span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
 
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/progressr" class="external-link">progressr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span>
 <span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span><span class="st">"progress"</span>, <span class="st">"beepr"</span><span class="op">)</span>
 
@@ -612,7 +617,7 @@ Calculating the square root of <span class="dv">2</span>
 <span class="fu"><a href="https://rdrr.io/pkg/doFuture/man/registerDoFuture.html" class="external-link">registerDoFuture</a></span><span class="op">(</span><span class="op">)</span>      <span class="co">## %dopar% parallelizes via future</span>
 <span class="fu">plan</span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
 
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/progressr" class="external-link">progressr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span>
 <span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span><span class="st">"progress"</span>, <span class="st">"beepr"</span><span class="op">)</span>
 
@@ -638,7 +643,7 @@ Calculating the square root of <span class="dv">2</span>
 <span class="fu"><a href="https://rdrr.io/pkg/doFuture/man/registerDoFuture.html" class="external-link">registerDoFuture</a></span><span class="op">(</span><span class="op">)</span>      <span class="co">## %dopar% parallelizes via future</span>
 <span class="fu">plan</span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
 
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/progressr" class="external-link">progressr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span>
 <span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span><span class="st">"progress"</span>, <span class="st">"beepr"</span><span class="op">)</span>
 
@@ -720,7 +725,7 @@ $ <span class="ex">Rscript</span> -e <span class="st">"library(progressr)"</span
 <a href="#known-issues" class="anchor"></a>Known issues</h3>
 <p>It is not possible to create a progressor in the global environment, e.g. in the the top-level of a script. It has to be created inside a function, within <code><a href="reference/with_progress.html">with_progress({ ... })</a></code>, <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">local({ ... })</a></code>, or a similar construct. For example, the following:</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/progressr" class="external-link">progressr</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span>
 <span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="va">xs</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>
@@ -738,7 +743,7 @@ $ <span class="ex">Rscript</span> -e <span class="st">"library(progressr)"</span
   of the progressor</code></pre>
 <p>The solution is to wrap it in a <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">local({ ... })</a></code> call, or more explicitly, in a <code><a href="reference/with_progress.html">with_progress({ ... })</a></code> call:</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/progressr" class="external-link">progressr</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span>
 <span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="va">xs</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>
