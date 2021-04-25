@@ -18,6 +18,14 @@ local({
   p("A message")
 })
 
+message("- zero length")
+local({
+  p <- progressor(0L)
+  print(p)
+  p()
+  p("A message")
+})
+
 message("- multiple consequtive progressors")
 local({
   message("Progressor #1")
