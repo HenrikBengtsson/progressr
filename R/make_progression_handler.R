@@ -349,15 +349,16 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
         }
         max_steps <<- p[["steps"]]
         if (debug) mstr(list(max_steps=max_steps))
-        stop_if_not(!is.null(max_steps), is.numeric(max_steps), length(max_steps) == 1L, max_steps >= 1)
+        stop_if_not(!is.null(max_steps), is.numeric(max_steps), length(max_steps) == 1L, max_steps >= 0)
         auto_finish <<- p[["auto_finish"]]
         times <- min(times, max_steps)
         if (debug) mstr(list(auto_finish = auto_finish, times = times, interval = interval, intrusiveness = intrusiveness))
         
         ## Adjust 'times' and 'interval' according to 'intrusiveness'
-        times <- min(times / intrusiveness, max_steps)
+        times <- min(c(times / intrusiveness, max_steps), na.rm = TRUE)
         times <- max(times, 1L)
         interval <- interval * intrusiveness
+        if (debug) mstr(list(times = times, interval = interval))
 
         ## Milestone steps that need to be reach in order to trigger an
         ## update of the reporter

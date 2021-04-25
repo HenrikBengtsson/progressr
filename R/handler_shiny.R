@@ -25,8 +25,8 @@ handler_shiny <- function(intrusiveness = getOption("progressr.intrusiveness.gui
   reporter <- local({
     list(
       update = function(config, state, progression, ...) {
-        shiny::incProgress(amount = progression$amount / config$max_steps,
-	                   message = state$message)
+        amount <- if (config$max_steps == 0) 1 else progression$amount / config$max_steps
+        shiny::incProgress(amount = amount, message = state$message)
       }
     )
   })

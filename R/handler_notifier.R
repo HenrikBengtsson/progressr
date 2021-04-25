@@ -29,7 +29,8 @@ handler_notifier <- function(intrusiveness = getOption("progressr.intrusiveness.
   }
 
   notify <- function(step, max_steps, message) {
-    ratio <- sprintf("%.0f%%", 100*step/max_steps)
+    ratio <- if (max_steps == 0) 1 else step / max_steps
+    ratio <- sprintf("%.0f%%", 100*ratio)
     msg <- paste(c("", message), collapse = "")
     notifier_notify(sprintf("[%s] %s", ratio, msg))
   }

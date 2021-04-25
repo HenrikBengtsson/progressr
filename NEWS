@@ -1,7 +1,7 @@
 Package: progressr
 ==================
 
-Version: 0.7.0-9000 [2021-02-28]
+Version: 0.7.0-9000 [2021-04-25]
 
 SIGNIFICANT CHANGES:
 
@@ -11,6 +11,9 @@ SIGNIFICANT CHANGES:
  
 NEW FEATURES:
 
+ * Now supporting zero-length progressors, e.g. p <- progressor(along = x)
+   where length(x) == 0.
+   
  * Add handlers("rstudio") to report on progress in the RStudio Console via
    the RStudio Job interface.
 
