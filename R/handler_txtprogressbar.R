@@ -48,10 +48,15 @@ handler_txtprogressbar <- function(style = 3L, file = stderr(), intrusiveness = 
   reporter <- local({
     pb <- NULL
     
-    make_pb <- function(...) {
+    make_pb <- function(max, ...) {
       if (!is.null(pb)) return(pb)
-      args <- c(list(...), backend_args)
-      pb <<- do.call(txtProgressBar, args = args)
+      ## SPECIAL CASE: utils::txtProgressBar() does not support max == min
+      if (max == 0) {
+        pb <<- voidProgressBar()
+      } else {
+        args <- c(list(max = max, ...), backend_args)
+        pb <<- do.call(txtProgressBar, args = args)
+      }
       pb
     }
 
@@ -115,9 +120,17 @@ handler_txtprogressbar <- function(style = 3L, file = stderr(), intrusiveness = 
 }
 
 
+#' @importFrom utils txtProgressBar
+voidProgressBar <- function(...) {
+  pb <- txtProgressBar()
+  class(pb) <- c("voidProgressBar", class(pb))
+  pb
+}
+
 
 ## Erase a utils::txtProgressBar()
 eraseTxtProgressBar <- function(pb) {
+  if (inherits(pb, "voidProgressBar")) return()
   pb_env <- environment(pb$getVal)
   with(pb_env, {
     if (style == 1L || style == 2L) {
@@ -136,6 +149,7 @@ eraseTxtProgressBar <- function(pb) {
 
 ## Redraw a utils::txtProgressBar()
 redrawTxtProgressBar <- function(pb) {
+  if (inherits(pb, "voidProgressBar")) return()
   setTxtProgressBar(pb, value = pb$getVal())
 }
 
