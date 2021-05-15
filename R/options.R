@@ -117,3 +117,107 @@
 #' @keywords internal
 #' @name progressr.options
 NULL
+
+
+get_package_option <- function(name, default = NULL, package = .packageName) {
+  if (!is.null(package)) {
+    name <- paste(package, name, sep = ".")
+  }
+  getOption(name, default = default)
+}
+
+# Set an R option from an environment variable
+update_package_option <- function(name, mode = "character", default = NULL, package = .packageName, split = NULL, trim = TRUE, disallow = c("NA"), force = FALSE, debug = FALSE) {
+  if (!is.null(package)) {
+    name <- paste(package, name, sep = ".")
+  }
+
+  mdebugf("Set package option %s", sQuote(name))
+
+  ## Already set? Nothing to do?
+  value <- getOption(name, NULL)
+  if (!force && !is.null(value)) {
+    mdebugf("Already set: %s", sQuote(value))
+    return(getOption(name))
+  }
+
+  ## name="Pkg.foo.Bar" => env="R_PKG_FOO_BAR"
+  env <- gsub(".", "_", toupper(name), fixed = TRUE)
+  env <- paste("R_", env, sep = "")
+
+  env_value <- value <- Sys.getenv(env, unset = NA_character_)
+  if (is.na(value)) {  
+    if (debug) mdebugf("Environment variable %s not set", sQuote(env))
+    
+    ## Nothing more to do?
+    if (is.null(default)) return(getOption(name))
+
+    if (debug) mdebugf("Use argument 'default': ", sQuote(default))
+    value <- default
+  }
+
+  if (debug) mdebugf("%s=%s", env, sQuote(value))
+
+  ## Trim?
+  if (trim) value <- trim(value)
+
+  ## Nothing to do?
+  if (!nzchar(value)) return(getOption(name, default = default))
+
+  ## Split?
+  if (!is.null(split)) {
+    value <- strsplit(value, split = split, fixed = TRUE)
+    value <- unlist(value, use.names = FALSE)
+    if (trim) value <- trim(value)
+  }
+
+  ## Coerce?
+  mode0 <- storage.mode(value)
+  if (mode0 != mode) {
+    suppressWarnings({
+      storage.mode(value) <- mode
+    })
+    if (debug) {
+      mdebugf("Coercing from %s to %s: %s", mode0, mode, commaq(value))
+    }
+  }
+
+  if (length(disallow) > 0) {
+    if ("NA" %in% disallow) {
+      if (any(is.na(value))) {
+        stop(sprintf("Coercing environment variable %s=%s to %s would result in missing values for option %s: %s", sQuote(env), sQuote(env_value), sQuote(mode), sQuote(name), commaq(value)))
+      }
+    }
+    if (is.numeric(value)) {
+      if ("non-positive" %in% disallow) {
+        if (any(value <= 0, na.rm = TRUE)) {
+          stop(sprintf("Environment variable %s=%s specifies a non-positive value for option %s: %s", sQuote(env), sQuote(env_value), sQuote(name), commaq(value)))
+        }
+      }
+      if ("negative" %in% disallow) {
+        if (any(value < 0, na.rm = TRUE)) {
+          stop(sprintf("Environment variable %s=%s specifies a negative value for option %s: %s", sQuote(env), sQuote(env_value), sQuote(name), commaq(value)))
+        }
+      }
+    }
+  }
+  
+  if (debug) {
+    mdebugf("=> options(%s = %s) [n=%d, mode=%s]",
+            dQuote(name), commaq(value),
+            length(value), storage.mode(value))
+  }
+
+  do.call(options, args = structure(list(value), names = name))
+  
+  getOption(name, default = default)
+}
+
+
+## Set package options based on environment variables
+update_package_options <- function(debug = FALSE) {
+  update_package_option("demo.delay", mode = "numeric", debug = debug)
+
+  ## However, not used
+  update_package_option("global.handler", mode = "logical", debug = debug)
+}

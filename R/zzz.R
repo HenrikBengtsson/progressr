@@ -1,22 +1,21 @@
 .onLoad <- function(libname, pkgname) {
+  debug <- isTRUE(as.logical(Sys.getenv("R_PROGRESSR_DEBUG", "FALSE")))
+  if (debug) options(progressr.debug = TRUE)
+  debug <- getOption("progressr.debug", debug)
+
+  ## Set package options based on environment variables
+  update_package_options(debug = debug)
+  
   ## R CMD check
   if (in_r_cmd_check()) {
     options(progressr.demo.delay = 0.0)
-  }
-
-  value <- Sys.getenv("R_PROGRESSR_DEMO_DELAY", NA_character_)
-  if (!is.na(value)) {
-    value <- as.numeric(value)
-    if (!is.na(value)) options(progressr.demo.delay = value)
   }
 
   ## R CMD build
   register_vignette_engine_during_build_only(pkgname)
 
   ## Register a global progression handler on load?
-  global <- Sys.getenv("R_PROGRESSR_GLOBAL_HANDLER", "FALSE")
-  global <- getOption("progressr.global.handler", as.logical(global))
-  if (isTRUE(global)) {
+  if (isTRUE(getOption("progressr.global.handler", FALSE))) {
     ## UPDATE It is not possible to register a global calling handler when
     ## there is already an active condition handler as it is here because
     ## loadNamespace()/library() uses tryCatch() internally.  If attempted,
@@ -25,5 +24,3 @@
 #    register_global_progression_handler()
   }
 }
-
-
