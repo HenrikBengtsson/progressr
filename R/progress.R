@@ -7,12 +7,14 @@
 #' @return A [base::condition] of class `progression`.
 #'
 #' @seealso
+#' To create a progression condition, use [progression()].
 #' To signal a progression condition, use [base::signalCondition()].
-#' To create and signal a progression condition at once, use [progress()].
 #'
 #' @keywords internal
 #' @export
 progress <- function(..., call = sys.call()) {
+  .Deprecated(msg = "progress() is deprecated", package = .packageName)
+  
   args <- list(...)
   if (length(args) == 1L && inherits(args[[1L]], "condition")) {
     cond <- args[[1L]]

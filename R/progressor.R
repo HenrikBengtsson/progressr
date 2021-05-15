@@ -79,12 +79,20 @@ progressor <- local({
     
     fcn <- function(message = character(0L), ..., type = "update") {
       progression_index <<- progression_index + 1L
-      progress(type = type,
-               message = message,
-               ...,
-               progressor_uuid = progressor_uuid,
-               progression_index = progression_index,
-               owner_session_uuid = owner_session_uuid)
+      cond <- progression(
+        type = type,
+        message = message,
+        ...,
+        progressor_uuid = progressor_uuid,
+        progression_index = progression_index,
+        owner_session_uuid = owner_session_uuid,
+        call = sys.call()
+      )
+      withRestarts(
+        signalCondition(cond),
+        muffleProgression = function(p) NULL
+      )
+      invisible(cond)
     }
     formals(fcn)$message <- message
     class(fcn) <- c("progressor", class(fcn))

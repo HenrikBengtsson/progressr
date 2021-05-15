@@ -1,7 +1,7 @@
 Package: progressr
 ==================
 
-Version: 0.7.0-9000 [2021-04-25]
+Version: 0.7.0-9001 [2021-05-15]
 
 SIGNIFICANT CHANGES:
 
@@ -24,6 +24,14 @@ BUG FIXES:
    value = fcn, envir = envir) : cannot change value of locked binding for
    '...progressor'.
 
+DEPRECATED AND DEFUNCT:
+
+ * Function progress() is deprecated in order to re-use it for other purpose.
+   It is unlikely that anyone really used this function, but if you did, then
+   use cond <- progression() to create 'progression' condition and then use
+   withRestart(signalCondition(cond), muffleProgression = function(p) NULL)
+   to signal it.
+   
 
 Version: 0.7.0 [2020-12-11]
 

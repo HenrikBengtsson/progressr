@@ -67,3 +67,8 @@ RStudio
 BiocParallel
 bplapply
 txtprogressbar
+cond
+envir
+fcn
+signalCondition
+md
