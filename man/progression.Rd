@@ -63,6 +63,5 @@ A progression condition represents a progress in an \R program.
 }
 \seealso{
 To signal a progression condition, use \code{\link[base:conditions]{base::signalCondition()}}.
-To create and signal a progression condition at once, use \code{\link[=progress]{progress()}}.
 }
 \keyword{internal}
