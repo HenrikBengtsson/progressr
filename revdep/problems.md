@@ -1,12 +1,34 @@
+# bayesmove
+
+<details>
+
+* Version: 0.2.0
+* GitHub: https://github.com/joshcullen/bayesmove
+* Source code: https://github.com/cran/bayesmove
+* Date/Publication: 2021-04-26 22:10:11 UTC
+* Number of recursive dependencies: 141
+
+Run `revdep_details(, "bayesmove")` for more info
+
+</details>
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘move’
+      All declared Imports should be used.
+    ```
+
 # cSEM
 
 <details>
 
-* Version: 0.3.1
+* Version: 0.4.0
 * GitHub: https://github.com/M-E-Rademaker/cSEM
 * Source code: https://github.com/cran/cSEM
-* Date/Publication: 2021-02-14 22:50:20 UTC
-* Number of recursive dependencies: 123
+* Date/Publication: 2021-04-19 22:00:18 UTC
+* Number of recursive dependencies: 121
 
 Run `revdep_details(, "cSEM")` for more info
 
@@ -28,7 +50,7 @@ Run `revdep_details(, "cSEM")` for more info
 * GitHub: https://github.com/erblast/easyalluvial
 * Source code: https://github.com/cran/easyalluvial
 * Date/Publication: 2021-01-13 10:40:09 UTC
-* Number of recursive dependencies: 177
+* Number of recursive dependencies: 175
 
 Run `revdep_details(, "easyalluvial")` for more info
 
@@ -51,11 +73,11 @@ Run `revdep_details(, "easyalluvial")` for more info
 
 <details>
 
-* Version: 0.3.0
+* Version: 0.3.1
 * GitHub: https://github.com/mdsteiner/EFAtools
 * Source code: https://github.com/cran/EFAtools
-* Date/Publication: 2020-11-04 18:00:02 UTC
-* Number of recursive dependencies: 88
+* Date/Publication: 2021-03-27 08:40:42 UTC
+* Number of recursive dependencies: 86
 
 Run `revdep_details(, "EFAtools")` for more info
 
@@ -65,7 +87,7 @@ Run `revdep_details(, "EFAtools")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.1Mb
+      installed size is  7.2Mb
       sub-directories of 1Mb or more:
         doc    1.0Mb
         libs   5.3Mb
@@ -105,17 +127,17 @@ Run `revdep_details(, "EpiNow2")` for more info
         libs  153.4Mb
     ```
 
-# fxTWAPLS
+# gtfs2gps
 
 <details>
 
-* Version: 0.0.5
-* GitHub: https://github.com/special-uor/fxTWAPLS
-* Source code: https://github.com/cran/fxTWAPLS
-* Date/Publication: 2021-01-29 12:10:02 UTC
-* Number of recursive dependencies: 63
+* Version: 1.4-1
+* GitHub: https://github.com/ipeaGIT/gtfs2gps
+* Source code: https://github.com/cran/gtfs2gps
+* Date/Publication: 2021-04-13 12:20:02 UTC
+* Number of recursive dependencies: 80
 
-Run `revdep_details(, "fxTWAPLS")` for more info
+Run `revdep_details(, "gtfs2gps")` for more info
 
 </details>
 
@@ -123,7 +145,7 @@ Run `revdep_details(, "fxTWAPLS")` for more info
 
 *   checking dependencies in R code ... NOTE
     ```
-    Namespace in Imports field not imported from: ‘progress’
+    Namespace in Imports field not imported from: ‘readr’
       All declared Imports should be used.
     ```
 
@@ -135,7 +157,7 @@ Run `revdep_details(, "fxTWAPLS")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/lmtp
 * Date/Publication: 2021-02-22 15:50:02 UTC
-* Number of recursive dependencies: 92
+* Number of recursive dependencies: 107
 
 Run `revdep_details(, "lmtp")` for more info
 
@@ -150,78 +172,15 @@ Run `revdep_details(, "lmtp")` for more info
       All declared Imports should be used.
     ```
 
-# mlr3
-
-<details>
-
-* Version: 0.10.0
-* GitHub: https://github.com/mlr-org/mlr3
-* Source code: https://github.com/cran/mlr3
-* Date/Publication: 2021-01-21 08:50:06 UTC
-* Number of recursive dependencies: 60
-
-Run `revdep_details(, "mlr3")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > if (requireNamespace("testthat", quietly = TRUE)) {
-      +   library(checkmate)
-      +   library(testthat)
-      +   library(mlr3)
-      + 
-      +   test_check("mlr3")
-      + }
-    ...
-      `expected` is an S3 object of class <POSIXct/POSIXt>, a logical vector
-      ── Failure (test_auto_convert.R:231:3): POSIXct ────────────────────────────────
-      auto_convert(...) (`actual`) not identical to .POSIXct(NA, "") (`expected`).
-      
-      `actual` is an S3 object of class <POSIXct/POSIXt>, a double vector
-      `expected` is an S3 object of class <POSIXct/POSIXt>, a logical vector
-      
-      [ FAIL 3 | WARN 0 | SKIP 0 | PASS 9428 ]
-      Error: Test failures
-      Execution halted
-    ```
-
-# modeltime
-
-<details>
-
-* Version: 0.4.1
-* GitHub: https://github.com/business-science/modeltime
-* Source code: https://github.com/cran/modeltime
-* Date/Publication: 2021-01-17 14:30:13 UTC
-* Number of recursive dependencies: 194
-
-Run `revdep_details(, "modeltime")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘slider’
-      All declared Imports should be used.
-    ```
-
 # modeltime.ensemble
 
 <details>
 
-* Version: 0.3.0
+* Version: 0.4.0
 * GitHub: https://github.com/business-science/modeltime.ensemble
 * Source code: https://github.com/cran/modeltime.ensemble
-* Date/Publication: 2020-11-06 18:00:02 UTC
-* Number of recursive dependencies: 189
+* Date/Publication: 2021-04-05 14:20:02 UTC
+* Number of recursive dependencies: 206
 
 Run `revdep_details(, "modeltime.ensemble")` for more info
 
@@ -240,11 +199,11 @@ Run `revdep_details(, "modeltime.ensemble")` for more info
 
 <details>
 
-* Version: 0.1.0
+* Version: 0.2.0
 * GitHub: https://github.com/business-science/modeltime.resample
 * Source code: https://github.com/cran/modeltime.resample
-* Date/Publication: 2020-11-05 07:40:09 UTC
-* Number of recursive dependencies: 193
+* Date/Publication: 2021-03-14 20:40:07 UTC
+* Number of recursive dependencies: 205
 
 Run `revdep_details(, "modeltime.resample")` for more info
 
@@ -263,11 +222,11 @@ Run `revdep_details(, "modeltime.resample")` for more info
 
 <details>
 
-* Version: 2.6.1
+* Version: 2.7.0
 * GitHub: https://github.com/rmaia/pavo
 * Source code: https://github.com/cran/pavo
-* Date/Publication: 2020-12-18 22:20:02 UTC
-* Number of recursive dependencies: 106
+* Date/Publication: 2021-03-23 11:40:02 UTC
+* Number of recursive dependencies: 102
 
 Run `revdep_details(, "pavo")` for more info
 
@@ -290,7 +249,7 @@ Run `revdep_details(, "pavo")` for more info
 * GitHub: https://github.com/JeremyGelb/spNetwork
 * Source code: https://github.com/cran/spNetwork
 * Date/Publication: 2021-01-21 23:30:02 UTC
-* Number of recursive dependencies: 119
+* Number of recursive dependencies: 117
 
 Run `revdep_details(, "spNetwork")` for more info
 
@@ -310,11 +269,11 @@ Run `revdep_details(, "spNetwork")` for more info
 
 <details>
 
-* Version: 0.3.1
+* Version: 0.4.0
 * GitHub: https://github.com/ropensci/terrainr
 * Source code: https://github.com/cran/terrainr
-* Date/Publication: 2021-02-23 08:30:02 UTC
-* Number of recursive dependencies: 94
+* Date/Publication: 2021-04-23 09:10:02 UTC
+* Number of recursive dependencies: 93
 
 Run `revdep_details(, "terrainr")` for more info
 
