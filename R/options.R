@@ -21,30 +21,30 @@
 #' @section Options for controlling progression handlers:
 #'
 #' \describe{
-#'   \item{\option{progressr.clear} / \env{R_PROGRESSR_CLEAR}:}{
+#'   \item{\option{progressr.clear}:}{
 #'     (logical)
 #'     If TRUE, any output, typically visual, produced by a reporter will be cleared/removed upon completion, if possible. (Default: TRUE)
 #'   }
 #'
-#'   \item{\option{progressr.enable} / \env{R_PROGRESSR_ENABLE}:}{
+#'   \item{\option{progressr.enable}:}{
 #'     (logical)
 #'     If FALSE, then progress is not reported.
 #'     (Default: TRUE)
 #'   }
 #'
-#'   \item{\option{progressr.enable_after} / \env{R_PROGRESSR_ENABLE_AFTER}:}{
+#'   \item{\option{progressr.enable_after}:}{
 #'     (numeric)
 #'     Delay (in seconds) before progression updates are reported.
 #'     (Default: `0.0`)
 #'   }
 #'
-#'   \item{\option{progressr.times} / \env{R_PROGRESSR_TIMES}:}{
+#'   \item{\option{progressr.times}:}{
 #'     (numeric)
 #'     The maximum number of times a handler should report progression updates. If zero, then progress is not reported.
 #'     (Default: `+Inf`)
 #'   }
 #'
-#'   \item{\option{progressr.interval} / \env{R_PROGRESSR_INTERVAL}:}{
+#'   \item{\option{progressr.interval}:}{
 #'     (numeric)
 #'     The minimum time (in seconds) between successive progression updates from this handler.
 #'     (Default: `0.0`)
@@ -93,6 +93,14 @@
 #'  \item{\option{progressr.demo.delay}:}{(numeric) Delay (in seconds) between each iteration of [slow_sum()]. (Default: `1.0`)}
 #' }
 #'
+#' @section Environment variables that set R options:
+#' Some of the above \R \option{progressr.*} options can be set by corresponding
+#' environment variable \env{R_PROGRESSR_*} _when the \pkg{progressr} package
+#' is loaded_.
+#' For example, if `R_PROGRESSR_ENABLE = "true"`, then option
+#' \option{progressr.enable} is set to `TRUE` (logical).
+#' For example, if `R_PROGRESSR_ENABLE_AFTER = "2.0"`, then option
+#' \option{progressr.enable_after} is set to `2.0` (numeric).
 #'
 #' @seealso
 #' To set \R options when \R starts (even before the \pkg{progressr} package is loaded), see the \link[base]{Startup} help page.  The \href{https://cran.r-project.org/package=startup}{\pkg{startup}} package provides a friendly mechanism for configuring \R at startup.
@@ -217,6 +225,16 @@ update_package_option <- function(name, mode = "character", default = NULL, pack
 ## Set package options based on environment variables
 update_package_options <- function(debug = FALSE) {
   update_package_option("demo.delay", mode = "numeric", debug = debug)
+
+  ## make_progression_handler() arguments
+  update_package_option("clear", mode = "logical", default = TRUE, debug = debug)
+  update_package_option("enable", mode = "logical", default = interactive(), debug = debug)
+  update_package_option("enable_after", mode = "numeric", default = 0.0, debug = debug)
+  update_package_option("interval", mode = "numeric", default = 0.0, debug = debug)
+  update_package_option("times", mode = "numeric", default = +Inf, debug = debug)
+
+  ## Life-cycle, e.g. deprecation an defunct
+  update_package_option("lifecycle.progress", mode = "character", default = "deprecated", debug = debug)
 
   ## However, not used
   update_package_option("global.handler", mode = "logical", debug = debug)

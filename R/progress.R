@@ -15,7 +15,7 @@
 #' @keywords internal
 #' @export
 progress <- function(..., call = sys.call()) {
-  action <- getOption("progressr.progress", "deprecated")
+  action <- getOption("progressr.lifecycle.progress", "deprecated")
   signal <- switch(action, deprecated = .Deprecated, defunct = .Defunct)
   signal(msg = sprintf("progress() is %s", action), package = .packageName)
  

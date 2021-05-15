@@ -8,6 +8,14 @@ SIGNIFICANT CHANGES:
  * Creating a new progressor() will now automatically finish an existing
    progressor in the same environment.  The previous behavior was to give an
    error (see below bug fix).
+
+ * R_PROGRESSR_* environment variables are now only read when the 'progressr'
+   package is loaded, where they set the corresponding progressr.* option.
+   Previously, some of these environment variables were queried by different
+   functions as a fallback to when an option was not set.  By only parsing
+   them when the package is loaded, it decrease the overhead in functions,
+   and it clarifies that options can be changed at runtime whereas environment
+   variables should only be set at startup.
  
 NEW FEATURES:
 
