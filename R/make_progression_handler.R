@@ -390,7 +390,11 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
           if (debug) message("- cannot 'update' handler, because it is not active")
           return(invisible(finished))
         }
-        if (debug) mstr(list(step=step, "p$amount"=p[["amount"]], max_steps=max_steps))
+        if (debug) mstr(list(step=step, "p$amount"=p[["amount"]], "p$step"=p[["step"]], max_steps=max_steps))
+        if (!is.null(p[["step"]])) {
+          ## Infer effective 'amount' from previous 'step' and p$step
+          p[["amount"]] <- p[["step"]] - step
+        }
         step <<- min(max(step + p[["amount"]], 0L), max_steps)
         stop_if_not(step >= 0L)
         msg <- conditionMessage(p)
