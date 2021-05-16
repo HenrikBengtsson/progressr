@@ -121,6 +121,9 @@
       <a href="https://listenv.futureverse.org">listenv</a>
     </li>
     <li>
+      <a href="https://marshal.futureverse.org">marshal</a>
+    </li>
+    <li>
       <a href="https://parallelly.futureverse.org">parallelly</a>
     </li>
     <li>
@@ -182,7 +185,9 @@
 1. Set up a progressor with a certain number of steps:
 </p>
 <pre>
-p 
+p &lt;- progressor(nsteps)
+p &lt;- progressor(along = x)
+</pre>
 
 <p>
 2. Signal progress:
@@ -192,7 +197,6 @@ p
 p()               # one-step progress
 p(amount = 0)     # "still alive"
 p("loading ...")  # pass on a message
-</pre>
 </pre>
 </td>
 </tr>
@@ -211,7 +215,9 @@ p("loading ...")  # pass on a message
 <pre>
 handlers(global = TRUE)
 
-y 
+y &lt;- slow_sum(1:5)
+y &lt;- slow_sum(6:10)
+</pre>
 
 <p>
 1b. Subscribe to a specific expression:
@@ -219,7 +225,10 @@ y
 
 <pre>
 with_progress({
-  y 
+  y &lt;- slow_sum(1:5)
+  y &lt;- slow_sum(6:10)
+})
+</pre>
 
 <p>
 2. Configure how progress is presented:
@@ -231,7 +240,6 @@ handlers("txtprogressbar", "beepr")
 handlers(handler_pbcol(enable_after = 3.0))
 handlers(handler_progress(complete = "#"))
 </pre>
-</pre></pre>
 </td>
 </tr>
 </table>
