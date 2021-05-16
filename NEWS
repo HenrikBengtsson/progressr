@@ -1,13 +1,13 @@
 Package: progressr
 ==================
 
-Version: 0.7.0-9001 [2021-05-15]
+Version: 0.7.0-9001 [2021-05-16]
 
 SIGNIFICANT CHANGES:
 
  * Creating a new progressor() will now automatically finish an existing
-   progressor in the same environment.  The previous behavior was to give an
-   error (see below bug fix).
+   progressor, if one was previously created in the same environment.  The
+   previous behavior was to give an error (see below bug fix).
 
  * R_PROGRESSR_* environment variables are now only read when the 'progressr'
    package is loaded, where they set the corresponding progressr.* option.
