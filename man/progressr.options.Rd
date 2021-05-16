@@ -121,7 +121,7 @@ If TRUE, standard output is captured and relayed at the end just before any capt
 
 \section{Environment variables that set R options}{
 
-Most of the above \R \option{progressr.*} options can be set by corresponding
+Some of the above \R \option{progressr.*} options can be set by corresponding
 environment variable \env{R_PROGRESSR_*} \emph{when the \pkg{progressr} package
 is loaded}.
 For example, if \code{R_PROGRESSR_ENABLE = "true"}, then option
