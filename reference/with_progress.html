@@ -58,8 +58,6 @@
 
 
 
-
-
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -81,18 +79,9 @@
 </script>
 
 
-<!-- dependencies from examples -->
-
-
-  
-
-  
-
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -106,14 +95,23 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0-9001</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fas fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -126,9 +124,6 @@
       <a href="../articles/progressr-intro.html">progressr: An Introduction</a>
     </li>
   </ul>
-</li>
-<li>
-  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -326,29 +321,29 @@ $ Rscript -e "library(progressr)" -e "with_progress(slow_sum(1:5))"
 </div><div class='output co'>#&gt; function (x, delay = getOption("progressr.demo.delay", 1), stdout = FALSE, 
 #&gt;     message = TRUE) 
 #&gt; {
-#&gt;     progress &lt;- progressor(along = x)
+#&gt;     p &lt;- progressor(along = x)
 #&gt;     sum &lt;- 0
 #&gt;     for (kk in seq_along(x)) {
-#&gt;         progress(amount = 0)
+#&gt;         p(amount = 0)
 #&gt;         Sys.sleep(0.2 * delay)
 #&gt;         if (stdout) 
 #&gt;             cat(sprintf("O: Element #%d\n", kk))
-#&gt;         progress(amount = 0)
+#&gt;         p(amount = 0)
 #&gt;         Sys.sleep(0.2 * delay)
-#&gt;         progress(amount = 0)
+#&gt;         p(amount = 0)
 #&gt;         Sys.sleep(0.2 * delay)
 #&gt;         sum &lt;- sum + x[kk]
-#&gt;         progress(message = sprintf("P: Adding %g", kk))
+#&gt;         p(message = sprintf("P: Adding %g", kk))
 #&gt;         Sys.sleep(0.2 * delay)
 #&gt;         if (message) 
 #&gt;             message(sprintf("M: Added value %g", x[kk]))
-#&gt;         progress(amount = 0)
+#&gt;         p(amount = 0)
 #&gt;         Sys.sleep(0.2 * delay)
 #&gt;     }
-#&gt;     progress(amount = 0)
+#&gt;     p(amount = 0)
 #&gt;     sum
 #&gt; }
-#&gt; &lt;bytecode: 0x561589a67890&gt;
+#&gt; &lt;bytecode: 0x55d35edd5720&gt;
 #&gt; &lt;environment: namespace:progressr&gt;</div><div class='input'>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>
 
@@ -408,11 +403,11 @@ $ Rscript -e "library(progressr)" -e "with_progress(slow_sum(1:5))"
 
       <footer>
       <div class="copyright">
-  <p><p>Developed by Henrik Bengtsson.</p></p>
+  <p>Developed by Henrik Bengtsson.</p>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9001.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9002.</p>
 </div>
 
       </footer>
@@ -438,8 +433,6 @@ $ Rscript -e "library(progressr)" -e "with_progress(slow_sum(1:5))"
 </script>
 
 
-
-  
 
   </body>
 </html>

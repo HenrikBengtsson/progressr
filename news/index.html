@@ -57,8 +57,6 @@
 
 
 
-
-
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -80,16 +78,9 @@
 </script>
 
 
-
-  
-
-  
-
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -103,14 +94,23 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0-9001</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fas fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -123,9 +123,6 @@
       <a href="../articles/progressr-intro.html">progressr: An Introduction</a>
     </li>
   </ul>
-</li>
-<li>
-  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -215,22 +212,31 @@
       <small>Source: <a href='https://github.com/HenrikBengtsson/progressr/blob/master/NEWS'><code>NEWS</code></a></small>
     </div>
 
-    <div id="progressr-0-7-0-9000" class="section level1">
-<h1 class="page-header" data-toc-text="0.7.0-9000">
-<a href="#progressr-0-7-0-9000" class="anchor"></a>progressr 0.7.0-9000<small> Unreleased </small>
+    <div id="progressr-0-7-0-9001" class="section level1">
+<h1 class="page-header" data-toc-text="0.7.0-9001">
+<a href="#progressr-0-7-0-9001" class="anchor"></a>progressr 0.7.0-9001<small> Unreleased </small>
 </h1>
 <div id="significant-changes" class="section level3">
 <h3 class="hasAnchor">
 <a href="#significant-changes" class="anchor"></a>Significant Changes</h3>
 <ul>
-<li>Creating a new progressor() will now automatically finish an existing progressor in the same environment. The previous behavior was to give an error (see below bug fix).</li>
+<li><p>Creating a new progressor() will now automatically finish an existing progressor in the same environment. The previous behavior was to give an error (see below bug fix).</p></li>
+<li><p>R_PROGRESSR_* environment variables are now only read when the ‘progressr’ package is loaded, where they set the corresponding progressr.* option. Previously, some of these environment variables were queried by different functions as a fallback to when an option was not set. By only parsing them when the package is loaded, it decrease the overhead in functions, and it clarifies that options can be changed at runtime whereas environment variables should only be set at startup.</p></li>
 </ul>
 </div>
 <div id="new-features" class="section level3">
 <h3 class="hasAnchor">
 <a href="#new-features" class="anchor"></a>New Features</h3>
 <ul>
-<li>Add handlers(“rstudio”) to report on progress in the RStudio Console via the RStudio Job interface.</li>
+<li><p>Now supporting zero-length progressors, e.g. p &lt;- progressor(along = x) where length(x) == 0.</p></li>
+<li><p>Add handlers(“rstudio”) to report on progress in the RStudio Console via the RStudio Job interface.</p></li>
+</ul>
+</div>
+<div id="beta-features" class="section level3">
+<h3 class="hasAnchor">
+<a href="#beta-features" class="anchor"></a>Beta Features</h3>
+<ul>
+<li>As an alternative to specifying the relative amount of progress, say, p(amount = 2), it is now possible to also specify the absolute amount of progress made this far, e.g. p(step = 42). Argument ‘amount’ has not effect when argument ‘step’ is specfied. WARNING: Argument ‘step’ should only be used when in full control of the order when this progression condition is signaled. For example, it must not be signaled as one of many parallel progress updates signaled concurrently, because we cannot guarantee the order these progressions arrive.</li>
 </ul>
 </div>
 <div id="bug-fixes" class="section level3">
@@ -238,6 +244,13 @@
 <a href="#bug-fixes" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>In progressr 0.7.0, any attempt to use more than one progressor inside a function or a local() call would result in: Error in assign(“…progressor”, value = fcn, envir = envir) : cannot change value of locked binding for ‘…progressor’.</li>
+</ul>
+</div>
+<div id="deprecated-and-defunct" class="section level3">
+<h3 class="hasAnchor">
+<a href="#deprecated-and-defunct" class="anchor"></a>Deprecated and Defunct</h3>
+<ul>
+<li>Function progress() is deprecated in order to re-use it for other purpose. It is unlikely that anyone really used this function, but if you did, then use cond &lt;- progression() to create ‘progression’ condition and then use withRestart(signalCondition(cond), muffleProgression = function(p) NULL) to signal it.</li>
 </ul>
 </div>
 </div>
@@ -626,7 +639,7 @@
 <a href="#new-features-17" class="anchor"></a>New Features</h3>
 <ul>
 <li><p>Add argument ‘auto_done’ to automatically have progress updates also signal “done” as soon as the last step has been reached.</p></li>
-<li><p>Made ‘amount’ the first argument of progressors to avoid having to specify it by name if progressing with an amount than the default `amount = 1.0`.</p></li>
+<li><p>Made ‘amount’ the first argument of progressors to avoid having to specify it by name if progressing with an amount than the default ‘amount = 1.0’.</p></li>
 <li><p>Add argument ‘clear’ to control whether progress reporter should clear its output upon completion. The default is to do this, where supported.</p></li>
 <li><p>Add progress update handler based on pbmcapply::progressBar().</p></li>
 <li><p>Each achieved step is now timestamped.</p></li>
@@ -702,11 +715,11 @@
 
       <footer>
       <div class="copyright">
-  <p><p>Developed by Henrik Bengtsson.</p></p>
+  <p>Developed by Henrik Bengtsson.</p>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9001.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9002.</p>
 </div>
 
       </footer>
@@ -732,8 +745,6 @@
 </script>
 
 
-
-  
 
   </body>
 </html>

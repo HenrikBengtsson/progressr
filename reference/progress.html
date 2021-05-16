@@ -53,9 +53,7 @@
 
 
 <meta property="og:title" content="Creates and Signals a Progression Condition — progress" />
-<meta property="og:description" content="Creates and Signals a Progression Condition" />
-
-
+<meta property="og:description" content="WARNING: progress() is deprecated - don't use." />
 
 
 
@@ -81,16 +79,9 @@
 </script>
 
 
-
-  
-
-  
-
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -104,14 +95,23 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0-9001</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fas fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -124,9 +124,6 @@
       <a href="../articles/progressr-intro.html">progressr: An Introduction</a>
     </li>
   </ul>
-</li>
-<li>
-  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -218,7 +215,7 @@
     </div>
 
     <div class="ref-description">
-    <p>Creates and Signals a Progression Condition</p>
+    <p><em>WARNING:</em> <code>progress()</code> is deprecated - don't use.</p>
     </div>
 
     <pre class="usage"><span class='fu'>progress</span><span class='op'>(</span><span class='va'>...</span>, call <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>sys.call</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
@@ -241,8 +238,8 @@
     <p>A <a href='https://rdrr.io/r/base/conditions.html'>base::condition</a> of class <code>progression</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>To signal a progression condition, use <code><a href='https://rdrr.io/r/base/conditions.html'>base::signalCondition()</a></code>.
-To create and signal a progression condition at once, use <code>progress()</code>.</p></div>
+    <div class='dont-index'><p>To create a progression condition, use <code><a href='progression.html'>progression()</a></code>.
+To signal a progression condition, use <code><a href='https://rdrr.io/r/base/conditions.html'>base::signalCondition()</a></code>.</p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -255,11 +252,11 @@ To create and signal a progression condition at once, use <code>progress()</code
 
       <footer>
       <div class="copyright">
-  <p><p>Developed by Henrik Bengtsson.</p></p>
+  <p>Developed by Henrik Bengtsson.</p>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9001.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9002.</p>
 </div>
 
       </footer>
@@ -285,8 +282,6 @@ To create and signal a progression condition at once, use <code>progress()</code
 </script>
 
 
-
-  
 
   </body>
 </html>

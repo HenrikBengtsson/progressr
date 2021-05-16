@@ -62,8 +62,6 @@ WARNING: Note that the names and the default values of these options may change 
 
 
 
-
-
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -85,16 +83,9 @@ WARNING: Note that the names and the default values of these options may change 
 </script>
 
 
-
-  
-
-  
-
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -108,14 +99,23 @@ WARNING: Note that the names and the default values of these options may change 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0-9001</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fas fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -128,9 +128,6 @@ WARNING: Note that the names and the default values of these options may change 
       <a href="../articles/progressr-intro.html">progressr: An Introduction</a>
     </li>
   </ul>
-</li>
-<li>
-  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -248,22 +245,22 @@ Zero or more progression handlers that will report on any progression updates.  
 
 
 <dl>
-<dt><span class="option">progressr.clear</span> / <code class="env">R_PROGRESSR_CLEAR</code>:</dt><dd><p>(logical)
+<dt><span class="option">progressr.clear</span>:</dt><dd><p>(logical)
 If TRUE, any output, typically visual, produced by a reporter will be cleared/removed upon completion, if possible. (Default: TRUE)</p></dd>
 
-<dt><span class="option">progressr.enable</span> / <code class="env">R_PROGRESSR_ENABLE</code>:</dt><dd><p>(logical)
+<dt><span class="option">progressr.enable</span>:</dt><dd><p>(logical)
 If FALSE, then progress is not reported.
 (Default: TRUE)</p></dd>
 
-<dt><span class="option">progressr.enable_after</span> / <code class="env">R_PROGRESSR_ENABLE_AFTER</code>:</dt><dd><p>(numeric)
+<dt><span class="option">progressr.enable_after</span>:</dt><dd><p>(numeric)
 Delay (in seconds) before progression updates are reported.
 (Default: <code>0.0</code>)</p></dd>
 
-<dt><span class="option">progressr.times</span> / <code class="env">R_PROGRESSR_TIMES</code>:</dt><dd><p>(numeric)
+<dt><span class="option">progressr.times</span>:</dt><dd><p>(numeric)
 The maximum number of times a handler should report progression updates. If zero, then progress is not reported.
 (Default: <code>+Inf</code>)</p></dd>
 
-<dt><span class="option">progressr.interval</span> / <code class="env">R_PROGRESSR_INTERVAL</code>:</dt><dd><p>(numeric)
+<dt><span class="option">progressr.interval</span>:</dt><dd><p>(numeric)
 The minimum time (in seconds) between successive progression updates from this handler.
 (Default: <code>0.0</code>)</p></dd>
 
@@ -314,6 +311,17 @@ If TRUE, standard output is captured and relayed at the end just before any capt
 
 </dl>
 
+    <h2 class="hasAnchor" id="environment-variables-that-set-r-options"><a class="anchor" href="#environment-variables-that-set-r-options"></a>Environment variables that set R options</h2>
+
+    
+
+<p>Some of the above <span style="R">R</span> <span class="option">progressr.*</span> options can be set by corresponding
+environment variable <code class="env">R_PROGRESSR_*</code> <em>when the <span class="pkg">progressr</span> package
+is loaded</em>.
+For example, if <code>R_PROGRESSR_ENABLE = "true"</code>, then option
+<span class="option">progressr.enable</span> is set to <code>TRUE</code> (logical).
+For example, if <code>R_PROGRESSR_ENABLE_AFTER = "2.0"</code>, then option
+<span class="option">progressr.enable_after</span> is set to <code>2.0</code> (numeric).</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>To set <span style="R">R</span> options when <span style="R">R</span> starts (even before the <span class="pkg">progressr</span> package is loaded), see the <a href='https://rdrr.io/r/base/Startup.html'>Startup</a> help page.  The <a href='https://cran.r-project.org/package=startup'><span class="pkg">startup</span></a> package provides a friendly mechanism for configuring <span style="R">R</span> at startup.</p></div>
@@ -329,11 +337,11 @@ If TRUE, standard output is captured and relayed at the end just before any capt
 
       <footer>
       <div class="copyright">
-  <p><p>Developed by Henrik Bengtsson.</p></p>
+  <p>Developed by Henrik Bengtsson.</p>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9001.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9002.</p>
 </div>
 
       </footer>
@@ -359,8 +367,6 @@ If TRUE, standard output is captured and relayed at the end just before any capt
 </script>
 
 
-
-  
 
   </body>
 </html>
