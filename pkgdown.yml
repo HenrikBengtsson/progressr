@@ -3,7 +3,7 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   progressr-intro: progressr-intro.html
-last_built: 2021-05-18T17:25Z
+last_built: 2021-05-20T01:01Z
 urls:
   reference: https://progressr.futureverse.org/reference
   article: https://progressr.futureverse.org/articles
