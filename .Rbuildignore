@@ -64,3 +64,6 @@ Rplots.pdf$
 ^imgs
 ^.*.bob$
 ^\.github$
+^docs
+^pkgdown
+
