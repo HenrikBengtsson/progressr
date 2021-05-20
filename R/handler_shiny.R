@@ -34,12 +34,28 @@ handler_shiny <- function(intrusiveness = getOption("progressr.intrusiveness.gui
   )
 
   ## Default: The progression message updates Shiny 'message'
-  map_args <- function(state) list(message = state$message)
+  map_args <- function(state, progression) {
+    message <- state$message
+    if (is.null(message)) return(list())
+    if (inherits(progression, "sticky")) {
+      list(detail = message)
+    } else {
+      list(message = message)
+    }
+  }
 
   ## Should progress message update another Shiny field?
   if ("message" %in% names(map)) {
     if (map["message"] == "detail") {
-     map_args <- function(state) list(detail = state$message)
+     map_args <- function(state, progression) {
+       message <- state$message
+       if (is.null(message)) return(list())
+       if (inherits(progression, "sticky")) {
+         list(message = message)
+       } else {
+         list(detail = message)
+       }
+     }
     }
   }
 
@@ -47,7 +63,7 @@ handler_shiny <- function(intrusiveness = getOption("progressr.intrusiveness.gui
     list(
       update = function(config, state, progression, ...) {
         amount <- if (config$max_steps == 0) 1 else progression$amount / config$max_steps
-        args <- c(list(amount = amount), map_args(state))
+        args <- c(list(amount = amount), map_args(state, progression))
         do.call(shiny::incProgress, args = args)
       }
     )
