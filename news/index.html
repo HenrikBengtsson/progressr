@@ -175,12 +175,6 @@
     <li>
       <a href="https://progressr.futureverse.org">progressr</a>
     </li>
-    <li>
-      <a href="https://future.mapreduce.futureverse.org">future.mapreduce (experimental)</a>
-    </li>
-    <li>
-      <a href="https://marshal.futureverse.org">marshal (experimental)</a>
-    </li>
   </ul>
 </li>
 <li>
@@ -228,12 +222,14 @@
 <ul>
 <li><p>Creating a new progressor() will now automatically finish an existing progressor, if one was previously created in the same environment. The previous behavior was to give an error (see below bug fix).</p></li>
 <li><p>R_PROGRESSR_* environment variables are now only read when the ‘progressr’ package is loaded, where they set the corresponding progressr.* option. Previously, some of these environment variables were queried by different functions as a fallback to when an option was not set. By only parsing them when the package is loaded, it decrease the overhead in functions, and it clarifies that options can be changed at runtime whereas environment variables should only be set at startup.</p></li>
+<li><p>When using withProgressShiny(), progression messages now updates the ‘detail’ component of the Shiny progress panel. Previously, it updated the ‘message’ component. This can be configured via new ‘inputs’ argument.</p></li>
 </ul>
 </div>
 <div id="new-features" class="section level3">
 <h3 class="hasAnchor">
 <a href="#new-features" class="anchor"></a>New Features</h3>
 <ul>
+<li><p>withProgressShiny() gained argument ‘inputs’, which can be used to control whether or not Shiny progress components ‘message’ and ‘detail’ should be updated based on the progression message, e.g. inputs = list(message = “sticky_message”, detail = “message”) will cause progression messages to update the ‘detail’ component and sticky ones to update both.</p></li>
 <li><p>Now supporting zero-length progressors, e.g. p &lt;- progressor(along = x) where length(x) == 0.</p></li>
 <li><p>Add handlers(“rstudio”) to report on progress in the RStudio Console via the RStudio Job interface.</p></li>
 </ul>
@@ -242,7 +238,7 @@
 <h3 class="hasAnchor">
 <a href="#beta-features" class="anchor"></a>Beta Features</h3>
 <ul>
-<li>As an alternative to specifying the relative amount of progress, say, p(amount = 2), it is now possible to also specify the absolute amount of progress made this far, e.g. p(step = 42). Argument ‘amount’ has not effect when argument ‘step’ is specfied. WARNING: Argument ‘step’ should only be used when in full control of the order when this progression condition is signaled. For example, it must not be signaled as one of many parallel progress updates signaled concurrently, because we cannot guarantee the order these progressions arrive.</li>
+<li>As an alternative to specifying the relative amount of progress, say, p(amount = 2), it is now possible to also specify the absolute amount of progress made this far, e.g. p(step = 42). Argument ‘amount’ has not effect when argument ‘step’ is specified. WARNING: Argument ‘step’ should only be used when in full control of the order when this progression condition is signaled. For example, it must not be signaled as one of many parallel progress updates signaled concurrently, because we cannot guarantee the order these progressions arrive.</li>
 </ul>
 </div>
 <div id="bug-fixes" class="section level3">
