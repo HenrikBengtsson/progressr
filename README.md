@@ -1,12 +1,7 @@
 
 
 <div id="badges"><!-- pkgdown markup -->
-<a href="https://CRAN.R-project.org/web/checks/check_results_progressr.html"><img border="0" src="https://www.r-pkg.org/badges/version/progressr" alt="CRAN check status"></a></a>
-<a href="https://github.com/HenrikBengtsson/progressr/actions?query=workflow%3AR-CMD-check"><img border="0" src="https://github.com/HenrikBengtsson/progressr/workflows/R-CMD-check/badge.svg?branch=develop" alt="Build status"></a></a>
-<a href="https://travis-ci.org/HenrikBengtsson/progressr"><img border="0" src="https://travis-ci.org/HenrikBengtsson/progressr.svg" alt="Build status"></a></a>
-<a href="https://ci.appveyor.com/project/HenrikBengtsson/progressr"><img border="0" src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/progressr?svg=true" alt="Build status"></a></a>
-<a href="https://codecov.io/gh/HenrikBengtsson/progressr"><img border="0" src="https://codecov.io/gh/HenrikBengtsson/progressr/branch/develop/graph/badge.svg" alt="Coverage Status"></a></a>
-<a href="https://lifecycle.r-lib.org/articles/stages.html"><img border="0" src="man/figures/lifecycle-maturing-blue.svg" alt="Life cycle: maturing"></a></a>
+<a href="https://CRAN.R-project.org/web/checks/check_results_progressr.html"><img border="0" src="https://www.r-pkg.org/badges/version/progressr" alt="CRAN check status"/></a> <a href="https://github.com/HenrikBengtsson/progressr/actions?query=workflow%3AR-CMD-check"><img border="0" src="https://github.com/HenrikBengtsson/progressr/workflows/R-CMD-check/badge.svg?branch=develop" alt="Build status"/></a> <a href="https://travis-ci.org/HenrikBengtsson/progressr"><img border="0" src="https://travis-ci.org/HenrikBengtsson/progressr.svg" alt="Build status"/></a> <a href="https://ci.appveyor.com/project/HenrikBengtsson/progressr"><img border="0" src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/progressr?svg=true" alt="Build status"/></a> <a href="https://codecov.io/gh/HenrikBengtsson/progressr"><img border="0" src="https://codecov.io/gh/HenrikBengtsson/progressr/branch/develop/graph/badge.svg" alt="Coverage Status"/></a> <a href="https://lifecycle.r-lib.org/articles/stages.html"><img border="0" src="man/figures/lifecycle-maturing-blue.svg" alt="Life cycle: maturing"/></a>
 </div>
 
 # progressr: An Inclusive, Unifying API for Progress Updates 
@@ -33,8 +28,8 @@ Design motto:
 1. Set up a progressor with a certain number of steps:
 </p>
 <pre>
-p <- progressor(nsteps)
-p <- progressor(along = x)
+p &lt;- progressor(nsteps)
+p &lt;- progressor(along = x)
 </pre>
 
 <p>
@@ -63,8 +58,8 @@ p("loading ...")  # pass on a message
 <pre>
 handlers(global = TRUE)
 
-y <- slow_sum(1:5)
-y <- slow_sum(6:10)
+y &lt;- slow_sum(1:5)
+y &lt;- slow_sum(6:10)
 </pre>
 
 <p>
@@ -73,8 +68,8 @@ y <- slow_sum(6:10)
 
 <pre>
 with_progress({
-  y <- slow_sum(1:5)
-  y <- slow_sum(6:10)
+  y &lt;- slow_sum(1:5)
+  y &lt;- slow_sum(6:10)
 })
 </pre>
 
@@ -717,7 +712,6 @@ M: Added value 3
 [future.apply]: https://cran.r-project.org/package=future.apply
 [doParallel]: https://cran.r-project.org/package=doParallel
 [doFuture]: https://cran.r-project.org/package=doFuture
-[foreach]: https://cran.r-project.org/package=foreach
 [furrr]: https://cran.r-project.org/package=furrr
 [pbapply]: https://cran.r-project.org/package=pbapply
 [pbmcapply]: https://cran.r-project.org/package=pbmcapply
@@ -740,9 +734,10 @@ remotes::install_github("HenrikBengtsson/progressr", ref="develop")
 ```
 This will install the package from source.  
 
-
 <!-- pkgdown-drop-below -->
+
 
 ## Contributing
 
 To contribute to this package, please see [CONTRIBUTING.md](CONTRIBUTING.md).
+ 
