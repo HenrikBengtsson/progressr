@@ -4,11 +4,13 @@
 #'
 #' @inheritParams make_progression_handler
 #'
-#' @param map Specifies whether the progression message should be mapped
-#' to the 'message' and 'detail' element in the Shiny progress panel.
-#' This argument should be a named character string with value `"message"`
-#' or `"detail"` and where the name should be `message`, e.g.
-#' `map = c(message = "message")` or `map = c(message = "detail")`.
+#' @param inputs (named list) Specifies from what sources the Shiny progress
+#' elements 'message' and 'detail' should be updated.  Valid sources are
+#' `"message"`, `"sticky_message"` and `"non_sticky_message"`, where
+#' `"message"` is short for `c("non_sticky_message", "sticky_message")`. For
+#' example, `inputs = list(message = "sticky-message", detail = "message")`
+#' will update the Shiny 'message' component from sticky messages only,
+#' whereas the 'detail' component is updated using any message.
 #'
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
 #'
@@ -27,36 +29,46 @@
 #'
 #' @keywords internal
 #' @export
-handler_shiny <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), target = "gui", map = c(message = "message"), ...) {
+handler_shiny <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), target = "gui", inputs = list(message = NULL, detail = "message"), ...) {
   stop_if_not(
-    is.character(map), all(map %in% c("message", "detail")),
-    !is.null(names(map)), all(names(map) %in% c("message"))
+    is.list(inputs),
+    !is.null(names(inputs)),
+    all(names(inputs) %in% c("message", "detail")),
+    all(vapply(inputs, FUN = function(x) {
+      if (is.null(x)) return(TRUE)
+      if (!is.character(x)) return(FALSE)
+      x %in% c("message", "non_sticky_message", "sticky_message")
+    }, FUN.VALUE = FALSE))
   )
 
+  ## Expand 'message' => c("non_sticky_message", "sticky_message")
+  for (name in names(inputs)) {
+    input <- inputs[[name]]
+    if ("message" %in% input) {
+      input <- setdiff(input, "message")
+      input <- c(input, "non_sticky_message", "sticky_message")
+    }
+    inputs[[name]] <- unique(input)
+  }
+  
   ## Default: The progression message updates Shiny 'message'
   map_args <- function(state, progression) {
-    message <- state$message
+    message <- progression$message
     if (is.null(message)) return(list())
-    if (inherits(progression, "sticky")) {
-      list(detail = message)
-    } else {
-      list(message = message)
-    }
-  }
 
-  ## Should progress message update another Shiny field?
-  if ("message" %in% names(map)) {
-    if (map["message"] == "detail") {
-     map_args <- function(state, progression) {
-       message <- state$message
-       if (is.null(message)) return(list())
-       if (inherits(progression, "sticky")) {
-         list(message = message)
-       } else {
-         list(detail = message)
-       }
-     }
+    ## Update Shiny 'message' and 'detail'?
+    args <- list()
+    for (target in c("message", "detail")) {
+      if (inherits(progression, "sticky")) {
+        if ("sticky_message" %in% inputs[[target]])
+          args[[target]] <- message
+      } else {
+        if ("non_sticky_message" %in% inputs[[target]])
+          args[[target]] <- message
+      }
     }
+
+    args
   }
 
   reporter <- local({

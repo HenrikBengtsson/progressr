@@ -11,7 +11,6 @@ app <- shinyApp(
       X <- 1:15
       withProgressShiny(message = "Calculation in progress",
                         detail = "Starting ...",
-                        map = c(message = "detail"),
                         value = 0, {
         p <- progressor(along = X)
         y <- lapply(X, FUN=function(x) {

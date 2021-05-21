@@ -17,25 +17,47 @@
 #' [handler_shiny()] **progressr** handler internally to report on updates.
 #'
 #' @export
-withProgressShiny <- function(expr, ..., message = NULL, detail = NULL, map = c(message = "message"), env = parent.frame(), quoted = FALSE, handlers = c(shiny = handler_shiny, progressr::handlers(default = NULL))) {
+withProgressShiny <- function(expr, ..., message = NULL, detail = NULL, inputs = list(message = NULL, detail = "message"), env = parent.frame(), quoted = FALSE, handlers = c(shiny = handler_shiny, progressr::handlers(default = NULL))) {
   if (!quoted) expr <- substitute(expr)
+
+  stop_if_not(is.list(inputs), all(names(inputs) %in% c("message", "detail")))
 
   stop_if_not("shiny" %in% names(handlers))
   if (sum(names(handlers) == "shiny") > 1) {
     warning("Detected a 'shiny' handler set via progressr::handlers()")
   }
 
+  ## Optional, configure 'inputs' from attribute 'input' of arguments
+  ## 'message' and 'detail', if and only if that attribute is available.
+  args <- list(message = message, detail = detail)
+  for (name in names(args)) {
+    input <- unique(attr(args[[name]], "input"))
+    if (is.null(input)) next
+    unknown <- setdiff(input, c("message", "sticky_message", "non_sticky_message"))
+    if (length(unknown) > 0) {
+      stop(sprintf("Unknown value of attribute %s on argument %s: %s",
+           sQuote("input"), sQuote(name), commaq(unknown)))
+    }
+    inputs[[name]] <- input
+  }
+
   stop_if_not(
-    is.character(map), all(map %in% c("message", "detail")),
-    !is.null(names(map)), all(names(map) %in% c("message"))
+    is.list(inputs),
+    !is.null(names(inputs)),
+    all(names(inputs) %in% c("message", "detail")),
+    all(vapply(inputs, FUN = function(x) {
+      if (is.null(x)) return(TRUE)
+      if (!is.character(x)) return(FALSE)
+      x %in% c("message", "non_sticky_message", "sticky_message")
+    }, FUN.VALUE = FALSE))
   )
 
   ## Customize the shiny 'message' target?
   if (is.function(handlers$shiny) &&
       !inherits(handlers$shiny, "progression_handler")) {
     tweaked_handler_shiny <- handlers$shiny
-    if (!identical(map, formals(tweaked_handler_shiny)$map)) {
-      formals(tweaked_handler_shiny)$map <- map
+    if (!identical(inputs, formals(tweaked_handler_shiny)$inputs)) {
+      formals(tweaked_handler_shiny)$inputs <- inputs
       handlers$shiny <- tweaked_handler_shiny
     }
   }

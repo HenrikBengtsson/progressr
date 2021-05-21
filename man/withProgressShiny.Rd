@@ -9,7 +9,7 @@ withProgressShiny(
   ...,
   message = NULL,
   detail = NULL,
-  map = c(message = "message"),
+  inputs = list(message = NULL, detail = "message"),
   env = parent.frame(),
   quoted = FALSE,
   handlers = c(shiny = handler_shiny, progressr::handlers(default = NULL))
@@ -20,11 +20,13 @@ withProgressShiny(
 
 \item{message, detail}{(character string) The message and the detail message to be passed to \code{\link[shiny:withProgress]{shiny::withProgress()}}.}
 
-\item{map}{Specifies whether the progression message should be mapped
-to the 'message' and 'detail' element in the Shiny progress panel.
-This argument should be a named character string with value \code{"message"}
-or \code{"detail"} and where the name should be \code{message}, e.g.
-\code{map = c(message = "message")} or \code{map = c(message = "detail")}.}
+\item{inputs}{(named list) Specifies from what sources the Shiny progress
+elements 'message' and 'detail' should be updated.  Valid sources are
+\code{"message"}, \code{"sticky_message"} and \code{"non_sticky_message"}, where
+\code{"message"} is short for \code{c("non_sticky_message", "sticky_message")}. For
+example, \code{inputs = list(message = "sticky-message", detail = "message")}
+will update the Shiny 'message' component from sticky messages only,
+whereas the 'detail' component is updated using any message.}
 
 \item{handlers}{Zero or more progression handlers used to report on progress.}
 }
@@ -54,7 +56,6 @@ app <- shinyApp(
       X <- 1:15
       withProgressShiny(message = "Calculation in progress",
                         detail = "Starting ...",
-                        map = c(message = "detail"),
                         value = 0, {
         p <- progressor(along = X)
         y <- lapply(X, FUN=function(x) {
