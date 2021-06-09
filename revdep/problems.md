@@ -42,6 +42,27 @@ Run `revdep_details(, "cSEM")` for more info
       All declared Imports should be used.
     ```
 
+# dipsaus
+
+<details>
+
+* Version: 0.1.5
+* GitHub: https://github.com/dipterix/dipsaus
+* Source code: https://github.com/cran/dipsaus
+* Date/Publication: 2021-02-20 05:50:16 UTC
+* Number of recursive dependencies: 80
+
+Run `revdep_details(, "dipsaus")` for more info
+
+</details>
+
+## In both
+
+*   checking LazyData ... NOTE
+    ```
+      'LazyData' is specified without a 'data' directory
+    ```
+
 # easyalluvial
 
 <details>
@@ -50,7 +71,7 @@ Run `revdep_details(, "cSEM")` for more info
 * GitHub: https://github.com/erblast/easyalluvial
 * Source code: https://github.com/cran/easyalluvial
 * Date/Publication: 2021-01-13 10:40:09 UTC
-* Number of recursive dependencies: 175
+* Number of recursive dependencies: 141
 
 Run `revdep_details(, "easyalluvial")` for more info
 
@@ -87,10 +108,10 @@ Run `revdep_details(, "EFAtools")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.2Mb
+      installed size is  7.4Mb
       sub-directories of 1Mb or more:
         doc    1.0Mb
-        libs   5.3Mb
+        libs   5.5Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -107,7 +128,7 @@ Run `revdep_details(, "EFAtools")` for more info
 * GitHub: https://github.com/epiforecasts/EpiNow2
 * Source code: https://github.com/cran/EpiNow2
 * Date/Publication: 2020-12-14 09:00:15 UTC
-* Number of recursive dependencies: 152
+* Number of recursive dependencies: 151
 
 Run `revdep_details(, "EpiNow2")` for more info
 
@@ -122,9 +143,30 @@ Run `revdep_details(, "EpiNow2")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 155.0Mb
+      installed size is 168.3Mb
       sub-directories of 1Mb or more:
-        libs  153.4Mb
+        libs  166.7Mb
+    ```
+
+# fabletools
+
+<details>
+
+* Version: 0.3.1
+* GitHub: https://github.com/tidyverts/fabletools
+* Source code: https://github.com/cran/fabletools
+* Date/Publication: 2021-03-16 22:10:03 UTC
+* Number of recursive dependencies: 95
+
+Run `revdep_details(, "fabletools")` for more info
+
+</details>
+
+## In both
+
+*   checking LazyData ... NOTE
+    ```
+      'LazyData' is specified without a 'data' directory
     ```
 
 # gtfs2gps
@@ -147,6 +189,32 @@ Run `revdep_details(, "gtfs2gps")` for more info
     ```
     Namespace in Imports field not imported from: ‘readr’
       All declared Imports should be used.
+    ```
+
+# lightr
+
+<details>
+
+* Version: 1.4
+* GitHub: https://github.com/ropensci/lightr
+* Source code: https://github.com/cran/lightr
+* Date/Publication: 2021-03-21 10:30:03 UTC
+* Number of recursive dependencies: 71
+
+Run `revdep_details(, "lightr")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘pavo’
+    ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘pavo’
     ```
 
 # lmtp
@@ -172,15 +240,36 @@ Run `revdep_details(, "lmtp")` for more info
       All declared Imports should be used.
     ```
 
+# mlr3
+
+<details>
+
+* Version: 0.11.0
+* GitHub: https://github.com/mlr-org/mlr3
+* Source code: https://github.com/cran/mlr3
+* Date/Publication: 2021-03-05 14:00:06 UTC
+* Number of recursive dependencies: 58
+
+Run `revdep_details(, "mlr3")` for more info
+
+</details>
+
+## In both
+
+*   checking LazyData ... NOTE
+    ```
+      'LazyData' is specified without a 'data' directory
+    ```
+
 # modeltime.ensemble
 
 <details>
 
-* Version: 0.4.0
+* Version: 0.4.1
 * GitHub: https://github.com/business-science/modeltime.ensemble
 * Source code: https://github.com/cran/modeltime.ensemble
-* Date/Publication: 2021-04-05 14:20:02 UTC
-* Number of recursive dependencies: 206
+* Date/Publication: 2021-05-31 06:50:11 UTC
+* Number of recursive dependencies: 208
 
 Run `revdep_details(, "modeltime.ensemble")` for more info
 
@@ -203,7 +292,7 @@ Run `revdep_details(, "modeltime.ensemble")` for more info
 * GitHub: https://github.com/business-science/modeltime.resample
 * Source code: https://github.com/cran/modeltime.resample
 * Date/Publication: 2021-03-14 20:40:07 UTC
-* Number of recursive dependencies: 205
+* Number of recursive dependencies: 206
 
 Run `revdep_details(, "modeltime.resample")` for more info
 
@@ -226,7 +315,7 @@ Run `revdep_details(, "modeltime.resample")` for more info
 * GitHub: https://github.com/rmaia/pavo
 * Source code: https://github.com/cran/pavo
 * Date/Publication: 2021-03-23 11:40:02 UTC
-* Number of recursive dependencies: 102
+* Number of recursive dependencies: 103
 
 Run `revdep_details(, "pavo")` for more info
 
@@ -239,6 +328,27 @@ Run `revdep_details(, "pavo")` for more info
     Found the following significant warnings:
       Warning: no DISPLAY variable so Tk is not available
     See ‘/c4/home/henrik/repositories/progressr/revdep/checks/pavo/new/pavo.Rcheck/00install.out’ for details.
+    ```
+
+# sims
+
+<details>
+
+* Version: 0.0.2
+* GitHub: NA
+* Source code: https://github.com/cran/sims
+* Date/Publication: 2021-01-18 15:50:02 UTC
+* Number of recursive dependencies: 70
+
+Run `revdep_details(, "sims")` for more info
+
+</details>
+
+## In both
+
+*   checking LazyData ... NOTE
+    ```
+      'LazyData' is specified without a 'data' directory
     ```
 
 # spNetwork
@@ -259,31 +369,14 @@ Run `revdep_details(, "spNetwork")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  9.9Mb
+      installed size is 10.2Mb
       sub-directories of 1Mb or more:
         extdata   5.6Mb
-        libs      3.3Mb
+        libs      3.6Mb
     ```
 
-# terrainr
-
-<details>
-
-* Version: 0.4.0
-* GitHub: https://github.com/ropensci/terrainr
-* Source code: https://github.com/cran/terrainr
-* Date/Publication: 2021-04-23 09:10:02 UTC
-* Number of recursive dependencies: 93
-
-Run `revdep_details(, "terrainr")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
+*   checking LazyData ... NOTE
     ```
-    Namespace in Imports field not imported from: ‘grDevices’
-      All declared Imports should be used.
+      'LazyData' is specified without a 'data' directory
     ```
 
