@@ -45,15 +45,18 @@ handler_progress <- function(format = ":spin [:bar] :percent :message", show_aft
   
   if (!is_fake("handler_progress")) {
     progress_bar <- progress::progress_bar
+    get_private <- function(pb) {
+      pb$.__enclos_env__$private
+    }
     erase_progress_bar <- function(pb) {
       if (pb$finished) return()
-      private <- pb$.__enclos_env__$private
+      private <- get_private(pb)
       private$clear_line(private$width)
       private$cursor_to_start()
     }
     redraw_progress_bar <- function(pb, tokens = list()) {
       if (pb$finished) return()
-      private <- pb$.__enclos_env__$private
+      private <- get_private(pb)
       private$last_draw <- ""
       private$render(tokens)
     }
@@ -65,6 +68,7 @@ handler_progress <- function(format = ":spin [:bar] :percent :message", show_aft
         update = function(...) NULL
       )
     )
+    get_private <- function(pb) NULL
     erase_progress_bar <- function(pb) NULL
     redraw_progress_bar <- function(pb, tokens = list()) NULL
   }
@@ -81,10 +85,26 @@ handler_progress <- function(format = ":spin [:bar] :percent :message", show_aft
 
     last_tokens <- list()
     pb_tick <- function(pb, delta = 0, message = NULL, ...) {
+      if (isTRUE(pb$finished)) return()
+      
+      ## WORKAROUND: https://github.com/r-lib/progress/issues/119
+      private <- get_private(pb)
+      if (!is.null(private) && private$total == 0) return()
+      
       tokens <- list(message = paste0(message, ""))
       last_tokens <<- tokens
       if (delta < 0) return()
       pb$tick(delta, tokens = tokens)
+    }
+
+    pb_update <- function(pb, ratio, ...) {
+      if (isTRUE(pb$finished)) return()
+      
+      ## WORKAROUND: https://github.com/r-lib/progress/issues/119
+      private <- get_private(pb)
+      if (!is.null(private) && private$total == 0) return()
+      
+      pb$update(ratio = ratio, ...)
     }
 
     list(
@@ -113,7 +133,7 @@ handler_progress <- function(format = ":spin [:bar] :percent :message", show_aft
         if (!state$enabled || config$times <= 2L) return()
         make_pb(format = format, total = config$max_steps,
                 clear = config$clear, show_after = config$enable_after)
-        if (inherits(progression, "sticky") && !is.null(state$message))
+        if (inherits(progression, "sticky") && length(state$message) != 0)
           pb$message(state$message)
         pb_tick(pb, state$delta, message = state$message)
       },
@@ -123,7 +143,7 @@ handler_progress <- function(format = ":spin [:bar] :percent :message", show_aft
         make_pb(format = format, total = config$max_steps,
                 clear = config$clear, show_after = config$enable_after)
         reporter$update(config = config, state = state, progression = progression, ...)
-        if (config$clear && !pb$finished) pb$update(1.0)
+        if (config$clear && !pb$finished) pb_update(pb, ratio = 1.0)
       }
     )
   })

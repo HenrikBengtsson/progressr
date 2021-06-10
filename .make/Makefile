@@ -286,7 +286,7 @@ check_Rex:
 
 
 covr:
-	$(R_SCRIPT) -e "source('.covr.R'); covr::shine(covr)"
+	$(R_SCRIPT) -e "c <- covr::package_coverage(quiet = FALSE); saveRDS(c, '.covr.rds'); print(c); covr::report(c)"
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -423,9 +423,6 @@ win-builder-devel: $(R_OUTDIR)/$(PKG_TARBALL)
 win-builder-release: $(R_OUTDIR)/$(PKG_TARBALL)
 	curl -v -T $? ftp://anonymous@$(WIN_BUILDER)/R-release/
 
-win-builder-oldrelease: $(R_OUTDIR)/$(PKG_TARBALL)
-	curl -v -T $? ftp://anonymous@$(WIN_BUILDER)/R-oldrelease/
-
 win-builder: win-builder-devel win-builder-release
 
 
@@ -463,8 +460,8 @@ Makefile: $(FILES_MAKEFILE)
 .make/appveyor.yml.rsp:
 	$(R_SCRIPT) -e "R.utils::downloadFile('https://raw.githubusercontent.com/HenrikBengtsson/r-package-files/master/.make/appveyor.yml.rsp', path='.make/')"
 
-.make/README.md.rsp:
-	$(R_SCRIPT) -e "R.utils::downloadFile('https://raw.githubusercontent.com/HenrikBengtsson/r-package-files/master/.make/README.md.rsp', path='.make/')"
+.make/%.md.rsp:
+	$(R_SCRIPT) -e "R.utils::downloadFile('https://raw.githubusercontent.com/HenrikBengtsson/r-package-files/master/$@', path='.make/')"
 
 .covr.R:
 	$(R_SCRIPT) -e "R.utils::downloadFile('https://raw.githubusercontent.com/HenrikBengtsson/covr-utils/master/.covr.R')"
@@ -487,6 +484,9 @@ refresh: clean
 README.md: .make/README.md.rsp
 	$(R_SCRIPT) -e "R.rsp::rfile('$<', postprocess=FALSE)"
 
+CONTRIBUTING.md: .make/CONTRIBUTING.md.rsp
+	$(R_SCRIPT) -e "R.rsp::rfile('$<', postprocess=FALSE)"
+
 .travis.yml: .make/.travis.yml.rsp
 	$(R_SCRIPT) -e "R.rsp::rfile('$<', postprocess=FALSE)"
 
@@ -494,3 +494,10 @@ appveyor.yml: .make/appveyor.yml.rsp
 	$(R_SCRIPT) -e "R.rsp::rfile('$<', postprocess=FALSE)"
 
 config: .travis.yml appveyor.yml README.md
+
+## Include any other Makefile.*, if they exists
+INCLUDES := $(wildcard .make/Makefile.*)
+ifneq ($(strip $(INCLUDES)),)
+  include $(INCLUDES)
+endif
+

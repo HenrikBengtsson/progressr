@@ -56,6 +56,8 @@ mprintf <- function(..., appendLF = TRUE, debug = getOption("progressr.debug", F
   message(now(), sprintf(...), appendLF = appendLF)
 }
 
+mdebugf <- mprintf
+
 mprint <- function(..., appendLF = TRUE, debug = getOption("progressr.debug", FALSE)) {
   if (!debug) return()
   message(paste(now(), capture_output(print(...)), sep = "", collapse = "\n"), appendLF = appendLF)
@@ -66,6 +68,12 @@ mstr <- function(..., appendLF = TRUE, debug = getOption("progressr.debug", FALS
   if (!debug) return()
   message(paste(now(), capture_output(str(...)), sep = "", collapse = "\n"), appendLF = appendLF)
 }
+
+comma <- function(x, sep = ", ") paste(x, collapse = sep)
+
+commaq <- function(x, sep = ", ") paste(sQuote(x), collapse = sep)
+
+trim <- function(s) sub("[\t\n\f\r ]+$", "", sub("^[\t\n\f\r ]+", "", s))
 
 stop_if_not <- function(..., calls = sys.calls()) {
   res <- list(...)

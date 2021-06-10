@@ -15,10 +15,10 @@ progress(..., call = sys.call())
 A \link[base:conditions]{base::condition} of class \code{progression}.
 }
 \description{
-Creates and Signals a Progression Condition
+\emph{WARNING:} \code{progress()} is deprecated - don't use.
 }
 \seealso{
+To create a progression condition, use \code{\link[=progression]{progression()}}.
 To signal a progression condition, use \code{\link[base:conditions]{base::signalCondition()}}.
-To create and signal a progression condition at once, use \code{\link[=progress]{progress()}}.
 }
 \keyword{internal}

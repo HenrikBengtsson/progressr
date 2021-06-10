@@ -70,10 +70,18 @@ handler_pbmcapply <- function(substyle = 3L, style = "ETA", file = stderr(), int
 
     pb <- NULL
     
-    make_pb <- function(...) {
+    make_pb <- function(max, ...) {
       if (!is.null(pb)) return(pb)
-      args <- c(list(...), backend_args)
-      pb <<- do.call(progressBar, args = args)
+      
+      ## SPECIAL CASE: pbmcapply::progressBar() does not support max == min
+      ## 
+      if (max == 0) {
+        pb <<- voidProgressBar()
+      } else {
+        args <- c(list(...), backend_args)
+        pb <<- do.call(progressBar, args = args)
+      }
+      
       pb
     }
 

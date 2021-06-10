@@ -10,11 +10,12 @@ app <- shinyApp(
     output$plot <- renderPlot({
       X <- 1:15
       withProgressShiny(message = "Calculation in progress",
-                        detail = "This may take a while ...", value = 0, {
+                        detail = "Starting ...",
+                        value = 0, {
         p <- progressor(along = X)
         y <- lapply(X, FUN=function(x) {
           Sys.sleep(0.25)
-          p()
+          p(sprintf("x=%d", x))
         })
       })
       

@@ -1,5 +1,7 @@
 #' Creates and Signals a Progression Condition
 #'
+#' _WARNING:_ `progress()` is deprecated - don't use.
+#'
 #' @param \ldots Arguments pass to [progression()].
 #'
 #' @param call (expression) A call expression.
@@ -7,12 +9,16 @@
 #' @return A [base::condition] of class `progression`.
 #'
 #' @seealso
+#' To create a progression condition, use [progression()].
 #' To signal a progression condition, use [base::signalCondition()].
-#' To create and signal a progression condition at once, use [progress()].
 #'
 #' @keywords internal
 #' @export
 progress <- function(..., call = sys.call()) {
+  action <- getOption("progressr.lifecycle.progress", "deprecated")
+  signal <- switch(action, deprecated = .Deprecated, defunct = .Defunct)
+  signal(msg = sprintf("progress() is %s", action), package = .packageName)
+ 
   args <- list(...)
   if (length(args) == 1L && inherits(args[[1L]], "condition")) {
     cond <- args[[1L]]

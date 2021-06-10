@@ -50,7 +50,7 @@
 #'
 #' @keywords internal
 #' @export
-make_progression_handler <- function(name, reporter = list(), handler = NULL, enable = getOption("progressr.enable", Sys.getenv("R_PROGRESSR_ENABLE", interactive())), enable_after = getOption("progressr.enable_after", Sys.getenv("R_PROGRESSR_ENABLE_AFTER", 0.0)), times = getOption("progressr.times", Sys.getenv("R_PROGRESSR_TIMES", +Inf)), interval = getOption("progressr.interval", Sys.getenv("R_PROGRESSR_INTERVAL", 0.0)), intrusiveness = 1.0, clear = getOption("progressr.clear",  Sys.getenv("R_PROGRESSR_CLEAR", TRUE)), target = "terminal", ...) {
+make_progression_handler <- function(name, reporter = list(), handler = NULL, enable = getOption("progressr.enable", interactive()), enable_after = getOption("progressr.enable_after", 0.0), times = getOption("progressr.times", +Inf), interval = getOption("progressr.interval", 0.0), intrusiveness = 1.0, clear = getOption("progressr.clear", TRUE), target = "terminal", ...) {
   enable <- as.logical(enable)
   stop_if_not(is.logical(enable), length(enable) == 1L, !is.na(enable))
   if (!enable) times <- 0
@@ -349,15 +349,16 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
         }
         max_steps <<- p[["steps"]]
         if (debug) mstr(list(max_steps=max_steps))
-        stop_if_not(!is.null(max_steps), is.numeric(max_steps), length(max_steps) == 1L, max_steps >= 1)
+        stop_if_not(!is.null(max_steps), is.numeric(max_steps), length(max_steps) == 1L, max_steps >= 0)
         auto_finish <<- p[["auto_finish"]]
         times <- min(times, max_steps)
         if (debug) mstr(list(auto_finish = auto_finish, times = times, interval = interval, intrusiveness = intrusiveness))
         
         ## Adjust 'times' and 'interval' according to 'intrusiveness'
-        times <- min(times / intrusiveness, max_steps)
+        times <- min(c(times / intrusiveness, max_steps), na.rm = TRUE)
         times <- max(times, 1L)
         interval <- interval * intrusiveness
+        if (debug) mstr(list(times = times, interval = interval))
 
         ## Milestone steps that need to be reach in order to trigger an
         ## update of the reporter
@@ -389,7 +390,11 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
           if (debug) message("- cannot 'update' handler, because it is not active")
           return(invisible(finished))
         }
-        if (debug) mstr(list(step=step, "p$amount"=p[["amount"]], max_steps=max_steps))
+        if (debug) mstr(list(step=step, "p$amount"=p[["amount"]], "p$step"=p[["step"]], max_steps=max_steps))
+        if (!is.null(p[["step"]])) {
+          ## Infer effective 'amount' from previous 'step' and p$step
+          p[["amount"]] <- p[["step"]] - step
+        }
         step <<- min(max(step + p[["amount"]], 0L), max_steps)
         stop_if_not(step >= 0L)
         msg <- conditionMessage(p)

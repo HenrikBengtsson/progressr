@@ -52,6 +52,30 @@ left to the end user. It should not be used by R packages, which only task
 is to \emph{signal} progress updates, not to decide if, when, and how progress
 should be reported.}
 }
+\section{Configuring progression handling during R startup}{
+
+A convenient place to configure the default progression handler and to
+enable global progression reporting by default is in the \file{~/.Rprofile}
+startup file.  For example, the following will (i) cause your interactive
+R session to use global progression handler by default, and (ii) report
+progress via the \pkg{progress} package when in the terminal and via the
+RStudio Jobs progress bar when in the RStudio Console.
+\link{handler_txtprogressbar},
+other whenever using the RStudio Console, add
+the following to your \file{~/.Rprofile} startup file:\if{html}{\out{<div class="r">}}\preformatted{if (interactive() && requireNamespace("progressr", quietly = TRUE)) \{
+  ## Enable global progression updates
+  if (getRversion() >= 4) progressr::handler(global = TRUE)
+
+  ## In RStudio Console, or not?
+  if (Sys.getenv("RSTUDIO") == "1" && !nzchar(Sys.getenv("RSTUDIO_TERM"))) \{
+    options(progressr.handlers = progressr::handler_rstudio)
+  \} else \{
+    options(progressr.handlers = progressr::handler_progress)
+  \}
+\}
+}\if{html}{\out{</div>}}
+}
+
 \examples{
 handlers("txtprogressbar")
 if (requireNamespace("beepr", quietly = TRUE))
@@ -62,9 +86,11 @@ print(y)
 
 
 if (getRversion() >= "4.0.0") {
+  \dontshow{if (!is.element("pkgdown", loadedNamespaces()))}
   handlers(global = TRUE)
   y <- slow_sum(1:4)
   z <- slow_sum(6:9)
+  \dontshow{if (!is.element("pkgdown", loadedNamespaces()))}
   handlers(global = FALSE)
 }
 

@@ -41,7 +41,8 @@
 #' * [handler_ascii_alert]
 #' * [handler_debug]
 #'
-#' In the graphical user interface (GUI):
+#' In a graphical user interface (GUI):
+#' * [handler_rstudio]
 #' * [handler_tkprogressbar]
 #' * [handler_winprogressbar]
 #'

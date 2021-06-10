@@ -42,30 +42,30 @@ Zero or more progression handlers that will report on any progression updates.  
 
 
 \describe{
-\item{\option{progressr.clear} / \env{R_PROGRESSR_CLEAR}:}{
+\item{\option{progressr.clear}:}{
 (logical)
 If TRUE, any output, typically visual, produced by a reporter will be cleared/removed upon completion, if possible. (Default: TRUE)
 }
 
-\item{\option{progressr.enable} / \env{R_PROGRESSR_ENABLE}:}{
+\item{\option{progressr.enable}:}{
 (logical)
 If FALSE, then progress is not reported.
 (Default: TRUE)
 }
 
-\item{\option{progressr.enable_after} / \env{R_PROGRESSR_ENABLE_AFTER}:}{
+\item{\option{progressr.enable_after}:}{
 (numeric)
 Delay (in seconds) before progression updates are reported.
 (Default: \code{0.0})
 }
 
-\item{\option{progressr.times} / \env{R_PROGRESSR_TIMES}:}{
+\item{\option{progressr.times}:}{
 (numeric)
 The maximum number of times a handler should report progression updates. If zero, then progress is not reported.
 (Default: \code{+Inf})
 }
 
-\item{\option{progressr.interval} / \env{R_PROGRESSR_INTERVAL}:}{
+\item{\option{progressr.interval}:}{
 (numeric)
 The minimum time (in seconds) between successive progression updates from this handler.
 (Default: \code{0.0})
@@ -117,6 +117,17 @@ If TRUE, standard output is captured and relayed at the end just before any capt
 \describe{
 \item{\option{progressr.demo.delay}:}{(numeric) Delay (in seconds) between each iteration of \code{\link[=slow_sum]{slow_sum()}}. (Default: \code{1.0})}
 }
+}
+
+\section{Environment variables that set R options}{
+
+Some of the above \R \option{progressr.*} options can be set by corresponding
+environment variable \env{R_PROGRESSR_*} \emph{when the \pkg{progressr} package
+is loaded}.
+For example, if \code{R_PROGRESSR_ENABLE = "true"}, then option
+\option{progressr.enable} is set to \code{TRUE} (logical).
+For example, if \code{R_PROGRESSR_ENABLE_AFTER = "2.0"}, then option
+\option{progressr.enable_after} is set to \code{2.0} (numeric).
 }
 
 \seealso{

@@ -21,16 +21,16 @@
 #' @export
 progress_progressr <- function(...) {
   ## Progressor
-  progress <- NULL
+  p <- NULL
 
   ## List of plyr-recognized progress functions
   list(
     init = function(x, ...) {
-      progress <<- progressor(x)
+      p <<- progressor(x)
     },
     
     step = function() {
-      progress()
+      p()
     },
     
     term = function() NULL

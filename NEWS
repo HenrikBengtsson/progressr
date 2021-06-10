@@ -1,11 +1,73 @@
 Package: progressr
 ==================
 
+Version: 0.8.0 [2021-06-09]
+
+SIGNIFICANT CHANGES:
+
+ * Creating a new progressor() will now automatically finish an existing
+   progressor, if one was previously created in the same environment.  The
+   previous behavior was to give an error (see below bug fix).
+
+ * R_PROGRESSR_* environment variables are now only read when the 'progressr'
+   package is loaded, where they set the corresponding progressr.* option.
+   Previously, some of these environment variables were queried by different
+   functions as a fallback to when an option was not set.  By only parsing
+   them when the package is loaded, it decrease the overhead in functions,
+   and it clarifies that options can be changed at runtime whereas environment
+   variables should only be set at startup.
+
+ * When using withProgressShiny(), progression messages now updates the
+   'detail' component of the Shiny progress panel.  Previously, it updated
+   the 'message' component. This can be configured via new 'inputs' argument.
+ 
+NEW FEATURES:
+
+ * withProgressShiny() gained argument 'inputs', which can be used to control
+   whether or not Shiny progress components 'message' and 'detail' should be
+   updated based on the progression message, e.g.
+   inputs = list(message = "sticky_message", detail = "message") will cause
+   progression messages to update the 'detail' component and sticky ones
+   to update both.
+   
+ * Now supporting zero-length progressors, e.g. p <- progressor(along = x)
+   where length(x) == 0.
+   
+ * Add handlers("rstudio") to report on progress in the RStudio Console via
+   the RStudio Job interface.
+
+BETA FEATURES:
+
+ * As an alternative to specifying the relative amount of progress, say, 
+   p(amount = 2), it is now possible to also specify the absolute amount of
+   progress made this far, e.g. p(step = 42).  Argument 'amount' has not
+   effect when argument 'step' is specified.  WARNING: Argument 'step' should
+   only be used when in full control of the order when this progression
+   condition is signaled.  For example, it must not be signaled as one of many
+   parallel progress updates signaled concurrently, because we cannot guarantee
+   the order these progressions arrive.
+
+BUG FIXES:
+
+ * In progressr 0.7.0, any attempt to use more than one progressor inside a
+   function or a local() call would result in: Error in assign("...progressor",
+   value = fcn, envir = envir) : cannot change value of locked binding for
+   '...progressor'.
+
+DEPRECATED AND DEFUNCT:
+
+ * Function progress() is deprecated in order to re-use it for other purpose.
+   It is unlikely that anyone really used this function, but if you did, then
+   use cond <- progression() to create 'progression' condition and then use
+   withRestart(signalCondition(cond), muffleProgression = function(p) NULL)
+   to signal it.
+   
+
 Version: 0.7.0 [2020-12-11]
 
 SIGNIFICANT CHANGES:
 
- * The user can how use handlers(global = TRUE) to enable progress reports
+ * The user can now use handlers(global = TRUE) to enable progress reports
    everywhere without having to use with_progress().  This only works in
    R (>= 4.0.0) because it requires global calling handlers.
 
@@ -387,12 +449,7 @@ NEW FEATURES:
    signal "done" as soon as the last step has been reached.
 
  * Made 'amount' the first argument of progressors to avoid having to specify
-   it by name if progressing with an amount than the default `amount = 1.0`.
-
-
-Version: 0.0.0-9004 [2019-05-07]
-
-NEW FEATURES:
+   it by name if progressing with an amount than the default 'amount = 1.0'.
 
  * Add argument 'clear' to control whether progress reporter should clear
    its output upon completion.  The default is to do this, where supported.

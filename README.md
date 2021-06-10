@@ -1,9 +1,10 @@
 
 
+<div id="badges"><!-- pkgdown markup -->
+<a href="https://CRAN.R-project.org/web/checks/check_results_progressr.html"><img border="0" src="https://www.r-pkg.org/badges/version/progressr" alt="CRAN check status"/></a> <a href="https://github.com/HenrikBengtsson/progressr/actions?query=workflow%3AR-CMD-check"><img border="0" src="https://github.com/HenrikBengtsson/progressr/workflows/R-CMD-check/badge.svg?branch=develop" alt="Build status"/></a> <a href="https://travis-ci.org/HenrikBengtsson/progressr"><img border="0" src="https://travis-ci.org/HenrikBengtsson/progressr.svg" alt="Build status"/></a> <a href="https://ci.appveyor.com/project/HenrikBengtsson/progressr"><img border="0" src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/progressr?svg=true" alt="Build status"/></a> <a href="https://codecov.io/gh/HenrikBengtsson/progressr"><img border="0" src="https://codecov.io/gh/HenrikBengtsson/progressr/branch/develop/graph/badge.svg" alt="Coverage Status"/></a> <a href="https://lifecycle.r-lib.org/articles/stages.html"><img border="0" src="man/figures/lifecycle-maturing-blue.svg" alt="Life cycle: maturing"/></a>
+</div>
 
-# progressr: An Inclusive, Unifying API for Progress Updates
-
-![Life cycle: experimental](vignettes/imgs/lifecycle-experimental-orange.svg)
+# progressr: An Inclusive, Unifying API for Progress Updates 
 
 The **[progressr]** package provides a minimal API for reporting progress updates in [R](https://www.r-project.org/).  The design is to separate the representation of progress updates from how they are presented.  What type of progress to signal is controlled by the developer.  How these progress updates are rendered is controlled by the end user.  For instance, some users may prefer visual feedback such as a horizontal progress bar in the terminal, whereas others may prefer auditory feedback.
 
@@ -27,8 +28,8 @@ Design motto:
 1. Set up a progressor with a certain number of steps:
 </p>
 <pre>
-p <- progressor(nsteps)
-p <- progressor(along = x)
+p &lt;- progressor(nsteps)
+p &lt;- progressor(along = x)
 </pre>
 
 <p>
@@ -57,8 +58,8 @@ p("loading ...")  # pass on a message
 <pre>
 handlers(global = TRUE)
 
-y <- slow_sum(1:5)
-y <- slow_sum(6:10)
+y &lt;- slow_sum(1:5)
+y &lt;- slow_sum(6:10)
 </pre>
 
 <p>
@@ -67,8 +68,8 @@ y <- slow_sum(6:10)
 
 <pre>
 with_progress({
-  y <- slow_sum(1:5)
-  y <- slow_sum(6:10)
+  y &lt;- slow_sum(1:5)
+  y &lt;- slow_sum(6:10)
 })
 </pre>
 
@@ -389,12 +390,12 @@ my_fcn(1:5)
 #  |====================                               |  40%
 ```
 
-_Note:_ This solution does not involved the `.progress = TRUE` argument that **plyr** implements.  Because **progressr** is more flexible, and because `.progress` is automatically disabled when running in parallel (see below), I recommended to use the above **progressr** approach instead.  Having said this, as proof-of-concept, the **progressr** package implements support `.progress = "progressr"` if you still prefer the **plyr** way of doing it.
+_Note:_ This solution does not involved the `.progress = TRUE` argument that **plyr** implements.  Because **progressr** is more flexible, and because `.progress` is automatically disabled when running in parallel (see below), I recommend to use the above **progressr** approach instead.  Having said this, as proof-of-concept, the **progressr** package implements support `.progress = "progressr"` if you still prefer the **plyr** way of doing it.
 
 
 ## Parallel processing and progress updates
 
-The **[future]** framework, which provides a unified API for parallel and distributed processing in R, has built-in support for the kind of progression updates produced by the **progressr** package.  This means that you can use it with for instance **[future.apply]**, **[furrr]**, and **[foreach]** with **[doFuture]**, and **[plyr]** with **doFuture**.
+The **[future]** framework, which provides a unified API for parallel and distributed processing in R, has built-in support for the kind of progression updates produced by the **progressr** package.  This means that you can use it with for instance **[future.apply]**, **[furrr]**, and **[foreach]** with **[doFuture]**, and **[plyr]** or **[BiocParallel]** with **doFuture**.
 
 
 ### future_lapply() - parallel lapply()
@@ -429,7 +430,7 @@ Here is an example that uses `foreach()` of the **[foreach]** package to paralle
 
 ```r
 library(doFuture)
-registerDoFuture()
+registerDoFuture()      ## %dopar% parallelizes via future
 plan(multisession)
 
 library(progressr)
@@ -478,6 +479,35 @@ my_fcn(1:5)
 _Note:_ This solution does not involved the `.progress = TRUE` argument that **furrr** implements.  Because **progressr** is more generic and because `.progress = TRUE` only works for certain future backends and produces errors on others, I recommended to stop using `.progress = TRUE` and use the **progressr** package instead.
 
 
+### BiocParallel::bplapply() - parallel lapply()
+
+Here is an example that uses `bplapply()` of the **[BiocParallel]** package to parallelize on the local machine while at the same time signaling progression updates:
+
+```r
+library(BiocParallel)
+library(doFuture)
+register(DoparParam())  ## BiocParallel parallelizes via %dopar%
+registerDoFuture()      ## %dopar% parallelizes via future
+plan(multisession)
+
+library(progressr)
+handlers(global = TRUE)
+handlers("progress", "beepr")
+
+my_fcn <- function(xs) {
+  p <- progressor(along = xs)
+  y <- bplapply(xs, function(x) {
+    Sys.sleep(6.0-x)
+    p(sprintf("x=%g", x))
+    sqrt(x)
+  })
+}
+
+my_fcn(1:5)
+# / [================>-----------------------------]  40% x=2
+```
+
+
 ### plyr::llply(..., .parallel = TRUE) with doFuture
 
 Here is an example that uses `llply()` of the **[plyr]** package to parallelize on the local machine while at the same time signaling progression updates:
@@ -485,7 +515,7 @@ Here is an example that uses `llply()` of the **[plyr]** package to parallelize 
 ```r
 library(plyr)
 library(doFuture)
-registerDoFuture()
+registerDoFuture()      ## %dopar% parallelizes via future
 plan(multisession)
 
 library(progressr)
@@ -495,7 +525,7 @@ handlers("progress", "beepr")
 my_fcn <- function(xs) {
   p <- progressor(along = xs)
   y <- llply(xs, function(x, ...) {
-    Sys.sleep(0.1)
+    Sys.sleep(6.0-x)
     p(sprintf("x=%g", x))
     sqrt(x)
   }, .parallel = TRUE)
@@ -602,9 +632,10 @@ results in an error if tried:
 
 ```
 Error in progressor(along = xs) : 
-  A progressor must not be created in the global environment unless wrapped in a with_progress()
-or without_progress() call, otherwise make sure to created inside a function or in a local()
-environment to make sure there is a finite life span of the progressor
+  A progressor must not be created in the global environment unless wrapped in a
+  with_progress() or without_progress() call. Alternatively, create it inside a
+  function or in a local() environment to make sure there is a finite life span
+  of the progressor
 ```
 
 The solution is to wrap it in a `local({ ... })` call, or more explicitly, in a `with_progress({ ... })` call:
@@ -681,11 +712,12 @@ M: Added value 3
 [future.apply]: https://cran.r-project.org/package=future.apply
 [doParallel]: https://cran.r-project.org/package=doParallel
 [doFuture]: https://cran.r-project.org/package=doFuture
-[foreach]: https://cran.r-project.org/package=foreach
 [furrr]: https://cran.r-project.org/package=furrr
 [pbapply]: https://cran.r-project.org/package=pbapply
 [pbmcapply]: https://cran.r-project.org/package=pbmcapply
 [plyr]: https://cran.r-project.org/package=plyr
+[BiocParallel]: https://www.bioconductor.org/packages/BiocParallel/
+
 
 ## Installation
 R package progressr is available on [CRAN](https://cran.r-project.org/package=progressr) and can be installed in R as:
@@ -702,19 +734,10 @@ remotes::install_github("HenrikBengtsson/progressr", ref="develop")
 ```
 This will install the package from source.  
 
-## Contributions
-
-This Git repository uses the [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/) branching model (the [`git flow`](https://github.com/petervanderdoes/gitflow-avh) extension is useful for this).  The [`develop`](https://github.com/HenrikBengtsson/progressr/tree/develop) branch contains the latest contributions and other code that will appear in the next release, and the [`master`](https://github.com/HenrikBengtsson/progressr) branch contains the code of the latest release, which is exactly what is currently on [CRAN](https://cran.r-project.org/package=progressr).
-
-Contributing to this package is easy.  Just send a [pull request](https://help.github.com/articles/using-pull-requests/).  When you send your PR, make sure `develop` is the destination branch on the [progressr repository](https://github.com/HenrikBengtsson/progressr).  Your PR should pass `R CMD check --as-cran`, which will also be checked by <a href="https://travis-ci.org/HenrikBengtsson/progressr">Travis CI</a> and <a href="https://ci.appveyor.com/project/HenrikBengtsson/progressr">AppVeyor CI</a> when the PR is submitted.
-
-We abide to the [Code of Conduct](https://www.contributor-covenant.org/version/2/0/code_of_conduct/) of Contributor Covenant.
+<!-- pkgdown-drop-below -->
 
 
-## Software status
+## Contributing
 
-| Resource      | CRAN        | GitHub Actions      | Travis CI       | AppVeyor CI      |
-| ------------- | ------------------- | ------------------- | --------------- | ---------------- |
-| _Platforms:_  | _Multiple_          | _Multiple_          | _Linux & macOS_ | _Windows_        |
-| R CMD check   | <a href="https://cran.r-project.org/web/checks/check_results_progressr.html"><img border="0" src="http://www.r-pkg.org/badges/version/progressr" alt="CRAN version"></a> | <a href="https://github.com/HenrikBengtsson/progressr/actions?query=workflow%3AR-CMD-check"><img src="https://github.com/HenrikBengtsson/progressr/workflows/R-CMD-check/badge.svg?branch=develop" alt="Build status"></a>       | <a href="https://travis-ci.org/HenrikBengtsson/progressr"><img src="https://travis-ci.org/HenrikBengtsson/progressr.svg" alt="Build status"></a>   | <a href="https://ci.appveyor.com/project/HenrikBengtsson/progressr"><img src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/progressr?svg=true" alt="Build status"></a> |
-| Test coverage |                     |                     | <a href="https://codecov.io/gh/HenrikBengtsson/progressr"><img src="https://codecov.io/gh/HenrikBengtsson/progressr/branch/develop/graph/badge.svg" alt="Coverage Status"/></a>     |                  |
+To contribute to this package, please see [CONTRIBUTING.md](CONTRIBUTING.md).
+ 

@@ -7,6 +7,7 @@
 handler_shiny(
   intrusiveness = getOption("progressr.intrusiveness.gui", 1),
   target = "gui",
+  inputs = list(message = NULL, detail = "message"),
   ...
 )
 }
@@ -16,6 +17,14 @@ handler_shiny(
 
 \item{target}{(character vector) Specifies where progression updates are
 rendered.}
+
+\item{inputs}{(named list) Specifies from what sources the Shiny progress
+elements 'message' and 'detail' should be updated.  Valid sources are
+\code{"message"}, \code{"sticky_message"} and \code{"non_sticky_message"}, where
+\code{"message"} is short for \code{c("non_sticky_message", "sticky_message")}. For
+example, \code{inputs = list(message = "sticky-message", detail = "message")}
+will update the Shiny 'message' component from sticky messages only,
+whereas the 'detail' component is updated using any message.}
 
 \item{\ldots}{Additional arguments passed to \code{\link[=make_progression_handler]{make_progression_handler()}}.}
 }

@@ -27,7 +27,7 @@
 handler_filesize <- function(file = "default.progress", intrusiveness = getOption("progressr.intrusiveness.file", 5), target = "file", ...) {
   reporter <- local({
     set_file_size <- function(config, state, progression) {
-      ratio <- state$step / config$max_steps
+      ratio <- if (config$max_steps == 0) 1 else state$step / config$max_steps
       size <- round(100 * ratio)
       current_size <- file.size(file)
       if (is.na(current_size)) file.create(file, showWarnings = FALSE)

@@ -2,18 +2,16 @@ register_vignette_engine_during_build_only <- function(pkgname) {
   # Are vignette engines supported?
   if (getRversion() < "3.0.0") return() # Nope!
 
-  ## HACK: Only register vignette engine progressr::selfonly during R CMD build
+  ## HACK: Only register vignette engine 'selfonly' during R CMD build
   if (Sys.getenv("R_CMD") == "") return()
 
-  tools::vignetteEngine("selfonly", package = "progressr", pattern = "[.]md$",
+  tools::vignetteEngine("selfonly", package = pkgname, pattern = "[.]md$",
     weave = function(file, ...) {
       output <- sprintf("%s.html", tools::file_path_sans_ext(basename(file)))
       md <- readLines(file)
 
       title <- grep("%\\VignetteIndexEntry{", md, fixed = TRUE, value = TRUE)
       title <- gsub(".*[{](.*)[}].*", "\\1", title)
-
-      md <- grep("%\\\\Vignette", md, invert = TRUE, value = TRUE)
 
       ## Inject vignette title
       md <- c(sprintf("# %s\n\n", title), md)
@@ -36,9 +34,16 @@ register_vignette_engine_during_build_only <- function(pkgname) {
         pattern <- sprintf('(.*[ ]src=")([^"]+[.]%s)(".*)', ext)
         idxs <- grep(pattern, html)
         if (length(idxs) == 0) next
+        if (!requireNamespace(stealth <- "base64enc", quietly = TRUE)) {
+          stop("This vignette requires the ", sQuote(stealth), 
+               " package because it contains a ", sQuote(toupper(ext)), 
+               " image")
+        }
+        ns <- getNamespace(stealth)
+        dataURI <- get("dataURI", mode = "function", envir = ns)
         for (idx in idxs) {
           file <- gsub(pattern, "\\2", html[idx])
-          uri <- base64enc::dataURI(file = file, mime = mime)
+          uri <- dataURI(file = file, mime = mime)
           html[idx] <- gsub(pattern, sprintf("\\1%s\\3", uri), html[idx])
         }
       }

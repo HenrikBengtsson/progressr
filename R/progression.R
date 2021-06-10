@@ -10,7 +10,11 @@
 #'
 #' @param amount (numeric) The total amount of progress made.
 #'
-#' @param step (character or integer) The step completed.
+#' @param step (numeric) The step completed. If specified, `amount` is ignored.
+#' _WARNING: Argument `step` should only be used when in full control of the
+#' order when this progression condition is signaled._ For example, it must not
+#' be signaled as one of many parallel progress updates signaled concurrently,
+#' because then we cannot guarantee the order these progressions arrive.
 #'
 #' @param time (POSIXct) A timestamp.
 #'
@@ -40,7 +44,6 @@
 #'
 #' @seealso
 #' To signal a progression condition, use [base::signalCondition()].
-#' To create and signal a progression condition at once, use [progress()].
 #'
 #' @keywords internal
 #' @export

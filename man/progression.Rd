@@ -29,7 +29,11 @@ first argument.}
 
 \item{amount}{(numeric) The total amount of progress made.}
 
-\item{step}{(character or integer) The step completed.}
+\item{step}{(numeric) The step completed. If specified, \code{amount} is ignored.
+\emph{WARNING: Argument \code{step} should only be used when in full control of the
+order when this progression condition is signaled.} For example, it must not
+be signaled as one of many parallel progress updates signaled concurrently,
+because then we cannot guarantee the order these progressions arrive.}
 
 \item{time}{(POSIXct) A timestamp.}
 
@@ -63,6 +67,5 @@ A progression condition represents a progress in an \R program.
 }
 \seealso{
 To signal a progression condition, use \code{\link[base:conditions]{base::signalCondition()}}.
-To create and signal a progression condition at once, use \code{\link[=progress]{progress()}}.
 }
 \keyword{internal}

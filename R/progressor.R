@@ -65,7 +65,7 @@ progressor <- local({
 
     if (identical(envir, globalenv())) {
       if (!progressr_in_globalenv()) {
-        stop("A progressor must not be created in the global environment unless wrapped in a with_progress() or without_progress() call, otherwise make sure to created inside a function or in a local() environment to make sure there is a finite life span of the progressor")
+        stop("A progressor must not be created in the global environment unless wrapped in a with_progress() or without_progress() call. Alternatively, create it inside a function or in a local() environment to make sure there is a finite life span of the progressor")
       }
       if (on_exit) {
         stop("It is not possible to create a progressor in the global environment with on_exit = TRUE")
@@ -79,12 +79,20 @@ progressor <- local({
     
     fcn <- function(message = character(0L), ..., type = "update") {
       progression_index <<- progression_index + 1L
-      progress(type = type,
-               message = message,
-               ...,
-               progressor_uuid = progressor_uuid,
-               progression_index = progression_index,
-               owner_session_uuid = owner_session_uuid)
+      cond <- progression(
+        type = type,
+        message = message,
+        ...,
+        progressor_uuid = progressor_uuid,
+        progression_index = progression_index,
+        owner_session_uuid = owner_session_uuid,
+        call = sys.call()
+      )
+      withRestarts(
+        signalCondition(cond),
+        muffleProgression = function(p) NULL
+      )
+      invisible(cond)
     }
     formals(fcn)$message <- message
     class(fcn) <- c("progressor", class(fcn))
@@ -95,6 +103,23 @@ progressor <- local({
         steps = steps,
         auto_finish = auto_finish
       )
+    }
+
+    ## Is there already be an active '...progressr'?
+    ## If so, make sure it is finished and then remove it
+    if (exists("...progressor", mode = "function", envir = envir)) {
+      ...progressor <- get("...progressor", mode = "function", envir = envir)
+      
+      ## Ideally, we produce a warning or an error here if the existing
+      ## progressor is not finished.  Currently, we don't have a way to
+      ## query that, so we leave that for the future. /HB 2021-02-28
+
+      ## Finish it (although it might already have been done via auto-finish)
+      ...progressor(type = "finish")
+
+      ## Remove it (while avoiding false 'R CMD check' NOTE)
+      do.call(unlockBinding, args = list("...progressor", env = envir))
+      rm("...progressor", envir = envir)
     }
 
     ## Add on.exit(...progressor(type = "finish"))

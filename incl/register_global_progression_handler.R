@@ -1,4 +1,4 @@
-\dontshow{if (getRversion() >= "4.0.0")}
+\dontshow{if (getRversion() >= "4.0.0" && !is.element("pkgdown", loadedNamespaces()))}
 handlers(global = TRUE)
 
 ## This renders progress updates for each of the three calls slow_sum()
@@ -9,5 +9,5 @@ for (ii in 1:3) {
   print(y)
 }
 
-\dontshow{if (getRversion() >= "4.0.0")}
+\dontshow{if (getRversion() >= "4.0.0" && !is.element("pkgdown", loadedNamespaces()))}
 handlers(global = FALSE)

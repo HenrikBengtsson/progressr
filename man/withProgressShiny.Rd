@@ -7,6 +7,9 @@
 withProgressShiny(
   expr,
   ...,
+  message = NULL,
+  detail = NULL,
+  inputs = list(message = NULL, detail = "message"),
   env = parent.frame(),
   quoted = FALSE,
   handlers = c(shiny = handler_shiny, progressr::handlers(default = NULL))
@@ -14,6 +17,16 @@ withProgressShiny(
 }
 \arguments{
 \item{expr, \ldots, env, quoted}{Arguments passed to \link[shiny:withProgress]{shiny::withProgress} as is.}
+
+\item{message, detail}{(character string) The message and the detail message to be passed to \code{\link[shiny:withProgress]{shiny::withProgress()}}.}
+
+\item{inputs}{(named list) Specifies from what sources the Shiny progress
+elements 'message' and 'detail' should be updated.  Valid sources are
+\code{"message"}, \code{"sticky_message"} and \code{"non_sticky_message"}, where
+\code{"message"} is short for \code{c("non_sticky_message", "sticky_message")}. For
+example, \code{inputs = list(message = "sticky-message", detail = "message")}
+will update the Shiny 'message' component from sticky messages only,
+whereas the 'detail' component is updated using any message.}
 
 \item{handlers}{Zero or more progression handlers used to report on progress.}
 }
@@ -25,7 +38,8 @@ Use Progressr in Shiny Apps: Plug-in Backward Compatibility Replacement for shin
 }
 \section{Requirements}{
 
-This function requires the \pkg{shiny} package.
+This function requires the \pkg{shiny} package and will use the
+\code{\link[=handler_shiny]{handler_shiny()}} \strong{progressr} handler internally to report on updates.
 }
 
 \examples{
@@ -41,11 +55,12 @@ app <- shinyApp(
     output$plot <- renderPlot({
       X <- 1:15
       withProgressShiny(message = "Calculation in progress",
-                        detail = "This may take a while ...", value = 0, {
+                        detail = "Starting ...",
+                        value = 0, {
         p <- progressor(along = X)
         y <- lapply(X, FUN=function(x) {
           Sys.sleep(0.25)
-          p()
+          p(sprintf("x=\%d", x))
         })
       })
       

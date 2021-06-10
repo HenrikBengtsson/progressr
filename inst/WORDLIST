@@ -62,3 +62,13 @@ withProgressShiny
 withRestart
 pbcol
 conditionMessage
+rstudio
+RStudio
+BiocParallel
+bplapply
+txtprogressbar
+cond
+envir
+fcn
+signalCondition
+md

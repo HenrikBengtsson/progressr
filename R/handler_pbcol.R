@@ -61,7 +61,8 @@ handler_pbcol <- function(adjust = 0.0, pad = 1L, complete = function(s) crayon:
     list(
       initiate = function(config, state, ...) {
         if (!state$enabled || config$times <= 2L) return()
-        redraw_progress_bar(ratio = state$step / config$max_steps, message = state$message, spin = spinner[spin_state+1L])
+        ratio <- if (config$max_steps == 0) 1 else state$step / config$max_steps
+        redraw_progress_bar(ratio = ratio, message = state$message, spin = spinner[spin_state+1L])
       },
       
       reset = function(...) {
@@ -74,14 +75,16 @@ handler_pbcol <- function(adjust = 0.0, pad = 1L, complete = function(s) crayon:
 
       unhide = function(config, state, ...) {
         if (!state$enabled || config$times <= 2L) return()
-        redraw_progress_bar(ratio = state$step / config$max_steps, message = state$message, spin = spinner[spin_state+1L])
+        ratio <- if (config$max_steps == 0) 1 else state$step / config$max_steps
+        redraw_progress_bar(ratio = ratio, message = state$message, spin = spinner[spin_state+1L])
       },
 
       update = function(config, state, progression, ...) {
         if (!state$enabled || config$times <= 2L) return()
         if (state$delta < 0) return()
         spin_state <<- (spin_state+1L) %% length(spinner)
-        redraw_progress_bar(ratio = state$step / config$max_steps, message = state$message, spin = spinner[spin_state+1L])
+        ratio <- if (config$max_steps == 0) 1 else state$step / config$max_steps
+        redraw_progress_bar(ratio = ratio, message = state$message, spin = spinner[spin_state+1L])
       },
 
       finish = function(...) {
