@@ -95,7 +95,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0-9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0-9000</span>
       </span>
     </div>
 
@@ -237,7 +237,7 @@ to any of <span class="pkg">plyr</span> function accepting that argument.</p>
 
     
 
-<p>One can use use <code><a href='https://rdrr.io/pkg/doFuture/man/registerDoFuture.html'>doFuture::registerDoFuture()</a></code> to run <span class="pkg">plyr</span> functions
+<p>One can use use <code><a href='https://doFuture.futureverse.org/reference/registerDoFuture.html'>doFuture::registerDoFuture()</a></code> to run <span class="pkg">plyr</span> functions
 in parallel, e.g. <code><a href='https://rdrr.io/pkg/plyr/man/l_ply.html'>plyr::l_ply(..., .parallel = TRUE)</a></code>.  Unfortunately,
 using <code>.parallel = TRUE</code> disables progress updates because, internally,
 <span class="pkg">plyr</span> forces <code>.progress = "none"</code> whenever <code>.parallel = TRUE</code>.
