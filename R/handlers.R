@@ -49,7 +49,7 @@
 #' ```r
 #' if (interactive() && requireNamespace("progressr", quietly = TRUE)) {
 #'   ## Enable global progression updates
-#'   if (getRversion() >= 4) progressr::handler(global = TRUE)
+#'   if (getRversion() >= 4) progressr::handlers(global = TRUE)
 #'
 #'   ## In RStudio Console, or not?
 #'   if (Sys.getenv("RSTUDIO") == "1" && !nzchar(Sys.getenv("RSTUDIO_TERM"))) {
