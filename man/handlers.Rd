@@ -64,7 +64,7 @@ RStudio Jobs progress bar when in the RStudio Console.
 other whenever using the RStudio Console, add
 the following to your \file{~/.Rprofile} startup file:\if{html}{\out{<div class="r">}}\preformatted{if (interactive() && requireNamespace("progressr", quietly = TRUE)) \{
   ## Enable global progression updates
-  if (getRversion() >= 4) progressr::handler(global = TRUE)
+  if (getRversion() >= 4) progressr::handlers(global = TRUE)
 
   ## In RStudio Console, or not?
   if (Sys.getenv("RSTUDIO") == "1" && !nzchar(Sys.getenv("RSTUDIO_TERM"))) \{
