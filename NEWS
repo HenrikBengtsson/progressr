@@ -1,10 +1,15 @@
 Package: progressr
 ==================
 
-Version: 0.8.0-9000 [2021-06-09]
+Version: 0.8.0-9001 [2021-07-09]
 
- * ...
- 
+PERFORMANCE:
+
+ * The progressor function created by progressor() no longer "inherit" objects
+   from the calling environment, which would, for instance, result in those
+   objects to be exported to parallel workers together with the progressor
+   function, which in turn would come with large time and memory costs.
+
 
 Version: 0.8.0 [2021-06-09]
 

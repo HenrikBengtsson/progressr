@@ -76,7 +76,7 @@ progressor <- local({
     progressor_count <<- progressor_count + 1L
     progressor_uuid <- progressor_uuid(progressor_count)
     progression_index <- 0L
-    
+
     fcn <- function(message = character(0L), ..., type = "update") {
       progression_index <<- progression_index + 1L
       cond <- progression(
@@ -96,7 +96,19 @@ progressor <- local({
     }
     formals(fcn)$message <- message
     class(fcn) <- c("progressor", class(fcn))
-  
+
+    ## WORKAROUND: Use teeny, custom enviroment for the progressor function.
+    ## The default would otherwise be to inherit the parent frame, which
+    ## might contain very large objects.
+    progressor_envir <- new.env(parent = getNamespace(.packageName))
+    for (name in c("progression_index", "progressor_uuid",
+                   "owner_session_uuid", "progressor_count",
+                   "enable", "initiate", "auto_finish",
+                   "steps", "label", "offset", "scale")) {
+      progressor_envir[[name]] <- get(name)
+    }
+    environment(fcn) <- progressor_envir
+    
     if (initiate) {
       fcn(
         type = "initiate",
