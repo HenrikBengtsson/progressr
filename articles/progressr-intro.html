@@ -45,7 +45,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0-9001</span>
       </span>
     </div>
 
@@ -522,9 +522,9 @@ Calculating the square root of <span class="dv">2</span>
 <div id="future_lapply---parallel-lapply" class="section level3">
 <h3 class="hasAnchor">
 <a href="#future_lapply---parallel-lapply" class="anchor"></a>future_lapply() - parallel lapply()</h3>
-<p>Here is an example that uses <code><a href="https://future.apply.futureverse.org/reference/future_lapply.html">future_lapply()</a></code> of the <strong><a href="https://cran.r-project.org/package=future.apply">future.apply</a></strong> package to parallelize on the local machine while at the same time signaling progression updates:</p>
+<p>Here is an example that uses <code><a href="https://rdrr.io/pkg/future.apply/man/future_lapply.html">future_lapply()</a></code> of the <strong><a href="https://cran.r-project.org/package=future.apply">future.apply</a></strong> package to parallelize on the local machine while at the same time signaling progression updates:</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://future.apply.futureverse.org">future.apply</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/future.apply">future.apply</a></span><span class="op">)</span>
 <span class="fu">plan</span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
 
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span>
@@ -533,7 +533,7 @@ Calculating the square root of <span class="dv">2</span>
 
 <span class="va">my_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">xs</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/progressor.html">progressor</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">xs</span><span class="op">)</span>
-  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://future.apply.futureverse.org/reference/future_lapply.html">future_lapply</a></span><span class="op">(</span><span class="va">xs</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/future.apply/man/future_lapply.html">future_lapply</a></span><span class="op">(</span><span class="va">xs</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
     <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html">Sys.sleep</a></span><span class="op">(</span><span class="fl">6.0</span><span class="op">-</span><span class="va">x</span><span class="op">)</span>
     <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">p</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"x=%g"</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span>
     <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
@@ -661,7 +661,7 @@ Calculating the square root of <span class="dv">2</span>
 <li>
 <code>cluster</code> (local and remote)</li>
 </ol>
-<p>Here "near-live" means that the progress handlers will report on progress almost immediately when the progress is signaled on the worker. For all other future backends, the progress updates are only relayed back to the main machine and reported together with the results of the futures. For instance, if <code><a href="https://future.apply.futureverse.org/reference/future_lapply.html">future_lapply(X, FUN)</a></code> chunks up the processing of, say, 100 elements in <code>X</code> into eight futures, we will see progress from each of the 100 elements as they are done when using a future backend supporting "near-live" updates, whereas we will only see those updated to be flushed eight times when using any other types of future backends.</p>
+<p>Here "near-live" means that the progress handlers will report on progress almost immediately when the progress is signaled on the worker. For all other future backends, the progress updates are only relayed back to the main machine and reported together with the results of the futures. For instance, if <code><a href="https://rdrr.io/pkg/future.apply/man/future_lapply.html">future_lapply(X, FUN)</a></code> chunks up the processing of, say, 100 elements in <code>X</code> into eight futures, we will see progress from each of the 100 elements as they are done when using a future backend supporting "near-live" updates, whereas we will only see those updated to be flushed eight times when using any other types of future backends.</p>
 <p>(*) Other future backends may gain support for "near-live" progress updating later. Adding support for those is independent of the <strong>progressr</strong> package. Feature requests for adding that support should go to those future-backend packages.</p>
 </div>
 </div>
