@@ -291,6 +291,9 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
     handler <- function(p) {
       stop_if_not(inherits(p, "progression"))
 
+      ## Ignore if running in a forked child process
+      if (is_fork_child()) return(invisible(FALSE))
+      
       if (inherits(p, "control_progression")) {
         type <- p[["type"]]
         if (type == "reset") {

@@ -5,6 +5,9 @@
 
   ## Set package options based on environment variables
   update_package_options(debug = debug)
+
+  ## Record the process ID (PID) when the package is loaded
+  is_fork_child()
   
   ## R CMD check
   if (in_r_cmd_check()) {
