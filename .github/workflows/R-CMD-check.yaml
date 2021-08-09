@@ -6,7 +6,7 @@ jobs:
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
 
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }}) ${{ matrix.config.label }}
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
 
     strategy:
       fail-fast: false
@@ -69,10 +69,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          remotes::install_deps(dependencies=TRUE)
+          remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
-          install.packages(".", repos=NULL, type="source")  ## self vignette engine
-          shell: Rscript {0}
+          install.packages(".", repos = NULL, type = "source")  ## self vignette engine
+        shell: Rscript {0}
 
       - name: Session info
         run: |
