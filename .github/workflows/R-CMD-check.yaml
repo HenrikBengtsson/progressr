@@ -69,7 +69,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          remotes::install_deps(dependencies = TRUE)
+          remotes::install_deps(dependencies=TRUE)
           remotes::install_cran("rcmdcheck")
           install.packages(".", repos=NULL, type="source")  ## self vignette engine
           shell: Rscript {0}
