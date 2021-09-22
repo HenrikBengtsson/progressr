@@ -177,6 +177,10 @@ print.progressor <- function(x, ...) {
   
   s <- c(s, paste("- enable:", e$enable))
 
+  size <- length(serialize(x, connection = NULL))
+  class(size) <- "object_size"
+  s <- c(s, paste("- size:", format(size, units = "auto", standard = "SI")))
+
   s <- paste(s, collapse = "\n")
   cat(s, "\n", sep = "")
   

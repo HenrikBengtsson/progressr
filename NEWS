@@ -1,7 +1,7 @@
 Package: progressr
 ==================
 
-Version: 0.8.0-9002 [2021-08-09]
+Version: 0.8.0-9003 [2021-09-22]
 
 PERFORMANCE:
 
@@ -9,6 +9,12 @@ PERFORMANCE:
    from the calling environment, which would, for instance, result in those
    objects to be exported to parallel workers together with the progressor
    function, which in turn would come with large time and memory costs.
+
+NEW FEATURES:
+
+ * Now print() on a 'progressor' object reports also on the size of the object,
+   i.e. the number of bytes it requires when serialized, for instance, to a
+   parallel worker.
 
 BUG FIXES:
 
