@@ -44,7 +44,7 @@ with \code{style = substyle}, the main usage of this handler is with
 Below is how this progress handler renders by default at 0\%, 30\% and 99\%
 progress:
 
-With \code{handlers(handler_pbmcapply())}:\if{html}{\out{<div class="r">}}\preformatted{ |                                         |   0\%, ETA NA
+With \code{handlers(handler_pbmcapply())}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{ |                                         |   0\%, ETA NA
  |===========                           |  30\%, ETA 01:32
  |======================================|  99\%, ETA 00:01
 }\if{html}{\out{</div>}}

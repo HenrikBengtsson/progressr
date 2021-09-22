@@ -73,10 +73,10 @@ When running R from the command line, R runs in a non-interactive mode
 To have progress being reported on also then, set R options
 \option{progressr.enable} or environment variable \env{R_PROGRESSR_ENABLE}
 to \code{TRUE}.  Alternatively, one can set argument \code{enable=TRUE} when calling
-\code{with_progress()}.  For example,\if{html}{\out{<div class="sh">}}\preformatted{$ Rscript -e "library(progressr)" -e "with_progress(slow_sum(1:5))"
+\code{with_progress()}.  For example,\if{html}{\out{<div class="sourceCode sh">}}\preformatted{$ Rscript -e "library(progressr)" -e "with_progress(slow_sum(1:5))"
 }\if{html}{\out{</div>}}
 
-will \emph{not} report on progress, whereas:\if{html}{\out{<div class="sh">}}\preformatted{$ export R_PROGRESSR_ENABLE=TRUE
+will \emph{not} report on progress, whereas:\if{html}{\out{<div class="sourceCode sh">}}\preformatted{$ export R_PROGRESSR_ENABLE=TRUE
 $ Rscript -e "library(progressr)" -e "with_progress(slow_sum(1:5))"
 }\if{html}{\out{</div>}}
 
