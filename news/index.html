@@ -94,7 +94,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0-9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0-9003</span>
       </span>
     </div>
 
@@ -212,15 +212,29 @@
       <small>Source: <a href='https://github.com/HenrikBengtsson/progressr/blob/master/NEWS'><code>NEWS</code></a></small>
     </div>
 
-    <div id="progressr-0-8-0-9001" class="section level1">
-<h1 class="page-header" data-toc-text="0.8.0-9001">
-<a href="#progressr-0-8-0-9001" class="anchor"></a>progressr 0.8.0-9001<small> Unreleased </small>
+    <div id="progressr-0-8-0-9003" class="section level1">
+<h1 class="page-header" data-toc-text="0.8.0-9003">
+<a href="#progressr-0-8-0-9003" class="anchor"></a>progressr 0.8.0-9003<small> Unreleased </small>
 </h1>
 <div id="performance" class="section level3">
 <h3 class="hasAnchor">
 <a href="#performance" class="anchor"></a>Performance</h3>
 <ul>
 <li>The progressor function created by progressor() no longer “inherit” objects from the calling environment, which would, for instance, result in those objects to be exported to parallel workers together with the progressor function, which in turn would come with large time and memory costs.</li>
+</ul>
+</div>
+<div id="new-features" class="section level3">
+<h3 class="hasAnchor">
+<a href="#new-features" class="anchor"></a>New Features</h3>
+<ul>
+<li>Now print() on a ‘progressor’ object reports also on the size of the object, i.e. the number of bytes it requires when serialized, for instance, to a parallel worker.</li>
+</ul>
+</div>
+<div id="bug-fixes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"></a>Bug Fixes</h3>
+<ul>
+<li>Registered progression handlers would report on progress also when in a _forked_ parallel child processes, e.g. when using parallel::mclapply(). This would give a false impression that progressr updates would work when using parallel::mclapply(), which is not true. Note however, that it does indeed work when using the future ‘multicore’ backend, which uses forks.</li>
 </ul>
 </div>
 </div>
@@ -237,9 +251,9 @@
 <li><p>When using withProgressShiny(), progression messages now updates the ‘detail’ component of the Shiny progress panel. Previously, it updated the ‘message’ component. This can be configured via new ‘inputs’ argument.</p></li>
 </ul>
 </div>
-<div id="new-features" class="section level3">
+<div id="new-features-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features" class="anchor"></a>New Features</h3>
+<a href="#new-features-1" class="anchor"></a>New Features</h3>
 <ul>
 <li><p>withProgressShiny() gained argument ‘inputs’, which can be used to control whether or not Shiny progress components ‘message’ and ‘detail’ should be updated based on the progression message, e.g. inputs = list(message = “sticky_message”, detail = “message”) will cause progression messages to update the ‘detail’ component and sticky ones to update both.</p></li>
 <li><p>Now supporting zero-length progressors, e.g. p &lt;- progressor(along = x) where length(x) == 0.</p></li>
@@ -253,9 +267,9 @@
 <li>As an alternative to specifying the relative amount of progress, say, p(amount = 2), it is now possible to also specify the absolute amount of progress made this far, e.g. p(step = 42). Argument ‘amount’ has not effect when argument ‘step’ is specified. WARNING: Argument ‘step’ should only be used when in full control of the order when this progression condition is signaled. For example, it must not be signaled as one of many parallel progress updates signaled concurrently, because we cannot guarantee the order these progressions arrive.</li>
 </ul>
 </div>
-<div id="bug-fixes" class="section level3">
+<div id="bug-fixes-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-1" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>In progressr 0.7.0, any attempt to use more than one progressor inside a function or a local() call would result in: Error in assign(“…progressor”, value = fcn, envir = envir) : cannot change value of locked binding for ‘…progressor’.</li>
 </ul>
@@ -282,9 +296,9 @@
 <li><p>Package now requires R (&gt;= 3.5.0) in order to protect against interrupts.</p></li>
 </ul>
 </div>
-<div id="new-features-1" class="section level3">
+<div id="new-features-2" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-1" class="anchor"></a>New Features</h3>
+<a href="#new-features-2" class="anchor"></a>New Features</h3>
 <ul>
 <li><p>progressor() gained argument ‘enable’ to control whether or not the progressor signals ‘progression’ conditions. It defaults to option ‘progressr.enable’ so that progress updates can be disabled globally. The ‘enable’ argument makes it easy for package developers who already provide a ‘progress = TRUE/FALSE’ argument in their functions to migrate to the ‘progressr’ package without having to change their existing API, e.g. the setup becomes ‘p &lt;- progressor(along = x, enabled = progress)’. The p() function created by p &lt;- progressor(…, enable = FALSE) is an empty function with near-zero overhead.</p></li>
 <li><p>Now with_progress() and without_progress() returns the value of the evaluated expression.</p></li>
@@ -296,9 +310,9 @@
 <li><p>Progression handlers now return invisibly whether or not they are finished.</p></li>
 </ul>
 </div>
-<div id="bug-fixes-1" class="section level3">
+<div id="bug-fixes-2" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-1" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-2" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>Zero-amount progress updates never reached the progress handlers.</p></li>
 <li><p>Argument ‘enable’ for with_progress() had no effect.</p></li>
@@ -316,9 +330,9 @@
 <li>Now with_progress() makes sure that any output produced while reporting on progress will not interfere with the progress output and vice versa, which otherwise is a common problem with progress frameworks that output to the terminal, e.g. progress-bar output is interweaved with printed objects. In contrast, when using ‘progressr’ we can use message() and print() as usual regardless of progress being reported or not.</li>
 </ul>
 </div>
-<div id="new-features-2" class="section level3">
+<div id="new-features-3" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-2" class="anchor"></a>New Features</h3>
+<a href="#new-features-3" class="anchor"></a>New Features</h3>
 <ul>
 <li><p>Signaling progress(msg, class = “sticky”) will cause the message to be sticky, e.g. for progress bars outputting to the terminal, the message will be “pushed” above the progress bar.</p></li>
 <li><p>with_progress() gained argument ‘delay_terminal’ whose default will be automatically inferred from inspecting the currently set handlers and whether they output to the terminal or not.</p></li>
@@ -327,9 +341,9 @@
 <li><p>Add environment variables ‘R_PROGRESSR_CLEAR’, ‘R_PROGRESSR_ENABLE’, ‘R_PROGRESSR_ENABLE_AFTER’, ‘R_PROGRESSR_TIMES’, and ‘R_PROGRESSR_INTERVAL’ for controlling the default value of the corresponding ‘progressr.*’ options.</p></li>
 </ul>
 </div>
-<div id="bug-fixes-2" class="section level3">
+<div id="bug-fixes-3" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-2" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-3" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>Limiting the frequency of progress reporting via handler arguments ‘times’, ‘interval’ or ‘intrusiveness’ did not work and was effectively ignored.</p></li>
 <li><p>The ‘progress’ handler, which uses progress::progress_bar(), did not support colorization of the ‘format’ string when done by the ‘crayon’ package.</p></li>
@@ -344,16 +358,16 @@
 <h1 class="page-header" data-toc-text="0.5.0">
 <a href="#progressr-0-5-0" class="anchor"></a>progressr 0.5.0<small> 2020-04-17 </small>
 </h1>
-<div id="new-features-3" class="section level3">
+<div id="new-features-4" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-3" class="anchor"></a>New Features</h3>
+<a href="#new-features-4" class="anchor"></a>New Features</h3>
 <ul>
 <li>Add ‘void’ progression handler.</li>
 </ul>
 </div>
-<div id="bug-fixes-3" class="section level3">
+<div id="bug-fixes-4" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-3" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-4" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>Only the last of multiple progression handlers registered was used.</li>
 </ul>
@@ -375,17 +389,17 @@
 <h1 class="page-header" data-toc-text="0.3.0">
 <a href="#progressr-0-3-0" class="anchor"></a>progressr 0.3.0<small> Unreleased </small>
 </h1>
-<div id="new-features-4" class="section level3">
+<div id="new-features-5" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-4" class="anchor"></a>New Features</h3>
+<a href="#new-features-5" class="anchor"></a>New Features</h3>
 <ul>
 <li><p>progressor() gained arguments ‘offset’ and ‘scale’, and ‘transform’.</p></li>
 <li><p>handlers() gained argument ‘append’ to make it easier to append handlers.</p></li>
 </ul>
 </div>
-<div id="bug-fixes-4" class="section level3">
+<div id="bug-fixes-5" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-4" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-5" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>A progression condition with amount = 0 would not update the message.</li>
 </ul>
@@ -395,9 +409,9 @@
 <h1 class="page-header" data-toc-text="0.2.1">
 <a href="#progressr-0-2-1" class="anchor"></a>progressr 0.2.1<small> Unreleased </small>
 </h1>
-<div id="bug-fixes-5" class="section level3">
+<div id="bug-fixes-6" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-5" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-6" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>winprogressbar_handler() would produce error “invalid ‘Label’ argument”.</p></li>
 <li><p>handlers() did not return a list if the ‘default’ handler was returned.</p></li>
@@ -415,9 +429,9 @@
 <li>Renamed withProgress2() to withProgressShiny().</li>
 </ul>
 </div>
-<div id="new-features-5" class="section level3">
+<div id="new-features-6" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-5" class="anchor"></a>New Features</h3>
+<a href="#new-features-6" class="anchor"></a>New Features</h3>
 <ul>
 <li>handlers() gained argument ‘default’ specifying a progression handler to be returned if none is set.</li>
 </ul>
@@ -427,17 +441,17 @@
 <h1 class="page-header" data-toc-text="0.1.5">
 <a href="#progressr-0-1-5" class="anchor"></a>progressr 0.1.5<small> Unreleased </small>
 </h1>
-<div id="new-features-6" class="section level3">
+<div id="new-features-7" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-6" class="anchor"></a>New Features</h3>
+<a href="#new-features-7" class="anchor"></a>New Features</h3>
 <ul>
 <li><p>Add withProgress2(), which is a plug-in backward compatibility replacement for shiny::withProgress() wrapped in progressr::with_progress() where the the “shiny” progression handler is by default added to the list of progression handlers used.</p></li>
 <li><p>Add demo(“mandelbrot”, package = “progressr”).</p></li>
 </ul>
 </div>
-<div id="bug-fixes-6" class="section level3">
+<div id="bug-fixes-7" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-6" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-7" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>Package could set ‘.Random.seed’ to NULL, instead of removing it, which in turn would produce a warning on “‘.Random.seed’ is not an integer vector but of type ‘NULL’, so ignored” when the next random number generated.</li>
 </ul>
@@ -447,9 +461,9 @@
 <h1 class="page-header" data-toc-text="0.1.4">
 <a href="#progressr-0-1-4" class="anchor"></a>progressr 0.1.4<small> Unreleased </small>
 </h1>
-<div id="new-features-7" class="section level3">
+<div id="new-features-8" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-7" class="anchor"></a>New Features</h3>
+<a href="#new-features-8" class="anchor"></a>New Features</h3>
 <ul>
 <li>Add support for progressor(along = …).</li>
 </ul>
@@ -459,9 +473,9 @@
 <h1 class="page-header" data-toc-text="0.1.3">
 <a href="#progressr-0-1-3" class="anchor"></a>progressr 0.1.3<small> Unreleased </small>
 </h1>
-<div id="new-features-8" class="section level3">
+<div id="new-features-9" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-8" class="anchor"></a>New Features</h3>
+<a href="#new-features-9" class="anchor"></a>New Features</h3>
 <ul>
 <li><p>Now it is possible to send “I’m still here” progression updates by setting the progress step to zero, e.g. progress(amount = 0). This type of information can for instance be used to updated a progress bar spinner.</p></li>
 <li><p>Add utility function handlers() for controlling option ‘progressr.handlers’.</p></li>
@@ -473,18 +487,18 @@
 <h1 class="page-header" data-toc-text="0.1.2">
 <a href="#progressr-0-1-2" class="anchor"></a>progressr 0.1.2<small> Unreleased </small>
 </h1>
-<div id="new-features-9" class="section level3">
+<div id="new-features-10" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-9" class="anchor"></a>New Features</h3>
+<a href="#new-features-10" class="anchor"></a>New Features</h3>
 <ul>
 <li><p>with_progress() gained arguments ‘enable’ and ‘interval’ as an alternative to setting corresponding options progressr.*.</p></li>
 <li><p>Now option ‘progressr.interval’ defaults to 0.0 (was 0.5 seconds).</p></li>
 <li><p>Added print() for ‘progression_handler’ objects.</p></li>
 </ul>
 </div>
-<div id="bug-fixes-7" class="section level3">
+<div id="bug-fixes-8" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-7" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-8" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>with_progress(…, delay_conditions = “condition”), introduced in v0.1.0, would also capture conditions produced by progression handlers, e.g. progress::progress_bar() output would not be displayed until the very end.</li>
 </ul>
@@ -494,9 +508,9 @@
 <h1 class="page-header" data-toc-text="0.1.1">
 <a href="#progressr-0-1-1" class="anchor"></a>progressr 0.1.1<small> Unreleased </small>
 </h1>
-<div id="new-features-10" class="section level3">
+<div id="new-features-11" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-10" class="anchor"></a>New Features</h3>
+<a href="#new-features-11" class="anchor"></a>New Features</h3>
 <ul>
 <li>with_progress() now captures standard output and conditions and relay them at then end. This is done in order to avoid interweaving such output with the output produced by the progression handlers. This behavior can be controlled by arguments ‘delay_stdout’ and ‘delay_condition’.</li>
 </ul>
@@ -506,16 +520,16 @@
 <h1 class="page-header" data-toc-text="0.1.0">
 <a href="#progressr-0-1-0" class="anchor"></a>progressr 0.1.0<small> Unreleased </small>
 </h1>
-<div id="new-features-11" class="section level3">
+<div id="new-features-12" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-11" class="anchor"></a>New Features</h3>
+<a href="#new-features-12" class="anchor"></a>New Features</h3>
 <ul>
 <li>Now a progression condition is identified from the R session UUID, the progressor UUID, the incremental progression index, and the progression timestamp.</li>
 </ul>
 </div>
-<div id="bug-fixes-8" class="section level3">
+<div id="bug-fixes-9" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-8" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-9" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>A progressor object that was exported to the same external R process multiple times would produce progression conditions that was non-distinguishable from those previously exported. Adding a timestamp to the progression condition makes them distinguishable.</li>
 </ul>
@@ -525,9 +539,9 @@
 <h1 class="page-header" data-toc-text="0.0.6">
 <a href="#progressr-0-0-6" class="anchor"></a>progressr 0.0.6<small> Unreleased </small>
 </h1>
-<div id="new-features-12" class="section level3">
+<div id="new-features-13" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-12" class="anchor"></a>New Features</h3>
+<a href="#new-features-13" class="anchor"></a>New Features</h3>
 <ul>
 <li><p>Add print() for progression conditions and progressor functions.</p></li>
 <li><p>Now the progressors record more details on the session information. This information is passed along with all progression conditions as part of the internal owner information.</p></li>
@@ -538,9 +552,9 @@
 <h1 class="page-header" data-toc-text="0.0.5">
 <a href="#progressr-0-0-5" class="anchor"></a>progressr 0.0.5<small> Unreleased </small>
 </h1>
-<div id="new-features-13" class="section level3">
+<div id="new-features-14" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-13" class="anchor"></a>New Features</h3>
+<a href="#new-features-14" class="anchor"></a>New Features</h3>
 <ul>
 <li><p>Add filesize_handler progression handler.</p></li>
 <li><p>Add support for times = 1L for progression handlers which when used will cause the progression to only be presented upon completion (= last step).</p></li>
@@ -552,9 +566,9 @@
 <h1 class="page-header" data-toc-text="0.0.4">
 <a href="#progressr-0-0-4" class="anchor"></a>progressr 0.0.4<small> Unreleased </small>
 </h1>
-<div id="new-features-14" class="section level3">
+<div id="new-features-15" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-14" class="anchor"></a>New Features</h3>
+<a href="#new-features-15" class="anchor"></a>New Features</h3>
 <ul>
 <li><p>Add utils::winProgressBar() progression handler for MS Windows.</p></li>
 <li><p>Add support for silent sounds for beepr::beep().</p></li>
@@ -568,9 +582,9 @@
 <li>TESTS: Increased package test coverage of progression handlers by running all code except the last step that calls the backend, which may not be installed or supported on the current platform, e.g. tcltk, beepr, notifier.</li>
 </ul>
 </div>
-<div id="bug-fixes-9" class="section level3">
+<div id="bug-fixes-10" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-9" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-10" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>Precreated progression handlers could only be used once.</p></li>
 <li><p>with_progress(…, cleanup = TRUE) requires a withRestart() such that also “shutdown” progressions can be muffled.</p></li>
@@ -581,9 +595,9 @@
 <h1 class="page-header" data-toc-text="0.0.3">
 <a href="#progressr-0-0-3" class="anchor"></a>progressr 0.0.3<small> Unreleased </small>
 </h1>
-<div id="new-features-15" class="section level3">
+<div id="new-features-16" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-15" class="anchor"></a>New Features</h3>
+<a href="#new-features-16" class="anchor"></a>New Features</h3>
 <ul>
 <li><p>Add argument ‘enable_after’ for progression handlers.</p></li>
 <li><p>Now with_progress(…, cleanup = TRUE) will signal a generic “shutdown” progression at the end that will trigger all progression handlers to finish up regardless of all steps have been take or not.</p></li>
@@ -597,9 +611,9 @@
 <li><p>Add without_progress() - which causes all progression conditions to be muffled and ignored.</p></li>
 </ul>
 </div>
-<div id="bug-fixes-10" class="section level3">
+<div id="bug-fixes-11" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-10" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-11" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>Progressor functions could produce progression conditions that had the same identifiers and therefore would be considered duplicates such that progression handlers would ignore them.</p></li>
 <li><p>It was an error if a progression took a step big enough to skip more than the next milestone.</p></li>
@@ -619,9 +633,9 @@
 <li>Renamed restart ‘consume_progression’ to ‘muffleProgression’ to align with restarts ‘muffleMessage’ and ‘muffleWarning’ in base R.</li>
 </ul>
 </div>
-<div id="new-features-16" class="section level3">
+<div id="new-features-17" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-16" class="anchor"></a>New Features</h3>
+<a href="#new-features-17" class="anchor"></a>New Features</h3>
 <ul>
 <li><p>Add a plyr-compatible “progress bar” named progress_progressr().</p></li>
 <li><p>Add option ‘progressr.clear’.</p></li>
@@ -648,9 +662,9 @@
 <h1 class="page-header" data-toc-text="0.0.0-9004">
 <a href="#progressr-0-0-0-9004" class="anchor"></a>progressr 0.0.0-9004<small> Unreleased </small>
 </h1>
-<div id="new-features-17" class="section level3">
+<div id="new-features-18" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-17" class="anchor"></a>New Features</h3>
+<a href="#new-features-18" class="anchor"></a>New Features</h3>
 <ul>
 <li><p>Add argument ‘auto_done’ to automatically have progress updates also signal “done” as soon as the last step has been reached.</p></li>
 <li><p>Made ‘amount’ the first argument of progressors to avoid having to specify it by name if progressing with an amount than the default ‘amount = 1.0’.</p></li>
@@ -665,9 +679,9 @@
 <h1 class="page-header" data-toc-text="0.0.0-9003">
 <a href="#progressr-0-0-0-9003" class="anchor"></a>progressr 0.0.0-9003<small> Unreleased </small>
 </h1>
-<div id="new-features-18" class="section level3">
+<div id="new-features-19" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-18" class="anchor"></a>New Features</h3>
+<a href="#new-features-19" class="anchor"></a>New Features</h3>
 <ul>
 <li><p>Add ‘intrusiveness’ parameter that specifies how intrusive/disruptive a certain progress reporter is. For instance, an auditory reporter is relatively more disruptive than a visual progress bar part of the status bar.</p></li>
 <li><p>Simplified the API for creating new types of progress reporters.</p></li>
@@ -678,9 +692,9 @@
 <h1 class="page-header" data-toc-text="0.0.0-9002">
 <a href="#progressr-0-0-0-9002" class="anchor"></a>progressr 0.0.0-9002<small> Unreleased </small>
 </h1>
-<div id="new-features-19" class="section level3">
+<div id="new-features-20" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-19" class="anchor"></a>New Features</h3>
+<a href="#new-features-20" class="anchor"></a>New Features</h3>
 <ul>
 <li><p>Add progressor().</p></li>
 <li><p>Add progress_aggregator().</p></li>
@@ -691,9 +705,9 @@
 <h1 class="page-header" data-toc-text="0.0.0-9001">
 <a href="#progressr-0-0-0-9001" class="anchor"></a>progressr 0.0.0-9001<small> Unreleased </small>
 </h1>
-<div id="new-features-20" class="section level3">
+<div id="new-features-21" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-20" class="anchor"></a>New Features</h3>
+<a href="#new-features-21" class="anchor"></a>New Features</h3>
 <ul>
 <li><p>Add progress update handlers based on utils::txtProgressBar(), tcltk::tkProgressBar(), cat(“\a”), progress::progress_bar(), beepr::beep(), and notifier::notify().</p></li>
 <li><p>Add with_progress().</p></li>
@@ -707,9 +721,9 @@
 <h1 class="page-header" data-toc-text="0.0.0-9000">
 <a href="#progressr-0-0-0-9000" class="anchor"></a>progressr 0.0.0-9000<small> Unreleased </small>
 </h1>
-<div id="new-features-21" class="section level3">
+<div id="new-features-22" class="section level3">
 <h3 class="hasAnchor">
-<a href="#new-features-21" class="anchor"></a>New Features</h3>
+<a href="#new-features-22" class="anchor"></a>New Features</h3>
 <ul>
 <li><p>Add progress() to create and signal progression condition.</p></li>
 <li><p>Add progression() to create progression condition.</p></li>

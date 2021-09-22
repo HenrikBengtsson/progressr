@@ -95,7 +95,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0-9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0-9003</span>
       </span>
     </div>
 
@@ -304,9 +304,9 @@ that takes one argument which is the <a href='progression.html'>progression</a> 
 To have progress being reported on also then, set R options
 <span class="option">progressr.enable</span> or environment variable <code class="env">R_PROGRESSR_ENABLE</code>
 to <code>TRUE</code>.  Alternatively, one can set argument <code>enable=TRUE</code> when calling
-<code>with_progress()</code>.  For example,<div class="sh"></p><pre>$ Rscript -e "library(progressr)" -e "with_progress(slow_sum(1:5))"
+<code>with_progress()</code>.  For example,<div class="sourceCode sh"></p><pre>$ Rscript -e "library(progressr)" -e "with_progress(slow_sum(1:5))"
 </pre><p></div></p>
-<p>will <em>not</em> report on progress, whereas:<div class="sh"></p><pre>$ export R_PROGRESSR_ENABLE=TRUE
+<p>will <em>not</em> report on progress, whereas:<div class="sourceCode sh"></p><pre>$ export R_PROGRESSR_ENABLE=TRUE
 $ Rscript -e "library(progressr)" -e "with_progress(slow_sum(1:5))"
 </pre><p></div></p>
 <p>will.</p>
@@ -343,7 +343,7 @@ $ Rscript -e "library(progressr)" -e "with_progress(slow_sum(1:5))"
 #&gt;     p(amount = 0)
 #&gt;     sum
 #&gt; }
-#&gt; &lt;bytecode: 0x5563be7716e0&gt;
+#&gt; &lt;bytecode: 0x560455cc6b48&gt;
 #&gt; &lt;environment: namespace:progressr&gt;</div><div class='input'>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>
 
