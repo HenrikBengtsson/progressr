@@ -1,7 +1,7 @@
 
 
 <div id="badges"><!-- pkgdown markup -->
-<a href="https://CRAN.R-project.org/web/checks/check_results_progressr.html"><img border="0" src="https://www.r-pkg.org/badges/version/progressr" alt="CRAN check status"/></a> <a href="https://github.com/HenrikBengtsson/progressr/actions?query=workflow%3AR-CMD-check"><img border="0" src="https://github.com/HenrikBengtsson/progressr/workflows/R-CMD-check/badge.svg?branch=develop" alt="Build status"/></a>  <a href="https://ci.appveyor.com/project/HenrikBengtsson/progressr"><img border="0" src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/progressr?svg=true" alt="Build status"/></a> <a href="https://codecov.io/gh/HenrikBengtsson/progressr"><img border="0" src="https://codecov.io/gh/HenrikBengtsson/progressr/branch/develop/graph/badge.svg" alt="Coverage Status"/></a> <a href="https://lifecycle.r-lib.org/articles/stages.html"><img border="0" src="man/figures/lifecycle-maturing-blue.svg" alt="Life cycle: maturing"/></a>
+<a href="https://CRAN.R-project.org/web/checks/check_results_progressr.html"><img border="0" src="https://www.r-pkg.org/badges/version/progressr" alt="CRAN check status"/></a> <a href="https://github.com/HenrikBengtsson/progressr/actions?query=workflow%3AR-CMD-check"><img border="0" src="https://github.com/HenrikBengtsson/progressr/actions/workflows/R-CMD-check.yaml/badge.svg?branch=develop" alt="R CMD check status"/></a>   <a href="https://ci.appveyor.com/project/HenrikBengtsson/progressr"><img border="0" src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/progressr?svg=true" alt="Build status"/></a> <a href="https://codecov.io/gh/HenrikBengtsson/progressr"><img border="0" src="https://codecov.io/gh/HenrikBengtsson/progressr/branch/develop/graph/badge.svg" alt="Coverage Status"/></a> <a href="https://lifecycle.r-lib.org/articles/stages.html"><img border="0" src="man/figures/lifecycle-maturing-blue.svg" alt="Life cycle: maturing"/></a>
 </div>
 
 # progressr: An Inclusive, Unifying API for Progress Updates 
@@ -395,7 +395,7 @@ _Note:_ This solution does not involved the `.progress = TRUE` argument that **p
 
 ## Parallel processing and progress updates
 
-The **[future]** framework, which provides a unified API for parallel and distributed processing in R, has built-in support for the kind of progression updates produced by the **progressr** package.  This means that you can use it with for instance **[future.apply]**, **[furrr]**, and **[foreach]** with **[doFuture]**, and **[plyr]** or **[BiocParallel]** with **doFuture**.
+The **[future]** framework, which provides a unified API for parallel and distributed processing in R, has built-in support for the kind of progression updates produced by the **progressr** package.  This means that you can use it with for instance **[future.apply]**, **[furrr]**, and **[foreach]** with **[doFuture]**, and **[plyr]** or **[BiocParallel]** with **doFuture**.  In contrast, _non-future_ parallelization methods such as **parallel**'s `mclapply()` and, `parallel::parLapply()`, and **foreach** adapters like **doParallel** do _not_ support progress reports via **progressr**.
 
 
 ### future_lapply() - parallel lapply()

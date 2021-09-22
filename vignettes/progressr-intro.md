@@ -398,7 +398,7 @@ _Note:_ This solution does not involved the `.progress = TRUE` argument that **p
 
 ## Parallel processing and progress updates
 
-The **[future]** framework, which provides a unified API for parallel and distributed processing in R, has built-in support for the kind of progression updates produced by the **progressr** package.  This means that you can use it with for instance **[future.apply]**, **[furrr]**, and **[foreach]** with **[doFuture]**, and **[plyr]** or **[BiocParallel]** with **doFuture**.
+The **[future]** framework, which provides a unified API for parallel and distributed processing in R, has built-in support for the kind of progression updates produced by the **progressr** package.  This means that you can use it with for instance **[future.apply]**, **[furrr]**, and **[foreach]** with **[doFuture]**, and **[plyr]** or **[BiocParallel]** with **doFuture**.  In contrast, _non-future_ parallelization methods such as **parallel**'s `mclapply()` and, `parallel::parLapply()`, and **foreach** adapters like **doParallel** do _not_ support progress reports via **progressr**.
 
 
 ### future_lapply() - parallel lapply()
