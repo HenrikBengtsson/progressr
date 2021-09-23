@@ -197,7 +197,7 @@ is_fork_child <- local({
 
 
 serialization_size <- function(x) {
-  size <- length(serialize(x, connection = NULL))
+  size <- length(serialize(x, connection = NULL, xdr = TRUE))
   class(size) <- "object_size"
   size
 }

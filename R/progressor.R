@@ -148,6 +148,7 @@ progressor <- local({
 
 
 
+#' @importFrom utils object.size
 #' @export
 print.progressor <- function(x, ...) {
   s <- sprintf("%s:", class(x)[1])
@@ -177,8 +178,9 @@ print.progressor <- function(x, ...) {
   
   s <- c(s, paste("- enable:", e$enable))
 
-  size <- serialization_size(x)
-  s <- c(s, paste("- size:", format(size, units = "auto", standard = "SI")))
+  size <- object.size(x)
+  size2 <- serialization_size(x)
+  s <- c(s, sprintf("- size: %s [%s serialized]", format(size, units = "auto", standard = "SI"), format(size2, units = "auto", standard = "SI")))
 
   s <- paste(s, collapse = "\n")
   cat(s, "\n", sep = "")
