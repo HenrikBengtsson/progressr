@@ -14,6 +14,7 @@ progressor(
   label = NA_character_,
   initiate = TRUE,
   auto_finish = TRUE,
+  trace = TRUE,
   on_exit = !identical(envir, globalenv()),
   enable = getOption("progressr.enable", TRUE),
   envir = parent.frame()
@@ -45,6 +46,9 @@ first argument.}
 
 \item{auto_finish}{(logical) If TRUE, then the progressor will signal a
 \link{progression} 'finish' condition as soon as the last step has been reached.}
+
+\item{trace}{(logical) If TRUE, then the call stack is recorded, otherwise
+not.}
 
 \item{on_exit, envir}{(logical) If TRUE, then the created progressor will
 signal a \link{progression} 'finish' condition when the calling frame exits.

@@ -1,7 +1,7 @@
 Package: progressr
 ==================
 
-Version: 0.8.0-9003 [2021-09-23]
+Version: 0.8.0-9004 [2021-09-23]
 
 PERFORMANCE:
 
@@ -12,6 +12,9 @@ PERFORMANCE:
 
 NEW FEATURES:
 
+ * progressor() gained argument 'trace' to control whether or not the call
+   stack should be recorded in each progression condition.
+   
  * Now print() for 'progressor' functions and 'progression' conditions report
    also on the size of the object, i.e. the number of bytes it requires when
    serialized, for instance, to and from a parallel worker.
