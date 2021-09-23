@@ -107,7 +107,7 @@ print.progression <- function(x, ...) {
   s <- sprintf("%s:", class(x)[1])
   s <- c(s, paste("- call:", deparse(conditionCall(x))))
   s <- c(s, paste("- type:", x$type))
-  s <- c(s, paste("- message:", sQuote(conditionMessage(x))))
+  s <- c(s, sprintf("- message: [%s] %s", class(x$message)[1], sQuote(conditionMessage(x))))
   s <- c(s, paste("- amount:", x$amount))
   s <- c(s, paste("- step:", x$step))
   s <- c(s, paste("- time:", x$time))
@@ -117,6 +117,8 @@ print.progression <- function(x, ...) {
   s <- c(s, paste("- session_uuid:", x$session_uuid))
   s <- c(s, paste("- owner_session_uuid:", x$owner_session_uuid))
   s <- c(s, paste("- classes:", paste(sQuote(class(x)), collapse = ", ")))
+  size <- serialization_size(x)
+  s <- c(s, paste("- size:", format(size, units = "auto", standard = "SI")))
   s <- paste(s, collapse = "\n")
   cat(s, "\n", sep = "")
   

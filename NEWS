@@ -1,7 +1,7 @@
 Package: progressr
 ==================
 
-Version: 0.8.0-9003 [2021-09-22]
+Version: 0.8.0-9003 [2021-09-23]
 
 PERFORMANCE:
 
@@ -12,9 +12,9 @@ PERFORMANCE:
 
 NEW FEATURES:
 
- * Now print() on a 'progressor' object reports also on the size of the object,
-   i.e. the number of bytes it requires when serialized, for instance, to a
-   parallel worker.
+ * Now print() for 'progressor' functions and 'progression' conditions report
+   also on the size of the object, i.e. the number of bytes it requires when
+   serialized, for instance, to and from a parallel worker.
 
 BUG FIXES:
 
