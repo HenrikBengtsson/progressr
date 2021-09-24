@@ -16,9 +16,9 @@ jobs:
         config:
           - { r: "release", pkg: "cSEM"     }
           - { r: "release", pkg: "dipsaus"  }
-          - { r: "release", pkg: "elevatr"  }
+          - { r: "release", pkg: "EFAtools" }
           - { r: "release", pkg: "fxTWAPLS" }
-          - { r: "release", pkg: "pavo"     }
+          - { r: "release", pkg: "gtfs2gps" }
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       RSPM: https://packagemanager.rstudio.com/cran/__linux__/focal/latest
