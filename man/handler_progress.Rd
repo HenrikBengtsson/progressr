@@ -39,12 +39,12 @@ This progression handler requires the \pkg{progress} package.
 Below is how this progress handler renders by default at 0\%, 30\% and 99\%
 progress:
 
-With \code{handlers(handler_progress())}:\if{html}{\out{<div class="r">}}\preformatted{- [-------------------------------------------------]   0\% 
+With \code{handlers(handler_progress())}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{- [-------------------------------------------------]   0\% 
 \\ [====>--------------------------------------------]  10\% 
 | [================================================>]  99\% 
 }\if{html}{\out{</div>}}
 
-If the progression updates have messages, they will appear like:\if{html}{\out{<div class="r">}}\preformatted{- [-----------------------------------------]   0\% Starting
+If the progression updates have messages, they will appear like:\if{html}{\out{<div class="sourceCode r">}}\preformatted{- [-----------------------------------------]   0\% Starting
 \\ [===========>----------------------------]  30\% Importing
 | [=====================================>]  99\% Summarizing
 }\if{html}{\out{</div>}}

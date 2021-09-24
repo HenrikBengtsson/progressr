@@ -1,6 +1,44 @@
 Package: progressr
 ==================
 
+Version: 0.9.0 [2021-09-24]
+
+PERFORMANCE:
+
+ * The progressor function created by progressor() no longer "inherit" objects
+   from the calling environment, which would, for instance, result in those
+   objects to be exported to parallel workers together with the progressor
+   function, which in turn would come with large time and memory costs.
+   
+ * progressor() no longer records the call stack for progressions by default,
+   because that significantly increases the size of these condition objects,
+   e.g. instead of being 5 kB it may be 500 kB.  If a large number of progress
+   updates are signaled and collected, as done, for instance, by futures, then
+   the memory consumption on the collecting end could become very large. The
+   large sizes would also have a negative impact on the performance in
+   parallelization with futures because of the extra overhead of transferring
+   these extra large conditions from the parallel workers back to the main R
+   session.  These issues has been there since progressr 0.7.0 (December 2020).
+   To revert to the previous behavior, use progressor(..., trace = TRUE).
+
+NEW FEATURES:
+
+ * progressor() gained argument 'trace' to control whether or not the call
+   stack should be recorded in each progression condition.
+   
+ * Now print() for 'progressor' functions and 'progression' conditions report
+   also on the size of the object, i.e. the number of bytes it requires when
+   serialized, for instance, to and from a parallel worker.
+
+BUG FIXES:
+
+ * Registered progression handlers would report on progress also when in a
+   _forked_ parallel child processes, e.g. when using parallel::mclapply().
+   This would give a false impression that progressr updates would work when
+   using parallel::mclapply(), which is not true. Note however, that it does
+   indeed work when using the future 'multicore' backend, which uses forks.
+
+
 Version: 0.8.0 [2021-06-09]
 
 SIGNIFICANT CHANGES:

@@ -1,42 +1,34 @@
 on: [push, pull_request]
 
-name: R-CMD-check
+name: revdepcheck-top
 
 jobs:
   R-CMD-check:
-    if: "! contains(github.event.head_commit.message, '[ci skip]')"
-    
-    runs-on: ${{ matrix.config.os }}
+    if: "! contains(github.event.head_commit.message, '[ci skip]')"    
 
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+    runs-on: ubuntu-20.04
+
+    name: ${{ matrix.config.pkg }} (${{ matrix.config.r }})
 
     strategy:
       fail-fast: false
       matrix:
         config:
-#          - {os: windows-latest, r: 'devel'}
-          - {os: windows-latest, r: 'release'}
-          - {os: windows-latest, r: 'oldrel'}
-          - {os: macOS-latest,   r: 'devel'}
-#2020-09-24#          - {os: macOS-latest,   r: 'release'}
-          - {os: macOS-latest,   r: 'oldrel'}
-          - {os: ubuntu-20.04,   r: 'devel',   rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
-          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
-          - {os: ubuntu-20.04,   r: 'oldrel',  rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
-          - {os: ubuntu-20.04,   r: '3.6',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
-          - {os: ubuntu-20.04,   r: '3.5',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
-
+          - { r: "release", pkg: "cSEM"     }
+          - { r: "release", pkg: "dipsaus"  }
+          - { r: "release", pkg: "EFAtools" }
+          - { r: "release", pkg: "fxTWAPLS" }
+#          - { r: "release", pkg: "gtfs2gps" }
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      RSPM: ${{ matrix.config.rspm }}
+      RSPM: https://packagemanager.rstudio.com/cran/__linux__/focal/latest
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       ## R CMD check
-      _R_CHECK_CRAN_INCOMING_: false
       _R_CHECK_LENGTH_1_CONDITION_: true
       _R_CHECK_LENGTH_1_LOGIC2_: true
       _R_CHECK_MATRIX_DATA_: true
-      _R_CHECK_SUGGESTS_ONLY_: true
-       
+      _R_CHECK_CRAN_INCOMING_: false
+      
     steps:
       - uses: actions/checkout@v2
 
@@ -61,7 +53,7 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
 
-      - name: Install system dependencies
+      - name: Install system dependencies (Linux)
         if: runner.os == 'Linux'
         env:
           RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
@@ -74,7 +66,7 @@ jobs:
         run: |
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
-          install.packages(".", repos = NULL, type = "source")  ## self vignette engine
+          remotes::install_cran("${{ matrix.config.pkg }}", dependencies=TRUE)
         shell: Rscript {0}
 
       - name: Session info
@@ -84,13 +76,15 @@ jobs:
           sessioninfo::session_info(pkgs, include_base = TRUE)
         shell: Rscript {0}
 
-      - name: Check
-        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")
-        shell: Rscript {0}
+      - name: Check reverse dependency package
+        run: |
+          url=$(Rscript -e "cat(remotes:::download_version_url('${{ matrix.config.pkg }}', version=NULL, repos='https://cloud.r-project.org', type='source'))")
+          wget "$url"
+          R CMD check --no-manual --as-cran "$(basename "$url")"
 
       - name: Upload check results
         if: failure()
         uses: actions/upload-artifact@master
         with:
-          name: ${{ runner.os }}-r${{ matrix.config.r }}-results
+          name: ${{ runner.os }}-r${{ matrix.config.r }}-revdep${{ matrix.config.pkg }}-results
           path: check

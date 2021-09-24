@@ -12,6 +12,7 @@ progressor(
   transform = function(steps) scale * steps + offset,
   message = character(0L),
   label = NA_character_,
+  trace = FALSE,
   initiate = TRUE,
   auto_finish = TRUE,
   on_exit = !identical(envir, globalenv()),
@@ -39,6 +40,9 @@ calling this function with the progression condition \code{p} itself as the
 first argument.}
 
 \item{label}{(character) A label.}
+
+\item{trace}{(logical) If TRUE, then the call stack is recorded, otherwise
+not.}
 
 \item{initiate}{(logical) If TRUE, the progressor will signal a
 \link{progression} 'initiate' condition when created.}

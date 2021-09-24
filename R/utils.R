@@ -184,3 +184,20 @@ query_r_cmd_check <- function(...) {
 }
 
 in_r_cmd_check <- function() { query_r_cmd_check() != "notRunning" }
+
+
+## Check whether current R process is running as a forked child
+is_fork_child <- local({
+  main_pid <- NULL
+  function() {
+    if (is.null(main_pid)) main_pid <<- Sys.getpid()
+    Sys.getpid() != main_pid
+  }
+})
+
+
+serialization_size <- function(x) {
+  size <- length(serialize(x, connection = NULL, xdr = TRUE))
+  class(size) <- "object_size"
+  size
+}

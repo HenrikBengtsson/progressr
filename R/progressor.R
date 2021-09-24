@@ -16,6 +16,9 @@
 #'
 #' @param label (character) A label.
 #'
+#' @param trace (logical) If TRUE, then the call stack is recorded, otherwise
+#' not.
+#'
 #' @param initiate (logical) If TRUE, the progressor will signal a
 #' [progression] 'initiate' condition when created.
 #'
@@ -41,7 +44,7 @@ progressor <- local({
   environment(void_progressor)$enable <- FALSE
   class(void_progressor) <- c("progressor", class(void_progressor))
 
-  function(steps = length(along), along = NULL, offset = 0L, scale = 1L, transform = function(steps) scale * steps + offset, message = character(0L), label = NA_character_, initiate = TRUE, auto_finish = TRUE, on_exit = !identical(envir, globalenv()), enable = getOption("progressr.enable", TRUE), envir = parent.frame()) {
+  function(steps = length(along), along = NULL, offset = 0L, scale = 1L, transform = function(steps) scale * steps + offset, message = character(0L), label = NA_character_, trace = FALSE, initiate = TRUE, auto_finish = TRUE, on_exit = !identical(envir, globalenv()), enable = getOption("progressr.enable", TRUE), envir = parent.frame()) {
     stop_if_not(is.logical(enable), length(enable) == 1L, !is.na(enable))
 
     ## Quickly return a moot progressor function?
@@ -76,7 +79,7 @@ progressor <- local({
     progressor_count <<- progressor_count + 1L
     progressor_uuid <- progressor_uuid(progressor_count)
     progression_index <- 0L
-    
+
     fcn <- function(message = character(0L), ..., type = "update") {
       progression_index <<- progression_index + 1L
       cond <- progression(
@@ -86,7 +89,8 @@ progressor <- local({
         progressor_uuid = progressor_uuid,
         progression_index = progression_index,
         owner_session_uuid = owner_session_uuid,
-        call = sys.call()
+        call = if (trace) sys.call() else NULL,
+        calls = if (trace) sys.calls() else NULL
       )
       withRestarts(
         signalCondition(cond),
@@ -96,7 +100,19 @@ progressor <- local({
     }
     formals(fcn)$message <- message
     class(fcn) <- c("progressor", class(fcn))
-  
+
+    ## WORKAROUND: Use teeny, custom enviroment for the progressor function.
+    ## The default would otherwise be to inherit the parent frame, which
+    ## might contain very large objects.
+    progressor_envir <- new.env(parent = getNamespace(.packageName))
+    for (name in c("progression_index", "progressor_uuid",
+                   "owner_session_uuid", "progressor_count",
+                   "enable", "initiate", "auto_finish", "trace",
+                   "steps", "label", "offset", "scale")) {
+      progressor_envir[[name]] <- get(name)
+    }
+    environment(fcn) <- progressor_envir
+    
     if (initiate) {
       fcn(
         type = "initiate",
@@ -136,6 +152,7 @@ progressor <- local({
 
 
 
+#' @importFrom utils object.size
 #' @export
 print.progressor <- function(x, ...) {
   s <- sprintf("%s:", class(x)[1])
@@ -155,7 +172,8 @@ print.progressor <- function(x, ...) {
   s <- c(s, paste("- default message:", message))
 
   call <- vapply(e$calls, FUN = function(call) deparse(call[1]), FUN.VALUE = "")
-  s <- c(s, paste("- call stack:", paste(call, collapse = " -> ")))
+  stack <- if (e$trace) paste(call, collapse = " -> ") else "<disabled>"
+  s <- c(s, paste("- call stack:", stack))
 
   s <- c(s, paste("- progressor_uuid:", e$progressor_uuid))
   s <- c(s, paste("- progressor_count:", pe$progressor_count))
@@ -164,6 +182,10 @@ print.progressor <- function(x, ...) {
   s <- c(s, paste("- owner_session_uuid:", owner_session_uuid))
   
   s <- c(s, paste("- enable:", e$enable))
+
+  size <- object.size(x)
+  size2 <- serialization_size(x)
+  s <- c(s, sprintf("- size: %s [%s serialized]", format(size, units = "auto", standard = "SI"), format(size2, units = "auto", standard = "SI")))
 
   s <- paste(s, collapse = "\n")
   cat(s, "\n", sep = "")

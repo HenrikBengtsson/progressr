@@ -82,10 +82,6 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
 
   ## Temporarily set progressr options
   options <- list()
-  if (!is.null(interval)) {
-    stop_if_not(is.numeric(interval), length(interval) == 1L, !is.na(interval))
-    options[["progressr.interval"]] <- interval
-  }
   
   ## Enabled or not?
   if (!is.null(enable)) {
@@ -98,6 +94,11 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
     }
 
     options[["progressr.enable"]] <- enable
+  }
+
+  if (!is.null(interval)) {
+    stop_if_not(is.numeric(interval), length(interval) == 1L, !is.na(interval))
+    options[["progressr.interval"]] <- interval
   }
 
   if (length(options) > 0L) {  
