@@ -44,7 +44,7 @@ progressor <- local({
   environment(void_progressor)$enable <- FALSE
   class(void_progressor) <- c("progressor", class(void_progressor))
 
-  function(steps = length(along), along = NULL, offset = 0L, scale = 1L, transform = function(steps) scale * steps + offset, message = character(0L), label = NA_character_, initiate = TRUE, auto_finish = TRUE, trace = TRUE, on_exit = !identical(envir, globalenv()), enable = getOption("progressr.enable", TRUE), envir = parent.frame()) {
+  function(steps = length(along), along = NULL, offset = 0L, scale = 1L, transform = function(steps) scale * steps + offset, message = character(0L), label = NA_character_, trace = FALSE, initiate = TRUE, auto_finish = TRUE, on_exit = !identical(envir, globalenv()), enable = getOption("progressr.enable", TRUE), envir = parent.frame()) {
     stop_if_not(is.logical(enable), length(enable) == 1L, !is.na(enable))
 
     ## Quickly return a moot progressor function?

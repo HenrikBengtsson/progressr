@@ -1,7 +1,7 @@
 Package: progressr
 ==================
 
-Version: 0.8.0-9004 [2021-09-23]
+Version: 0.8.0-9005 [2021-09-23]
 
 PERFORMANCE:
 
@@ -9,6 +9,13 @@ PERFORMANCE:
    from the calling environment, which would, for instance, result in those
    objects to be exported to parallel workers together with the progressor
    function, which in turn would come with large time and memory costs.
+   
+ * progressor() no longer records the call stack for progressions by default,
+   because that significantly increases the size of these condition objects,
+   e.g. instead of being 5 kB it may be 500 kB.  If a large number of progress
+   updates are signaled and collected, as done, for instance, by futures, then
+   the memory consumption on the collecting end could become very large. To
+   record the call stack, use progressor(..., trace = TRUE).
 
 NEW FEATURES:
 
