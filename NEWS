@@ -14,9 +14,12 @@ PERFORMANCE:
    because that significantly increases the size of these condition objects,
    e.g. instead of being 5 kB it may be 500 kB.  If a large number of progress
    updates are signaled and collected, as done, for instance, by futures, then
-   the memory consumption on the collecting end could become very large. This
-   memory issue has been there since progressr 0.7.0 (December 2020).  To
-   record the call stack, use progressor(..., trace = TRUE).
+   the memory consumption on the collecting end could become very large. The
+   large sizes would also have a negative impact on the performance in
+   parallelization with futures because of the extra overhead of transferring
+   these extra large conditions from the parallel workers back to the main R
+   session.  These issues has been there since progressr 0.7.0 (December 2020).
+   To revert to the previous behavior, use progressor(..., trace = TRUE).
 
 NEW FEATURES:
 
