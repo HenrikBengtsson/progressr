@@ -94,7 +94,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0-9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0-9005</span>
       </span>
     </div>
 
@@ -212,22 +212,24 @@
       <small>Source: <a href='https://github.com/HenrikBengtsson/progressr/blob/master/NEWS'><code>NEWS</code></a></small>
     </div>
 
-    <div id="progressr-0-8-0-9003" class="section level1">
-<h1 class="page-header" data-toc-text="0.8.0-9003">
-<a href="#progressr-0-8-0-9003" class="anchor"></a>progressr 0.8.0-9003<small> Unreleased </small>
+    <div id="progressr-0-8-0-9005" class="section level1">
+<h1 class="page-header" data-toc-text="0.8.0-9005">
+<a href="#progressr-0-8-0-9005" class="anchor"></a>progressr 0.8.0-9005<small> Unreleased </small>
 </h1>
 <div id="performance" class="section level3">
 <h3 class="hasAnchor">
 <a href="#performance" class="anchor"></a>Performance</h3>
 <ul>
-<li>The progressor function created by progressor() no longer “inherit” objects from the calling environment, which would, for instance, result in those objects to be exported to parallel workers together with the progressor function, which in turn would come with large time and memory costs.</li>
+<li><p>The progressor function created by progressor() no longer “inherit” objects from the calling environment, which would, for instance, result in those objects to be exported to parallel workers together with the progressor function, which in turn would come with large time and memory costs.</p></li>
+<li><p>progressor() no longer records the call stack for progressions by default, because that significantly increases the size of these condition objects, e.g. instead of being 5 kB it may be 500 kB. If a large number of progress updates are signaled and collected, as done, for instance, by futures, then the memory consumption on the collecting end could become very large. This memory issue has been there since progressr 0.7.0 (December 2020). To record the call stack, use progressor(…, trace = TRUE).</p></li>
 </ul>
 </div>
 <div id="new-features" class="section level3">
 <h3 class="hasAnchor">
 <a href="#new-features" class="anchor"></a>New Features</h3>
 <ul>
-<li>Now print() on a ‘progressor’ object reports also on the size of the object, i.e. the number of bytes it requires when serialized, for instance, to a parallel worker.</li>
+<li><p>progressor() gained argument ‘trace’ to control whether or not the call stack should be recorded in each progression condition.</p></li>
+<li><p>Now print() for ‘progressor’ functions and ‘progression’ conditions report also on the size of the object, i.e. the number of bytes it requires when serialized, for instance, to and from a parallel worker.</p></li>
 </ul>
 </div>
 <div id="bug-fixes" class="section level3">

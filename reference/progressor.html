@@ -95,7 +95,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0-9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0-9005</span>
       </span>
     </div>
 
@@ -226,6 +226,7 @@
   transform <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>steps</span><span class='op'>)</span> <span class='va'>scale</span> <span class='op'>*</span> <span class='va'>steps</span> <span class='op'>+</span> <span class='va'>offset</span>,
   message <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='fl'>0L</span><span class='op'>)</span>,
   label <span class='op'>=</span> <span class='cn'>NA_character_</span>,
+  trace <span class='op'>=</span> <span class='cn'>FALSE</span>,
   initiate <span class='op'>=</span> <span class='cn'>TRUE</span>,
   auto_finish <span class='op'>=</span> <span class='cn'>TRUE</span>,
   on_exit <span class='op'>=</span> <span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='va'>envir</span>, <span class='fu'><a href='https://rdrr.io/r/base/environment.html'>globalenv</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>,
@@ -267,6 +268,11 @@ first argument.</p></td>
     <tr>
       <th>label</th>
       <td><p>(character) A label.</p></td>
+    </tr>
+    <tr>
+      <th>trace</th>
+      <td><p>(logical) If TRUE, then the call stack is recorded, otherwise
+not.</p></td>
     </tr>
     <tr>
       <th>initiate</th>
