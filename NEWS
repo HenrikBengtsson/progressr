@@ -1,10 +1,16 @@
 Package: progressr
 ==================
 
-Version: 0.9.0-9000 [2021-09-24]
+Version: 0.9.0-9001 [2021-09-25]
 
- * ...
- 
+DEPRECATED AND DEFUNCT:
+
+ * Function progress() is defunct in order to re-use it for other purpose.
+   It is unlikely that anyone really used this function, but if you did, then
+   use cond <- progression() to create 'progression' condition and then use
+   withRestart(signalCondition(cond), muffleProgression = function(p) NULL)
+   to signal it.
+
 
 Version: 0.9.0 [2021-09-24]
 
