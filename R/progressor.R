@@ -86,6 +86,9 @@ progressor <- local({
         type = type,
         message = message,
         ...,
+        # If adding values here that do not come from the parameters of this
+        # inner function, include them in call_progressor_with_progress() as 
+        # well
         progressor_uuid = progressor_uuid,
         progression_index = progression_index,
         owner_session_uuid = owner_session_uuid,
