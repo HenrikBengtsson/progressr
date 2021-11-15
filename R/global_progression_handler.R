@@ -200,7 +200,7 @@ global_progression_handler <- local({
         ## progress has been completed
         amount <- progression$amount
         if (!is.numeric(amount) || amount > 0) {
-          warning(sprintf("[progressr]: Received a progression %s request (amount=%g) but is not listening to this progressor. This can happen when code signals more progress updates than it configured the progressor to do. When the progressor completes all steps, it shuts down resulting in the global progression handler to no longer listen to it", sQuote(type), amount))
+          warning(sprintf("[progressr]: Received a progression %s request (amount=%g; msg=%s) but is not listening to this progressor. This can happen when code signals more progress updates than it configured the progressor to do. When the progressor completes all steps, it shuts down resulting in the global progression handler to no longer listen to it", sQuote(type), amount, sQuote(conditionMessage(progression))))
         }
         return()
       }
