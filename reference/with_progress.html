@@ -95,7 +95,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0-9001</span>
       </span>
     </div>
 
@@ -315,83 +315,164 @@ $ Rscript -e "library(progressr)" -e "with_progress(slow_sum(1:5))"
     <div class='dont-index'><p><code><a href='https://rdrr.io/r/base/conditions.html'>base::withCallingHandlers()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## The slow_sum() example function</span>
-<span class='va'>slow_sum</span> <span class='op'>&lt;-</span> <span class='fu'>progressr</span><span class='fu'>::</span><span class='va'><a href='slow_sum.html'>slow_sum</a></span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>slow_sum</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; function (x, delay = getOption("progressr.demo.delay", 1), stdout = FALSE, 
-#&gt;     message = TRUE) 
-#&gt; {
-#&gt;     p &lt;- progressor(along = x)
-#&gt;     sum &lt;- 0
-#&gt;     for (kk in seq_along(x)) {
-#&gt;         p(amount = 0)
-#&gt;         Sys.sleep(0.2 * delay)
-#&gt;         if (stdout) 
-#&gt;             cat(sprintf("O: Element #%d\n", kk))
-#&gt;         p(amount = 0)
-#&gt;         Sys.sleep(0.2 * delay)
-#&gt;         p(amount = 0)
-#&gt;         Sys.sleep(0.2 * delay)
-#&gt;         sum &lt;- sum + x[kk]
-#&gt;         p(message = sprintf("P: Adding %g", kk))
-#&gt;         Sys.sleep(0.2 * delay)
-#&gt;         if (message) 
-#&gt;             message(sprintf("M: Added value %g", x[kk]))
-#&gt;         p(amount = 0)
-#&gt;         Sys.sleep(0.2 * delay)
-#&gt;     }
-#&gt;     p(amount = 0)
-#&gt;     sum
-#&gt; }
-#&gt; &lt;bytecode: 0x55793c8c94e0&gt;
-#&gt; &lt;environment: namespace:progressr&gt;</div><div class='input'>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>
-
-<span class='co'>## Without progress updates</span>
-<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='slow_sum.html'>slow_sum</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>M: Added value 1</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 2</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 3</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 4</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 5</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 6</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 7</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 8</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 9</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 10</span></div><div class='input'>
-
-<span class='co'>## Progress reported via txtProgressBar (default)</span>
-<span class='fu'><a href='handlers.html'>handlers</a></span><span class='op'>(</span><span class='st'>"txtprogressbar"</span><span class='op'>)</span>  <span class='co'>## default</span>
-<span class='fu'>with_progress</span><span class='op'>(</span><span class='op'>{</span>
-  <span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='slow_sum.html'>slow_sum</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-<span class='op'>}</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>M: Added value 1</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 2</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 3</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 4</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 5</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 6</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 7</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 8</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 9</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 10</span></div><div class='input'>
-<span class='co'>## Progress reported via tcltk::tkProgressBar</span>
-<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/capabilities.html'>capabilities</a></span><span class='op'>(</span><span class='st'>"tcltk"</span><span class='op'>)</span> <span class='op'>&amp;&amp;</span> <span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span><span class='op'>(</span><span class='st'>"tcltk"</span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='fu'><a href='handlers.html'>handlers</a></span><span class='op'>(</span><span class='st'>"tkprogressbar"</span><span class='op'>)</span>
-  <span class='fu'>with_progress</span><span class='op'>(</span><span class='op'>{</span>
-    <span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='slow_sum.html'>slow_sum</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-  <span class='op'>}</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div><div class='output co'>#&gt; <span class='message'>M: Added value 1</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 2</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 3</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 4</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 5</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 6</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 7</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 8</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 9</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 10</span></div><div class='input'>
-<span class='co'>## Progress reported via progress::progress_bar)</span>
-<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span><span class='op'>(</span><span class='st'>"progress"</span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='fu'><a href='handlers.html'>handlers</a></span><span class='op'>(</span><span class='st'>"progress"</span><span class='op'>)</span>
-  <span class='fu'>with_progress</span><span class='op'>(</span><span class='op'>{</span>
-    <span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='slow_sum.html'>slow_sum</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-  <span class='op'>}</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div><div class='output co'>#&gt; <span class='message'>M: Added value 1</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 2</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 3</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 4</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 5</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 6</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 7</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 8</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 9</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 10</span></div><div class='input'>
-<span class='co'>## Progress reported via txtProgressBar and beepr::beep</span>
-<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span><span class='op'>(</span><span class='st'>"beepr"</span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='fu'><a href='handlers.html'>handlers</a></span><span class='op'>(</span><span class='st'>"beepr"</span>, <span class='st'>"txtprogressbar"</span><span class='op'>)</span>
-  <span class='fu'>with_progress</span><span class='op'>(</span><span class='op'>{</span>
-    <span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='slow_sum.html'>slow_sum</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-  <span class='op'>}</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div><div class='output co'>#&gt; <span class='message'>M: Added value 1</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 2</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 3</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 4</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 5</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 6</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 7</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 8</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 9</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 10</span></div><div class='input'>
-<span class='co'>## Progress reported via customized utils::txtProgressBar and beepr::beep,</span>
-<span class='co'>## if available.</span>
-<span class='fu'><a href='handlers.html'>handlers</a></span><span class='op'>(</span><span class='fu'><a href='handler_txtprogressbar.html'>handler_txtprogressbar</a></span><span class='op'>(</span>style <span class='op'>=</span> <span class='fl'>3L</span><span class='op'>)</span><span class='op'>)</span>
-<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span><span class='op'>(</span><span class='st'>"beepr"</span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='fu'><a href='handlers.html'>handlers</a></span><span class='op'>(</span><span class='st'>"beepr"</span>, append <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='op'>}</span>
-
-<span class='fu'>with_progress</span><span class='op'>(</span><span class='op'>{</span>
-  <span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='slow_sum.html'>slow_sum</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>30</span><span class='op'>)</span>
-<span class='op'>}</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>M: Added value 1</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 2</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 3</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 4</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 5</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 6</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 7</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 8</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 9</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 10</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 11</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 12</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 13</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 14</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 15</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 16</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 17</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 18</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 19</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 20</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 21</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 22</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 23</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 24</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 25</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 26</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 27</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 28</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 29</span></div><div class='output co'>#&gt; <span class='message'>M: Added value 30</span></div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'>## The slow_sum() example function</span></span>
+<span class='r-in'><span class='va'>slow_sum</span> <span class='op'>&lt;-</span> <span class='fu'>progressr</span><span class='fu'>::</span><span class='va'><a href='slow_sum.html'>slow_sum</a></span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>slow_sum</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> function (x, delay = getOption("progressr.demo.delay", 1), stdout = FALSE, </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     message = TRUE) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     p &lt;- progressor(along = x)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     sum &lt;- 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     for (kk in seq_along(x)) {</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         p(amount = 0)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         Sys.sleep(0.2 * delay)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         if (stdout) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             cat(sprintf("O: Element #%d\n", kk))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         p(amount = 0)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         Sys.sleep(0.2 * delay)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         p(amount = 0)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         Sys.sleep(0.2 * delay)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         sum &lt;- sum + x[kk]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         p(message = sprintf("P: Adding %g", kk))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         Sys.sleep(0.2 * delay)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         if (message) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             message(sprintf("M: Added value %g", x[kk]))</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         p(amount = 0)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         Sys.sleep(0.2 * delay)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     p(amount = 0)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     sum</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;bytecode: 0x5582f0e42a58&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;environment: namespace:progressr&gt;</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Without progress updates</span></span>
+<span class='r-in'><span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='slow_sum.html'>slow_sum</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 1</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 2</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 3</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 4</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 5</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 6</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 7</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 8</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 9</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 10</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Progress reported via txtProgressBar (default)</span></span>
+<span class='r-in'><span class='fu'><a href='handlers.html'>handlers</a></span><span class='op'>(</span><span class='st'>"txtprogressbar"</span><span class='op'>)</span>  <span class='co'>## default</span></span>
+<span class='r-in'><span class='fu'>with_progress</span><span class='op'>(</span><span class='op'>{</span></span>
+<span class='r-in'>  <span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='slow_sum.html'>slow_sum</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 1</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 2</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 3</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 4</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 5</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 6</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 7</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 8</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 9</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 10</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Progress reported via tcltk::tkProgressBar</span></span>
+<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/capabilities.html'>capabilities</a></span><span class='op'>(</span><span class='st'>"tcltk"</span><span class='op'>)</span> <span class='op'>&amp;&amp;</span> <span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span><span class='op'>(</span><span class='st'>"tcltk"</span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>  <span class='fu'><a href='handlers.html'>handlers</a></span><span class='op'>(</span><span class='st'>"tkprogressbar"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='fu'>with_progress</span><span class='op'>(</span><span class='op'>{</span></span>
+<span class='r-in'>    <span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='slow_sum.html'>slow_sum</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>}</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 1</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 2</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 3</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 4</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 5</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 6</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 7</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 8</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 9</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 10</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Progress reported via progress::progress_bar)</span></span>
+<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span><span class='op'>(</span><span class='st'>"progress"</span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>  <span class='fu'><a href='handlers.html'>handlers</a></span><span class='op'>(</span><span class='st'>"progress"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='fu'>with_progress</span><span class='op'>(</span><span class='op'>{</span></span>
+<span class='r-in'>    <span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='slow_sum.html'>slow_sum</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>}</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 1</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 2</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 3</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 4</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 5</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 6</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 7</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 8</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 9</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 10</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Progress reported via txtProgressBar and beepr::beep</span></span>
+<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span><span class='op'>(</span><span class='st'>"beepr"</span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>  <span class='fu'><a href='handlers.html'>handlers</a></span><span class='op'>(</span><span class='st'>"beepr"</span>, <span class='st'>"txtprogressbar"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='fu'>with_progress</span><span class='op'>(</span><span class='op'>{</span></span>
+<span class='r-in'>    <span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='slow_sum.html'>slow_sum</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>}</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 1</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 2</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 3</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 4</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 5</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 6</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 7</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 8</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 9</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 10</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Progress reported via customized utils::txtProgressBar and beepr::beep,</span></span>
+<span class='r-in'><span class='co'>## if available.</span></span>
+<span class='r-in'><span class='fu'><a href='handlers.html'>handlers</a></span><span class='op'>(</span><span class='fu'><a href='handler_txtprogressbar.html'>handler_txtprogressbar</a></span><span class='op'>(</span>style <span class='op'>=</span> <span class='fl'>3L</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span><span class='op'>(</span><span class='st'>"beepr"</span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>  <span class='fu'><a href='handlers.html'>handlers</a></span><span class='op'>(</span><span class='st'>"beepr"</span>, append <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>with_progress</span><span class='op'>(</span><span class='op'>{</span></span>
+<span class='r-in'>  <span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='slow_sum.html'>slow_sum</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>30</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 1</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 2</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 3</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 4</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 5</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 6</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 7</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 8</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 9</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 10</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 11</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 12</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 13</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 14</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 15</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 16</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 17</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 18</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 19</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 20</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 21</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 22</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 23</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 24</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 25</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 26</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 27</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 28</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 29</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> M: Added value 30</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -407,7 +488,7 @@ $ Rscript -e "library(progressr)" -e "with_progress(slow_sum(1:5))"
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9002.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9003.</p>
 </div>
 
       </footer>

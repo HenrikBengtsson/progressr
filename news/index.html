@@ -94,7 +94,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0-9001</span>
       </span>
     </div>
 
@@ -212,10 +212,17 @@
       <small>Source: <a href='https://github.com/HenrikBengtsson/progressr/blob/master/NEWS'><code>NEWS</code></a></small>
     </div>
 
-    <div id="progressr-0-9-0-9000" class="section level1">
-<h1 class="page-header" data-toc-text="0.9.0-9000">
-<a href="#progressr-0-9-0-9000" class="anchor"></a>progressr 0.9.0-9000<small> Unreleased </small>
+    <div id="progressr-0-9-0-9001" class="section level1">
+<h1 class="page-header" data-toc-text="0.9.0-9001">
+<a href="#progressr-0-9-0-9001" class="anchor"></a>progressr 0.9.0-9001<small> Unreleased </small>
 </h1>
+<div id="deprecated-and-defunct" class="section level3">
+<h3 class="hasAnchor">
+<a href="#deprecated-and-defunct" class="anchor"></a>Deprecated and Defunct</h3>
+<ul>
+<li>Function progress() is defunct in order to re-use it for other purpose. It is unlikely that anyone really used this function, but if you did, then use cond &lt;- progression() to create ‘progression’ condition and then use withRestart(signalCondition(cond), muffleProgression = function(p) NULL) to signal it.</li>
+</ul>
+</div>
 </div>
     <div id="progressr-0-9-0" class="section level1">
 <h1 class="page-header" data-toc-text="0.9.0">
@@ -281,9 +288,9 @@
 <li>In progressr 0.7.0, any attempt to use more than one progressor inside a function or a local() call would result in: Error in assign(“…progressor”, value = fcn, envir = envir) : cannot change value of locked binding for ‘…progressor’.</li>
 </ul>
 </div>
-<div id="deprecated-and-defunct" class="section level3">
+<div id="deprecated-and-defunct-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#deprecated-and-defunct" class="anchor"></a>Deprecated and Defunct</h3>
+<a href="#deprecated-and-defunct-1" class="anchor"></a>Deprecated and Defunct</h3>
 <ul>
 <li>Function progress() is deprecated in order to re-use it for other purpose. It is unlikely that anyone really used this function, but if you did, then use cond &lt;- progression() to create ‘progression’ condition and then use withRestart(signalCondition(cond), muffleProgression = function(p) NULL) to signal it.</li>
 </ul>
@@ -754,7 +761,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9002.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9003.</p>
 </div>
 
       </footer>
