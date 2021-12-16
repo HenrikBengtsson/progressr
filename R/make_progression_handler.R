@@ -256,7 +256,16 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
     if (active && !finished) {
       do.call(reporter$finish, args = args)
     } else {
-      if (debug) message("- Hmm ... got a request to 'finish' handler, but it's not active. Oh well, will finish it then")
+      if (debug) {
+        why <- if (!active && !finished) {
+          "not active"
+        } else if (!active && finished) {
+          "not active and already finished"
+        } else if (active && finished) {
+          "already finished"
+        }
+        message(sprintf("- Hmm ... got a request to 'finish' handler, but it's %s. Oh well, will finish it then", why))
+      }
     }
     
     reset_internal_state()
