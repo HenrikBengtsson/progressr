@@ -77,6 +77,7 @@ handler_txtprogressbar <- function(style = 3L, file = stderr(), intrusiveness = 
 
       initiate = function(config, state, progression, ...) {
         if (!state$enabled || config$times == 1L) return()
+        stop_if_not(is.null(pb))
         make_pb(max = config$max_steps, style = style, file = file)
       },
 

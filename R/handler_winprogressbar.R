@@ -47,6 +47,8 @@ handler_winprogressbar <- function(intrusiveness = getOption("progressr.intrusiv
       
       initiate = function(config, state, progression, ...) {
         if (!state$enabled || config$times == 1L) return()
+        ## NOTE: 'pb' may be re-used for winProgressBar:s
+        if (config$clear) stop_if_not(is.null(pb))
         make_pb(max = config$max_steps, label = state$message)
       },
         

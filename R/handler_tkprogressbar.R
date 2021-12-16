@@ -48,6 +48,8 @@ handler_tkprogressbar <- function(intrusiveness = getOption("progressr.intrusive
       
       initiate = function(config, state, progression, ...) {
         if (!state$enabled || config$times == 1L) return()
+        ## NOTE: 'pb' may be re-used for tkProgressBar:s
+        if (config$clear) stop_if_not(is.null(pb))
         make_pb(max = config$max_steps, label = state$message)
       },
         
