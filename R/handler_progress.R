@@ -131,6 +131,7 @@ handler_progress <- function(format = ":spin [:bar] :percent :message", show_aft
 
       initiate = function(config, state, progression, ...) {
         if (!state$enabled || config$times == 1L) return()
+        stop_if_not(is.null(pb))
         make_pb(format = format, total = config$max_steps,
                 clear = config$clear, show_after = config$enable_after)
         pb_tick(pb, 0, message = state$message)
@@ -146,11 +147,15 @@ handler_progress <- function(format = ":spin [:bar] :percent :message", show_aft
       },
         
       finish = function(config, state, progression, ...) {
-        if (is.null(pb) || pb$finished) return()
-        make_pb(format = format, total = config$max_steps,
-                clear = config$clear, show_after = config$enable_after)
-        reporter$update(config = config, state = state, progression = progression, ...)
-        if (config$clear && !pb$finished) pb_update(pb, ratio = 1.0)
+        ## Already finished?
+        if (is.null(pb)) return()
+        if (!pb$finished) {
+          make_pb(format = format, total = config$max_steps,
+                  clear = config$clear, show_after = config$enable_after)
+          reporter$update(config = config, state = state, progression = progression, ...)
+          if (config$clear) pb_update(pb, ratio = 1.0)
+        }
+        pb <<- NULL
       }
     )
   })
