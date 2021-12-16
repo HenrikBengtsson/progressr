@@ -41,7 +41,7 @@ handler_progress <- function(format = ":spin [:bar] :percent :message", show_aft
 
   ## Force evaluation for 'format' here in case 'crayon' is used.  This
   ## works around the https://github.com/r-lib/crayon/issues/48 problem
-  format <- force(format)
+  stop_if_not(is.character(format), length(format) == 1L, !is.na(format))
   
   if (!is_fake("handler_progress")) {
     progress_bar <- progress::progress_bar
@@ -72,13 +72,20 @@ handler_progress <- function(format = ":spin [:bar] :percent :message", show_aft
     erase_progress_bar <- function(pb) NULL
     redraw_progress_bar <- function(pb, tokens = list()) NULL
   }
-  
+
   reporter <- local({
     pb <- NULL
-
-    make_pb <- function(...) {
+    
+    make_pb <- function(format, total, clear, show_after, ...) {
       if (!is.null(pb)) return(pb)
-      args <- c(list(...), backend_args)
+      stop_if_not(
+        is.character(format), length(format) == 1L,
+        is.numeric(total), length(total) == 1L,
+        is.logical(clear), length(clear) == 1L,
+        is.numeric(show_after), length(show_after) == 1L
+      )
+      args <- c(list(format = format, total = total, clear = clear,
+                     show_after = show_after, ...), backend_args)
       pb <<- do.call(progress_bar$new, args = args)
       pb
     }
