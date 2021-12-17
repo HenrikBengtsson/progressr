@@ -1,7 +1,7 @@
 Package: progressr
 ==================
 
-Version: 0.9.0-9003 [2021-12-16]
+Version: 0.9.0-9004 [2021-12-16]
 
 DEPRECATED AND DEFUNCT:
 
@@ -13,6 +13,9 @@ DEPRECATED AND DEFUNCT:
 
 BUG FIXES:
 
+ * A progressor that signalled progress beyond 100% prevented any further
+   progressors in the same environment to report on progress.
+   
  * It was not possible to reuse handlers of type 'progress' more than once,
    because they did not fully reset themselves when finished.
 
