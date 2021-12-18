@@ -2,6 +2,7 @@ AppVeyor
 beepr
 BEL
 CMD
+Ctrl
 doFuture
 foreach
 furrr

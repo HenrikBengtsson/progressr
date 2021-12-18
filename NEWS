@@ -19,7 +19,7 @@ DEPRECATED AND DEFUNCT:
 
 BUG FIXES:
 
- * A progressor that signalled progress beyond 100% prevented any further
+ * A progressor that signaled progress beyond 100% prevented any further
    progressors in the same environment to report on progress.
    
  * It was not possible to reuse handlers of type 'progress' more than once,

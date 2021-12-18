@@ -9,7 +9,7 @@
 \alias{progressr.delay_conditions}
 \alias{progressr.enable}
 \alias{progressr.enable_after}
-\alias{progressr.interrupt}
+\alias{progressr.interrupts}
 \alias{progressr.interval}
 \alias{progressr.intrusiveness}
 \alias{progressr.intrusiveness.auditory}

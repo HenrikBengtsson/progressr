@@ -39,7 +39,7 @@ classes to be captured and relayed at the end after any captured
 standard output is relayed.}
 
 \item{interrupts}{Controls whether interrupts should be detected or not.
-If TRUE and a interrupt is signalled, progress handlers are asked to
+If TRUE and a interrupt is signaled, progress handlers are asked to
 report on the current amount progress when the evaluation was terminated
 by the interrupt, e.g. when a user pressed Ctrl-C in an interactive session,
 or a batch process was interrupted because it ran out of time.}
