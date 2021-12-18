@@ -79,7 +79,7 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
   }
 
   ## Reporter
-  for (key in setdiff(c("reset", "initiate", "update", "finish", "hide", "unhide"), names(reporter))) {
+  for (key in setdiff(c("reset", "initiate", "update", "finish", "hide", "unhide", "interrupt"), names(reporter))) {
     reporter[[key]] <- structure(function(...) NULL, class = "null_function")
   }
 
@@ -243,6 +243,23 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
     if (debug) mprintf("unhide_reporter() ... done")
   }
 
+  interrupt_reporter <- function(p) {
+    args <- reporter_args(progression = p)
+    debug <- getOption("progressr.debug", FALSE)
+    if (debug) {
+      mprintf("interrupt_reporter() ...")
+      mstr(args)
+    }
+#    stop_if_not(isTRUE(active))
+    if (is.null(reporter$interrupt)) {
+      if (debug) mprintf("interrupt_reporter() ... skipping; not supported")
+      return()
+    }
+    do.call(reporter$interrupt, args = args)
+    .validate_internal_state("interrupt_reporter() ... done")
+    if (debug) mprintf("interrupt_reporter() ... done")
+  }
+
   finish_reporter <- function(p) {
     args <- reporter_args(progression = p)
     debug <- getOption("progressr.debug", FALSE)
@@ -317,6 +334,9 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
           .validate_internal_state(sprintf("handler(type=%s) ... end", type))
         } else if (type == "unhide") {
           unhide_reporter(p)
+          .validate_internal_state(sprintf("handler(type=%s) ... end", type))
+        } else if (type == "interrupt") {
+          interrupt_reporter(p)
           .validate_internal_state(sprintf("handler(type=%s) ... end", type))
         } else {
           stop("Unknown control_progression type: ", sQuote(type))

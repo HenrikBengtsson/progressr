@@ -88,6 +88,25 @@ global_progression_handler <- local({
     calling_handler <<- make_calling_handler(handlers)
   }
 
+  interrupt_calling_handler <- function(progression = control_progression("interrupt"), debug = FALSE) {
+    if (is.null(calling_handler)) return()
+    
+    ## Don't capture conditions that are produced by progression handlers
+    capture_conditions <<- FALSE
+    on.exit(capture_conditions <<- TRUE)
+  
+    ## Any buffered output to flush?
+    if (isTRUE(attr(delays$terminal, "flush"))) {
+      if (length(conditions) > 0L || has_buffered_stdout(stdout_file)) {
+        calling_handler(control_progression("hide"))
+        stdout_file <<- flush_stdout(stdout_file, close = FALSE)
+        conditions <<- flush_conditions(conditions)
+      }
+    }
+  
+    calling_handler(progression)
+  }
+
   finish <- function(progression = control_progression("shutdown"), debug = FALSE) {
     finished <- FALSE
     
@@ -204,7 +223,7 @@ global_progression_handler <- local({
         }
         return()
       }
-      
+
       if (debug) message(" - update progression handlers")
       if (!is.null(calling_handler)) {
         stdout_file <<- delay_stdout(delays, stdout_file = stdout_file)
@@ -241,6 +260,13 @@ global_progression_handler <- local({
     
     ## Shut down progression handling?
     if (inherits(condition, c("interrupt", "error"))) {
+      if (inherits(condition, "interrupt") &&
+          isTRUE(getOption("progressr.interrupts", TRUE))) {
+        suspendInterrupts({
+          interrupt_calling_handler(debug = debug)
+        })
+      }
+
       suspendInterrupts({
         progression <- control_progression("shutdown")
         finished <- finish(debug = debug)

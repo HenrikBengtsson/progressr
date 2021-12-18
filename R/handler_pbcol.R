@@ -80,6 +80,12 @@ handler_pbcol <- function(adjust = 0.0, pad = 1L, complete = function(s) crayon:
         redraw_progress_bar(ratio = ratio, message = state$message, spin = spinner[spin_state+1L])
       },
 
+      interrupt = function(config, state, progression, ...) {
+        msg <- getOption("progressr.interrupt.message", "interrupt detected")
+        msg <- paste(c("", msg, ""), collapse = "\n")
+        cat_(msg)
+      },
+
       update = function(config, state, progression, ...) {
         if (!state$enabled || config$times <= 2L) return()
         if (state$delta < 0) return()

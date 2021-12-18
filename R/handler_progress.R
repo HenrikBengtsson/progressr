@@ -129,6 +129,13 @@ handler_progress <- function(format = ":spin [:bar] :percent :message", show_aft
         redraw_progress_bar(pb, tokens = last_tokens)
       },
 
+      interrupt = function(config, state, progression, ...) {
+        if (is.null(pb)) return()
+        msg <- getOption("progressr.interrupt.message", "interrupt detected")
+        msg <- paste(c("", msg, ""), collapse = "\n")
+        cat(msg, file = stderr())
+      },
+
       initiate = function(config, state, progression, ...) {
         if (!state$enabled || config$times == 1L) return()
         stop_if_not(is.null(pb))

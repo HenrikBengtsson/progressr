@@ -1,7 +1,13 @@
 Package: progressr
 ==================
 
-Version: 0.9.0-9004 [2021-12-16]
+Version: 0.9.0-9005 [2021-12-18]
+
+SIGNIFICANT CHANGES:
+
+ * Now interrupts are detected, which triggers the progress handlers to
+   terminate nicely, e.g. a progress bar in the terminal will stay as is
+   instead of being cleared.
 
 DEPRECATED AND DEFUNCT:
 

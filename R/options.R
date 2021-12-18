@@ -79,6 +79,22 @@
 #'   }
 #' }
 #'
+#' @section Options for controlling interrupts:
+#'
+#' \describe{
+#'   \item{\option{progressr.interrupts}:}{
+#'     (logical)
+#'     Controls whether interrupts should be detected or not.
+#'     If FALSE, then interrupts are not detected and progress information
+#'     is generated. (Default: `TRUE`)
+#'   }
+#'
+#'   \item{\option{progressr.delay_stdout}:}{
+#'     (logical)
+#'     If TRUE, standard output is captured and relayed at the end just before any captured conditions are relayed. (Default: TRUE)
+#'   }
+#' }
+#'
 #'
 #' @section Options for debugging progression updates:
 #'
@@ -111,6 +127,7 @@
 #' progressr.demo.delay
 #' progressr.delay_stdout progressr.delay_conditions
 #' progressr.enable progressr.enable_after
+#' progressr.interrupt
 #' progressr.interval
 #' progressr.intrusiveness
 #' progressr.intrusiveness.auditory
@@ -232,6 +249,7 @@ update_package_options <- function(debug = FALSE) {
   update_package_option("enable_after", mode = "numeric", default = 0.0, debug = debug)
   update_package_option("interval", mode = "numeric", default = 0.0, debug = debug)
   update_package_option("times", mode = "numeric", default = +Inf, debug = debug)
+  update_package_option("interrupt", mode = "logical", default = TRUE, debug = debug)
 
   ## Life-cycle, e.g. deprecation an defunct
   update_package_option("lifecycle.progress", mode = "character", default = "deprecated", debug = debug)

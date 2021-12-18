@@ -50,6 +50,8 @@ handler_debug <- function(interval = getOption("progressr.interval", 0), intrusi
       
       unhide = function(...) NULL,
 
+      interrupt = function(...) NULL,
+
       initiate = function(...) {
         add_to_log("initiate", ...)
       },
