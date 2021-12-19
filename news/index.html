@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.0-9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0-9000</span>
       </span>
     </div>
 
@@ -124,20 +124,23 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.9.0-9005" id="progressr-0-9-0-9005">progressr 0.9.0-9005<a class="anchor" aria-label="anchor" href="#progressr-0-9-0-9005"></a></h2>
+<h2 class="page-header" data-toc-text="0.10.0-9000" id="progressr-0-10-0-9000">progressr 0.10.0-9000<a class="anchor" aria-label="anchor" href="#progressr-0-10-0-9000"></a></h2>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.10.0" id="progressr-0-10-0">progressr 0.10.0<a class="anchor" aria-label="anchor" href="#progressr-0-10-0"></a></h2>
 <div class="section level4">
-<h4 id="significant-changes-0-9-0-9005">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-0-9-0-9005"></a></h4>
+<h4 id="significant-changes-0-10-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-0-10-0"></a></h4>
 <ul><li>Now interrupts are detected, which triggers the progress handlers to terminate nicely, e.g. a progress bar in the terminal will stay as is instead of being cleared.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="deprecated-and-defunct-0-9-0-9005">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-0-9-0-9005"></a></h4>
-<ul><li>Function progress() is defunct in order to re-use it for other purpose. It is unlikely that anyone really used this function, but if you did, then use cond &lt;- progression() to create ‘progression’ condition and then use withRestart(signalCondition(cond), muffleProgression = function(p) NULL) to signal it.</li>
-</ul></div>
-<div class="section level4">
-<h4 id="bug-fixes-0-9-0-9005">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-9-0-9005"></a></h4>
+<h4 id="bug-fixes-0-10-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-10-0"></a></h4>
 <ul><li><p>A progressor that signaled progress beyond 100% prevented any further progressors in the same environment to report on progress.</p></li>
 <li><p>It was not possible to reuse handlers of type ‘progress’ more than once, because they did not fully reset themselves when finished.</p></li>
 <li><p>The ‘pbcol’ progression handler did not respect clean = FALSE.</p></li>
+</ul></div>
+<div class="section level4">
+<h4 id="deprecated-and-defunct-0-10-0">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-0-10-0"></a></h4>
+<ul><li>Function progress() is defunct in order to re-use it for other purpose. It is unlikely that anyone really used this function, but if you did, then use cond &lt;- progression() to create ‘progression’ condition and then use withRestart(signalCondition(cond), muffleProgression = function(p) NULL) to signal it.</li>
 </ul></div>
 </div>
     <div class="section level2">
