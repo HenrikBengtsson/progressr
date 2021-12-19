@@ -1,7 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://progressr.futureverse.org/404.html</loc>
+  </url>
+  <url>
+    <loc>https://progressr.futureverse.org/CONDUCT.html</loc>
+  </url>
+  <url>
+    <loc>https://progressr.futureverse.org/CONTRIBUTING.html</loc>
+  </url>
+  <url>
+    <loc>https://progressr.futureverse.org/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://progressr.futureverse.org/articles/progressr-intro.html</loc>
+  </url>
+  <url>
+    <loc>https://progressr.futureverse.org/authors.html</loc>
+  </url>
+  <url>
     <loc>https://progressr.futureverse.org/index.html</loc>
+  </url>
+  <url>
+    <loc>https://progressr.futureverse.org/news/index.html</loc>
   </url>
   <url>
     <loc>https://progressr.futureverse.org/reference/global_progression_handler.html</loc>
@@ -55,6 +76,9 @@
     <loc>https://progressr.futureverse.org/reference/handlers.html</loc>
   </url>
   <url>
+    <loc>https://progressr.futureverse.org/reference/index.html</loc>
+  </url>
+  <url>
     <loc>https://progressr.futureverse.org/reference/make_progression_handler.html</loc>
   </url>
   <url>
@@ -89,8 +113,5 @@
   </url>
   <url>
     <loc>https://progressr.futureverse.org/reference/with_progress.html</loc>
-  </url>
-  <url>
-    <loc>https://progressr.futureverse.org/articles/progressr-intro.html</loc>
   </url>
 </urlset>

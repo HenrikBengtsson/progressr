@@ -1,9 +1,9 @@
 pandoc: 1.19.2.4
-pkgdown: 1.6.1
+pkgdown: 2.0.1
 pkgdown_sha: ~
 articles:
   progressr-intro: progressr-intro.html
-last_built: 2021-11-30T16:50Z
+last_built: 2021-12-19T00:16Z
 urls:
   reference: https://progressr.futureverse.org/reference
   article: https://progressr.futureverse.org/articles
