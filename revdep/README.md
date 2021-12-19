@@ -10,14 +10,14 @@
 |collate  |en_US.UTF-8                                                 |
 |ctype    |en_US.UTF-8                                                 |
 |tz       |America/Los_Angeles                                         |
-|date     |2021-12-16                                                  |
+|date     |2021-12-18                                                  |
 |pandoc   |2.16.2 @ /software/c4/cbi/software/pandoc-2.16.2/bin/pandoc |
 
 # Dependencies
 
 |package   |old    |new        |Δ  |
 |:---------|:------|:----------|:--|
-|progressr |0.9.0  |0.9.0-9004 |*  |
+|progressr |0.9.0  |0.9.0-9005 |*  |
 |digest    |0.6.29 |0.6.29     |   |
 
 # Revdeps
