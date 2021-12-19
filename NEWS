@@ -9,14 +9,6 @@ SIGNIFICANT CHANGES:
    terminate nicely, e.g. a progress bar in the terminal will stay as is
    instead of being cleared.
 
-DEPRECATED AND DEFUNCT:
-
- * Function progress() is defunct in order to re-use it for other purpose.
-   It is unlikely that anyone really used this function, but if you did, then
-   use cond <- progression() to create 'progression' condition and then use
-   withRestart(signalCondition(cond), muffleProgression = function(p) NULL)
-   to signal it.
-
 BUG FIXES:
 
  * A progressor that signaled progress beyond 100% prevented any further
@@ -26,7 +18,15 @@ BUG FIXES:
    because they did not fully reset themselves when finished.
 
  * The 'pbcol' progression handler did not respect clean = FALSE.
- 
+
+DEPRECATED AND DEFUNCT:
+
+ * Function progress() is defunct in order to re-use it for other purpose.
+   It is unlikely that anyone really used this function, but if you did, then
+   use cond <- progression() to create 'progression' condition and then use
+   withRestart(signalCondition(cond), muffleProgression = function(p) NULL)
+   to signal it.
+
 
 Version: 0.9.0 [2021-09-24]
 
