@@ -9,6 +9,7 @@
 \alias{progressr.delay_conditions}
 \alias{progressr.enable}
 \alias{progressr.enable_after}
+\alias{progressr.interrupts}
 \alias{progressr.interval}
 \alias{progressr.intrusiveness}
 \alias{progressr.intrusiveness.auditory}
@@ -94,6 +95,24 @@ A non-negative scalar on how intrusive (disruptive) the reporter to the user. Th
 \item{\option{progressr.delay_conditions}:}{
 (character vector)
 condition classes to be captured and relayed at the end after any captured standard output is relayed. (Default: \code{c("condition")})
+}
+
+\item{\option{progressr.delay_stdout}:}{
+(logical)
+If TRUE, standard output is captured and relayed at the end just before any captured conditions are relayed. (Default: TRUE)
+}
+}
+}
+
+\section{Options for controlling interrupts}{
+
+
+\describe{
+\item{\option{progressr.interrupts}:}{
+(logical)
+Controls whether interrupts should be detected or not.
+If FALSE, then interrupts are not detected and progress information
+is generated. (Default: \code{TRUE})
 }
 
 \item{\option{progressr.delay_stdout}:}{

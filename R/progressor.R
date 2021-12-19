@@ -113,14 +113,6 @@ progressor <- local({
     }
     environment(fcn) <- progressor_envir
     
-    if (initiate) {
-      fcn(
-        type = "initiate",
-        steps = steps,
-        auto_finish = auto_finish
-      )
-    }
-
     ## Is there already be an active '...progressr'?
     ## If so, make sure it is finished and then remove it
     if (exists("...progressor", mode = "function", envir = envir)) {
@@ -138,7 +130,16 @@ progressor <- local({
       rm("...progressor", envir = envir)
     }
 
-    ## Add on.exit(...progressor(type = "finish"))
+    ## Initiate?
+    if (initiate) {
+      fcn(
+        type = "initiate",
+        steps = steps,
+        auto_finish = auto_finish
+      )
+    }
+
+    ## Add on.exit(...progressor(type = "finish"))?
     if (on_exit) {
       assign("...progressor", value = fcn, envir = envir)
       lockBinding("...progressor", env = envir)

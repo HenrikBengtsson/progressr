@@ -15,7 +15,7 @@ progress(..., call = sys.call())
 A \link[base:conditions]{base::condition} of class \code{progression}.
 }
 \description{
-\emph{WARNING:} \code{progress()} is deprecated - don't use.
+\emph{WARNING:} \code{progress()} is defunct - don't use.
 }
 \seealso{
 To create a progression condition, use \code{\link[=progression]{progression()}}.

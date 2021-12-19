@@ -18,6 +18,12 @@
 #' classes to be captured and relayed at the end after any captured
 #' standard output is relayed.
 #'
+#' @param interrupts Controls whether interrupts should be detected or not.
+#' If TRUE and a interrupt is signaled, progress handlers are asked to
+#' report on the current amount progress when the evaluation was terminated
+#' by the interrupt, e.g. when a user pressed Ctrl-C in an interactive session,
+#' or a batch process was interrupted because it ran out of time.
+#'
 #' @param interval (numeric) The minimum time (in seconds) between
 #' successive progression updates from handlers.
 #'
@@ -61,8 +67,9 @@
 #' [base::withCallingHandlers()]
 #'
 #' @export
-with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE, delay_terminal = NULL, delay_stdout = NULL, delay_conditions = NULL, interval = NULL, enable = NULL) {
-  stop_if_not(is.logical(cleanup), length(cleanup) == 1L, !is.na(cleanup))
+with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE, delay_terminal = NULL, delay_stdout = NULL, delay_conditions = NULL, interrupts = getOption("progressr.interrupts", TRUE), interval = NULL, enable = NULL) {
+  stop_if_not(is.logical(cleanup), length(cleanup) == 1L, !is.na(cleanup))  
+  stop_if_not(is.logical(interrupts), length(interrupts) == 1L, !is.na(interrupts))
 
   debug <- getOption("progressr.debug", FALSE)
   if (debug) {
@@ -195,6 +202,27 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
     
     calling_handler(p)
   },
+  interrupt = function(c) {
+    ## Ignore interrupts?
+    if (!interrupts) return()
+
+    suspendInterrupts({
+      ## Don't capture conditions that are produced by progression handlers
+      capture_conditions <<- FALSE
+      on.exit(capture_conditions <<- TRUE)
+  
+      ## Any buffered output to flush?
+      if (isTRUE(attr(delays$terminal, "flush"))) {
+        if (length(conditions) > 0L || has_buffered_stdout(stdout_file)) {
+          calling_handler(control_progression("hide"))
+          stdout_file <<- flush_stdout(stdout_file, close = FALSE)
+          conditions <<- flush_conditions(conditions)
+        }
+      }
+  
+      calling_handler(control_progression("interrupt"))
+    })
+  },
   condition = function(c) {
     if (!capture_conditions || inherits(c, c("progression", "error"))) return()
     if (debug) message("- received a ", sQuote(class(c)[1]))
@@ -230,10 +258,4 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
   } else {
     invisible(res$value)
   }
-}
-
-
-
-control_progression <- function(type = "shutdown", ...) {
-  progression(type = type, ..., class = "control_progression")  
 }

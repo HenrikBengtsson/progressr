@@ -88,6 +88,25 @@ global_progression_handler <- local({
     calling_handler <<- make_calling_handler(handlers)
   }
 
+  interrupt_calling_handler <- function(progression = control_progression("interrupt"), debug = FALSE) {
+    if (is.null(calling_handler)) return()
+    
+    ## Don't capture conditions that are produced by progression handlers
+    capture_conditions <<- FALSE
+    on.exit(capture_conditions <<- TRUE)
+  
+    ## Any buffered output to flush?
+    if (isTRUE(attr(delays$terminal, "flush"))) {
+      if (length(conditions) > 0L || has_buffered_stdout(stdout_file)) {
+        calling_handler(control_progression("hide"))
+        stdout_file <<- flush_stdout(stdout_file, close = FALSE)
+        conditions <<- flush_conditions(conditions)
+      }
+    }
+  
+    calling_handler(progression)
+  }
+
   finish <- function(progression = control_progression("shutdown"), debug = FALSE) {
     finished <- FALSE
     
@@ -200,11 +219,11 @@ global_progression_handler <- local({
         ## progress has been completed
         amount <- progression$amount
         if (!is.numeric(amount) || amount > 0) {
-          warning(sprintf("[progressr]: Received a progression %s request (amount=%g) but is not listening to this progressor. This can happen when code signals more progress updates than it configured the progressor to do. When the progressor completes all steps, it shuts down resulting in the global progression handler to no longer listen to it", sQuote(type), amount))
+          warning(sprintf("[progressr]: Received a progression %s request (amount=%g; msg=%s) but is not listening to this progressor. This can happen when code signals more progress updates than it configured the progressor to do. When the progressor completes all steps, it shuts down resulting in the global progression handler to no longer listen to it", sQuote(type), amount, sQuote(conditionMessage(progression))))
         }
         return()
       }
-      
+
       if (debug) message(" - update progression handlers")
       if (!is.null(calling_handler)) {
         stdout_file <<- delay_stdout(delays, stdout_file = stdout_file)
@@ -241,6 +260,13 @@ global_progression_handler <- local({
     
     ## Shut down progression handling?
     if (inherits(condition, c("interrupt", "error"))) {
+      if (inherits(condition, "interrupt") &&
+          isTRUE(getOption("progressr.interrupts", TRUE))) {
+        suspendInterrupts({
+          interrupt_calling_handler(debug = debug)
+        })
+      }
+
       suspendInterrupts({
         progression <- control_progression("shutdown")
         finished <- finish(debug = debug)
@@ -373,65 +399,4 @@ as_progression_handler <- function(handlers, drop = TRUE) {
   }
 
   handlers
-}
-
-
-
-use_delays <- function(handlers, terminal = NULL, stdout = NULL, conditions = NULL) {
-  ## Do we need to buffer terminal output?
-  if (is.null(terminal)) {
-    delay <- vapply(handlers, FUN = function(h) {
-      env <- environment(h)
-      any(env$target == "terminal")
-    }, FUN.VALUE = NA)
-    terminal <- any(delay, na.rm = TRUE)
-    
-    ## If buffering output, does all handlers support intermediate flushing?
-    if (terminal) {
-      flush <- vapply(handlers, FUN = function(h) {
-        env <- environment(h)
-        if (!any(env$target == "terminal")) return(TRUE)
-        !inherits(env$reporter$hide, "null_function")
-      }, FUN.VALUE = NA)
-      attr(terminal, "flush") <- all(flush, na.rm = TRUE)
-    }
-  }
-
-  if (is.null(stdout)) {
-    stdout <- getOption("progressr.delay_stdout", terminal)
-  }
-
-  if (is.null(conditions)) {
-    conditions <- getOption("progressr.delay_conditions", {
-      if (terminal) c("condition") else character(0L)
-    })
-  }
-
-  list(terminal = terminal, stdout = stdout, conditions = conditions)
-}
-
-
-delay_stdout <- function(delays, stdout_file) {
-  ## Delay standard output?
-  if (is.null(stdout_file) && delays$stdout) {
-    stdout_file <- buffer_stdout()
-  }
-  stdout_file
-}
-
-
-make_calling_handler <- function(handlers) {
-  if (length(handlers) > 1L) {
-    calling_handler <- function(p) {
-      finished <- FALSE
-      for (kk in seq_along(handlers)) {
-        handler <- handlers[[kk]]
-        finished <- finished || handler(p)
-      }
-      finished
-    }
-  } else {
-    calling_handler <- handlers[[1]]
-  }
-  calling_handler
 }

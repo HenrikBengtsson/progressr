@@ -58,6 +58,7 @@ handler_pbcol <- function(adjust = 0.0, pad = 1L, complete = function(s) crayon:
   reporter <- local({
     spin_state <- 0L
     spinner <- c("-", "\\", "|", "/", "-", "\\", "|", "/")
+    
     list(
       initiate = function(config, state, ...) {
         if (!state$enabled || config$times <= 2L) return()
@@ -79,6 +80,12 @@ handler_pbcol <- function(adjust = 0.0, pad = 1L, complete = function(s) crayon:
         redraw_progress_bar(ratio = ratio, message = state$message, spin = spinner[spin_state+1L])
       },
 
+      interrupt = function(config, state, progression, ...) {
+        msg <- getOption("progressr.interrupt.message", "interrupt detected")
+        msg <- paste(c("", msg, ""), collapse = "\n")
+        cat_(msg)
+      },
+
       update = function(config, state, progression, ...) {
         if (!state$enabled || config$times <= 2L) return()
         if (state$delta < 0) return()
@@ -87,8 +94,13 @@ handler_pbcol <- function(adjust = 0.0, pad = 1L, complete = function(s) crayon:
         redraw_progress_bar(ratio = ratio, message = state$message, spin = spinner[spin_state+1L])
       },
 
-      finish = function(...) {
-        erase_progress_bar()
+      finish = function(config, state, progression, ...) {
+        if (config$clear) {
+          erase_progress_bar()
+        } else {
+          redraw_progress_bar(ratio = 1, message = state$message, spin = " ")
+          cat("\n", file = stderr())
+        }
       }
     )
   })

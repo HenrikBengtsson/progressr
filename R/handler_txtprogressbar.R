@@ -75,8 +75,16 @@ handler_txtprogressbar <- function(style = 3L, file = stderr(), intrusiveness = 
         redrawTxtProgressBar(pb)
       },
 
+      interrupt = function(config, state, progression, ...) {
+        if (is.null(pb)) return()
+        msg <- getOption("progressr.interrupt.message", "interrupt detected")
+        msg <- paste(c("", msg, ""), collapse = "\n")
+        cat(msg, file = file)
+      },
+
       initiate = function(config, state, progression, ...) {
         if (!state$enabled || config$times == 1L) return()
+        stop_if_not(is.null(pb))
         make_pb(max = config$max_steps, style = style, file = file)
       },
 

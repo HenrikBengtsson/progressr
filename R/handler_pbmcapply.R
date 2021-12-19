@@ -100,8 +100,15 @@ handler_pbmcapply <- function(substyle = 3L, style = "ETA", file = stderr(), int
         redrawTxtProgressBar(pb)
       },
 
+      interrupt = function(config, state, progression, ...) {
+        msg <- getOption("progressr.interrupt.message", "interrupt detected")
+        msg <- paste(c("", msg, ""), collapse = "\n")
+        cat(msg, file = file)
+      },
+
       initiate = function(config, state, progression, ...) {
         if (!state$enabled || config$times == 1L) return()
+        stop_if_not(is.null(pb))
         make_pb(max = config$max_steps, style = style, substyle = substyle, file = file)
       },
         

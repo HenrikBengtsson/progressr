@@ -479,7 +479,7 @@ my_fcn(1:5)
 # / [================>-----------------------------]  40% x=2
 ```
 
-_Note:_ This solution does not involved the `.progress = TRUE` argument that **furrr** implements.  Because **progressr** is more generic and because `.progress = TRUE` only works for certain future backends and produces errors on others, I recommended to stop using `.progress = TRUE` and use the **progressr** package instead.
+_Note:_ This solution does not involved the `.progress = TRUE` argument that **furrr** implements.  Because **progressr** is more generic and because `.progress = TRUE` only supports certain future backends and produces errors on non-supported backends, I recommended to stop using `.progress = TRUE` and use the **progressr** package instead.
 
 
 ### BiocParallel::bplapply() - parallel lapply()

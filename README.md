@@ -1,7 +1,7 @@
 
 
 <div id="badges"><!-- pkgdown markup -->
-<a href="https://CRAN.R-project.org/web/checks/check_results_progressr.html"><img border="0" src="https://www.r-pkg.org/badges/version/progressr" alt="CRAN check status"/></a> <a href="https://github.com/HenrikBengtsson/progressr/actions?query=workflow%3AR-CMD-check"><img border="0" src="https://github.com/HenrikBengtsson/progressr/actions/workflows/R-CMD-check.yaml/badge.svg?branch=develop" alt="R CMD check status"/></a> <a href="https://github.com/HenrikBengtsson/progressr/actions?query=workflow%3Arevdepcheck-top"><img border="0" src="https://github.com/HenrikBengtsson/progressr/actions/workflows/revdepcheck-top.yaml/badge.svg?branch=develop" alt="Top reverse-dependency checks status"/></a>   <a href="https://codecov.io/gh/HenrikBengtsson/progressr"><img border="0" src="https://codecov.io/gh/HenrikBengtsson/progressr/branch/develop/graph/badge.svg" alt="Coverage Status"/></a> <a href="https://lifecycle.r-lib.org/articles/stages.html"><img border="0" src="man/figures/lifecycle-maturing-blue.svg" alt="Life cycle: maturing"/></a>
+<a href="https://CRAN.R-project.org/web/checks/check_results_progressr.html"><img border="0" src="https://www.r-pkg.org/badges/version/progressr" alt="CRAN check status"/></a> <a href="https://github.com/HenrikBengtsson/progressr/actions?query=workflow%3AR-CMD-check"><img border="0" src="https://github.com/HenrikBengtsson/progressr/actions/workflows/R-CMD-check.yaml/badge.svg?branch=develop" alt="R CMD check status"/></a> <a href="https://github.com/HenrikBengtsson/progressr/actions?query=workflow%3Arevdepcheck-top"><img border="0" src="https://github.com/HenrikBengtsson/progressr/actions/workflows/revdepcheck-top.yaml/badge.svg?branch=develop" alt="Top reverse-dependency checks status"/></a>    <a href="https://app.codecov.io/gh/HenrikBengtsson/progressr"><img border="0" src="https://codecov.io/gh/HenrikBengtsson/progressr/branch/develop/graph/badge.svg" alt="Coverage Status"/></a> <a href="https://lifecycle.r-lib.org/articles/stages.html"><img border="0" src="man/figures/lifecycle-maturing-blue.svg" alt="Life cycle: maturing"/></a>
 </div>
 
 # progressr: An Inclusive, Unifying API for Progress Updates 
@@ -476,7 +476,7 @@ my_fcn(1:5)
 # / [================>-----------------------------]  40% x=2
 ```
 
-_Note:_ This solution does not involved the `.progress = TRUE` argument that **furrr** implements.  Because **progressr** is more generic and because `.progress = TRUE` only works for certain future backends and produces errors on others, I recommended to stop using `.progress = TRUE` and use the **progressr** package instead.
+_Note:_ This solution does not involved the `.progress = TRUE` argument that **furrr** implements.  Because **progressr** is more generic and because `.progress = TRUE` only supports certain future backends and produces errors on non-supported backends, I recommended to stop using `.progress = TRUE` and use the **progressr** package instead.
 
 
 ### BiocParallel::bplapply() - parallel lapply()

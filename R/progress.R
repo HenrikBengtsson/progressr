@@ -1,6 +1,6 @@
 #' Creates and Signals a Progression Condition
 #'
-#' _WARNING:_ `progress()` is deprecated - don't use.
+#' _WARNING:_ `progress()` is defunct - don't use.
 #'
 #' @param \ldots Arguments pass to [progression()].
 #'
@@ -15,7 +15,7 @@
 #' @keywords internal
 #' @export
 progress <- function(..., call = sys.call()) {
-  action <- getOption("progressr.lifecycle.progress", "deprecated")
+  action <- getOption("progressr.lifecycle.progress", "defunct")
   signal <- switch(action, deprecated = .Deprecated, defunct = .Defunct)
   signal(msg = sprintf("progress() is %s", action), package = .packageName)
  

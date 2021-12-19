@@ -1,6 +1,33 @@
 Package: progressr
 ==================
 
+Version: 0.10.0 [2021-12-18]
+
+SIGNIFICANT CHANGES:
+
+ * Now interrupts are detected, which triggers the progress handlers to
+   terminate nicely, e.g. a progress bar in the terminal will stay as is
+   instead of being cleared.
+
+BUG FIXES:
+
+ * A progressor that signaled progress beyond 100% prevented any further
+   progressors in the same environment to report on progress.
+   
+ * It was not possible to reuse handlers of type 'progress' more than once,
+   because they did not fully reset themselves when finished.
+
+ * The 'pbcol' progression handler did not respect clean = FALSE.
+
+DEPRECATED AND DEFUNCT:
+
+ * Function progress() is defunct in order to re-use it for other purpose.
+   It is unlikely that anyone really used this function, but if you did, then
+   use cond <- progression() to create 'progression' condition and then use
+   withRestart(signalCondition(cond), muffleProgression = function(p) NULL)
+   to signal it.
+
+
 Version: 0.9.0 [2021-09-24]
 
 PERFORMANCE:

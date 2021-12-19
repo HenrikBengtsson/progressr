@@ -41,7 +41,7 @@ handler_progress <- function(format = ":spin [:bar] :percent :message", show_aft
 
   ## Force evaluation for 'format' here in case 'crayon' is used.  This
   ## works around the https://github.com/r-lib/crayon/issues/48 problem
-  format <- force(format)
+  stop_if_not(is.character(format), length(format) == 1L, !is.na(format))
   
   if (!is_fake("handler_progress")) {
     progress_bar <- progress::progress_bar
@@ -72,13 +72,20 @@ handler_progress <- function(format = ":spin [:bar] :percent :message", show_aft
     erase_progress_bar <- function(pb) NULL
     redraw_progress_bar <- function(pb, tokens = list()) NULL
   }
-  
+
   reporter <- local({
     pb <- NULL
-
-    make_pb <- function(...) {
+    
+    make_pb <- function(format, total, clear, show_after, ...) {
       if (!is.null(pb)) return(pb)
-      args <- c(list(...), backend_args)
+      stop_if_not(
+        is.character(format), length(format) == 1L,
+        is.numeric(total), length(total) == 1L,
+        is.logical(clear), length(clear) == 1L,
+        is.numeric(show_after), length(show_after) == 1L
+      )
+      args <- c(list(format = format, total = total, clear = clear,
+                     show_after = show_after, ...), backend_args)
       pb <<- do.call(progress_bar$new, args = args)
       pb
     }
@@ -122,8 +129,16 @@ handler_progress <- function(format = ":spin [:bar] :percent :message", show_aft
         redraw_progress_bar(pb, tokens = last_tokens)
       },
 
+      interrupt = function(config, state, progression, ...) {
+        if (is.null(pb)) return()
+        msg <- getOption("progressr.interrupt.message", "interrupt detected")
+        msg <- paste(c("", msg, ""), collapse = "\n")
+        cat(msg, file = stderr())
+      },
+
       initiate = function(config, state, progression, ...) {
         if (!state$enabled || config$times == 1L) return()
+        stop_if_not(is.null(pb))
         make_pb(format = format, total = config$max_steps,
                 clear = config$clear, show_after = config$enable_after)
         pb_tick(pb, 0, message = state$message)
@@ -139,11 +154,15 @@ handler_progress <- function(format = ":spin [:bar] :percent :message", show_aft
       },
         
       finish = function(config, state, progression, ...) {
-        if (is.null(pb) || pb$finished) return()
-        make_pb(format = format, total = config$max_steps,
-                clear = config$clear, show_after = config$enable_after)
-        reporter$update(config = config, state = state, progression = progression, ...)
-        if (config$clear && !pb$finished) pb_update(pb, ratio = 1.0)
+        ## Already finished?
+        if (is.null(pb)) return()
+        if (!pb$finished) {
+          make_pb(format = format, total = config$max_steps,
+                  clear = config$clear, show_after = config$enable_after)
+          reporter$update(config = config, state = state, progression = progression, ...)
+          if (config$clear) pb_update(pb, ratio = 1.0)
+        }
+        pb <<- NULL
       }
     )
   })
