@@ -706,6 +706,9 @@ $ <span class="ex">Rscript</span> -e <span class="st">"library(progressr)"</span
 <div class="section level3">
 <h3 id="known-issues">Known issues<a class="anchor" aria-label="anchor" href="#known-issues"></a>
 </h3>
+<div class="section level4">
+<h4 id="a-progressor-cannot-be-created-in-the-global-environment">A progressor cannot be created in the global environment<a class="anchor" aria-label="anchor" href="#a-progressor-cannot-be-created-in-the-global-environment"></a>
+</h4>
 <p>It is not possible to create a progressor in the global environment, e.g. in the the top-level of a script. It has to be created inside a function, within <code>with_progress({ ... })</code>, <code>local({ ... })</code>, or a similar construct. For example, the following:</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span>
@@ -740,6 +743,20 @@ $ <span class="ex">Rscript</span> -e <span class="st">"library(progressr)"</span
 <span class="op">}</span><span class="op">)</span>
 <span class="co">#  |====================                               |  40%</span></code></pre></div>
 <p>The main reason for this is to limit the life span of each progressor. If we created it in the global environment, there is a significant risk it would never finish and block all of the following progressors.</p>
+</div>
+<div class="section level4">
+<h4 id="the-global-progress-handler-cannot-be-set-everywhere">The global progress handler cannot be set everywhere<a class="anchor" aria-label="anchor" href="#the-global-progress-handler-cannot-be-set-everywhere"></a>
+</h4>
+<p>It is <em>not</em> possible to call <code>handlers(global = TRUE)</code> in all circumstances. For example, it cannot be called within <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code> and <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">withCallingHandlers()</a></code>;</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">tryCatch</span>(<span class="kw">handlers</span>(<span class="dt">global =</span> <span class="ot">TRUE</span>), <span class="dt">error =</span> identity)
+Error <span class="cf">in</span> <span class="kw">globalCallingHandlers</span>(<span class="ot">NULL</span>) <span class="op">:</span><span class="st"> </span>
+<span class="st">  </span>should not be called with handlers on the stack</code></pre></div>
+<p>This is not a bug - neither in <strong>progressr</strong> nor in R itself. It's due to a conservative design on how <em>global</em> calling handlers should work in R. If it allowed, there's a risk we might end up getting weird and unpredictable behaviors when messages, warnings, errors, and other types of conditions are signaled.</p>
+<p>Because <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code> and <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">withCallingHandlers()</a></code> is used in many places throughout base R, this means that we also cannot call <code>handlers(global = TRUE)</code> as part of a package's startup process, e.g. <code><a href="https://rdrr.io/r/base/ns-hooks.html" class="external-link">.onLoad()</a></code> or <code><a href="https://rdrr.io/r/base/ns-hooks.html" class="external-link">.onAttach()</a></code>.</p>
+<p>Another example of this error is if <code>handlers(global = TRUE)</code> is used inside package vignettes and dynamic documents such as Rmarkdown. In such cases, the global progress handler has to be enabled <em>prior</em> to processing the document, e.g.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>progressr<span class="op">::</span><span class="kw">handlers</span>(<span class="dt">global =</span> <span class="ot">TRUE</span>)
+<span class="op">&gt;</span><span class="st"> </span>rmarkdown<span class="op">::</span><span class="kw">render</span>(<span class="st">"input.Rmd"</span>)</code></pre></div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="under-the-hood">Under the hood<a class="anchor" aria-label="anchor" href="#under-the-hood"></a>
@@ -798,7 +815,7 @@ M<span class="op">:</span><span class="st"> </span>Added value <span class="dv">
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9003.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9003.</p>
 </div>
 
       </footer>
