@@ -613,6 +613,8 @@ For a more up-to-date view on what features might be added, see <https://github.
 
 ### Known issues
 
+#### A progressor cannot be created in the global environment
+
 It is not possible to create a progressor in the global environment, e.g. in the the top-level of a script.  It has to be created inside a function, within `with_progress({ ... })`, `local({ ... })`, or a similar construct.  For example, the following:
 
 ```r
@@ -657,6 +659,28 @@ with_progress({
 ```
 
 The main reason for this is to limit the life span of each progressor.  If we created it in the global environment, there is a significant risk it would never finish and block all of the following progressors.
+
+
+#### The global progress handler cannot be set everywhere
+
+It is _not_ possible to call `handlers(global = TRUE)` in all circumstances.  For example, it cannot be called within `tryCatch()` and `withCallingHandlers()`;
+
+```r
+> tryCatch(handlers(global = TRUE), error = identity)
+Error in globalCallingHandlers(NULL) : 
+  should not be called with handlers on the stack
+```
+
+This is not a bug - neither in **progressr** nor in R itself. It's due to a conservative design on how _global_ calling handlers should work in R. If it allowed, there's a risk we might end up getting weird and unpredictable behaviors when messages, warnings, errors, and other types of conditions are signaled.
+
+Because `tryCatch()` and `withCallingHandlers()` is used in many places throughout base R, this means that we also cannot call `handlers(global = TRUE)` as part of a package's startup process, e.g. `.onLoad()` or `.onAttach()`.
+
+Another example of this error is if `handlers(global = TRUE)` is used inside package vignettes and dynamic documents such as Rmarkdown.  In such cases, the global progress handler has to be enabled _prior_ to processing the document, e.g.
+
+```r
+> progressr::handlers(global = TRUE)
+> rmarkdown::render("input.Rmd")
+```
 
 
 ### Under the hood
