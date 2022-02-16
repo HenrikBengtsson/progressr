@@ -39,3 +39,56 @@ delay_stdout <- function(delays, stdout_file) {
   }
   stdout_file
 }
+
+
+buffer_stdout <- function() {
+  stdout_file <- rawConnection(raw(0L), open = "w")
+  sink(stdout_file, type = "output", split = FALSE)
+  attr(stdout_file, "sink_index") <- sink.number(type = "output")
+  stdout_file
+} ## buffer_stdout()
+
+
+flush_stdout <- function(stdout_file, close = TRUE, must_work = FALSE) {
+  if (is.null(stdout_file)) return(NULL)
+
+  ## Can we close the sink we opened?
+  ## It could be that a progressor completes while there is a surrounding
+  ## sink active, e.g. an active capture.output(), or when signalled within
+  ## a sequential future.  Because of this, we might not be able to flush
+  ## close the sink here.
+  sink_index <- attr(stdout_file, "sink_index")
+  if (sink_index != sink.number("output")) {
+    if (must_work) {
+      stop(sprintf("[progressr] Cannot flush stdout because the current sink index (%d) is out of sync with the sink we want to close (%d)", sink.number("output"), sink_index))
+    }
+    return(stdout_file)
+  }
+  
+  sink(split = FALSE, type = "output")
+  stdout <- rawToChar(rawConnectionValue(stdout_file))
+  if (length(stdout) > 0) cat(stdout, file = stdout())
+  close(stdout_file)
+  stdout_file <- NULL
+  if (!close) stdout_file <- buffer_stdout()
+  stdout_file
+} ## flush_stdout()
+
+has_buffered_stdout <- function(stdout_file) {
+  !is.null(stdout_file) && (length(rawConnectionValue(stdout_file)) > 0L)
+}
+
+
+flush_conditions <- function(conditions) {
+  for (c in conditions) {
+    if (inherits(c, "message")) {
+      message(c)
+    } else if (inherits(c, "warning")) {
+      warning(c)
+    } else if (inherits(c, "condition")) {
+      signalCondition(c)
+    }
+  }
+  list()
+} ## flush_conditions()
+ 
