@@ -1,9 +1,12 @@
 Package: progressr
 ==================
 
-Version: 0.10.0-9000 [2021-12-18]
+Version: 0.10.0-9001 [2022-03-23]
 
- * ...
+BUG FIXES:
+
+ * Warnings on stray progression conditions could appear with an empty
+   message.
  
 
 Version: 0.10.0 [2021-12-18]
