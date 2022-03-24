@@ -33,7 +33,12 @@ progress_aggregator <- function(progress) {
     } else if (type == "update") {
       progress(child = p)
     } else {
-      stop("Unknown 'progression' type: ", sQuote(type))
+      ## Was this meant to be a 'control_progression' condition?
+      if (type %in% c("reset", "shutdown", "hide", "unhide", "interrupt")) {
+        stop("Unsupported 'progression' type. Was it meant to be a 'control_progression' condition?: ", sQuote(type))
+      } else {
+        stop("Unknown 'progression' type: ", sQuote(type))
+      }
     }
     
     ## Prevent upstream calling handlers to receive progression 'p'
