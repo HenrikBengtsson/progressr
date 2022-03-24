@@ -1,9 +1,11 @@
 Package: progressr
 ==================
 
-Version: 0.10.0-9001 [2022-03-23]
+Version: 0.10.0-9002 [2022-03-23]
 
 BUG FIXES:
+
+ * The 'plyr' progress plugin stopped working with progressr 0.8.0.
 
  * Warnings on stray progression conditions could appear with an empty
    message.
