@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0-9002</span>
       </span>
     </div>
 
@@ -32,7 +32,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -51,7 +51,7 @@
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Packages
      
     <span class="caret"></span>
@@ -124,10 +124,15 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.10.0-9000" id="progressr-0-10-0-9000">progressr 0.10.0-9000<a class="anchor" aria-label="anchor" href="#progressr-0-10-0-9000"></a></h2>
+<h2 class="page-header" data-toc-text="0.10.0-9002" id="progressr-0100-9002">progressr 0.10.0-9002<a class="anchor" aria-label="anchor" href="#progressr-0100-9002"></a></h2>
+<div class="section level4">
+<h4 id="bug-fixes-0-10-0-9002">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-10-0-9002"></a></h4>
+<ul><li><p>The ‘plyr’ progress plugin stopped working with progressr 0.8.0.</p></li>
+<li><p>Warnings on stray progression conditions could appear with an empty message.</p></li>
+</ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.10.0" id="progressr-0-10-0">progressr 0.10.0<small>2021-12-19</small><a class="anchor" aria-label="anchor" href="#progressr-0-10-0"></a></h2>
+<h2 class="page-header" data-toc-text="0.10.0" id="progressr-0100">progressr 0.10.0<small>2021-12-19</small><a class="anchor" aria-label="anchor" href="#progressr-0100"></a></h2>
 <div class="section level4">
 <h4 id="significant-changes-0-10-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-0-10-0"></a></h4>
 <ul><li>Now interrupts are detected, which triggers the progress handlers to terminate nicely, e.g. a progress bar in the terminal will stay as is instead of being cleared.</li>
@@ -144,7 +149,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.9.0" id="progressr-0-9-0">progressr 0.9.0<small>2021-09-24</small><a class="anchor" aria-label="anchor" href="#progressr-0-9-0"></a></h2>
+<h2 class="page-header" data-toc-text="0.9.0" id="progressr-090">progressr 0.9.0<small>2021-09-24</small><a class="anchor" aria-label="anchor" href="#progressr-090"></a></h2>
 <div class="section level4">
 <h4 id="performance-0-9-0">Performance<a class="anchor" aria-label="anchor" href="#performance-0-9-0"></a></h4>
 <ul><li><p>The progressor function created by progressor() no longer “inherit” objects from the calling environment, which would, for instance, result in those objects to be exported to parallel workers together with the progressor function, which in turn would come with large time and memory costs.</p></li>
@@ -161,7 +166,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.8.0" id="progressr-0-8-0">progressr 0.8.0<small>2021-06-10</small><a class="anchor" aria-label="anchor" href="#progressr-0-8-0"></a></h2>
+<h2 class="page-header" data-toc-text="0.8.0" id="progressr-080">progressr 0.8.0<small>2021-06-10</small><a class="anchor" aria-label="anchor" href="#progressr-080"></a></h2>
 <div class="section level4">
 <h4 id="significant-changes-0-8-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-0-8-0"></a></h4>
 <ul><li><p>Creating a new progressor() will now automatically finish an existing progressor, if one was previously created in the same environment. The previous behavior was to give an error (see below bug fix).</p></li>
@@ -170,7 +175,7 @@
 </ul></div>
 <div class="section level4">
 <h4 id="new-features-0-8-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-8-0"></a></h4>
-<ul><li><p>withProgressShiny() gained argument ‘inputs’, which can be used to control whether or not Shiny progress components ‘message’ and ‘detail’ should be updated based on the progression message, e.g. inputs = list(message = “sticky_message”, detail = “message”) will cause progression messages to update the ‘detail’ component and sticky ones to update both.</p></li>
+<ul><li><p>withProgressShiny() gained argument ‘inputs’, which can be used to control whether or not Shiny progress components ‘message’ and ‘detail’ should be updated based on the progression message, e.g. inputs = list(message = “sticky_message”, detail = “message”) will cause progression messages to update the ‘detail’ component and sticky ones to update both.</p></li>
 <li><p>Now supporting zero-length progressors, e.g. p &lt;- progressor(along = x) where length(x) == 0.</p></li>
 <li><p>Add handlers(“rstudio”) to report on progress in the RStudio Console via the RStudio Job interface.</p></li>
 </ul></div>
@@ -188,7 +193,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.7.0" id="progressr-0-7-0">progressr 0.7.0<small>2020-12-11</small><a class="anchor" aria-label="anchor" href="#progressr-0-7-0"></a></h2>
+<h2 class="page-header" data-toc-text="0.7.0" id="progressr-070">progressr 0.7.0<small>2020-12-11</small><a class="anchor" aria-label="anchor" href="#progressr-070"></a></h2>
 <div class="section level4">
 <h4 id="significant-changes-0-7-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-0-7-0"></a></h4>
 <ul><li><p>The user can now use handlers(global = TRUE) to enable progress reports everywhere without having to use with_progress(). This only works in R (&gt;= 4.0.0) because it requires global calling handlers.</p></li>
@@ -214,7 +219,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.6.0" id="progressr-0-6-0">progressr 0.6.0<small>2020-05-19</small><a class="anchor" aria-label="anchor" href="#progressr-0-6-0"></a></h2>
+<h2 class="page-header" data-toc-text="0.6.0" id="progressr-060">progressr 0.6.0<small>2020-05-19</small><a class="anchor" aria-label="anchor" href="#progressr-060"></a></h2>
 <div class="section level4">
 <h4 id="significant-changes-0-6-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-0-6-0"></a></h4>
 <ul><li>Now with_progress() makes sure that any output produced while reporting on progress will not interfere with the progress output and vice versa, which otherwise is a common problem with progress frameworks that output to the terminal, e.g. progress-bar output is interweaved with printed objects. In contrast, when using ‘progressr’ we can use message() and print() as usual regardless of progress being reported or not.</li>
@@ -238,7 +243,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.5.0" id="progressr-0-5-0">progressr 0.5.0<small>2020-04-17</small><a class="anchor" aria-label="anchor" href="#progressr-0-5-0"></a></h2>
+<h2 class="page-header" data-toc-text="0.5.0" id="progressr-050">progressr 0.5.0<small>2020-04-17</small><a class="anchor" aria-label="anchor" href="#progressr-050"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-5-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-5-0"></a></h4>
 <ul><li>Add ‘void’ progression handler.</li>
@@ -249,14 +254,14 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.4.0" id="progressr-0-4-0">progressr 0.4.0<small>2020-01-23</small><a class="anchor" aria-label="anchor" href="#progressr-0-4-0"></a></h2>
+<h2 class="page-header" data-toc-text="0.4.0" id="progressr-040">progressr 0.4.0<small>2020-01-23</small><a class="anchor" aria-label="anchor" href="#progressr-040"></a></h2>
 <div class="section level4">
 <h4 id="significant-changes-0-4-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-0-4-0"></a></h4>
 <ul><li>All progression handler function have been renamed from &lt;name&gt;_handler() to handler_&lt;name&gt;() to make it easier to use autocompletion on them.</li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.3.0" id="progressr-0-3-0">progressr 0.3.0<a class="anchor" aria-label="anchor" href="#progressr-0-3-0"></a></h2>
+<h2 class="page-header" data-toc-text="0.3.0" id="progressr-030">progressr 0.3.0<a class="anchor" aria-label="anchor" href="#progressr-030"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-3-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-3-0"></a></h4>
 <ul><li><p>progressor() gained arguments ‘offset’ and ‘scale’, and ‘transform’.</p></li>
@@ -268,7 +273,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.2.1" id="progressr-0-2-1">progressr 0.2.1<a class="anchor" aria-label="anchor" href="#progressr-0-2-1"></a></h2>
+<h2 class="page-header" data-toc-text="0.2.1" id="progressr-021">progressr 0.2.1<a class="anchor" aria-label="anchor" href="#progressr-021"></a></h2>
 <div class="section level4">
 <h4 id="bug-fixes-0-2-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-2-1"></a></h4>
 <ul><li><p>winprogressbar_handler() would produce error “invalid ‘Label’ argument”.</p></li>
@@ -276,7 +281,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.2.0" id="progressr-0-2-0">progressr 0.2.0<a class="anchor" aria-label="anchor" href="#progressr-0-2-0"></a></h2>
+<h2 class="page-header" data-toc-text="0.2.0" id="progressr-020">progressr 0.2.0<a class="anchor" aria-label="anchor" href="#progressr-020"></a></h2>
 <div class="section level4">
 <h4 id="significant-changes-0-2-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-0-2-0"></a></h4>
 <ul><li>Renamed withProgress2() to withProgressShiny().</li>
@@ -287,7 +292,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.1.5" id="progressr-0-1-5">progressr 0.1.5<a class="anchor" aria-label="anchor" href="#progressr-0-1-5"></a></h2>
+<h2 class="page-header" data-toc-text="0.1.5" id="progressr-015">progressr 0.1.5<a class="anchor" aria-label="anchor" href="#progressr-015"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-1-5">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-1-5"></a></h4>
 <ul><li><p>Add withProgress2(), which is a plug-in backward compatibility replacement for shiny::withProgress() wrapped in progressr::with_progress() where the the “shiny” progression handler is by default added to the list of progression handlers used.</p></li>
@@ -299,14 +304,14 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.1.4" id="progressr-0-1-4">progressr 0.1.4<a class="anchor" aria-label="anchor" href="#progressr-0-1-4"></a></h2>
+<h2 class="page-header" data-toc-text="0.1.4" id="progressr-014">progressr 0.1.4<a class="anchor" aria-label="anchor" href="#progressr-014"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-1-4">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-1-4"></a></h4>
 <ul><li>Add support for progressor(along = …).</li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.1.3" id="progressr-0-1-3">progressr 0.1.3<a class="anchor" aria-label="anchor" href="#progressr-0-1-3"></a></h2>
+<h2 class="page-header" data-toc-text="0.1.3" id="progressr-013">progressr 0.1.3<a class="anchor" aria-label="anchor" href="#progressr-013"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-1-3">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-1-3"></a></h4>
 <ul><li><p>Now it is possible to send “I’m still here” progression updates by setting the progress step to zero, e.g. progress(amount = 0). This type of information can for instance be used to updated a progress bar spinner.</p></li>
@@ -315,7 +320,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.1.2" id="progressr-0-1-2">progressr 0.1.2<a class="anchor" aria-label="anchor" href="#progressr-0-1-2"></a></h2>
+<h2 class="page-header" data-toc-text="0.1.2" id="progressr-012">progressr 0.1.2<a class="anchor" aria-label="anchor" href="#progressr-012"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-1-2">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-1-2"></a></h4>
 <ul><li><p>with_progress() gained arguments ‘enable’ and ‘interval’ as an alternative to setting corresponding options progressr.*.</p></li>
@@ -324,18 +329,18 @@
 </ul></div>
 <div class="section level4">
 <h4 id="bug-fixes-0-1-2">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-1-2"></a></h4>
-<ul><li>with_progress(…, delay_conditions = “condition”), introduced in v0.1.0, would also capture conditions produced by progression handlers, e.g. progress::progress_bar() output would not be displayed until the very end.</li>
+<ul><li>with_progress(…, delay_conditions = “condition”), introduced in v0.1.0, would also capture conditions produced by progression handlers, e.g. progress::progress_bar() output would not be displayed until the very end.</li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.1.1" id="progressr-0-1-1">progressr 0.1.1<a class="anchor" aria-label="anchor" href="#progressr-0-1-1"></a></h2>
+<h2 class="page-header" data-toc-text="0.1.1" id="progressr-011">progressr 0.1.1<a class="anchor" aria-label="anchor" href="#progressr-011"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-1-1">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-1-1"></a></h4>
 <ul><li>with_progress() now captures standard output and conditions and relay them at then end. This is done in order to avoid interweaving such output with the output produced by the progression handlers. This behavior can be controlled by arguments ‘delay_stdout’ and ‘delay_condition’.</li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.1.0" id="progressr-0-1-0">progressr 0.1.0<a class="anchor" aria-label="anchor" href="#progressr-0-1-0"></a></h2>
+<h2 class="page-header" data-toc-text="0.1.0" id="progressr-010">progressr 0.1.0<a class="anchor" aria-label="anchor" href="#progressr-010"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-1-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-1-0"></a></h4>
 <ul><li>Now a progression condition is identified from the R session UUID, the progressor UUID, the incremental progression index, and the progression timestamp.</li>
@@ -346,7 +351,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.0.6" id="progressr-0-0-6">progressr 0.0.6<a class="anchor" aria-label="anchor" href="#progressr-0-0-6"></a></h2>
+<h2 class="page-header" data-toc-text="0.0.6" id="progressr-006">progressr 0.0.6<a class="anchor" aria-label="anchor" href="#progressr-006"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-0-6">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-6"></a></h4>
 <ul><li><p>Add print() for progression conditions and progressor functions.</p></li>
@@ -354,7 +359,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.0.5" id="progressr-0-0-5">progressr 0.0.5<a class="anchor" aria-label="anchor" href="#progressr-0-0-5"></a></h2>
+<h2 class="page-header" data-toc-text="0.0.5" id="progressr-005">progressr 0.0.5<a class="anchor" aria-label="anchor" href="#progressr-005"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-0-5">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-5"></a></h4>
 <ul><li><p>Add filesize_handler progression handler.</p></li>
@@ -363,7 +368,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.0.4" id="progressr-0-0-4">progressr 0.0.4<a class="anchor" aria-label="anchor" href="#progressr-0-0-4"></a></h2>
+<h2 class="page-header" data-toc-text="0.0.4" id="progressr-004">progressr 0.0.4<a class="anchor" aria-label="anchor" href="#progressr-004"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-0-4">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-4"></a></h4>
 <ul><li><p>Add utils::winProgressBar() progression handler for MS Windows.</p></li>
@@ -381,7 +386,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.0.3" id="progressr-0-0-3">progressr 0.0.3<a class="anchor" aria-label="anchor" href="#progressr-0-0-3"></a></h2>
+<h2 class="page-header" data-toc-text="0.0.3" id="progressr-003">progressr 0.0.3<a class="anchor" aria-label="anchor" href="#progressr-003"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-0-3">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-3"></a></h4>
 <ul><li><p>Add argument ‘enable_after’ for progression handlers.</p></li>
@@ -404,7 +409,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.0.2" id="progressr-0-0-2">progressr 0.0.2<a class="anchor" aria-label="anchor" href="#progressr-0-0-2"></a></h2>
+<h2 class="page-header" data-toc-text="0.0.2" id="progressr-002">progressr 0.0.2<a class="anchor" aria-label="anchor" href="#progressr-002"></a></h2>
 <div class="section level4">
 <h4 id="significant-changes-0-0-2">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-0-0-2"></a></h4>
 <ul><li>Renamed restart ‘consume_progression’ to ‘muffleProgression’ to align with restarts ‘muffleMessage’ and ‘muffleWarning’ in base R.</li>
@@ -419,7 +424,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.0.1" id="progressr-0-0-1">progressr 0.0.1<a class="anchor" aria-label="anchor" href="#progressr-0-0-1"></a></h2>
+<h2 class="page-header" data-toc-text="0.0.1" id="progressr-001">progressr 0.0.1<a class="anchor" aria-label="anchor" href="#progressr-001"></a></h2>
 <div class="section level4">
 <h4 id="significant-changes-0-0-1">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-0-0-1"></a></h4>
 <ul><li><p>First decent prototype of this package and the idea behind it.</p></li>
@@ -427,7 +432,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.0.0-9004" id="progressr-0-0-0-9004">progressr 0.0.0-9004<a class="anchor" aria-label="anchor" href="#progressr-0-0-0-9004"></a></h2>
+<h2 class="page-header" data-toc-text="0.0.0-9004" id="progressr-000-9004">progressr 0.0.0-9004<a class="anchor" aria-label="anchor" href="#progressr-000-9004"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-0-0-9004">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-0-9004"></a></h4>
 <ul><li><p>Add argument ‘auto_done’ to automatically have progress updates also signal “done” as soon as the last step has been reached.</p></li>
@@ -439,7 +444,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.0.0-9003" id="progressr-0-0-0-9003">progressr 0.0.0-9003<a class="anchor" aria-label="anchor" href="#progressr-0-0-0-9003"></a></h2>
+<h2 class="page-header" data-toc-text="0.0.0-9003" id="progressr-000-9003">progressr 0.0.0-9003<a class="anchor" aria-label="anchor" href="#progressr-000-9003"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-0-0-9003">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-0-9003"></a></h4>
 <ul><li><p>Add ‘intrusiveness’ parameter that specifies how intrusive/disruptive a certain progress reporter is. For instance, an auditory reporter is relatively more disruptive than a visual progress bar part of the status bar.</p></li>
@@ -447,7 +452,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.0.0-9002" id="progressr-0-0-0-9002">progressr 0.0.0-9002<a class="anchor" aria-label="anchor" href="#progressr-0-0-0-9002"></a></h2>
+<h2 class="page-header" data-toc-text="0.0.0-9002" id="progressr-000-9002">progressr 0.0.0-9002<a class="anchor" aria-label="anchor" href="#progressr-000-9002"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-0-0-9002">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-0-9002"></a></h4>
 <ul><li><p>Add progressor().</p></li>
@@ -455,10 +460,10 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.0.0-9001" id="progressr-0-0-0-9001">progressr 0.0.0-9001<a class="anchor" aria-label="anchor" href="#progressr-0-0-0-9001"></a></h2>
+<h2 class="page-header" data-toc-text="0.0.0-9001" id="progressr-000-9001">progressr 0.0.0-9001<a class="anchor" aria-label="anchor" href="#progressr-000-9001"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-0-0-9001">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-0-9001"></a></h4>
-<ul><li><p>Add progress update handlers based on utils::txtProgressBar(), tcltk::tkProgressBar(), cat(“\a”), progress::progress_bar(), beepr::beep(), and notifier::notify().</p></li>
+<ul><li><p>Add progress update handlers based on utils::txtProgressBar(), tcltk::tkProgressBar(), cat(“”), progress::progress_bar(), beepr::beep(), and notifier::notify().</p></li>
 <li><p>Add with_progress().</p></li>
 <li><p>Add options ‘progressr.handlers’ for settings default progress handlers.</p></li>
 <li><p>Add ‘progressr.times’ for controlling the number of times progress updates are rendered.</p></li>
@@ -466,7 +471,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.0.0-9000" id="progressr-0-0-0-9000">progressr 0.0.0-9000<a class="anchor" aria-label="anchor" href="#progressr-0-0-0-9000"></a></h2>
+<h2 class="page-header" data-toc-text="0.0.0-9000" id="progressr-000-9000">progressr 0.0.0-9000<a class="anchor" aria-label="anchor" href="#progressr-000-9000"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-0-0-9000">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-0-9000"></a></h4>
 <ul><li><p>Add progress() to create and signal progression condition.</p></li>
