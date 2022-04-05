@@ -390,7 +390,7 @@ my_fcn(1:5)
 #  |====================                               |  40%
 ```
 
-_Note:_ This solution does not involved the `.progress = TRUE` argument that **plyr** implements.  Because **progressr** is more flexible, and because `.progress` is automatically disabled when running in parallel (see below), I recommend to use the above **progressr** approach instead.  Having said this, as proof-of-concept, the **progressr** package implements support `.progress = "progressr"` if you still prefer the **plyr** way of doing it.
+Note how this solution does not make use of **plyr**'s `.progress` argument, because the above solution is more powerful and more flexible, e.g. we have more control on progress updates and their messages.  However, if you prefer the traditional **plyr** approach, you can use `.progress = "progressr"`, e.g. `y <- llply(..., .progress = "progressr")`.
 
 
 ## Parallel processing and progress updates
@@ -535,7 +535,7 @@ my_fcn(1:5)
 # / [================>-----------------------------]  40% x=2
 ```
 
-_Note:_ Although **progressr** implements support for using `.progress = "progressr"` with **plyr**, unfortunately, this will _not_ work when using `.parallel = TRUE`.  This is because **plyr** resets `.progress` to the default `"none"` internally regardless how we set `.progress`. See <https://github.com/HenrikBengtsson/progressr/issues/70> for details and a hack that works around this limitation.
+_Note:_ As an alternative to the above, recommended approach, one can use `.progress = "progressr"` together with `.parallel = TRUE`.  This requires **plyr** (>= 1.8.7).
 
 
 ### Near-live versus buffered progress updates with futures
