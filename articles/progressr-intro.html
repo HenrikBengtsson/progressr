@@ -508,7 +508,7 @@ handlers(handler_progress(complete = "#"))
 
 <span class="fu">my_fcn</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>
 <span class="co">#  |====================                               |  40%</span></code></pre></div>
-<p><em>Note:</em> This solution does not involved the <code>.progress = TRUE</code> argument that <strong>plyr</strong> implements. Because <strong>progressr</strong> is more flexible, and because <code>.progress</code> is automatically disabled when running in parallel (see below), I recommend to use the above <strong>progressr</strong> approach instead. Having said this, as proof-of-concept, the <strong>progressr</strong> package implements support <code>.progress = "progressr"</code> if you still prefer the <strong>plyr</strong> way of doing it.</p>
+<p>Note how this solution does not make use of <strong>plyr</strong>’s <code>.progress</code> argument, because the above solution is more powerful and more flexible, e.g. we have more control on progress updates and their messages. However, if you prefer the traditional <strong>plyr</strong> approach, you can use <code>.progress = "progressr"</code>, e.g. <code>y &lt;- llply(..., .progress = "progressr")</code>.</p>
 </div>
 </div>
 <div class="section level2">
@@ -641,7 +641,7 @@ handlers(handler_progress(complete = "#"))
 
 <span class="fu">my_fcn</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>
 <span class="co"># / [================&gt;-----------------------------]  40% x=2</span></code></pre></div>
-<p><em>Note:</em> Although <strong>progressr</strong> implements support for using <code>.progress = "progressr"</code> with <strong>plyr</strong>, unfortunately, this will <em>not</em> work when using <code>.parallel = TRUE</code>. This is because <strong>plyr</strong> resets <code>.progress</code> to the default <code>"none"</code> internally regardless how we set <code>.progress</code>. See <a href="https://github.com/HenrikBengtsson/progressr/issues/70" class="external-link uri">https://github.com/HenrikBengtsson/progressr/issues/70</a> for details and a hack that works around this limitation.</p>
+<p><em>Note:</em> As an alternative to the above, recommended approach, one can use <code>.progress = "progressr"</code> together with <code>.parallel = TRUE</code>. This requires <strong>plyr</strong> (&gt;= 1.8.7).</p>
 </div>
 <div class="section level3">
 <h3 id="near-live-versus-buffered-progress-updates-with-futures">Near-live versus buffered progress updates with futures<a class="anchor" aria-label="anchor" href="#near-live-versus-buffered-progress-updates-with-futures"></a>
