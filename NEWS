@@ -1,8 +1,12 @@
 Package: progressr
 ==================
 
-Version: 0.10.0-9002 [2022-03-23]
+Version: 0.10.0-9003 [2022-04-19]
 
+NEW FEATURES:
+
+ * Add progress handler 'cli' building on cli::cli_progress_bar().
+ 
 BUG FIXES:
 
  * The 'plyr' progress plugin stopped working with progressr 0.8.0.
