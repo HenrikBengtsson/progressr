@@ -15,9 +15,9 @@ Version: 0.10.0 [2021-12-18]
 
 SIGNIFICANT CHANGES:
 
- * Now interrupts are detected, which triggers the progress handlers to
-   terminate nicely, e.g. a progress bar in the terminal will stay as is
-   instead of being cleared.
+ * Now interrupts are detected, which triggers the progress handlers
+   to terminate nicely, e.g. a progress bar in the terminal will stay
+   as-is instead of being cleared.
 
 BUG FIXES:
 
