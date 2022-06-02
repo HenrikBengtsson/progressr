@@ -35,17 +35,23 @@ Below is how this progress handler renders at 0\%, 30\% and 99\% progress
 for the three different \code{style} values that \code{\link[utils:txtProgressBar]{utils::txtProgressBar()}}
 supports.
 
-With \code{handlers(handler_txtprogressbar(style = 1L))}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{
+With \code{handlers(handler_txtprogressbar(style = 1L))}:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 ====================================
 ==========================================================
 }\if{html}{\out{</div>}}
 
-With \code{handlers(handler_txtprogressbar(style = 2L))}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{
+With \code{handlers(handler_txtprogressbar(style = 2L))}:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 ====================================
 ==========================================================
 }\if{html}{\out{</div>}}
 
-With \code{handlers(handler_txtprogressbar(style = 3L))}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{  |                                                 |   0\%
+With \code{handlers(handler_txtprogressbar(style = 3L))}:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{  |                                                 |   0\%
   |===============                                  |  30\%
   |=================================================|  99\%
 }\if{html}{\out{</div>}}
