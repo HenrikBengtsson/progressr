@@ -8,8 +8,8 @@
 ## New Features
 
  * Now **plyr** (>= 1.8.7) supports **progressr** for also parallel
-     processing, e.g. `y <- plyr::llply(X, slow_sum, .parallel = TRUE,
-     .progress = "progressr")`.
+   processing, e.g. `y <- plyr::llply(X, slow_sum, .parallel = TRUE,
+   .progress = "progressr")`.
 
 ## Bug Fixes
 
