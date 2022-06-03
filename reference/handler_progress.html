@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0-9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.1-9000</span>
       </span>
     </div>
 
@@ -166,11 +166,13 @@ rendered.</p></dd>
 
 <p>Below is how this progress handler renders by default at 0%, 30% and 99%
 progress:</p>
-<p>With <code>handlers(handler_progress())</code>:</p><div class="sourceCode r"><pre><code>- [-------------------------------------------------]   0% 
+<p>With <code>handlers(handler_progress())</code>:</p>
+<p></p><div class="sourceCode r"><pre><code>- [-------------------------------------------------]   0% 
 \ [====&gt;--------------------------------------------]  10% 
 | [================================================&gt;]  99% 
 </code></pre><p></p></div>
-<p>If the progression updates have messages, they will appear like:</p><div class="sourceCode r"><pre><code>- [-----------------------------------------]   0% Starting
+<p>If the progression updates have messages, they will appear like:</p>
+<p></p><div class="sourceCode r"><pre><code>- [-----------------------------------------]   0% Starting
 \ [===========&gt;----------------------------]  30% Importing
 | [=====================================&gt;]  99% Summarizing
 </code></pre><p></p></div>

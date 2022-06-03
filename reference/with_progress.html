@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0-9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.1-9000</span>
       </span>
     </div>
 
@@ -208,8 +208,10 @@ that takes one argument which is the <a href="progression.html">progression</a> 
 To have progress being reported on also then, set R options
 <span class="option">progressr.enable</span> or environment variable <code class="env">R_PROGRESSR_ENABLE</code>
 to <code>TRUE</code>.  Alternatively, one can set argument <code>enable=TRUE</code> when calling
-<code>with_progress()</code>.  For example,</p><div class="sourceCode sh"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> Rscript <span class="at">-e</span> <span class="st">"library(progressr)"</span> <span class="at">-e</span> <span class="st">"with_progress(slow_sum(1:5))"</span></span></code></pre><p></p></div>
-<p>will <em>not</em> report on progress, whereas:</p><div class="sourceCode sh"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> export R_PROGRESSR_ENABLE=TRUE</span>
+<code>with_progress()</code>.  For example,</p>
+<p></p><div class="sourceCode sh"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> Rscript <span class="at">-e</span> <span class="st">"library(progressr)"</span> <span class="at">-e</span> <span class="st">"with_progress(slow_sum(1:5))"</span></span></code></pre><p></p></div>
+<p>will <em>not</em> report on progress, whereas:</p>
+<p></p><div class="sourceCode sh"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> export R_PROGRESSR_ENABLE=TRUE</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> Rscript <span class="at">-e</span> <span class="st">"library(progressr)"</span> <span class="at">-e</span> <span class="st">"with_progress(slow_sum(1:5))"</span></span></code></pre><p></p></div>
 <p>will.</p>
     </div>
@@ -248,7 +250,7 @@ to <code>TRUE</code>.  Alternatively, one can set argument <code>enable=TRUE</co
 <span class="r-out co"><span class="r-pr">#&gt;</span>     p(amount = 0)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     sum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55f416d5f3f0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5589c46ca8e0&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:progressr&gt;</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span></span>
@@ -326,6 +328,16 @@ to <code>TRUE</code>.  Alternatively, one can set argument <code>enable=TRUE</co
 <span class="r-in">    <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="slow_sum.html">slow_sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span class="r-in">  <span class="op">}</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">}</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 2</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 4</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 6</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 8</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 9</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 10</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">## Progress reported via customized utils::txtProgressBar and beepr::beep,</span></span>
 <span class="r-in"><span class="co">## if available.</span></span>

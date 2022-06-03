@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0-9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.1-9000</span>
       </span>
     </div>
 
@@ -125,7 +125,7 @@
     </div>
 
     <div class="ref-description">
-    <p>A progression handler for <code>pbmcapply::progressBar()</code>.</p>
+    <p>A progression handler for <code><a href="https://rdrr.io/pkg/pbmcapply/man/progressBar.html" class="external-link">pbmcapply::progressBar()</a></code>.</p>
     </div>
 
     <div id="ref-usage">
@@ -142,9 +142,9 @@
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>substyle</dt>
-<dd><p>(integer) The progress-bar substyle according to <code>pbmcapply::progressBar()</code>.</p></dd>
+<dd><p>(integer) The progress-bar substyle according to <code><a href="https://rdrr.io/pkg/pbmcapply/man/progressBar.html" class="external-link">pbmcapply::progressBar()</a></code>.</p></dd>
 <dt>style</dt>
-<dd><p>(character) The progress-bar style according to <code>pbmcapply::progressBar()</code>.</p></dd>
+<dd><p>(character) The progress-bar style according to <code><a href="https://rdrr.io/pkg/pbmcapply/man/progressBar.html" class="external-link">pbmcapply::progressBar()</a></code>.</p></dd>
 <dt>file</dt>
 <dd><p>(connection) A <a href="https://rdrr.io/r/base/connections.html" class="external-link">base::connection</a> to where output should be sent.</p></dd>
 <dt>intrusiveness</dt>
@@ -171,7 +171,8 @@ with <code>style = substyle</code>, the main usage of this handler is with
 <code>style = "ETA"</code> (default) for which <code>substyle</code> is ignored.
 Below is how this progress handler renders by default at 0%, 30% and 99%
 progress:</p>
-<p>With <code>handlers(handler_pbmcapply())</code>:</p><div class="sourceCode r"><pre><code> |                                         |   0%, ETA NA
+<p>With <code>handlers(handler_pbmcapply())</code>:</p>
+<p></p><div class="sourceCode r"><pre><code> |                                         |   0%, ETA NA
  |===========                           |  30%, ETA 01:32
  |======================================|  99%, ETA 00:01
 </code></pre><p></p></div>
@@ -186,6 +187,17 @@ progress:</p>
 <span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
 <span class="r-in">  </span>
 <span class="r-in"><span class="op">}</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 2</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 4</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 6</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 8</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 9</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 55</span>
 </code></pre></div>
     </div>
   </div>

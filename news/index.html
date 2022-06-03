@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0-9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.1-9000</span>
       </span>
     </div>
 
@@ -124,9 +124,17 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.10.0-9003" id="version-0100-9003">Version 0.10.0-9003<a class="anchor" aria-label="anchor" href="#version-0100-9003"></a></h2>
+<h2 class="page-header" data-toc-text="development version" id="version-development-version">Version (development version)<a class="anchor" aria-label="anchor" href="#version-development-version"></a></h2>
+<ul><li>…</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.10.1" id="version-0101">Version 0.10.1<small>2022-06-03</small><a class="anchor" aria-label="anchor" href="#version-0101"></a></h2>
 <div class="section level3">
-<h3 id="bug-fixes-0-10-0-9003">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-10-0-9003"></a></h3>
+<h3 id="new-features-0-10-1">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-10-1"></a></h3>
+<ul><li>Now <strong>plyr</strong> (&gt;= 1.8.7) supports <strong>progressr</strong> for also parallel processing, e.g. <code>y &lt;- plyr::llply(X, slow_sum, .parallel = TRUE,      .progress = "progressr")</code>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-0-10-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-10-1"></a></h3>
 <ul><li><p>The ‘plyr’ progress plugin stopped working with <strong>progressr</strong> 0.8.0.</p></li>
 <li><p>Warnings on stray <code>progression</code> conditions could appear with an empty message.</p></li>
 </ul></div>
@@ -375,7 +383,7 @@
 <div class="section level3">
 <h3 id="new-features-0-0-4">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-4"></a></h3>
 <ul><li><p>Add <code><a href="https://rdrr.io/r/utils/winProgressBar.html" class="external-link">utils::winProgressBar()</a></code> progression handler for MS Windows.</p></li>
-<li><p>Add support for silent sounds for <code>beepr::beep()</code>.</p></li>
+<li><p>Add support for silent sounds for <code><a href="https://rdrr.io/pkg/beepr/man/beep.html" class="external-link">beepr::beep()</a></code>.</p></li>
 <li><p>Add option <code>progressr.enable</code>, which defaults to <code><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive()</a></code>.</p></li>
 </ul></div>
 <div class="section level3">
@@ -441,7 +449,7 @@
 <ul><li><p>Add argument <code>auto_done</code> to automatically have progress updates also signal “done” as soon as the last step has been reached.</p></li>
 <li><p>Made <code>amount</code> the first argument of progressors to avoid having to specify it by name if progressing with an amount than the default <code>amount = 1.0</code>.</p></li>
 <li><p>Add argument <code>clear</code> to control whether progress reporter should clear its output upon completion. The default is to do this, where supported.</p></li>
-<li><p>Add progress update handler based on <code>pbmcapply::progressBar()</code>.</p></li>
+<li><p>Add progress update handler based on <code><a href="https://rdrr.io/pkg/pbmcapply/man/progressBar.html" class="external-link">pbmcapply::progressBar()</a></code>.</p></li>
 <li><p>Each achieved step is now timestamped.</p></li>
 <li><p>Add option <code>progressr.debug</code>.</p></li>
 </ul></div>
@@ -466,7 +474,7 @@
 <h2 class="page-header" data-toc-text="0.0.0-9001" id="version-000-9001">Version 0.0.0-9001<a class="anchor" aria-label="anchor" href="#version-000-9001"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-0-0-9001">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-0-9001"></a></h3>
-<ul><li><p>Add progress update handlers based on <code><a href="https://rdrr.io/r/utils/txtProgressBar.html" class="external-link">utils::txtProgressBar()</a></code>, <code><a href="https://rdrr.io/r/tcltk/tkProgressBar.html" class="external-link">tcltk::tkProgressBar()</a></code>, <code>cat("\a")</code>, <code><a href="https://rdrr.io/pkg/progress/man/progress_bar.html" class="external-link">progress::progress_bar()</a></code>, <code>beepr::beep()</code>, and <code>notifier::notify()</code>.</p></li>
+<ul><li><p>Add progress update handlers based on <code><a href="https://rdrr.io/r/utils/txtProgressBar.html" class="external-link">utils::txtProgressBar()</a></code>, <code><a href="https://rdrr.io/r/tcltk/tkProgressBar.html" class="external-link">tcltk::tkProgressBar()</a></code>, <code>cat("\a")</code>, <code><a href="https://rdrr.io/pkg/progress/man/progress_bar.html" class="external-link">progress::progress_bar()</a></code>, <code><a href="https://rdrr.io/pkg/beepr/man/beep.html" class="external-link">beepr::beep()</a></code>, and <code>notifier::notify()</code>.</p></li>
 <li><p>Add <code><a href="../reference/with_progress.html">with_progress()</a></code>.</p></li>
 <li><p>Add options <code>progressr.handlers</code> for settings default progress handlers.</p></li>
 <li><p>Add <code>progressr.times</code> for controlling the number of times progress updates are rendered.</p></li>
