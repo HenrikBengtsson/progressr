@@ -219,7 +219,9 @@ global_progression_handler <- local({
         ## progress has been completed
         amount <- progression$amount
         if (!is.numeric(amount) || amount > 0) {
-          warning(sprintf("[progressr]: Received a progression %s request (amount=%g; msg=%s) but is not listening to this progressor. This can happen when code signals more progress updates than it configured the progressor to do. When the progressor completes all steps, it shuts down resulting in the global progression handler to no longer listen to it", sQuote(type), amount, sQuote(conditionMessage(progression))))
+          msg <- conditionMessage(progression)
+          if (length(msg) == 0) msg <- "character(0)"
+          warning(sprintf("Received a progression %s request (amount=%g; msg=%s) but is not listening to this progressor. This can happen when code signals more progress updates than it configured the progressor to do. When the progressor completes all steps, it shuts down resulting in the global progression handler to no longer listen to it. To troubleshoot this, try with progressr::handlers(\"debug\")", sQuote(type), amount, sQuote(msg)))
         }
         return()
       }
@@ -319,58 +321,6 @@ if (getRversion() < "4.0.0") {
     stop("register_global_progression_handler() requires R (>= 4.0.0)")
   }
 }
-
-
-
-buffer_stdout <- function() {
-  stdout_file <- rawConnection(raw(0L), open = "w")
-  sink(stdout_file, type = "output", split = FALSE)
-  attr(stdout_file, "sink_index") <- sink.number(type = "output")
-  stdout_file
-} ## buffer_stdout()
-
-flush_stdout <- function(stdout_file, close = TRUE, must_work = FALSE) {
-  if (is.null(stdout_file)) return(NULL)
-
-  ## Can we close the sink we opened?
-  ## It could be that a progressor completes while there is a surrounding
-  ## sink active, e.g. an active capture.output(), or when signalled within
-  ## a sequential future.  Because of this, we might not be able to flush
-  ## close the sink here.
-  sink_index <- attr(stdout_file, "sink_index")
-  if (sink_index != sink.number("output")) {
-    if (must_work) {
-      stop(sprintf("[progressr] Cannot flush stdout because the current sink index (%d) is out of sync with the sink we want to close (%d)", sink.number("output"), sink_index))
-    }
-    return(stdout_file)
-  }
-  
-  sink(split = FALSE, type = "output")
-  stdout <- rawToChar(rawConnectionValue(stdout_file))
-  if (length(stdout) > 0) cat(stdout, file = stdout())
-  close(stdout_file)
-  stdout_file <- NULL
-  if (!close) stdout_file <- buffer_stdout()
-  stdout_file
-} ## flush_stdout()
-
-has_buffered_stdout <- function(stdout_file) {
-  !is.null(stdout_file) && (length(rawConnectionValue(stdout_file)) > 0L)
-}
-
-flush_conditions <- function(conditions) {
-  for (c in conditions) {
-    if (inherits(c, "message")) {
-      message(c)
-    } else if (inherits(c, "warning")) {
-      warning(c)
-    } else if (inherits(c, "condition")) {
-      signalCondition(c)
-    }
-  }
-  list()
-} ## flush_conditions()
- 
 
 
 as_progression_handler <- function(handlers, drop = TRUE) {

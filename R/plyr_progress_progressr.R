@@ -26,13 +26,15 @@ progress_progressr <- function(...) {
   ## List of plyr-recognized progress functions
   list(
     init = function(x, ...) {
-      p <<- progressor(x)
+      p <<- progressor(x, on_exit = FALSE)
     },
     
     step = function() {
       p()
     },
     
-    term = function() NULL
+    term = function() {
+      p(type = "finish")
+    }
   )
 }

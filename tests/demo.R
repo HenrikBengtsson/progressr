@@ -1,7 +1,9 @@
 source("incl/start.R")
 
 library(future)
-supportedStrategies <- function(...) future:::supportedStrategies()
+supportedStrategies <- function(...) {
+  setdiff(future:::supportedStrategies(), "multiprocess")
+}
 
 isWin32 <- FALSE
 availCores <- 2L
@@ -23,6 +25,11 @@ if (!isWin32) {
       message(sprintf("- plan('%s') ...", strategy))
       plan(strategy)
       demo("mandelbrot", package = "progressr", ask = FALSE)
+      
+      ## Explicitly close any PSOCK clusters to avoid 'R CMD check' NOTE
+      ## on "detritus in the temp directory" on MS Windows
+      plan(sequential)
+      
       message(sprintf("- plan('%s') ... DONE", strategy))
     }
   

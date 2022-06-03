@@ -6,6 +6,8 @@ jobs:
   R-CMD-check:
     if: "! contains(github.event.head_commit.message, '[ci skip]')"    
 
+    timeout-minutes: 30
+
     runs-on: ${{ matrix.config.os }}
 
     name: ${{ matrix.config.os }} (${{ matrix.config.r }}) ${{ matrix.config.label }}
@@ -14,14 +16,16 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: windows-latest, r: 'devel'   }
-          - {os: windows-latest, r: 'release' }
-          - {os: macOS-latest,   r: 'devel'   }
-          - {os: macOS-latest,   r: 'release' }
-          - {os: ubuntu-20.04,   r: 'devel'   }
-          - {os: ubuntu-20.04,   r: 'release' }
-          - {os: ubuntu-20.04,   r: 'oldrel'  }
-          - {os: ubuntu-20.04,   r: '3.5'     }
+          - {os: windows-latest, r: 'devel'    }
+          - {os: windows-latest, r: 'release'  }
+          - {os: macOS-latest,   r: 'devel'    }
+          - {os: macOS-latest,   r: 'release'  }
+          - {os: ubuntu-20.04,   r: 'devel'    }
+          - {os: ubuntu-20.04,   r: 'release'  }
+          - {os: ubuntu-20.04,   r: 'oldrel'   }
+          - {os: ubuntu-20.04,   r: 'oldrel-1' }
+          - {os: ubuntu-20.04,   r: 'oldrel-2' }
+          - {os: ubuntu-20.04,   r: '3.5'      }
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -33,6 +37,8 @@ jobs:
       _R_CHECK_LENGTH_1_LOGIC2_: true
       _R_CHECK_MATRIX_DATA_: true
       _R_CHECK_SUGGESTS_ONLY_: true
+      _R_CHECK_THINGS_IN_TEMP_DIR_: true
+      RCMDCHECK_ERROR_ON: note
 
     steps:
       - uses: actions/checkout@v2
@@ -89,7 +95,7 @@ jobs:
         shell: Rscript {0}
 
       - name: Check
-        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", if (.Platform$OS.type == "windows" && getRversion() >= "4.2.0") "--no-multiarch"), error_on = "warning", check_dir = "check")
+        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", if (.Platform$OS.type == "windows" && getRversion() >= "4.2.0") "--no-multiarch"), check_dir = "check")
         shell: Rscript {0}
 
       - name: Upload check results

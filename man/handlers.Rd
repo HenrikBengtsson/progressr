@@ -62,7 +62,9 @@ progress via the \pkg{progress} package when in the terminal and via the
 RStudio Jobs progress bar when in the RStudio Console.
 \link{handler_txtprogressbar},
 other whenever using the RStudio Console, add
-the following to your \file{~/.Rprofile} startup file:\if{html}{\out{<div class="sourceCode r">}}\preformatted{if (interactive() && requireNamespace("progressr", quietly = TRUE)) \{
+the following to your \file{~/.Rprofile} startup file:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{if (interactive() && requireNamespace("progressr", quietly = TRUE)) \{
   ## Enable global progression updates
   if (getRversion() >= 4) progressr::handlers(global = TRUE)
 

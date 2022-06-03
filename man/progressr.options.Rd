@@ -74,7 +74,9 @@ The minimum time (in seconds) between successive progression updates from this h
 
 \item{\option{progressr.intrusiveness}:}{
 (numeric)
-A non-negative scalar on how intrusive (disruptive) the reporter to the user. This multiplicative scalar applies to the \emph{interval} and \emph{times} parameters. (Default: \code{1.0})\cr\preformatted{\\describe\{
+A non-negative scalar on how intrusive (disruptive) the reporter to the user. This multiplicative scalar applies to the \emph{interval} and \emph{times} parameters. (Default: \code{1.0})\cr
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{\\describe\{
   \\item\{\option{progressr.intrusiveness.auditory}:\}\{(numeric) intrusiveness for auditory progress handlers (Default: `5.0`)\}
   \\item\{\option{progressr.intrusiveness.file}:\}\{(numeric) intrusiveness for file-based progress handlers (Default: `5.0`)\}
   \\item\{\option{progressr.intrusiveness.gui}:\}\{(numeric) intrusiveness for graphical-user-interface progress handlers (Default: `1.0`)\}
@@ -82,7 +84,7 @@ A non-negative scalar on how intrusive (disruptive) the reporter to the user. Th
   \\item\{\option{progressr.intrusiveness.terminal}:\}\{(numeric) intrusiveness for progress handlers that outputs to the terminal (Default: `1.0`)\}
   \\item\{\option{progressr.intrusiveness.debug}:\}\{(numeric) intrusiveness for "debug" progress handlers (Default: `0.0`)\}
 \}
-}
+}\if{html}{\out{</div>}}
 
 }
 }

@@ -36,7 +36,9 @@ This progression handler works only in the RStudio Console.
 \section{Use this progression handler by default}{
 
 To use this handler by default whenever using the RStudio Console, add
-the following to your \file{~/.Rprofile} startup file:\if{html}{\out{<div class="sourceCode r">}}\preformatted{if (requireNamespace("progressr", quietly = TRUE)) \{
+the following to your \file{~/.Rprofile} startup file:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{if (requireNamespace("progressr", quietly = TRUE)) \{
   if (Sys.getenv("RSTUDIO") == "1" && !nzchar(Sys.getenv("RSTUDIO_TERM"))) \{
     options(progressr.handlers = progressr::handler_rstudio)
   \}

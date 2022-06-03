@@ -339,7 +339,7 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
           interrupt_reporter(p)
           .validate_internal_state(sprintf("handler(type=%s) ... end", type))
         } else {
-          stop("Unknown control_progression type: ", sQuote(type))
+          stop("Unknown 'control_progression' type: ", sQuote(type))
         }
         .validate_internal_state(sprintf("control_progression ... end", type))
         return(invisible(finished))
@@ -460,7 +460,12 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
         }
         .validate_internal_state(sprintf("handler(type=%s) ... end", type))
       } else {
-        stop("Unknown 'progression' type: ", sQuote(type))
+        ## Was this meant to be a 'control_progression' condition?
+        if (type %in% c("reset", "shutdown", "hide", "unhide", "interrupt")) {
+          stop("Unsupported 'progression' type. Was it meant to be a 'control_progression' condition?: ", sQuote(type))
+        } else {
+          stop("Unknown 'progression' type: ", sQuote(type))
+        }
       }
 
       ## Sanity checks
