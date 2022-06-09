@@ -174,6 +174,21 @@ handlers is enabled, otherwise false.</p>
     <p>This function provides a convenient alternative for getting and setting
 option <span class="option">progressr.handlers</span>.</p>
     </div>
+    <div id="for-package-developers">
+    <h2>For package developers</h2>
+    
+
+<p><em>IMPORTANT: Setting progression handlers is a privilege that should be
+left to the end user. It should not be used by R packages, which only task
+is to <em>signal</em> progress updates, not to decide if, when, and how progress
+should be reported.</em></p>
+<p>If you have to set or modify the progression handlers inside a function,
+please make sure to undo the settings afterward.  If not, you will break
+whatever progression settings the user already has for other purposes
+used elsewhere.  To undo you settings, you can do:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="va">old_handlers</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/handlers.html">handlers</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"beepr"</span>, <span class="st">"progress"</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit</a></span><span class="op">(</span><span class="fu"><a href="../reference/handlers.html">handlers</a></span><span class="op">(</span><span class="va">old_handlers</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre><p></p></div>
+    </div>
     <div id="configuring-progression-handling-during-r-startup">
     <h2>Configuring progression handling during R startup</h2>
     
