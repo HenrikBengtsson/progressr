@@ -30,7 +30,7 @@
 #' This function provides a convenient alternative for getting and setting
 #' option \option{progressr.handlers}.
 #'
-#' @section For package developers
+#' @section For package developers:
 #' _IMPORTANT: Setting progression handlers is a privilege that should be
 #' left to the end user. It should not be used by R packages, which only task
 #' is to _signal_ progress updates, not to decide if, when, and how progress
