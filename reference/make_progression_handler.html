@@ -154,39 +154,62 @@ progression calling handler functions.</p>
     <h2>Arguments</h2>
     <dl><dt>name</dt>
 <dd><p>(character) Name of progression handler.</p></dd>
+
+
 <dt>reporter</dt>
 <dd><p>(environment) A reporter environment.</p></dd>
+
+
 <dt>handler</dt>
 <dd><p>(function) Function take a <a href="progression.html">progression</a> condition
 as the first argument.</p></dd>
+
+
 <dt>enable</dt>
 <dd><p>(logical) If FALSE, then progress is not reported.</p></dd>
+
+
 <dt>enable_after</dt>
 <dd><p>(numeric) Delay (in seconds) before progression
 updates are reported.</p></dd>
+
+
 <dt>times</dt>
 <dd><p>(numeric) The maximum number of times this handler
 should report progression updates.
 If zero, then progress is not reported.</p></dd>
+
+
 <dt>interval</dt>
 <dd><p>(numeric) The minimum time (in seconds) between
 successive progression updates from this handler.</p></dd>
+
+
 <dt>intrusiveness</dt>
 <dd><p>(numeric) A non-negative scalar on how intrusive
 (disruptive) the reporter to the user.</p></dd>
+
+
 <dt>clear</dt>
 <dd><p>(logical) If TRUE, any output, typically visual, produced
 by a reporter will be cleared/removed upon completion, if possible.</p></dd>
+
+
 <dt>target</dt>
 <dd><p>(character vector) Specifies where progression updates are
 rendered.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional arguments passed to <code>make_progression_handler()</code>
 or not used.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A function of class <code>progression_handler</code> that takes a
+    
+
+<p>A function of class <code>progression_handler</code> that takes a
 <a href="progression.html">progression</a> condition as its first and only argument.</p>
     </div>
     <div id="details">
@@ -213,7 +236,7 @@ Please use with care as things might change.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>

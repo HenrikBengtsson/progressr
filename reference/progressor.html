@@ -150,46 +150,69 @@
     <h2>Arguments</h2>
     <dl><dt>steps</dt>
 <dd><p>(integer) Number of progressing steps.</p></dd>
+
+
 <dt>along</dt>
 <dd><p>(vector; alternative) Alternative that sets
 <code>steps = length(along)</code>.</p></dd>
+
+
 <dt>offset, scale</dt>
 <dd><p>(integer; optional) scale and offset applying transform
 <code>steps &lt;- scale * steps + offset</code>.</p></dd>
+
+
 <dt>transform</dt>
 <dd><p>(function; optional) A function that takes the effective
 number of <code>steps</code> as input and returns another finite and non-negative
 number of steps.</p></dd>
+
+
 <dt>message</dt>
 <dd><p>(character vector or a function) If a character vector, then
 it is pasted together into a single string using an empty separator.
 If a function, then the message is constructed by <code>conditionMessage(p)</code>
 calling this function with the progression condition <code>p</code> itself as the
 first argument.</p></dd>
+
+
 <dt>label</dt>
 <dd><p>(character) A label.</p></dd>
+
+
 <dt>trace</dt>
 <dd><p>(logical) If TRUE, then the call stack is recorded, otherwise
 not.</p></dd>
+
+
 <dt>initiate</dt>
 <dd><p>(logical) If TRUE, the progressor will signal a
 <a href="progression.html">progression</a> 'initiate' condition when created.</p></dd>
+
+
 <dt>auto_finish</dt>
 <dd><p>(logical) If TRUE, then the progressor will signal a
 <a href="progression.html">progression</a> 'finish' condition as soon as the last step has been reached.</p></dd>
+
+
 <dt>on_exit, envir</dt>
 <dd><p>(logical) If TRUE, then the created progressor will
 signal a <a href="progression.html">progression</a> 'finish' condition when the calling frame exits.
 This is ignored if the calling frame (<code>envir</code>) is the global environment.</p></dd>
+
+
 <dt>enable</dt>
 <dd><p>(logical) If TRUE, <a href="progression.html">progression</a> conditions are signaled when
 calling the progressor function created by this function.
 If FALSE, no <a href="progression.html">progression</a> conditions is signaled because the progressor
 function is an empty function that does nothing.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A function of class <code>progressor</code>.</p>
+    
+
+<p>A function of class <code>progressor</code>.</p>
     </div>
 
   </div>
@@ -204,7 +227,7 @@ function is an empty function that does nothing.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>

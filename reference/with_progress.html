@@ -148,39 +148,58 @@
     <h2>Arguments</h2>
     <dl><dt>expr</dt>
 <dd><p>An <span style="R">R</span> expression to evaluate.</p></dd>
+
+
 <dt>handlers</dt>
 <dd><p>A progression handler or a list of them.
 If NULL or an empty list, progress updates are ignored.</p></dd>
+
+
 <dt>cleanup</dt>
 <dd><p>If TRUE, all progression handlers will be shutdown
 at the end regardless of the progression is complete or not.</p></dd>
+
+
 <dt>delay_terminal</dt>
 <dd><p>If TRUE, output and conditions that may end up in
 the terminal will delayed.</p></dd>
+
+
 <dt>delay_stdout</dt>
 <dd><p>If TRUE, standard output is captured and relayed
 at the end just before any captured conditions are relayed.</p></dd>
+
+
 <dt>delay_conditions</dt>
 <dd><p>A character vector specifying <a href="https://rdrr.io/r/base/conditions.html" class="external-link">base::condition</a>
 classes to be captured and relayed at the end after any captured
 standard output is relayed.</p></dd>
+
+
 <dt>interrupts</dt>
 <dd><p>Controls whether interrupts should be detected or not.
 If TRUE and a interrupt is signaled, progress handlers are asked to
 report on the current amount progress when the evaluation was terminated
 by the interrupt, e.g. when a user pressed Ctrl-C in an interactive session,
 or a batch process was interrupted because it ran out of time.</p></dd>
+
+
 <dt>interval</dt>
 <dd><p>(numeric) The minimum time (in seconds) between
 successive progression updates from handlers.</p></dd>
+
+
 <dt>enable</dt>
 <dd><p>(logical) If FALSE, then progress is not reported.  The
 default is to report progress in interactive mode but not batch mode.
 See below for more details.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Returns the value of the expression.</p>
+    
+
+<p>Returns the value of the expression.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -250,7 +269,7 @@ to <code>TRUE</code>.  Alternatively, one can set argument <code>enable=TRUE</co
 <span class="r-out co"><span class="r-pr">#&gt;</span>     p(amount = 0)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     sum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x562320fbcde8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55c379892e70&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:progressr&gt;</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span></span>
@@ -393,7 +412,7 @@ to <code>TRUE</code>.  Alternatively, one can set argument <code>enable=TRUE</co
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>

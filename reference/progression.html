@@ -154,42 +154,69 @@ it is pasted together into a single string using an empty separator.
 If a function, then the message is constructed by <code>conditionMessage(p)</code>
 calling this function with the progression condition <code>p</code> itself as the
 first argument.</p></dd>
+
+
 <dt>amount</dt>
 <dd><p>(numeric) The total amount of progress made.</p></dd>
+
+
 <dt>step</dt>
 <dd><p>(numeric) The step completed. If specified, <code>amount</code> is ignored.
 <em>WARNING: Argument <code>step</code> should only be used when in full control of the
 order when this progression condition is signaled.</em> For example, it must not
 be signaled as one of many parallel progress updates signaled concurrently,
 because then we cannot guarantee the order these progressions arrive.</p></dd>
+
+
 <dt>time</dt>
 <dd><p>(POSIXct) A timestamp.</p></dd>
+
+
 <dt>type</dt>
 <dd><p>Type of progression made.</p></dd>
+
+
 <dt>class</dt>
 <dd><p>(character) Zero or more class names to prepend.</p></dd>
+
+
 <dt>progressor_uuid</dt>
 <dd><p>(character string) A character string that is unique
 for the current progressor and the current <span style="R">R</span> session.</p></dd>
+
+
 <dt>progression_index</dt>
 <dd><p>(integer) A non-negative integer that is
 incremented by one for each progression condition created.</p></dd>
+
+
 <dt>progression_time</dt>
 <dd><p>(POSIXct or character string) A timestamp specifying
 when the progression condition was created.</p></dd>
+
+
 <dt>call</dt>
 <dd><p>(expression) A call expression.</p></dd>
+
+
 <dt>calls</dt>
 <dd><p>(pairlist) The calls that lead up to this progression update.</p></dd>
+
+
 <dt>owner_session_uuid</dt>
 <dd><p>(character string) A character string that is
 unique for the <span style="R">R</span> session where the progressor was created.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional named elements.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <a href="https://rdrr.io/r/base/conditions.html" class="external-link">base::condition</a> of class <code>progression</code>.</p>
+    
+
+<p>A <a href="https://rdrr.io/r/base/conditions.html" class="external-link">base::condition</a> of class <code>progression</code>.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -208,7 +235,7 @@ unique for the <span style="R">R</span> session where the progressor was created
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>

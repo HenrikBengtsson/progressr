@@ -145,25 +145,36 @@
 functions accepts also a single vector of progression handlers as input.
 If this vector is empty, then an empty set of progression handlers will
 be set.</p></dd>
+
+
 <dt>append</dt>
 <dd><p>(logical) If FALSE, the specified progression handlers
 replace the current ones, otherwise appended to them.</p></dd>
+
+
 <dt>on_missing</dt>
 <dd><p>(character) If <code>"error"</code>, an error is thrown if one of
 the progression handlers does not exists.  If <code>"warning"</code>, a warning
 is produces and the missing handlers is ignored.  If <code>"ignore"</code>, the
 missing handlers is ignored.</p></dd>
+
+
 <dt>default</dt>
 <dd><p>The default progression calling handler to use if none
 are set.</p></dd>
+
+
 <dt>global</dt>
 <dd><p>If TRUE, then the global progression handler is enabled.
 If FALSE, it is disabled.  If NA, then TRUE is returned if it is enabled,
 otherwise FALSE.  Argument <code>global</code> must not used with other arguments.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>(invisibly) the previous list of progression handlers set.
+    
+
+<p>(invisibly) the previous list of progression handlers set.
 If no arguments are specified, then the current set of progression
 handlers is returned.
 If <code>global</code> is specified, then TRUE is returned if the global progression
@@ -262,7 +273,7 @@ the following to your <code class="file">~/.Rprofile</code> startup file:</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>
