@@ -51,7 +51,7 @@ If TRUE, any output, typically visual, produced by a reporter will be cleared/re
 \item{\option{progressr.enable}:}{
 (logical)
 If FALSE, then progress is not reported.
-(Default: TRUE)
+(Default: TRUE in interactive mode, otherwise FALSE)
 }
 
 \item{\option{progressr.enable_after}:}{
