@@ -2,7 +2,7 @@
 
 ## Miscellaneous
 
-* Avoid nested `<em>` tags in HTML-generated help pages.
+ * Avoid nested `<em>` tags in HTML-generated help pages.
 
 
 # Version 0.10.1 [2022-06-02]
