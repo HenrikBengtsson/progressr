@@ -49,7 +49,7 @@ option \option{progressr.handlers}.
 }
 \section{For package developers}{
 
-\emph{IMPORTANT: Setting progression handlers is a privilege that should be
+\strong{IMPORTANT: Setting progression handlers is a privilege that should be
 left to the end user. It should not be used by R packages, which only task
 is to \emph{signal} progress updates, not to decide if, when, and how progress
 should be reported.}
