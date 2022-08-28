@@ -8,7 +8,7 @@
 #' elements 'message' and 'detail' should be updated.  Valid sources are
 #' `"message"`, `"sticky_message"` and `"non_sticky_message"`, where
 #' `"message"` is short for `c("non_sticky_message", "sticky_message")`. For
-#' example, `inputs = list(message = "sticky-message", detail = "message")`
+#' example, `inputs = list(message = "sticky_message", detail = "message")`
 #' will update the Shiny 'message' component from sticky messages only,
 #' whereas the 'detail' component is updated using any message.
 #'
