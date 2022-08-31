@@ -101,7 +101,7 @@ handler_winprogressbar <- function(intrusiveness = getOption("progressr.intrusiv
         ## use the defaults
         for (name in c("title", "label")) {
           if (is.null(args[[name]])) {
-            args[[name]] <- formals(winProgressPar)[[name]]
+            args[[name]] <- formals(winProgressBar)[[name]]
           }
         }
         
