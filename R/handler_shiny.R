@@ -51,31 +51,14 @@ handler_shiny <- function(intrusiveness = getOption("progressr.intrusiveness.gui
     inputs[[name]] <- unique(input)
   }
   
-  ## Default: The progression message updates Shiny 'message'
-  map_args <- function(state, progression) {
-    message <- progression$message
-    if (is.null(message)) return(list())
-
-    ## Update Shiny 'message' and 'detail'?
-    args <- list()
-    for (target in c("message", "detail")) {
-      if (inherits(progression, "sticky")) {
-        if ("sticky_message" %in% inputs[[target]])
-          args[[target]] <- message
-      } else {
-        if ("non_sticky_message" %in% inputs[[target]])
-          args[[target]] <- message
-      }
-    }
-
-    args
-  }
-
   reporter <- local({
     list(
       update = function(config, state, progression, ...) {
         amount <- if (config$max_steps == 0) 1 else progression$amount / config$max_steps
-        args <- c(list(amount = amount), map_args(state, progression))
+        args <- c(
+          list(amount = amount),
+          message_to_backend_targets(progression$message, inputs = inputs)
+        )
         do.call(shiny::incProgress, args = args)
       }
     )
