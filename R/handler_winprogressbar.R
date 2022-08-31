@@ -70,7 +70,7 @@ handler_winprogressbar <- function(intrusiveness = getOption("progressr.intrusiv
     ## Update winProgressBar
     update_pb <- function(state, progression) {
       ## Update 'title' and 'label' (optional)
-      args <- message_to_backend_targets(progression$message, inputs = inputs)
+      args <- message_to_backend_targets(progression, inputs = inputs)
       for (name in names(args)) {
         pb_config[[target]] <<- args[[target]]
       }
