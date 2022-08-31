@@ -245,7 +245,7 @@ to <code>TRUE</code>.  Alternatively, one can set argument <code>enable=TRUE</co
 <span class="r-in"><span><span class="va">slow_sum</span> <span class="op">&lt;-</span> <span class="fu">progressr</span><span class="fu">::</span><span class="va"><a href="slow_sum.html">slow_sum</a></span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">slow_sum</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (x, delay = getOption("progressr.demo.delay", 1), stdout = FALSE, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     message = TRUE) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     message = TRUE, sticky = TRUE) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     p &lt;- progressor(along = x)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     sum &lt;- 0</span>
@@ -254,7 +254,6 @@ to <code>TRUE</code>.  Alternatively, one can set argument <code>enable=TRUE</co
 <span class="r-out co"><span class="r-pr">#&gt;</span>         Sys.sleep(0.2 * delay)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         if (stdout) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             cat(sprintf("O: Element #%d\n", kk))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         p(amount = 0, message = sprintf("Element #%d", kk), class = "sticky")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         Sys.sleep(0.2 * delay)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         p(amount = 0)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         Sys.sleep(0.2 * delay)</span>
@@ -265,11 +264,15 @@ to <code>TRUE</code>.  Alternatively, one can set argument <code>enable=TRUE</co
 <span class="r-out co"><span class="r-pr">#&gt;</span>             message(sprintf("M: Added value %g", x[kk]))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         p(amount = 0)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         Sys.sleep(0.2 * delay)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         if (sticky &amp;&amp; kk%%10 == 0) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             p(amount = 0, message = sprintf("P: %d elements done", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 kk), class = "sticky")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     p(amount = 0)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     sum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5638b8088e20&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5652cefc5ed0&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:progressr&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span></span></span>
