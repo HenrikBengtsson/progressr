@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.1-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.1-9004</span>
       </span>
     </div>
 
@@ -129,13 +129,13 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">handler_debug</span><span class="op">(</span>
-  interval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"progressr.interval"</span>, <span class="fl">0</span><span class="op">)</span>,
-  intrusiveness <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"progressr.intrusiveness.debug"</span>, <span class="fl">0</span><span class="op">)</span>,
-  target <span class="op">=</span> <span class="st">"terminal"</span>,
-  uuid <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">handler_debug</span><span class="op">(</span></span>
+<span>  interval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"progressr.interval"</span>, <span class="fl">0</span><span class="op">)</span>,</span>
+<span>  intrusiveness <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"progressr.intrusiveness.debug"</span>, <span class="fl">0</span><span class="op">)</span>,</span>
+<span>  target <span class="op">=</span> <span class="st">"terminal"</span>,</span>
+<span>  uuid <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -181,8 +181,8 @@ progress:</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="handlers.html">handlers</a></span><span class="op">(</span><span class="st">"debug"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="with_progress.html">with_progress</a></span><span class="op">(</span><span class="op">{</span> <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="slow_sum.html">slow_sum</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span> <span class="op">}</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="handlers.html">handlers</a></span><span class="op">(</span><span class="st">"debug"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="with_progress.html">with_progress</a></span><span class="op">(</span><span class="op">{</span> <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="slow_sum.html">slow_sum</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span> <span class="op">}</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 2</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 3</span>
@@ -193,7 +193,7 @@ progress:</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 8</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 9</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 10</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 55</span>
 </code></pre></div>
     </div>
@@ -209,7 +209,7 @@ progress:</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>

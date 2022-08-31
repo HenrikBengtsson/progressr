@@ -20,7 +20,7 @@
 <script src="pkgdown.js"></script><!-- docsearch --><script src="docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="An Inclusive, Unifying API for Progress Updates">
-<meta property="og:description" content="A minimal, unifying API for scripts and packages to report progress updates from anywhere including when using parallel processing.  The package is designed such that the developer can to focus on what progress should be reported on without having to worry about how to present it.  The end user has full control of how, where, and when to render these progress updates, e.g. in the terminal using utils::txtProgressBar() or progress::progress_bar(), in a graphical user interface using utils::winProgressBar(), tcltk::tkProgressBar() or shiny::withProgress(), via the speakers using beep::beepr(), or on a file system via the size of a file. Anyone can add additional, customized, progression handlers. The progressr package uses Rs condition framework for signaling progress updated. Because of this, progress can be reported from almost anywhere in R, e.g. from classical for and while loops, from map-reduce API:s like the lapply() family of functions, purrr, plyr, and foreach. It will also work with parallel processing via the future framework, e.g. future.apply::future_lapply(), furrr::future_map(), and foreach with doFuture'. The package is compatible with Shiny applications.">
+<meta property="og:description" content="A minimal, unifying API for scripts and packages to report progress updates from anywhere including when using parallel processing.  The package is designed such that the developer can to focus on what progress should be reported on without having to worry about how to present it.  The end user has full control of how, where, and when to render these progress updates, e.g. in the terminal using utils::txtProgressBar() or progress::progress_bar(), in a graphical user interface using utils::winProgressBar(), tcltk::tkProgressBar() or shiny::withProgress(), via the speakers using beepr::beep(), or on a file system via the size of a file. Anyone can add additional, customized, progression handlers. The progressr package uses Rs condition framework for signaling progress updated. Because of this, progress can be reported from almost anywhere in R, e.g. from classical for and while loops, from map-reduce API:s like the lapply() family of functions, purrr, plyr, and foreach. It will also work with parallel processing via the future framework, e.g. future.apply::future_lapply(), furrr::future_map(), and foreach with doFuture'. The package is compatible with Shiny applications.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -47,7 +47,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.1-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.1-9004</span>
       </span>
     </div>
 
@@ -253,16 +253,16 @@ handlers(handler_progress(complete = "#"))
 </h2>
 <p>Assume that we have a function <code><a href="reference/slow_sum.html">slow_sum()</a></code> for adding up the values in a vector. It is so slow, that we like to provide progress updates to whoever might be interested in it. With the <strong>progressr</strong> package, this can be done as:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">slow_sum</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">progressr</span><span class="fu">::</span><span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">x</span><span class="op">)</span>
-  <span class="va">sum</span> <span class="op">&lt;-</span> <span class="fl">0</span>
-  <span class="kw">for</span> <span class="op">(</span><span class="va">kk</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>
-    <span class="va">sum</span> <span class="op">&lt;-</span> <span class="va">sum</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="va">kk</span><span class="op">]</span>
-    <span class="fu">p</span><span class="op">(</span>message <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Added %g"</span>, <span class="va">x</span><span class="op">[</span><span class="va">kk</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
-  <span class="op">}</span>
-  <span class="va">sum</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">slow_sum</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">progressr</span><span class="fu">::</span><span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="va">sum</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span>  <span class="kw">for</span> <span class="op">(</span><span class="va">kk</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span></span>
+<span>    <span class="va">sum</span> <span class="op">&lt;-</span> <span class="va">sum</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="va">kk</span><span class="op">]</span></span>
+<span>    <span class="fu">p</span><span class="op">(</span>message <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Added %g"</span>, <span class="va">x</span><span class="op">[</span><span class="va">kk</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="va">sum</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p>Note how there are <em>no</em> arguments in the code that specifies how progress is presented. The only task for the developer is to decide on where in the code it makes sense to signal that progress has been made. As we will see next, it is up to the end user of this code to decide whether they want to receive progress updates or not, and, if so, in what format.</p>
 <div class="section level3">
 <h3 id="without-reporting-on-progress">Without reporting on progress<a class="anchor" aria-label="anchor" href="#without-reporting-on-progress"></a>
@@ -299,7 +299,7 @@ handlers(handler_progress(complete = "#"))
 </h2>
 <p>The default is to present progress via <code><a href="https://rdrr.io/r/utils/txtProgressBar.html" class="external-link">utils::txtProgressBar()</a></code>, which is available on all R installations. To change the default, to, say, <code>progress_bar()</code> by the <strong><a href="https://cran.r-project.org/package=progress" class="external-link">progress</a></strong> package, set:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span><span class="st">"progress"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span><span class="st">"progress"</span><span class="op">)</span></span></code></pre></div>
 <p>This progress handler will present itself as:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> y <span class="ot">&lt;-</span> <span class="fu">slow_sum</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="sc">/</span> [<span class="sc">==</span><span class="er">==============&gt;</span><span class="sc">--------------------------</span>]  <span class="dv">40</span>% Added <span class="dv">4</span></span></code></pre></div>
@@ -309,7 +309,7 @@ handlers(handler_progress(complete = "#"))
 </h3>
 <p>Progress updates do not have to be presented visually. They can equally well be communicated via audio. For example, using:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span><span class="st">"beepr"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span><span class="st">"beepr"</span><span class="op">)</span></span></code></pre></div>
 <p>will present itself as sounds played at the beginning, while progressing, and at the end (using different <strong><a href="https://cran.r-project.org/package=beepr" class="external-link">beepr</a></strong> sounds). There will be <em>no</em> output written to the terminal;</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> y <span class="ot">&lt;-</span> <span class="fu">slow_sum</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> y</span>
@@ -321,37 +321,37 @@ handlers(handler_progress(complete = "#"))
 </h3>
 <p>It is possible to have multiple progress handlers presenting progress updates at the same time. For example, to get both visual and auditory updates, use:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span><span class="st">"txtprogressbar"</span>, <span class="st">"beepr"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span><span class="st">"txtprogressbar"</span>, <span class="st">"beepr"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="silence-all-progress">Silence all progress<a class="anchor" aria-label="anchor" href="#silence-all-progress"></a>
 </h3>
 <p>To silence all progress updates, use:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span><span class="st">"void"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span><span class="st">"void"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="further-configuration-of-progress-handlers">Further configuration of progress handlers<a class="anchor" aria-label="anchor" href="#further-configuration-of-progress-handlers"></a>
 </h3>
 <p>Above we have seen examples where the <code><a href="reference/handlers.html">handlers()</a></code> takes one or more strings as input, e.g. <code>handlers(c("progress", "beepr"))</code>. This is short for a more flexible specification where we can pass a list of handler functions, e.g.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-  <span class="fu"><a href="reference/handler_progress.html">handler_progress</a></span><span class="op">(</span><span class="op">)</span>,
-  <span class="fu"><a href="reference/handler_beepr.html">handler_beepr</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="reference/handler_progress.html">handler_progress</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="reference/handler_beepr.html">handler_beepr</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>With this construct, we can make adjustments to the default behavior of these progress handlers. For example, we can configure the <code>format</code>, <code>width</code>, and <code>complete</code> arguments of <code>progress::progress_bar$new()</code>, and tell <strong>beepr</strong> to use a different <code>finish</code> sound and generate sounds at most every two seconds by setting:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-  <span class="fu"><a href="reference/handler_progress.html">handler_progress</a></span><span class="op">(</span>
-    format   <span class="op">=</span> <span class="st">":spin :current/:total (:message) [:bar] :percent in :elapsed ETA: :eta"</span>,
-    width    <span class="op">=</span> <span class="fl">60</span>,
-    complete <span class="op">=</span> <span class="st">"+"</span>
-  <span class="op">)</span>,
-  <span class="fu"><a href="reference/handler_beepr.html">handler_beepr</a></span><span class="op">(</span>
-    finish   <span class="op">=</span> <span class="st">"wilhelm"</span>,
-    interval <span class="op">=</span> <span class="fl">2.0</span>
-  <span class="op">)</span>
-<span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="reference/handler_progress.html">handler_progress</a></span><span class="op">(</span></span>
+<span>    format   <span class="op">=</span> <span class="st">":spin :current/:total (:message) [:bar] :percent in :elapsed ETA: :eta"</span>,</span>
+<span>    width    <span class="op">=</span> <span class="fl">60</span>,</span>
+<span>    complete <span class="op">=</span> <span class="st">"+"</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="reference/handler_beepr.html">handler_beepr</a></span><span class="op">(</span></span>
+<span>    finish   <span class="op">=</span> <span class="st">"wilhelm"</span>,</span>
+<span>    interval <span class="op">=</span> <span class="fl">2.0</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -359,17 +359,17 @@ handlers(handler_progress(complete = "#"))
 </h2>
 <p>As seen above, some progress handlers present the progress message as part of its output, e.g. the “progress” handler will display the message as part of the progress bar. It is also possible to “push” the message up together with other terminal output. This can be done by adding class attribute <code>"sticky"</code> to the progression signaled. This works for several progress handlers that output to the terminal. For example, with:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">slow_sum</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">progressr</span><span class="fu">::</span><span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">x</span><span class="op">)</span>
-  <span class="va">sum</span> <span class="op">&lt;-</span> <span class="fl">0</span>
-  <span class="kw">for</span> <span class="op">(</span><span class="va">kk</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>
-    <span class="va">sum</span> <span class="op">&lt;-</span> <span class="va">sum</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="va">kk</span><span class="op">]</span>
-    <span class="fu">p</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Step %d"</span>, <span class="va">kk</span><span class="op">)</span>, class <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="va">kk</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span> <span class="fl">5</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="st">"sticky"</span>, amount <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
-    <span class="fu">p</span><span class="op">(</span>message <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Added %g"</span>, <span class="va">x</span><span class="op">[</span><span class="va">kk</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
-  <span class="op">}</span>
-  <span class="va">sum</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">slow_sum</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">progressr</span><span class="fu">::</span><span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="va">sum</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span>  <span class="kw">for</span> <span class="op">(</span><span class="va">kk</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span></span>
+<span>    <span class="va">sum</span> <span class="op">&lt;-</span> <span class="va">sum</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="va">kk</span><span class="op">]</span></span>
+<span>    <span class="fu">p</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Step %d"</span>, <span class="va">kk</span><span class="op">)</span>, class <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="va">kk</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span> <span class="fl">5</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="st">"sticky"</span>, amount <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span>    <span class="fu">p</span><span class="op">(</span>message <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Added %g"</span>, <span class="va">x</span><span class="op">[</span><span class="va">kk</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="va">sum</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p>we get</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">handlers</span>(<span class="st">"txtprogressbar"</span>)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> y <span class="ot">&lt;-</span> <span class="fu">slow_sum</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>)</span>
@@ -388,15 +388,15 @@ handlers(handler_progress(complete = "#"))
 </h2>
 <p>In contrast to other progress-bar frameworks, output from <code><a href="https://rdrr.io/r/base/message.html" class="external-link">message()</a></code>, <code><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat()</a></code>, <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> and so on, will <em>not</em> interfere with progress reported via <strong>progressr</strong>. For example, say we have:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">slow_sqrt</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">xs</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">xs</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">xs</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"Calculating the square root of "</span>, <span class="va">x</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
-    <span class="fu">p</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"x=%g"</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-  <span class="op">}</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">slow_sqrt</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">xs</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">xs</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">xs</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"Calculating the square root of "</span>, <span class="va">x</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span>
+<span>    <span class="fu">p</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"x=%g"</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p>we will get:</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(progressr)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">handlers</span>(<span class="at">global =</span> <span class="cn">TRUE</span>)</span>
@@ -416,80 +416,80 @@ handlers(handler_progress(complete = "#"))
 <h3 id="base-r-apply-functions">Base R Apply Functions<a class="anchor" aria-label="anchor" href="#base-r-apply-functions"></a>
 </h3>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span>
-<span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="va">my_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">xs</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">xs</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">xs</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>
-    <span class="fu">p</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"x=%g"</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-  <span class="op">}</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="fu">my_fcn</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>
-<span class="co">#  |====================                               |  40%</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">my_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">xs</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">xs</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">xs</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span></span>
+<span>    <span class="fu">p</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"x=%g"</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">my_fcn</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#  |====================                               |  40%</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="the-foreach-package">The foreach package<a class="anchor" aria-label="anchor" href="#the-foreach-package"></a>
 </h3>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RevolutionAnalytics/foreach" class="external-link">foreach</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span>
-<span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="va">my_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">xs</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">xs</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">foreach</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">xs</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">%do%</a></span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>
-    <span class="fu">p</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"x=%g"</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-  <span class="op">}</span>
-<span class="op">}</span>
-
-<span class="fu">my_fcn</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>
-<span class="co">#  |====================                               |  40%</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RevolutionAnalytics/foreach" class="external-link">foreach</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">my_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">xs</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">xs</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">foreach</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">xs</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">%do%</a></span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span></span>
+<span>    <span class="fu">p</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"x=%g"</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">my_fcn</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#  |====================                               |  40%</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="the-purrr-package">The purrr package<a class="anchor" aria-label="anchor" href="#the-purrr-package"></a>
 </h3>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://purrr.tidyverse.org" class="external-link">purrr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span>
-<span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="va">my_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">xs</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">xs</span><span class="op">)</span>
-  <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">xs</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>
-    <span class="fu">p</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"x=%g"</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-  <span class="op">}</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="fu">my_fcn</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>
-<span class="co">#  |====================                               |  40%</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://purrr.tidyverse.org" class="external-link">purrr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">my_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">xs</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">xs</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">xs</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span></span>
+<span>    <span class="fu">p</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"x=%g"</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">my_fcn</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#  |====================                               |  40%</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="the-plyr-package">The plyr package<a class="anchor" aria-label="anchor" href="#the-plyr-package"></a>
 </h3>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://had.co.nz/plyr" class="external-link">plyr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span>
-<span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="va">my_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">xs</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">xs</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/plyr/man/llply.html" class="external-link">llply</a></span><span class="op">(</span><span class="va">xs</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>
-    <span class="fu">p</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"x=%g"</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-  <span class="op">}</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="fu">my_fcn</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>
-<span class="co">#  |====================                               |  40%</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://had.co.nz/plyr" class="external-link">plyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">my_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">xs</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">xs</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/plyr/man/llply.html" class="external-link">llply</a></span><span class="op">(</span><span class="va">xs</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span></span>
+<span>    <span class="fu">p</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"x=%g"</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">my_fcn</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#  |====================                               |  40%</span></span></code></pre></div>
 <p>Note how this solution does not make use of <strong>plyr</strong>’s <code>.progress</code> argument, because the above solution is more powerful and more flexible, e.g. we have more control on progress updates and their messages. However, if you prefer the traditional <strong>plyr</strong> approach, you can use <code>.progress = "progressr"</code>, e.g. <code>y &lt;- llply(..., .progress = "progressr")</code>.</p>
 </div>
 </div>
@@ -502,73 +502,73 @@ handlers(handler_progress(complete = "#"))
 </h3>
 <p>Here is an example that uses <code><a href="https://future.apply.futureverse.org/reference/future_lapply.html" class="external-link">future_lapply()</a></code> of the <strong><a href="https://cran.r-project.org/package=future.apply" class="external-link">future.apply</a></strong> package to parallelize on the local machine while at the same time signaling progression updates:</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.apply.futureverse.org" class="external-link">future.apply</a></span><span class="op">)</span>
-<span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
-
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span>
-<span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span><span class="st">"progress"</span>, <span class="st">"beepr"</span><span class="op">)</span>
-
-<span class="va">my_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">xs</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">xs</span><span class="op">)</span>
-  <span class="fu"><a href="https://future.apply.futureverse.org/reference/future_lapply.html" class="external-link">future_lapply</a></span><span class="op">(</span><span class="va">xs</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">6.0</span><span class="op">-</span><span class="va">x</span><span class="op">)</span>
-    <span class="fu">p</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"x=%g"</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-  <span class="op">}</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="fu">my_fcn</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>
-<span class="co"># / [================&gt;-----------------------------]  40% x=2</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.apply.futureverse.org" class="external-link">future.apply</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span><span class="st">"progress"</span>, <span class="st">"beepr"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">my_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">xs</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">xs</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://future.apply.futureverse.org/reference/future_lapply.html" class="external-link">future_lapply</a></span><span class="op">(</span><span class="va">xs</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">6.0</span><span class="op">-</span><span class="va">x</span><span class="op">)</span></span>
+<span>    <span class="fu">p</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"x=%g"</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">my_fcn</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co"># / [================&gt;-----------------------------]  40% x=2</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="foreach-with-dofuture">foreach() with doFuture<a class="anchor" aria-label="anchor" href="#foreach-with-dofuture"></a>
 </h3>
 <p>Here is an example that uses <code><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">foreach()</a></code> of the <strong><a href="https://cran.r-project.org/package=foreach" class="external-link">foreach</a></strong> package to parallelize on the local machine (via <strong><a href="https://cran.r-project.org/package=doFuture" class="external-link">doFuture</a></strong>) while at the same time signaling progression updates:</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://doFuture.futureverse.org" class="external-link">doFuture</a></span><span class="op">)</span>
-<span class="fu"><a href="https://doFuture.futureverse.org/reference/registerDoFuture.html" class="external-link">registerDoFuture</a></span><span class="op">(</span><span class="op">)</span>      <span class="co">## %dopar% parallelizes via future</span>
-<span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
-
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span>
-<span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span><span class="st">"progress"</span>, <span class="st">"beepr"</span><span class="op">)</span>
-
-<span class="va">my_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">xs</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">xs</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">foreach</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">xs</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">%dopar%</a></span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">6.0</span><span class="op">-</span><span class="va">x</span><span class="op">)</span>
-    <span class="fu">p</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"x=%g"</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-  <span class="op">}</span>
-<span class="op">}</span>
-
-<span class="fu">my_fcn</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>
-<span class="co"># / [================&gt;-----------------------------]  40% x=2</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://doFuture.futureverse.org" class="external-link">doFuture</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://doFuture.futureverse.org/reference/registerDoFuture.html" class="external-link">registerDoFuture</a></span><span class="op">(</span><span class="op">)</span>      <span class="co">## %dopar% parallelizes via future</span></span>
+<span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span><span class="st">"progress"</span>, <span class="st">"beepr"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">my_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">xs</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">xs</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">foreach</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">xs</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">%dopar%</a></span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">6.0</span><span class="op">-</span><span class="va">x</span><span class="op">)</span></span>
+<span>    <span class="fu">p</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"x=%g"</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">my_fcn</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co"># / [================&gt;-----------------------------]  40% x=2</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="future_map---parallel-purrrmap">future_map() - parallel purrr::map()<a class="anchor" aria-label="anchor" href="#future_map---parallel-purrrmap"></a>
 </h3>
 <p>Here is an example that uses <code><a href="https://furrr.futureverse.org/reference/future_map.html" class="external-link">future_map()</a></code> of the <strong><a href="https://cran.r-project.org/package=furrr" class="external-link">furrr</a></strong> package to parallelize on the local machine while at the same time signaling progression updates:</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/DavisVaughan/furrr" class="external-link">furrr</a></span><span class="op">)</span>
-<span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
-
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span>
-<span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span><span class="st">"progress"</span>, <span class="st">"beepr"</span><span class="op">)</span>
-
-<span class="va">my_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">xs</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">xs</span><span class="op">)</span>
-  <span class="fu"><a href="https://furrr.futureverse.org/reference/future_map.html" class="external-link">future_map</a></span><span class="op">(</span><span class="va">xs</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">6.0</span><span class="op">-</span><span class="va">x</span><span class="op">)</span>
-    <span class="fu">p</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"x=%g"</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-  <span class="op">}</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="fu">my_fcn</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>
-<span class="co"># / [================&gt;-----------------------------]  40% x=2</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/DavisVaughan/furrr" class="external-link">furrr</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span><span class="st">"progress"</span>, <span class="st">"beepr"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">my_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">xs</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">xs</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://furrr.futureverse.org/reference/future_map.html" class="external-link">future_map</a></span><span class="op">(</span><span class="va">xs</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">6.0</span><span class="op">-</span><span class="va">x</span><span class="op">)</span></span>
+<span>    <span class="fu">p</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"x=%g"</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">my_fcn</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co"># / [================&gt;-----------------------------]  40% x=2</span></span></code></pre></div>
 <p><em>Note:</em> This solution does not involved the <code>.progress = TRUE</code> argument that <strong>furrr</strong> implements. Because <strong>progressr</strong> is more generic and because <code>.progress = TRUE</code> only supports certain future backends and produces errors on non-supported backends, I recommended to stop using <code>.progress = TRUE</code> and use the <strong>progressr</strong> package instead.</p>
 </div>
 <div class="section level3">
@@ -576,53 +576,53 @@ handlers(handler_progress(complete = "#"))
 </h3>
 <p>Here is an example that uses <code><a href="https://rdrr.io/pkg/BiocParallel/man/bplapply.html" class="external-link">bplapply()</a></code> of the <strong><a href="https://www.bioconductor.org/packages/BiocParallel/" class="external-link">BiocParallel</a></strong> package to parallelize on the local machine while at the same time signaling progression updates:</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Bioconductor/BiocParallel" class="external-link">BiocParallel</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://doFuture.futureverse.org" class="external-link">doFuture</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/register.html" class="external-link">register</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/DoparParam-class.html" class="external-link">DoparParam</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>  <span class="co">## BiocParallel parallelizes via %dopar%</span>
-<span class="fu"><a href="https://doFuture.futureverse.org/reference/registerDoFuture.html" class="external-link">registerDoFuture</a></span><span class="op">(</span><span class="op">)</span>      <span class="co">## %dopar% parallelizes via future</span>
-<span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
-
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span>
-<span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span><span class="st">"progress"</span>, <span class="st">"beepr"</span><span class="op">)</span>
-
-<span class="va">my_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">xs</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">xs</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/bplapply.html" class="external-link">bplapply</a></span><span class="op">(</span><span class="va">xs</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">6.0</span><span class="op">-</span><span class="va">x</span><span class="op">)</span>
-    <span class="fu">p</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"x=%g"</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-  <span class="op">}</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="fu">my_fcn</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>
-<span class="co"># / [================&gt;-----------------------------]  40% x=2</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Bioconductor/BiocParallel" class="external-link">BiocParallel</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://doFuture.futureverse.org" class="external-link">doFuture</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/register.html" class="external-link">register</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/DoparParam-class.html" class="external-link">DoparParam</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>  <span class="co">## BiocParallel parallelizes via %dopar%</span></span>
+<span><span class="fu"><a href="https://doFuture.futureverse.org/reference/registerDoFuture.html" class="external-link">registerDoFuture</a></span><span class="op">(</span><span class="op">)</span>      <span class="co">## %dopar% parallelizes via future</span></span>
+<span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span><span class="st">"progress"</span>, <span class="st">"beepr"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">my_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">xs</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">xs</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/bplapply.html" class="external-link">bplapply</a></span><span class="op">(</span><span class="va">xs</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">6.0</span><span class="op">-</span><span class="va">x</span><span class="op">)</span></span>
+<span>    <span class="fu">p</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"x=%g"</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">my_fcn</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co"># / [================&gt;-----------------------------]  40% x=2</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="plyrllply-parallel--true-with-dofuture">plyr::llply(…, .parallel = TRUE) with doFuture<a class="anchor" aria-label="anchor" href="#plyrllply-parallel--true-with-dofuture"></a>
 </h3>
 <p>Here is an example that uses <code><a href="https://rdrr.io/pkg/plyr/man/llply.html" class="external-link">llply()</a></code> of the <strong><a href="https://cran.r-project.org/package=plyr" class="external-link">plyr</a></strong> package to parallelize on the local machine while at the same time signaling progression updates:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://had.co.nz/plyr" class="external-link">plyr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://doFuture.futureverse.org" class="external-link">doFuture</a></span><span class="op">)</span>
-<span class="fu"><a href="https://doFuture.futureverse.org/reference/registerDoFuture.html" class="external-link">registerDoFuture</a></span><span class="op">(</span><span class="op">)</span>      <span class="co">## %dopar% parallelizes via future</span>
-<span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
-
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span>
-<span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span><span class="st">"progress"</span>, <span class="st">"beepr"</span><span class="op">)</span>
-
-<span class="va">my_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">xs</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">xs</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/plyr/man/llply.html" class="external-link">llply</a></span><span class="op">(</span><span class="va">xs</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">6.0</span><span class="op">-</span><span class="va">x</span><span class="op">)</span>
-    <span class="fu">p</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"x=%g"</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-  <span class="op">}</span>, .parallel <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="fu">my_fcn</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>
-<span class="co"># / [================&gt;-----------------------------]  40% x=2</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://had.co.nz/plyr" class="external-link">plyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://doFuture.futureverse.org" class="external-link">doFuture</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://doFuture.futureverse.org/reference/registerDoFuture.html" class="external-link">registerDoFuture</a></span><span class="op">(</span><span class="op">)</span>      <span class="co">## %dopar% parallelizes via future</span></span>
+<span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span><span class="st">"progress"</span>, <span class="st">"beepr"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">my_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">xs</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">xs</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/plyr/man/llply.html" class="external-link">llply</a></span><span class="op">(</span><span class="va">xs</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">6.0</span><span class="op">-</span><span class="va">x</span><span class="op">)</span></span>
+<span>    <span class="fu">p</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"x=%g"</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="op">}</span>, .parallel <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">my_fcn</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co"># / [================&gt;-----------------------------]  40% x=2</span></span></code></pre></div>
 <p><em>Note:</em> As an alternative to the above, recommended approach, one can use <code>.progress = "progressr"</code> together with <code>.parallel = TRUE</code>. This requires <strong>plyr</strong> (&gt;= 1.8.7).</p>
 </div>
 <div class="section level3">
@@ -647,16 +647,16 @@ handlers(handler_progress(complete = "#"))
 <h2 id="note-of-caution---sending-progress-updates-too-frequently">Note of caution - sending progress updates too frequently<a class="anchor" aria-label="anchor" href="#note-of-caution---sending-progress-updates-too-frequently"></a>
 </h2>
 <p>Signaling progress updates comes with some overhead. In situation where we use progress updates, this overhead is typically much smaller than the task we are processing in each step. However, if the task we iterate over is quick, then the extra time induced by the progress updates might end up dominating the overall processing time. If that is the case, a simple solution is to only signal progress updates every n:th step. Here is a version of <code><a href="reference/slow_sum.html">slow_sum()</a></code> that signals progress every 10:th iteration:</p>
-<pre><code><span class="va">slow_sum</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">progressr</span><span class="fu">::</span><span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">/</span> <span class="fl">10</span><span class="op">)</span>
-  <span class="va">sum</span> <span class="op">&lt;-</span> <span class="fl">0</span>
-  <span class="kw">for</span> <span class="op">(</span><span class="va">kk</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>
-    <span class="va">sum</span> <span class="op">&lt;-</span> <span class="va">sum</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="va">kk</span><span class="op">]</span>
-    <span class="kw">if</span> <span class="op">(</span><span class="va">kk</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span> <span class="fl">10</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="fu">p</span><span class="op">(</span>message <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Added %g"</span>, <span class="va">x</span><span class="op">[</span><span class="va">kk</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
-  <span class="op">}</span>
-  <span class="va">sum</span>
-<span class="op">}</span></code></pre>
+<pre><code><span><span class="va">slow_sum</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">progressr</span><span class="fu">::</span><span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">/</span> <span class="fl">10</span><span class="op">)</span></span>
+<span>  <span class="va">sum</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span>  <span class="kw">for</span> <span class="op">(</span><span class="va">kk</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span></span>
+<span>    <span class="va">sum</span> <span class="op">&lt;-</span> <span class="va">sum</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="va">kk</span><span class="op">]</span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="va">kk</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span> <span class="fl">10</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="fu">p</span><span class="op">(</span>message <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Added %g"</span>, <span class="va">x</span><span class="op">[</span><span class="va">kk</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="va">sum</span></span>
+<span><span class="op">}</span></span></code></pre>
 <p>The overhead of progress signaling may depend on context. For example, in parallel processing with near-live progress updates via ‘multisession’ futures, each progress update is communicated via a socket connections back to the main R session. These connections might become clogged up if progress updates are too frequent.</p>
 </div>
 <div class="section level2">
@@ -698,16 +698,16 @@ Add API to allow users and package developers to design additional progression h
 </h4>
 <p>It is not possible to create a progressor in the global environment, e.g. in the the top-level of a script. It has to be created inside a function, within <code>with_progress({ ... })</code>, <code>local({ ... })</code>, or a similar construct. For example, the following:</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span>
-<span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="va">xs</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>
-<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">xs</span><span class="op">)</span>
-<span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">xs</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>
-  <span class="fu">p</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"x=%g"</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">xs</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">xs</span><span class="op">)</span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">xs</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span></span>
+<span>  <span class="fu">p</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"x=%g"</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <p>results in an error if tried:</p>
 <pre><code>Error in progressor(along = xs) : 
   A progressor must not be created in the global environment unless wrapped in a
@@ -716,19 +716,19 @@ Add API to allow users and package developers to design additional progression h
   of the progressor</code></pre>
 <p>The solution is to wrap it in a <code>local({ ... })</code> call, or more explicitly, in a <code>with_progress({ ... })</code> call:</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span>
-<span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="va">xs</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>
-<span class="fu"><a href="reference/with_progress.html">with_progress</a></span><span class="op">(</span><span class="op">{</span>
-  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">xs</span><span class="op">)</span>
-  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">xs</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>
-    <span class="fu">p</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"x=%g"</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-  <span class="op">}</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span>
-<span class="co">#  |====================                               |  40%</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://progressr.futureverse.org">progressr</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">xs</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span></span>
+<span><span class="fu"><a href="reference/with_progress.html">with_progress</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span>along <span class="op">=</span> <span class="va">xs</span><span class="op">)</span></span>
+<span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">xs</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span></span>
+<span>    <span class="fu">p</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"x=%g"</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="co">#  |====================                               |  40%</span></span></code></pre></div>
 <p>The main reason for this is to limit the life span of each progressor. If we created it in the global environment, there is a significant risk it would never finish and block all of the following progressors.</p>
 </div>
 <div class="section level4">
@@ -739,7 +739,7 @@ Add API to allow users and package developers to design additional progression h
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>Error <span class="cf">in</span> <span class="fu">globalCallingHandlers</span>(<span class="cn">NULL</span>) <span class="sc">:</span> </span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  should not be called with handlers on the stack</span></code></pre></div>
 <p>This is not a bug - neither in <strong>progressr</strong> nor in R itself. It’s due to a conservative design on how <em>global</em> calling handlers should work in R. If it allowed, there’s a risk we might end up getting weird and unpredictable behaviors when messages, warnings, errors, and other types of conditions are signaled.</p>
-<p>Because <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code> and <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">withCallingHandlers()</a></code> is used in many places throughout base R, this means that we also cannot call <code>handlers(global = TRUE)</code> as part of a package’s startup process, e.g. <code><a href="https://rdrr.io/r/base/ns-hooks.html" class="external-link">.onLoad()</a></code> or <code><a href="https://rdrr.io/r/base/ns-hooks.html" class="external-link">.onAttach()</a></code>.</p>
+<p>Because <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code> and <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">withCallingHandlers()</a></code> is used in many places throughout base R, this means that we also cannot call <code>handlers(global = TRUE)</code> as part of a package’s startup process, e.g. <code>.onLoad()</code> or <code>.onAttach()</code>.</p>
 <p>Another example of this error is if <code>handlers(global = TRUE)</code> is used inside package vignettes and dynamic documents such as Rmarkdown. In such cases, the global progress handler has to be enabled <em>prior</em> to processing the document, e.g.</p>
 <div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> progressr<span class="sc">::</span><span class="fu">handlers</span>(<span class="at">global =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> rmarkdown<span class="sc">::</span><span class="fu">render</span>(<span class="st">"input.Rmd"</span>)</span></code></pre></div>
@@ -786,13 +786,13 @@ Add API to allow users and package developers to design additional progression h
 </h2>
 <p>R package progressr is available on <a href="https://cran.r-project.org/package=progressr" class="external-link">CRAN</a> and can be installed in R as:</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"progressr"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"progressr"</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="pre-release-version">Pre-release version<a class="anchor" aria-label="anchor" href="#pre-release-version"></a>
 </h3>
 <p>To install the pre-release version that is available in Git branch <code>develop</code> on GitHub, use:</p>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"HenrikBengtsson/progressr"</span>, ref<span class="op">=</span><span class="st">"develop"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"HenrikBengtsson/progressr"</span>, ref<span class="op">=</span><span class="st">"develop"</span><span class="op">)</span></span></code></pre></div>
 <p>This will install the package from source.</p>
 </div>
 </div>
@@ -862,7 +862,7 @@ Add API to allow users and package developers to design additional progression h
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer>

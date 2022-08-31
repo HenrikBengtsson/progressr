@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.1-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.1-9004</span>
       </span>
     </div>
 
@@ -129,19 +129,19 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">with_progress</span><span class="op">(</span>
-  <span class="va">expr</span>,
-  handlers <span class="op">=</span> <span class="fu">progressr</span><span class="fu">::</span><span class="fu"><a href="handlers.html">handlers</a></span><span class="op">(</span><span class="op">)</span>,
-  cleanup <span class="op">=</span> <span class="cn">TRUE</span>,
-  delay_terminal <span class="op">=</span> <span class="cn">NULL</span>,
-  delay_stdout <span class="op">=</span> <span class="cn">NULL</span>,
-  delay_conditions <span class="op">=</span> <span class="cn">NULL</span>,
-  interrupts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"progressr.interrupts"</span>, <span class="cn">TRUE</span><span class="op">)</span>,
-  interval <span class="op">=</span> <span class="cn">NULL</span>,
-  enable <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span>
-
-<span class="fu">without_progress</span><span class="op">(</span><span class="va">expr</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">with_progress</span><span class="op">(</span></span>
+<span>  <span class="va">expr</span>,</span>
+<span>  handlers <span class="op">=</span> <span class="fu">progressr</span><span class="fu">::</span><span class="fu"><a href="handlers.html">handlers</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  cleanup <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  delay_terminal <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  delay_stdout <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  delay_conditions <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  interrupts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"progressr.interrupts"</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>  interval <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  enable <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">without_progress</span><span class="op">(</span><span class="va">expr</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -203,9 +203,9 @@ See below for more details.</p></dd>
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p><em>IMPORTANT: This function is meant for end users only.  It should not
+    <p><strong>IMPORTANT: This function is meant for end users only.  It should not
 be used by R packages, which only task is to <em>signal</em> progress updates,
-not to decide if, when, and how progress should be reported.</em></p>
+not to decide if, when, and how progress should be reported.</strong></p>
 <p><code>without_progress()</code> evaluates an expression while ignoring all
 progress updates.</p>
     </div>
@@ -241,9 +241,9 @@ to <code>TRUE</code>.  Alternatively, one can set argument <code>enable=TRUE</co
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">## The slow_sum() example function</span></span>
-<span class="r-in"><span class="va">slow_sum</span> <span class="op">&lt;-</span> <span class="fu">progressr</span><span class="fu">::</span><span class="va"><a href="slow_sum.html">slow_sum</a></span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">slow_sum</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## The slow_sum() example function</span></span></span>
+<span class="r-in"><span><span class="va">slow_sum</span> <span class="op">&lt;-</span> <span class="fu">progressr</span><span class="fu">::</span><span class="va"><a href="slow_sum.html">slow_sum</a></span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">slow_sum</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (x, delay = getOption("progressr.demo.delay", 1), stdout = FALSE, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     message = TRUE) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
@@ -269,13 +269,13 @@ to <code>TRUE</code>.  Alternatively, one can set argument <code>enable=TRUE</co
 <span class="r-out co"><span class="r-pr">#&gt;</span>     p(amount = 0)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     sum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55c379892e70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55e63b90a9e8&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:progressr&gt;</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Without progress updates</span></span>
-<span class="r-in"><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="slow_sum.html">slow_sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Without progress updates</span></span></span>
+<span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="slow_sum.html">slow_sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 2</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 3</span>
@@ -286,13 +286,13 @@ to <code>TRUE</code>.  Alternatively, one can set argument <code>enable=TRUE</co
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 8</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 9</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 10</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Progress reported via txtProgressBar (default)</span></span>
-<span class="r-in"><span class="fu"><a href="handlers.html">handlers</a></span><span class="op">(</span><span class="st">"txtprogressbar"</span><span class="op">)</span>  <span class="co">## default</span></span>
-<span class="r-in"><span class="fu">with_progress</span><span class="op">(</span><span class="op">{</span></span>
-<span class="r-in">  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="slow_sum.html">slow_sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Progress reported via txtProgressBar (default)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="handlers.html">handlers</a></span><span class="op">(</span><span class="st">"txtprogressbar"</span><span class="op">)</span>  <span class="co">## default</span></span></span>
+<span class="r-in"><span><span class="fu">with_progress</span><span class="op">(</span><span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="slow_sum.html">slow_sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 2</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 3</span>
@@ -303,14 +303,14 @@ to <code>TRUE</code>.  Alternatively, one can set argument <code>enable=TRUE</co
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 8</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 9</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 10</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Progress reported via tcltk::tkProgressBar</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/capabilities.html" class="external-link">capabilities</a></span><span class="op">(</span><span class="st">"tcltk"</span><span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"tcltk"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu"><a href="handlers.html">handlers</a></span><span class="op">(</span><span class="st">"tkprogressbar"</span><span class="op">)</span></span>
-<span class="r-in">  <span class="fu">with_progress</span><span class="op">(</span><span class="op">{</span></span>
-<span class="r-in">    <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="slow_sum.html">slow_sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">}</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Progress reported via tcltk::tkProgressBar</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/capabilities.html" class="external-link">capabilities</a></span><span class="op">(</span><span class="st">"tcltk"</span><span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"tcltk"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="handlers.html">handlers</a></span><span class="op">(</span><span class="st">"tkprogressbar"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">with_progress</span><span class="op">(</span><span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="slow_sum.html">slow_sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 2</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 3</span>
@@ -321,14 +321,14 @@ to <code>TRUE</code>.  Alternatively, one can set argument <code>enable=TRUE</co
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 8</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 9</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 10</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Progress reported via progress::progress_bar)</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"progress"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu"><a href="handlers.html">handlers</a></span><span class="op">(</span><span class="st">"progress"</span><span class="op">)</span></span>
-<span class="r-in">  <span class="fu">with_progress</span><span class="op">(</span><span class="op">{</span></span>
-<span class="r-in">    <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="slow_sum.html">slow_sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">}</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Progress reported via progress::progress_bar)</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"progress"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="handlers.html">handlers</a></span><span class="op">(</span><span class="st">"progress"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">with_progress</span><span class="op">(</span><span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="slow_sum.html">slow_sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 2</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 3</span>
@@ -339,14 +339,14 @@ to <code>TRUE</code>.  Alternatively, one can set argument <code>enable=TRUE</co
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 8</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 9</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 10</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Progress reported via txtProgressBar and beepr::beep</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"beepr"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu"><a href="handlers.html">handlers</a></span><span class="op">(</span><span class="st">"beepr"</span>, <span class="st">"txtprogressbar"</span><span class="op">)</span></span>
-<span class="r-in">  <span class="fu">with_progress</span><span class="op">(</span><span class="op">{</span></span>
-<span class="r-in">    <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="slow_sum.html">slow_sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">}</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Progress reported via txtProgressBar and beepr::beep</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"beepr"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="handlers.html">handlers</a></span><span class="op">(</span><span class="st">"beepr"</span>, <span class="st">"txtprogressbar"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">with_progress</span><span class="op">(</span><span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="slow_sum.html">slow_sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 2</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 3</span>
@@ -357,17 +357,17 @@ to <code>TRUE</code>.  Alternatively, one can set argument <code>enable=TRUE</co
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 8</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 9</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 10</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Progress reported via customized utils::txtProgressBar and beepr::beep,</span></span>
-<span class="r-in"><span class="co">## if available.</span></span>
-<span class="r-in"><span class="fu"><a href="handlers.html">handlers</a></span><span class="op">(</span><span class="fu"><a href="handler_txtprogressbar.html">handler_txtprogressbar</a></span><span class="op">(</span>style <span class="op">=</span> <span class="fl">3L</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"beepr"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu"><a href="handlers.html">handlers</a></span><span class="op">(</span><span class="st">"beepr"</span>, append <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">with_progress</span><span class="op">(</span><span class="op">{</span></span>
-<span class="r-in">  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="slow_sum.html">slow_sum</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">30</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Progress reported via customized utils::txtProgressBar and beepr::beep,</span></span></span>
+<span class="r-in"><span><span class="co">## if available.</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="handlers.html">handlers</a></span><span class="op">(</span><span class="fu"><a href="handler_txtprogressbar.html">handler_txtprogressbar</a></span><span class="op">(</span>style <span class="op">=</span> <span class="fl">3L</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"beepr"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="handlers.html">handlers</a></span><span class="op">(</span><span class="st">"beepr"</span>, append <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">with_progress</span><span class="op">(</span><span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="slow_sum.html">slow_sum</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">30</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 2</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 3</span>
@@ -412,7 +412,7 @@ to <code>TRUE</code>.  Alternatively, one can set argument <code>enable=TRUE</co
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>
