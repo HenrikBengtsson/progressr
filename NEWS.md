@@ -13,6 +13,8 @@
    For backward compatible reasons, the default is `inputs =
    list(title = NULL, label = "message")`.
 
+ * Now the demo function `slow_sum()` outputs also "sticky" messages.
+ 
 ## Miscellaneous
 
  * Avoid nested `<em>` tags in HTML-generated help pages.
