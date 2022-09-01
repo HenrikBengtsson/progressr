@@ -6,7 +6,7 @@
 * GitHub: https://github.com/yqzhong7/AIPW
 * Source code: https://github.com/cran/AIPW
 * Date/Publication: 2021-06-11 09:30:02 UTC
-* Number of recursive dependencies: 99
+* Number of recursive dependencies: 100
 
 Run `revdep_details(, "AIPW")` for more info
 
@@ -45,119 +45,6 @@ Run `revdep_details(, "baseballr")` for more info
       All declared Imports should be used.
     ```
 
-# beer
-
-<details>
-
-* Version: 1.0.0
-* GitHub: https://github.com/athchen/beer
-* Source code: https://github.com/cran/beer
-* Date/Publication: 2022-04-26
-* Number of recursive dependencies: 124
-
-Run `revdep_details(, "beer")` for more info
-
-</details>
-
-## In both
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘beer-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: brew
-    > ### Title: Bayesian Enrichment Estimation in R (BEER)
-    > ### Aliases: brew
-    > 
-    > ### ** Examples
-    > 
-    > sim_data <- readRDS(system.file("extdata", "sim_data.rds", package = "beer"))
-    ...
-    colData names(7): group n_init ... c pi
-    beads-only name(4): beads> 
-    > ## Snow
-    > brew(sim_data, BPPARAM = BiocParallel::SnowParam())
-    
-    ── Running JAGS ────────────────────────────────────────────────────────────────
-    Sample runs
-    Error in loadNamespace(x) : there is no package called ‘codetools’
-    Calls: brew ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-      Running ‘spelling.R’
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-        8. │       ├─BiocParallel::bploop(...)
-        9. │       └─BiocParallel:::bploop.lapply(...)
-       10. │         └─BiocParallel:::.bploop_impl(...)
-       11. │           └─BiocParallel:::.findVariables(FUN)
-       12. └─base::loadNamespace(x)
-    ...
-        9. │       └─BiocParallel:::.bploop_impl(...)
-       10. │         └─BiocParallel:::.findVariables(FUN)
-       11. └─base::loadNamespace(x)
-       12.   └─base::withRestarts(stop(cond), retry_loadNamespace = function() NULL)
-       13.     └─base withOneRestart(expr, restarts[[1L]])
-       14.       └─base doWithOneRestart(return(expr), restart)
-      
-      [ FAIL 3 | WARN 0 | SKIP 1 | PASS 54 ]
-      Error: Test failures
-      Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... ERROR
-    ```
-    Error(s) in re-building vignettes:
-    --- re-building ‘beer.Rmd’ using rmarkdown
-    
-    Attaching package: 'dplyr'
-    
-    The following objects are masked from 'package:stats':
-    
-        filter, lag
-    
-    The following objects are masked from 'package:base':
-    ...
-    Quitting from lines 316-323 (beer.Rmd) 
-    Error: processing vignette 'beer.Rmd' failed with diagnostics:
-    there is no package called 'codetools'
-    --- failed re-building ‘beer.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘beer.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
-# cfbfastR
-
-<details>
-
-* Version: 1.6.4
-* GitHub: https://github.com/saiemgilani/cfbfastR
-* Source code: https://github.com/cran/cfbfastR
-* Date/Publication: 2021-10-27 12:30:02 UTC
-* Number of recursive dependencies: 110
-
-Run `revdep_details(, "cfbfastR")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘xgboost’
-      All declared Imports should be used.
-    ```
-
 # cSEM
 
 <details>
@@ -166,7 +53,7 @@ Run `revdep_details(, "cfbfastR")` for more info
 * GitHub: https://github.com/M-E-Rademaker/cSEM
 * Source code: https://github.com/cran/cSEM
 * Date/Publication: 2021-04-19 22:00:18 UTC
-* Number of recursive dependencies: 122
+* Number of recursive dependencies: 121
 
 Run `revdep_details(, "cSEM")` for more info
 
@@ -184,11 +71,11 @@ Run `revdep_details(, "cSEM")` for more info
 
 <details>
 
-* Version: 0.2.1
+* Version: 0.2.4
 * GitHub: https://github.com/dipterix/dipsaus
 * Source code: https://github.com/cran/dipsaus
-* Date/Publication: 2022-05-29 17:50:02 UTC
-* Number of recursive dependencies: 72
+* Date/Publication: 2022-08-24 07:00:10 UTC
+* Number of recursive dependencies: 73
 
 Run `revdep_details(, "dipsaus")` for more info
 
@@ -202,28 +89,6 @@ Run `revdep_details(, "dipsaus")` for more info
       sub-directories of 1Mb or more:
         doc    1.1Mb
         libs   4.1Mb
-    ```
-
-# easyalluvial
-
-<details>
-
-* Version: 0.3.0
-* GitHub: https://github.com/erblast/easyalluvial
-* Source code: https://github.com/cran/easyalluvial
-* Date/Publication: 2021-01-13 10:40:09 UTC
-* Number of recursive dependencies: 146
-
-Run `revdep_details(, "easyalluvial")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘progress’
-      All declared Imports should be used.
     ```
 
 # econet
@@ -304,7 +169,7 @@ Run `revdep_details(, "EFAtools")` for more info
 * GitHub: https://github.com/epiforecasts/EpiNow2
 * Source code: https://github.com/cran/EpiNow2
 * Date/Publication: 2020-12-14 09:00:15 UTC
-* Number of recursive dependencies: 157
+* Number of recursive dependencies: 159
 
 Run `revdep_details(, "EpiNow2")` for more info
 
@@ -321,18 +186,39 @@ Run `revdep_details(, "EpiNow2")` for more info
     ```
       installed size is 225.9Mb
       sub-directories of 1Mb or more:
-        libs  224.3Mb
+        libs  224.4Mb
+    ```
+
+# fabletools
+
+<details>
+
+* Version: 0.3.2
+* GitHub: https://github.com/tidyverts/fabletools
+* Source code: https://github.com/cran/fabletools
+* Date/Publication: 2021-11-29 05:50:02 UTC
+* Number of recursive dependencies: 101
+
+Run `revdep_details(, "fabletools")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘fable’
     ```
 
 # geocmeans
 
 <details>
 
-* Version: 0.2.0
+* Version: 0.2.2
 * GitHub: https://github.com/JeremyGelb/geocmeans
 * Source code: https://github.com/cran/geocmeans
-* Date/Publication: 2021-08-23 07:11:35 UTC
-* Number of recursive dependencies: 197
+* Date/Publication: 2022-06-16 19:20:02 UTC
+* Number of recursive dependencies: 201
 
 Run `revdep_details(, "geocmeans")` for more info
 
@@ -349,12 +235,6 @@ Run `revdep_details(, "geocmeans")` for more info
         libs   7.4Mb
     ```
 
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘rgdal’
-      All declared Imports should be used.
-    ```
-
 # lava
 
 <details>
@@ -363,7 +243,7 @@ Run `revdep_details(, "geocmeans")` for more info
 * GitHub: https://github.com/kkholst/lava
 * Source code: https://github.com/cran/lava
 * Date/Publication: 2021-09-02 14:50:18 UTC
-* Number of recursive dependencies: 131
+* Number of recursive dependencies: 133
 
 Run `revdep_details(, "lava")` for more info
 
@@ -385,7 +265,7 @@ Run `revdep_details(, "lava")` for more info
 * GitHub: https://github.com/ropensci/lightr
 * Source code: https://github.com/cran/lightr
 * Date/Publication: 2022-05-14 13:50:02 UTC
-* Number of recursive dependencies: 75
+* Number of recursive dependencies: 76
 
 Run `revdep_details(, "lightr")` for more info
 
@@ -428,42 +308,17 @@ Run `revdep_details(, "metabolomicsR")` for more info
 
 <details>
 
-* Version: 1.0.0
+* Version: 1.0.1
 * GitHub: https://github.com/business-science/modeltime.ensemble
 * Source code: https://github.com/cran/modeltime.ensemble
-* Date/Publication: 2021-10-19 17:50:02 UTC
-* Number of recursive dependencies: 216
+* Date/Publication: 2022-06-09 12:20:02 UTC
+* Number of recursive dependencies: 214
 
 Run `revdep_details(, "modeltime.ensemble")` for more info
 
 </details>
 
 ## In both
-
-*   checking tests ...
-    ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-      Ensemble of 3 Models (WEIGHTED)
-      
-      # Modeltime Table
-      # A tibble: 3 × 4
-        .model_id .model     .model_desc             .loadings
-            <int> <list>     <chr>                       <dbl>
-    ...
-       13.     └─rlang::abort(bullets, call = error_call, parent = skip_internal_condition(e))
-      ── Failure (test-panel-data.R:134:5): ensemble_weighted(): Forecast Jumbled ────
-      accuracy_tbl$mae < 400 is not TRUE
-      
-      `actual`:   FALSE
-      `expected`: TRUE 
-      
-      [ FAIL 2 | WARN 5 | SKIP 5 | PASS 86 ]
-      Error: Test failures
-      Execution halted
-    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -475,11 +330,11 @@ Run `revdep_details(, "modeltime.ensemble")` for more info
 
 <details>
 
-* Version: 0.2.0
+* Version: 0.2.1
 * GitHub: https://github.com/business-science/modeltime.resample
 * Source code: https://github.com/cran/modeltime.resample
-* Date/Publication: 2021-03-14 20:40:07 UTC
-* Number of recursive dependencies: 214
+* Date/Publication: 2022-06-07 14:30:03 UTC
+* Number of recursive dependencies: 212
 
 Run `revdep_details(, "modeltime.resample")` for more info
 
@@ -487,83 +342,10 @@ Run `revdep_details(, "modeltime.resample")` for more info
 
 ## In both
 
-*   checking tests ...
-    ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-      ✖ readr::edition_get()   masks testthat::edition_get()
-      ✖ Matrix::expand()       masks tidyr::expand()
-      ✖ dplyr::filter()        masks stats::filter()
-      ✖ stringr::fixed()       masks recipes::fixed()
-      ✖ purrr::is_null()       masks testthat::is_null()
-      ✖ dplyr::lag()           masks stats::lag()
-    ...
-          ▆
-       1. ├─m750_models_resample %>% ... at test-modeltime_fit_resamples.R:116:4
-       2. └─modeltime.resample::plot_modeltime_resamples(., .interactive = TRUE)
-       3.   └─rlang::sym(target_text)
-       4.     └─rlang:::abort_coercion(x, "a symbol")
-       5.       └─rlang::abort(msg, call = call)
-      
-      [ FAIL 3 | WARN 0 | SKIP 0 | PASS 7 ]
-      Error: Test failures
-      Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... ERROR
-    ```
-    Error(s) in re-building vignettes:
-    --- re-building ‘getting-started.Rmd’ using rmarkdown
-    ── Attaching packages ────────────────────────────────────── tidymodels 0.2.0 ──
-    ✔ broom        0.8.0     ✔ recipes      0.2.0
-    ✔ dials        0.1.1     ✔ rsample      0.1.1
-    ✔ dplyr        1.0.9     ✔ tibble       3.1.7
-    ✔ ggplot2      3.3.6     ✔ tidyr        1.2.0
-    ✔ infer        1.0.0     ✔ tune         0.2.0
-    ✔ modeldata    0.1.1     ✔ workflows    0.2.6
-    ✔ parsnip      0.2.1     ✔ workflowsets 0.2.1
-    ...
-      no non-missing arguments to max; returning -Inf
-    Warning in max(ids, na.rm = TRUE) :
-      no non-missing arguments to max; returning -Inf
-    --- finished re-building ‘panel-data.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘getting-started.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
       ‘crayon’ ‘dials’ ‘glue’ ‘parsnip’
-      All declared Imports should be used.
-    ```
-
-# nflreadr
-
-<details>
-
-* Version: 1.2.0
-* GitHub: https://github.com/nflverse/nflreadr
-* Source code: https://github.com/cran/nflreadr
-* Date/Publication: 2022-03-17 13:20:02 UTC
-* Number of recursive dependencies: 70
-
-Run `revdep_details(, "nflreadr")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘curl’ ‘qs’
       All declared Imports should be used.
     ```
 
@@ -575,7 +357,7 @@ Run `revdep_details(, "nflreadr")` for more info
 * GitHub: https://github.com/helseprofil/norgeo
 * Source code: https://github.com/cran/norgeo
 * Date/Publication: 2022-02-01 16:00:17 UTC
-* Number of recursive dependencies: 83
+* Number of recursive dependencies: 82
 
 Run `revdep_details(, "norgeo")` for more info
 
@@ -590,15 +372,36 @@ Run `revdep_details(, "norgeo")` for more info
       All declared Imports should be used.
     ```
 
+# oddsapiR
+
+<details>
+
+* Version: 0.0.1
+* GitHub: https://github.com/sportsdataverse/oddsapiR
+* Source code: https://github.com/cran/oddsapiR
+* Date/Publication: 2022-06-22 19:20:02 UTC
+* Number of recursive dependencies: 108
+
+Run `revdep_details(, "oddsapiR")` for more info
+
+</details>
+
+## In both
+
+*   checking data for non-ASCII characters ... NOTE
+    ```
+      Note: found 4 marked UTF-8 strings
+    ```
+
 # pavo
 
 <details>
 
-* Version: 2.7.1
+* Version: 2.8.0
 * GitHub: https://github.com/rmaia/pavo
 * Source code: https://github.com/cran/pavo
-* Date/Publication: 2021-09-21 13:10:21 UTC
-* Number of recursive dependencies: 87
+* Date/Publication: 2022-08-16 13:00:20 UTC
+* Number of recursive dependencies: 91
 
 Run `revdep_details(, "pavo")` for more info
 
@@ -642,7 +445,7 @@ Run `revdep_details(, "poppr")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/RAINBOWR
 * Date/Publication: 2022-01-07 13:53:11 UTC
-* Number of recursive dependencies: 147
+* Number of recursive dependencies: 149
 
 Run `revdep_details(, "RAINBOWR")` for more info
 
@@ -665,7 +468,7 @@ Run `revdep_details(, "RAINBOWR")` for more info
 * GitHub: https://github.com/xsswang/remiod
 * Source code: https://github.com/cran/remiod
 * Date/Publication: 2022-03-14 08:50:02 UTC
-* Number of recursive dependencies: 125
+* Number of recursive dependencies: 126
 
 Run `revdep_details(, "remiod")` for more info
 
@@ -687,7 +490,7 @@ Run `revdep_details(, "remiod")` for more info
 * GitHub: https://github.com/odelmarcelle/sentopics
 * Source code: https://github.com/cran/sentopics
 * Date/Publication: 2022-05-18 13:20:02 UTC
-* Number of recursive dependencies: 161
+* Number of recursive dependencies: 162
 
 Run `revdep_details(, "sentopics")` for more info
 
@@ -717,10 +520,10 @@ Run `revdep_details(, "sentopics")` for more info
 
 <details>
 
-* Version: 4.1.0
+* Version: 4.1.1
 * GitHub: https://github.com/mojaveazure/seurat-object
 * Source code: https://github.com/cran/SeuratObject
-* Date/Publication: 2022-05-01 14:40:07 UTC
+* Date/Publication: 2022-08-29 19:50:02 UTC
 * Number of recursive dependencies: 57
 
 Run `revdep_details(, "SeuratObject")` for more info
@@ -742,7 +545,7 @@ Run `revdep_details(, "SeuratObject")` for more info
 * GitHub: https://github.com/egarpor/sphunif
 * Source code: https://github.com/cran/sphunif
 * Date/Publication: 2021-09-02 07:40:02 UTC
-* Number of recursive dependencies: 72
+* Number of recursive dependencies: 73
 
 Run `revdep_details(, "sphunif")` for more info
 
@@ -770,7 +573,7 @@ Run `revdep_details(, "sphunif")` for more info
 * GitHub: https://github.com/JeremyGelb/spNetwork
 * Source code: https://github.com/cran/spNetwork
 * Date/Publication: 2022-05-14 12:00:02 UTC
-* Number of recursive dependencies: 147
+* Number of recursive dependencies: 149
 
 Run `revdep_details(, "spNetwork")` for more info
 
@@ -818,7 +621,7 @@ Run `revdep_details(, "SPQR")` for more info
 * GitHub: https://github.com/kkholst/targeted
 * Source code: https://github.com/cran/targeted
 * Date/Publication: 2021-10-26 14:40:02 UTC
-* Number of recursive dependencies: 76
+* Number of recursive dependencies: 77
 
 Run `revdep_details(, "targeted")` for more info
 
@@ -841,7 +644,7 @@ Run `revdep_details(, "targeted")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/vmeasur
 * Date/Publication: 2021-11-11 19:00:02 UTC
-* Number of recursive dependencies: 123
+* Number of recursive dependencies: 124
 
 Run `revdep_details(, "vmeasur")` for more info
 
