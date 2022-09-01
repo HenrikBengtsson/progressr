@@ -112,7 +112,7 @@ handler_winprogressbar <- function(intrusiveness = getOption("progressr.intrusiv
         args <- args[names(args) %in% names(formals(winProgressBar))]
         pb <- do.call(winProgressBar, args = args)
 
-        ## Record arguments used by winSetProgressBar() later on
+        ## Record arguments used by setWinProgressBar() later on
         args$pb <- pb
         args <- args[names(args) %in% names(formals(setWinProgressBar))]
         pb_config <<- args
