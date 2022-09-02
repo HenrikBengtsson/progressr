@@ -22,7 +22,7 @@ rendered.}
 elements 'message' and 'detail' should be updated.  Valid sources are
 \code{"message"}, \code{"sticky_message"} and \code{"non_sticky_message"}, where
 \code{"message"} is short for \code{c("non_sticky_message", "sticky_message")}. For
-example, \code{inputs = list(message = "sticky-message", detail = "message")}
+example, \code{inputs = list(message = "sticky_message", detail = "message")}
 will update the Shiny 'message' component from sticky messages only,
 whereas the 'detail' component is updated using any message.}
 

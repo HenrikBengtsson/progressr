@@ -8,7 +8,7 @@
 #' elements 'message' and 'detail' should be updated.  Valid sources are
 #' `"message"`, `"sticky_message"` and `"non_sticky_message"`, where
 #' `"message"` is short for `c("non_sticky_message", "sticky_message")`. For
-#' example, `inputs = list(message = "sticky-message", detail = "message")`
+#' example, `inputs = list(message = "sticky_message", detail = "message")`
 #' will update the Shiny 'message' component from sticky messages only,
 #' whereas the 'detail' component is updated using any message.
 #'
@@ -51,31 +51,14 @@ handler_shiny <- function(intrusiveness = getOption("progressr.intrusiveness.gui
     inputs[[name]] <- unique(input)
   }
   
-  ## Default: The progression message updates Shiny 'message'
-  map_args <- function(state, progression) {
-    message <- progression$message
-    if (is.null(message)) return(list())
-
-    ## Update Shiny 'message' and 'detail'?
-    args <- list()
-    for (target in c("message", "detail")) {
-      if (inherits(progression, "sticky")) {
-        if ("sticky_message" %in% inputs[[target]])
-          args[[target]] <- message
-      } else {
-        if ("non_sticky_message" %in% inputs[[target]])
-          args[[target]] <- message
-      }
-    }
-
-    args
-  }
-
   reporter <- local({
     list(
       update = function(config, state, progression, ...) {
         amount <- if (config$max_steps == 0) 1 else progression$amount / config$max_steps
-        args <- c(list(amount = amount), map_args(state, progression))
+        args <- c(
+          list(amount = amount),
+          message_to_backend_targets(progression, inputs = inputs)
+        )
         do.call(shiny::incProgress, args = args)
       }
     )

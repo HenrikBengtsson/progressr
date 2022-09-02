@@ -7,6 +7,7 @@
 handler_winprogressbar(
   intrusiveness = getOption("progressr.intrusiveness.gui", 1),
   target = "gui",
+  inputs = list(title = NULL, label = "message"),
   ...
 )
 }
@@ -16,6 +17,14 @@ handler_winprogressbar(
 
 \item{target}{(character vector) Specifies where progression updates are
 rendered.}
+
+\item{inputs}{(named list) Specifies from what sources the MS Windows
+progress elements 'title' and 'label' should be updated. Valid sources are
+\code{"message"}, \code{"sticky_message"} and \code{"non_sticky_message"}, where
+\code{"message"} is short for \code{c("non_sticky_message", "sticky_message")}. For
+example, \code{inputs = list(title = "sticky_message", label = "message")}
+will update the 'title' component from sticky messages only,
+whereas the 'label' component is updated using any message.}
 
 \item{\ldots}{Additional arguments passed to \code{\link[=make_progression_handler]{make_progression_handler()}}.}
 }
@@ -27,3 +36,10 @@ A progression handler for \code{winProgressBar()} in the \pkg{utils} package.
 This progression handler requires MS Windows.
 }
 
+\examples{
+\donttest{\dontrun{
+handlers(handler_winprogressbar())
+with_progress(y <- slow_sum(1:100))
+}}
+
+}

@@ -46,12 +46,24 @@ Control How Progress is Reported
 \details{
 This function provides a convenient alternative for getting and setting
 option \option{progressr.handlers}.
+}
+\section{For package developers}{
 
-\emph{IMPORTANT: Setting progression handlers is a privilege that should be
+\strong{IMPORTANT: Setting progression handlers is a privilege that should be
 left to the end user. It should not be used by R packages, which only task
 is to \emph{signal} progress updates, not to decide if, when, and how progress
 should be reported.}
+
+If you have to set or modify the progression handlers inside a function,
+please make sure to undo the settings afterward.  If not, you will break
+whatever progression settings the user already has for other purposes
+used elsewhere.  To undo you settings, you can do:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{old_handlers <- handlers(c("beepr", "progress"))
+on.exit(handlers(old_handlers), add = TRUE)
+}\if{html}{\out{</div>}}
 }
+
 \section{Configuring progression handling during R startup}{
 
 A convenient place to configure the default progression handler and to

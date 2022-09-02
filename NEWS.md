@@ -1,10 +1,32 @@
+# Version 0.11.0 [2022-09-02]
+
+## New Features
+
+ * When the using a 'winprogressbar' or a 'tkprogressbar' handler,
+   progression messages updates the `label` component of the progress
+   panel.  Now, it is also possible to update the `title` component
+   based on progression messages.  How the `title` and `label`
+   components are updated and from what type of progression message is
+   configured via the new `inputs` argument.  For example, `inputs =
+   list(title = "sticky_message", label = "message")` causes
+   progression messages to update the `label` component and sticky
+   ones to update both.  For backward compatible reasons, the default
+   is `inputs = list(title = NULL, label = "message")`.
+
+ * Now the demo function `slow_sum()` outputs also "sticky" messages.
+ 
+## Miscellaneous
+
+ * Avoid nested `<em>` tags in HTML-generated help pages.
+
+
 # Version 0.10.1 [2022-06-02]
 
 ## New Features
 
  * Now **plyr** (>= 1.8.7) supports **progressr** for also parallel
-     processing, e.g. `y <- plyr::llply(X, slow_sum, .parallel = TRUE,
-     .progress = "progressr")`.
+   processing, e.g. `y <- plyr::llply(X, slow_sum, .parallel = TRUE,
+   .progress = "progressr")`.
 
 ## Bug Fixes
 

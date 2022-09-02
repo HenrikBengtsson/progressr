@@ -30,10 +30,21 @@
 #' This function provides a convenient alternative for getting and setting
 #' option \option{progressr.handlers}.
 #'
-#' _IMPORTANT: Setting progression handlers is a privilege that should be
+#' @section For package developers:
+#' **IMPORTANT: Setting progression handlers is a privilege that should be
 #' left to the end user. It should not be used by R packages, which only task
 #' is to _signal_ progress updates, not to decide if, when, and how progress
-#' should be reported._
+#' should be reported.**
+#'
+#' If you have to set or modify the progression handlers inside a function,
+#' please make sure to undo the settings afterward.  If not, you will break
+#' whatever progression settings the user already has for other purposes
+#' used elsewhere.  To undo you settings, you can do:
+#'
+#' ```r
+#' old_handlers <- handlers(c("beepr", "progress"))
+#' on.exit(handlers(old_handlers), add = TRUE)
+#' ```
 #'
 #' @section Configuring progression handling during R startup:
 #' A convenient place to configure the default progression handler and to

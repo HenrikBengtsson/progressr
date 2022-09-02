@@ -8,7 +8,8 @@ slow_sum(
   x,
   delay = getOption("progressr.demo.delay", 1),
   stdout = FALSE,
-  message = TRUE
+  message = TRUE,
+  sticky = TRUE
 )
 }
 \arguments{
@@ -20,6 +21,9 @@ slow_sum(
 per element.}
 
 \item{message}{If TRUE, then a message is outputted per element.}
+
+\item{sticky}{If TRUE, then a "sticky" message is outputted every
+ten element.}
 }
 \value{
 The sum of all elements in \code{x}.

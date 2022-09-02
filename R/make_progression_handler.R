@@ -533,3 +533,24 @@ handler_backend_args <- function(...) {
   args[names]
 }
 
+
+# Map progression message to optional target arguments
+# Currently used by handler_shiny() and handler_winprogressbar()
+message_to_backend_targets <- function(progression, inputs) {
+  message <- progression$message
+  if (length(message) == 0) return(list())
+
+  args <- list()
+  for (target in names(inputs)) {
+    if (inherits(progression, "sticky")) {
+      if ("sticky_message" %in% inputs[[target]])
+        args[[target]] <- message
+    } else {
+      if ("non_sticky_message" %in% inputs[[target]])
+        args[[target]] <- message
+    }
+  }
+
+  args
+}
+  

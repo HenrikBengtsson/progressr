@@ -320,7 +320,7 @@ handlers(global = TRUE)
 
 my_fcn <- function(xs) {
   p <- progressor(along = xs)
-  y <- lapply(xs, function(x) {
+  lapply(xs, function(x) {
     Sys.sleep(0.1)
     p(sprintf("x=%g", x))
     sqrt(x)
@@ -341,7 +341,7 @@ handlers(global = TRUE)
 
 my_fcn <- function(xs) {
   p <- progressor(along = xs)
-  y <- foreach(x = xs) %do% {
+  foreach(x = xs) %do% {
     Sys.sleep(0.1)
     p(sprintf("x=%g", x))
     sqrt(x)
@@ -361,7 +361,7 @@ handlers(global = TRUE)
 
 my_fcn <- function(xs) {
   p <- progressor(along = xs)
-  y <- map(xs, function(x) {
+  map(xs, function(x) {
     Sys.sleep(0.1)
     p(sprintf("x=%g", x))
     sqrt(x)
@@ -382,7 +382,7 @@ handlers(global = TRUE)
 
 my_fcn <- function(xs) {
   p <- progressor(along = xs)
-  y <- llply(xs, function(x, ...) {
+  llply(xs, function(x, ...) {
     Sys.sleep(0.1)
     p(sprintf("x=%g", x))
     sqrt(x)
@@ -415,7 +415,7 @@ handlers("progress", "beepr")
 
 my_fcn <- function(xs) {
   p <- progressor(along = xs)
-  y <- future_lapply(xs, function(x, ...) {
+  future_lapply(xs, function(x, ...) {
     Sys.sleep(6.0-x)
     p(sprintf("x=%g", x))
     sqrt(x)
@@ -442,7 +442,7 @@ handlers("progress", "beepr")
 
 my_fcn <- function(xs) {
   p <- progressor(along = xs)
-  y <- foreach(x = xs) %dopar% {
+  foreach(x = xs) %dopar% {
     Sys.sleep(6.0-x)
     p(sprintf("x=%g", x))
     sqrt(x)
@@ -468,7 +468,7 @@ handlers("progress", "beepr")
 
 my_fcn <- function(xs) {
   p <- progressor(along = xs)
-  y <- future_map(xs, function(x) {
+  future_map(xs, function(x) {
     Sys.sleep(6.0-x)
     p(sprintf("x=%g", x))
     sqrt(x)
@@ -499,7 +499,7 @@ handlers("progress", "beepr")
 
 my_fcn <- function(xs) {
   p <- progressor(along = xs)
-  y <- bplapply(xs, function(x) {
+  bplapply(xs, function(x) {
     Sys.sleep(6.0-x)
     p(sprintf("x=%g", x))
     sqrt(x)
@@ -527,7 +527,7 @@ handlers("progress", "beepr")
 
 my_fcn <- function(xs) {
   p <- progressor(along = xs)
-  y <- llply(xs, function(x, ...) {
+  llply(xs, function(x, ...) {
     Sys.sleep(6.0-x)
     p(sprintf("x=%g", x))
     sqrt(x)
