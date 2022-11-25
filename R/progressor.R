@@ -36,6 +36,22 @@
 #'
 #' @return A function of class `progressor`.
 #'
+#' @details
+#' A `progressor` function can only be created inside a local environment,
+#' e.g. inside a function, within a `local()` call, or within a
+#' `with_progress()` call.  Notably, it _cannot_ be create at the top level,
+#' e.g. immediately at the R prompt or outside a local environment in an
+#' R script.  If attempted, an informative error message is produced, e.g.
+#'
+#' ```r
+#' > p <- progressr::progressor(100)
+#' Error in progressr::progressor(100) : 
+#'   A progressor must not be created in the global environment unless
+#' wrapped in a with_progress() or without_progress() call. Alternatively,
+#' create it inside a function or in a local() environment to make sure
+#' there is a finite life span of the progressor
+#' ```
+#'
 #' @export
 progressor <- local({
   progressor_count <- 0L
