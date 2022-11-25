@@ -393,6 +393,34 @@ my_fcn(1:5)
 Note how this solution does not make use of **plyr**'s `.progress` argument, because the above solution is more powerful and more flexible, e.g. we have more control on progress updates and their messages.  However, if you prefer the traditional **plyr** approach, you can use `.progress = "progressr"`, e.g. `y <- llply(..., .progress = "progressr")`.
 
 
+
+
+### The knitr package
+
+When compiling ("knitting") an knitr-based vignette, for instance, via
+`knitr::knit()`, **[knitr]** shows the progress of code chunks
+processed thus far using a progress bar.  In **knitr** (>= 1.42) [to
+be released], we can use **progressr** for this progress reporting.
+To do this, set R option `knitr.progress.fun` as:
+
+```r
+options(knitr.progress.fun = function(total, labels) {
+  p <- progressr::progressor(total, on_exit = FALSE)
+  list(
+    update = function(i) p(sprintf("chunk: %s", labels[i])),
+    done = function() p(type = "finish")
+  )
+})
+```
+
+This configures **knitr** to signal progress via the **progressr**
+framework.  To report on these, use:
+
+```r
+progressr::handlers(global = TRUE)
+```
+
+
 ## Parallel processing and progress updates
 
 The **[future]** framework, which provides a unified API for parallel and distributed processing in R, has built-in support for the kind of progression updates produced by the **progressr** package.  This means that you can use it with for instance **[future.apply]**, **[furrr]**, and **[foreach]** with **[doFuture]**, and **[plyr]** or **[BiocParallel]** with **doFuture**.  In contrast, _non-future_ parallelization methods such as **parallel**'s `mclapply()` and, `parallel::parLapply()`, and **foreach** adapters like **doParallel** do _not_ support progress reports via **progressr**.
@@ -737,11 +765,11 @@ M: Added value 3
 [doParallel]: https://cran.r-project.org/package=doParallel
 [doFuture]: https://cran.r-project.org/package=doFuture
 [furrr]: https://cran.r-project.org/package=furrr
+[knitr]: https://cran.r-project.org/package=knitr
 [pbapply]: https://cran.r-project.org/package=pbapply
 [pbmcapply]: https://cran.r-project.org/package=pbmcapply
 [plyr]: https://cran.r-project.org/package=plyr
 [BiocParallel]: https://www.bioconductor.org/packages/BiocParallel/
-
 
 ## Installation
 R package progressr is available on [CRAN](https://cran.r-project.org/package=progressr) and can be installed in R as:
