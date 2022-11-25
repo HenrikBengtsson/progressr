@@ -1,6 +1,11 @@
 # Version (development version)
 
- * ...
+## New Features
+
+ * Add `handler_cli()` for rendering progress updates via the **cli**
+   package and its `cli::cli_progress_bar()`.
+   _Warning: This is work under construction. There are features that 
+   does not yet work, or are not yet implemented._
  
 
 # Version 0.11.0 [2022-09-02]

@@ -1,0 +1,172 @@
+#' Progression Handler: Progress Reported via 'cli' Progress Bars (Text) in the Terminal
+#'
+#' A progression handler for [cli::cli_progress_bar()].
+#'
+#' @inheritParams make_progression_handler
+#'
+#' @param show_after (numeric) Number of seconds to wait before displaying
+#' the progress bar.
+#'
+#' @param \ldots Additional arguments passed to [make_progression_handler()].
+#'
+#' @section Requirements:
+#' This progression handler requires the \pkg{cli} package.
+#'
+#' @section Appearance:
+#' Below is how this progress handler renders by default at 0%, 30% and 99%
+#' progress:
+#' 
+#' With `handlers(handler_cli())`:
+#' ```r
+#'                                  0% | ETA: ?
+#' xxxxxxxxxxxxxxxxx               60% | ETA: 19s
+#' xxxxxxxxxxxxxxxxxxxxxxxxxxxxx   99% | ETA:  0s
+#' ```
+#'
+#' @section Known limitations:
+#' For unknown reasons, this 'cli' handler does not render when
+#' `with_progress()` is used.  This is to be investigated.
+#' It does work with `handlers(global = TRUE)`.
+#'
+#' @example incl/handler_cli.R
+#'
+#' @export
+handler_cli <- function(show_after = 0.0, intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
+  ## Additional arguments passed to the progress-handler backend
+  backend_args <- handler_backend_args(...)
+  
+  if (!is_fake("handler_cli")) {
+    cli_progress_bar <- cli::cli_progress_bar
+    cli_progress_update <- cli::cli_progress_update
+    cli_progress_done <- cli::cli_progress_done
+    
+    erase_progress_bar <- function(pb) {
+      if (is.null(pb)) return()
+      stopifnot(is.character(pb$id), is.environment(pb$envir))
+      ## FIXME: Ad-hoc erasing of progress bar for now
+      pb_width <- getOption("width", 60L) - 1L
+      msg <- c("\r", rep(" ", times = pb_width), "\r")
+      msg <- paste(msg, collapse = "")
+      cat(msg, file = stderr())
+    }
+    
+    redraw_progress_bar <- function(pb) {
+      if (is.null(pb)) return()
+      stopifnot(is.character(pb$id), is.environment(pb$envir))
+      cli_progress_update(id = pb$id, inc = 0, .envir = pb$envir)
+    }
+  }
+
+  reporter <- local({
+    pb <- NULL
+
+    make_pb <- function(total, clear, show_after, ...) {
+      if (!is.null(pb)) return(pb)
+      stop_if_not(
+        is.numeric(total), length(total) == 1L, is.finite(total)
+      )
+      envir <- new.env()
+      args <- c(list(total = total, ..., .envir = envir), backend_args)
+      args$auto_terminate <- FALSE
+      args$.auto_close <- FALSE
+
+      old_show_after <- getOption("cli.progress_show_after", NULL)
+      options(cli.progress_show_after = show_after)
+      on.exit(options(cli.progress_show_after = old_show_after))
+      
+      id <- do.call(cli_progress_bar, args = args)
+      pb <<- list(id = id, total = total, envir = envir, show_after = show_after)
+      stopifnot(is.character(pb$id), is.environment(pb$envir))
+    }
+
+    pb_tick <- function(pb, delta = 0, message = NULL, ...) {
+      if (is.null(pb)) return()
+      stopifnot(is.character(pb$id), is.environment(pb$envir))
+      if (delta <= 0) return()
+#      message(sprintf("cli_progress_update(inc = %g)", delta))
+
+      old_show_after <- getOption("cli.progress_show_after", NULL)
+      options(cli.progress_show_after = pb$show_after)
+      on.exit(options(cli.progress_show_after = old_show_after))
+
+      cli_progress_update(id = pb$id, inc = delta, .envir = pb$envir)
+    }
+
+    pb_update <- function(pb, ratio, ...) {
+      if (is.null(pb)) return()
+      stopifnot(is.character(pb$id), is.environment(pb$envir))
+
+      old_show_after <- getOption("cli.progress_show_after", NULL)
+      options(cli.progress_show_after = pb$show_after)
+      on.exit(options(cli.progress_show_after = old_show_after))
+
+      if (ratio >= 1.0) {
+        cli_progress_done(id = pb$id, .envir = pb$envir)
+      } else {
+        set <- ratio * pb$total
+        stopifnot(length(set) == 1L, is.numeric(set), is.finite(set),
+                  set >= 0, set < pb$total)
+        cli_progress_update(id = pb$id, set = set, .envir = pb$envir)
+      }
+    }
+
+    list(
+      reset = function(...) {
+        pb <<- NULL
+      },
+
+      hide = function(...) {
+        if (is.null(pb)) return()
+        erase_progress_bar(pb)
+      },
+
+      unhide = function(...) {
+        if (is.null(pb)) return()
+        redraw_progress_bar(pb)
+      },
+
+      interrupt = function(config, state, progression, ...) {
+        if (is.null(pb)) return()
+        stopifnot(is.character(pb$id), is.environment(pb$envir))
+        msg <- getOption("progressr.interrupt.message", "interrupt detected")
+        msg <- paste(c("", msg, ""), collapse = "\n")
+        cat(msg, file = stderr())
+      },
+
+      initiate = function(config, state, progression, ...) {
+        if (!state$enabled || config$times == 1L) return()
+        stop_if_not(is.null(pb))
+        make_pb(total = config$max_steps,
+                clear = config$clear, show_after = config$enable_after)
+        pb_tick(pb, delta = 0, message = state$message)
+      },
+        
+      update = function(config, state, progression, ...) {
+        if (!state$enabled || config$times <= 2L) return()
+        make_pb(total = config$max_steps,
+                clear = config$clear, show_after = config$enable_after)
+        if (inherits(progression, "sticky") && length(state$message) > 0) {
+          # FIXME: pb$message(state$message)
+        }
+        pb_tick(pb, delta = state$delta, message = state$message)
+      },
+        
+      finish = function(config, state, progression, ...) {
+        ## Already finished?
+        if (is.null(pb)) return()
+        stopifnot(is.character(pb$id), is.environment(pb$envir))
+        make_pb(total = config$max_steps,
+                clear = config$clear, show_after = config$enable_after)
+        reporter$update(config = config, state = state, progression = progression, ...)
+        if (config$clear) pb_update(pb, ratio = 1.0)
+        
+        ## Make sure 'cli' closes any sinks it has opened (is this needed?)
+        cli_progress_done(id = pb$id, .envir = pb$envir)
+        
+        pb <<- NULL
+      }
+    )
+  })
+
+  make_progression_handler("cli", reporter, intrusiveness = intrusiveness, target = target, ...)
+}
