@@ -10,9 +10,13 @@
 ## Miscellaneous
 
  * Now `with_progress()` asserts that the number of active "output"
-   sinks is the same on exit as on enter.  If not, an informative
-   error message is produced.
- 
+   sinks is the same on exit as on enter, and that the last one closed
+   is the one that was created.  If not, an informative error message
+   is produced.
+
+ * Now all progress handlers assert that the number of active "output"
+   sinks is the same on exit as on enter.
+
 
 # Version 0.11.0 [2022-09-02]
 

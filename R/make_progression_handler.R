@@ -174,7 +174,9 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
       mprintf("reset_reporter() ...")
       mstr(args)
     }
+    nsinks <- sink.number()
     do.call(reporter$reset, args = args)
+    stop_if_not(sink.number() == nsinks)
     .validate_internal_state("reset_reporter() ... done")
     if (debug) mprintf("reset_reporter() ... done")
   }
@@ -188,7 +190,9 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
     }
     stop_if_not(!isTRUE(active))
     stop_if_not(is.null(prev_milestone), length(milestones) > 0L)
+    nsinks <- sink.number()
     do.call(reporter$initiate, args = args)
+    stop_if_not(sink.number() == nsinks)
     active <<- TRUE
     finished <<- FALSE
     .validate_internal_state("initiate_reporter() ... done")
@@ -204,7 +208,9 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
     }
     stop_if_not(isTRUE(active))
     stop_if_not(!is.null(step), length(milestones) > 0L)
+    nsinks <- sink.number()
     do.call(reporter$update, args = args)
+    stop_if_not(sink.number() == nsinks)
     .validate_internal_state("update_reporter() ... done")
     if (debug) mprintf("update_reporter() ... done")
   }
@@ -221,7 +227,9 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
       if (debug) mprintf("hide_reporter() ... skipping; not supported")
       return()
     }
+    nsinks <- sink.number()
     do.call(reporter$hide, args = args)
+    stop_if_not(sink.number() == nsinks)
     .validate_internal_state("hide_reporter() ... done")
     if (debug) mprintf("hide_reporter() ... done")
   }
@@ -238,7 +246,9 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
       if (debug) mprintf("unhide_reporter() ... skipping; not supported")
       return()
     }
+    nsinks <- sink.number()
     do.call(reporter$unhide, args = args)
+    stop_if_not(sink.number() == nsinks)
     .validate_internal_state("unhide_reporter() ... done")
     if (debug) mprintf("unhide_reporter() ... done")
   }
@@ -255,7 +265,9 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
       if (debug) mprintf("interrupt_reporter() ... skipping; not supported")
       return()
     }
+    nsinks <- sink.number()
     do.call(reporter$interrupt, args = args)
+    stop_if_not(sink.number() == nsinks)
     .validate_internal_state("interrupt_reporter() ... done")
     if (debug) mprintf("interrupt_reporter() ... done")
   }
@@ -271,7 +283,9 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
     ## Signal 'finish' if active and not already finished
     ## because it could already have been auto-finished before
     if (active && !finished) {
+      nsinks <- sink.number()
       do.call(reporter$finish, args = args)
+      stop_if_not(sink.number() == nsinks)
     } else {
       if (debug) {
         why <- if (!active && !finished) {
