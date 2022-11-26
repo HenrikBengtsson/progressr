@@ -33,12 +33,14 @@ hpaste <- function(..., sep = "", collapse = ", ", lastCollapse = NULL, maxHead 
 # More efficient than the default utils::capture.output()
 #' @importFrom utils capture.output
 capture_output <- function(expr, envir = parent.frame(), ...) {
+  nsinks <- sink.number()
   res <- eval({
     file <- rawConnection(raw(0L), open = "w")
     on.exit(close(file))
     capture.output(expr, file = file)
     rawToChar(rawConnectionValue(file))
   }, envir = envir, enclos = baseenv())
+  stop_if_not(sink.number() == nsinks)
   unlist(strsplit(res, split = "\n", fixed = TRUE), use.names = FALSE)
 }
 
