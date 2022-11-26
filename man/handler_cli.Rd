@@ -44,6 +44,13 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxx   99\% | ETA:  0s
 }\if{html}{\out{</div>}}
 }
 
+\section{Known limitations}{
+
+For unknown reasons, this 'cli' handler does not render when
+\code{with_progress()} is used.  This is to be investigated.
+It does work with \code{handlers(global = TRUE)}.
+}
+
 \examples{
 if (requireNamespace("cli", quietly = TRUE)) local({
   ## Currently, the "cli" progress handler doesn't work
