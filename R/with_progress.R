@@ -159,7 +159,7 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
 
   ## Delay standard output?
   stdout_file <- delay_stdout(delays, stdout_file = NULL)
-  on.exit(flush_stdout(stdout_file), add = TRUE)
+  on.exit(flush_stdout(stdout_file, must_work = TRUE), add = TRUE)
   
   ## Delay conditions?
   conditions <- list()
@@ -226,7 +226,7 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
   condition = function(c) {
     if (!capture_conditions || inherits(c, c("progression", "error"))) return()
     if (debug) message("- received a ", sQuote(class(c)[1]))
-    
+
     if (inherits(c, delays$conditions)) {
       ## Record
       conditions[[length(conditions) + 1L]] <<- c

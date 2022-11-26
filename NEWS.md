@@ -6,6 +6,12 @@
    package and its `cli::cli_progress_bar()`.
    _Warning: This is work under construction. There are features that 
    does not yet work, or are not yet implemented._
+
+## Miscellaneous
+
+ * Now `with_progress()` asserts that the number of active "output"
+   sinks is the same on exit as on enter.  If not, an informative
+   error message is produced.
  
 
 # Version 0.11.0 [2022-09-02]
