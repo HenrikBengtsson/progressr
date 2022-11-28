@@ -23,11 +23,6 @@
 #' xxxxxxxxxxxxxxxxxxxxxxxxxxxxx   99% | ETA:  0s
 #' ```
 #'
-#' @section Known limitations:
-#' For unknown reasons, this 'cli' handler does not render when
-#' `with_progress()` is used.  This is to be investigated.
-#' It does work with `handlers(global = TRUE)`.
-#'
 #' @example incl/handler_cli.R
 #'
 #' @export
@@ -35,17 +30,43 @@ handler_cli <- function(show_after = 0.0, intrusiveness = getOption("progressr.i
   ## Additional arguments passed to the progress-handler backend
   backend_args <- handler_backend_args(...)
 
-  ecatf <- function(...) {
-    return()
-    cat(sprintf(...), file = stderr())
-  }
-  
   if (!is_fake("handler_cli")) {
-    cli_progress_bar <- cli::cli_progress_bar
-    cli_progress_update <- cli::cli_progress_update
-    cli_progress_done <- cli::cli_progress_done
     cli_n_colors <- cli::num_ansi_colors()
-    
+
+    cli_freeze_color_options <- function() {      
+      options(
+        cli.num_colors = cli_n_colors,
+        crayon.enabled = (cli_n_colors > 1L),
+        crayon.colors = cli_n_colors
+      )
+    }
+
+    cli_progress_call <- function(fun, ...) {
+      opts <- cli_freeze_color_options()
+      on.exit(options(opts), add = TRUE)
+      
+      withCallingHandlers({
+        res <- fun(...)
+      }, cliMessage = function(msg) {
+        cat(conditionMessage(msg), file = stderr())
+        invokeRestart("muffleMessage")
+      })
+      
+      invisible(res)
+    }
+
+    cli_progress_bar <- function(...) {
+      cli_progress_call(cli::cli_progress_bar, ...)
+    }
+
+    cli_progress_update <- function(...) {
+      cli_progress_call(cli::cli_progress_update, ...)
+    }
+
+    cli_progress_done <- function(...) {
+      cli_progress_call(cli::cli_progress_done, ...)
+    }
+
     erase_progress_bar <- function(pb) {
       if (is.null(pb)) return()
       stopifnot(is.character(pb$id), is.environment(pb$envir))
@@ -59,18 +80,14 @@ handler_cli <- function(show_after = 0.0, intrusiveness = getOption("progressr.i
     redraw_progress_bar <- function(pb) {
       if (is.null(pb)) return()
       stopifnot(is.character(pb$id), is.environment(pb$envir))
-      opts <- cli_freeze_color_options()
-      on.exit(options(opts), add = TRUE)
       cli_progress_update(id = pb$id, inc = 0, .envir = pb$envir)
     }
-  }
-
-  cli_freeze_color_options <- function() {      
-    options(
-      cli.num_colors = cli_n_colors,
-      crayon.enabled = (cli_n_colors > 1L),
-      crayon.colors = cli_n_colors
-    )
+  } else {
+    cli_progress_bar <- function(...) "id-dummy"
+    cli_progress_update <- function(...) "id-dummy"
+    cli_progress_done <- function(...) "id-dummy"
+    erase_progress_bar <- function(pb) NULL
+    redraw_progress_bar <- function(pb) NULL
   }
 
   reporter <- local({
@@ -104,15 +121,11 @@ handler_cli <- function(show_after = 0.0, intrusiveness = getOption("progressr.i
         is.environment(pb$envir)
       )
       if (delta <= 0) return()
-      ecatf("cli_progress_update(inc = %g)\n", delta)
-#      message(sprintf("cli_progress_update(inc = %g)", delta))
 
       old_show_after <- getOption("cli.progress_show_after", NULL)
       options(cli.progress_show_after = pb$show_after)
       on.exit(options(cli.progress_show_after = old_show_after))
 
-      opts <- cli_freeze_color_options()
-      on.exit(options(opts), add = TRUE)
       cli_progress_update(id = pb$id, inc = delta, .envir = pb$envir)
     }
 
@@ -124,8 +137,6 @@ handler_cli <- function(show_after = 0.0, intrusiveness = getOption("progressr.i
       options(cli.progress_show_after = pb$show_after)
       on.exit(options(cli.progress_show_after = old_show_after))
 
-      opts <- cli_freeze_color_options()
-      on.exit(options(opts), add = TRUE)
       if (ratio >= 1.0) {
         cli_progress_done(id = pb$id, .envir = pb$envir)
       } else {
@@ -180,11 +191,7 @@ handler_cli <- function(show_after = 0.0, intrusiveness = getOption("progressr.i
         options(cli.progress_show_after = pb$show_after)
         on.exit(options(cli.progress_show_after = old_show_after))
 
-        ecatf("cli_progress_update(set = %g)\n", state$step)
-        opts <- cli_freeze_color_options()
-        on.exit(options(opts), add = TRUE)
-        id <- cli_progress_update(id = pb$id, set = state$step, .envir = pb$envir)
-        ecatf("cli_progress_update(set = %g) == %d\n", state$step, id)
+        cli_progress_update(id = pb$id, set = state$step, .envir = pb$envir)
       },
         
       finish = function(config, state, progression, ...) {
@@ -197,8 +204,6 @@ handler_cli <- function(show_after = 0.0, intrusiveness = getOption("progressr.i
         if (config$clear) pb_update(pb, ratio = 1.0)
         
         ## Make sure 'cli' closes any sinks it has opened (is this needed?)
-        opts <- cli_freeze_color_options()
-        on.exit(options(opts), add = TRUE)
         cli_progress_done(id = pb$id, .envir = pb$envir)
         
         pb <<- NULL

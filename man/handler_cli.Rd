@@ -44,24 +44,17 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxx   99\% | ETA:  0s
 }\if{html}{\out{</div>}}
 }
 
-\section{Known limitations}{
-
-For unknown reasons, this 'cli' handler does not render when
-\code{with_progress()} is used.  This is to be investigated.
-It does work with \code{handlers(global = TRUE)}.
-}
-
 \examples{
 if (requireNamespace("cli", quietly = TRUE)) local({
-  ## Currently, the "cli" progress handler doesn't work
-  ## with with_progress() - only with the global handler
-  if (!handlers(global = NA) && getRversion() >= "4.0.0") {
-    handlers(global = TRUE)
-    on.exit(handlers(global = FALSE))
+  ## with_progress() on a "cli" handler gives an error if a
+  ## global progressing handler is set.
+  if (getRversion() >= "4.0.0" && handlers(global = NA)) {
+    handlers(global = FALSE)
+    on.exit(handlers(global = TRUE))
   }
-
+  
   handlers(handler_cli())
-  y <- slow_sum(1:10, message = FALSE)
+  with_progress({ y <- slow_sum(1:10) })
   print(y)
 })
 }
