@@ -126,10 +126,10 @@ handler_cli <- function(show_after = 0.0, intrusiveness = getOption("progressr.i
       options(cli.progress_show_after = pb$show_after)
       on.exit(options(cli.progress_show_after = old_show_after))
 
-      cli_progress_update(id = pb$id, inc = delta, .envir = pb$envir)
+      cli_progress_update(id = pb$id, inc = delta, status = message, .envir = pb$envir)
     }
 
-    pb_update <- function(pb, ratio, ...) {
+    pb_update <- function(pb, ratio, message = NULL, ...) {
       if (is.null(pb)) return()
       stopifnot(is.character(pb$id), is.environment(pb$envir))
 
@@ -143,7 +143,7 @@ handler_cli <- function(show_after = 0.0, intrusiveness = getOption("progressr.i
         set <- ratio * pb$total
         stopifnot(length(set) == 1L, is.numeric(set), is.finite(set),
                   set >= 0, set < pb$total)
-        cli_progress_update(id = pb$id, set = set, .envir = pb$envir)
+        cli_progress_update(id = pb$id, set = set, status = message, .envir = pb$envir)
       }
     }
 
@@ -191,7 +191,7 @@ handler_cli <- function(show_after = 0.0, intrusiveness = getOption("progressr.i
         options(cli.progress_show_after = pb$show_after)
         on.exit(options(cli.progress_show_after = old_show_after))
 
-        cli_progress_update(id = pb$id, set = state$step, .envir = pb$envir)
+        cli_progress_update(id = pb$id, set = state$step, status = state$message, .envir = pb$envir)
       },
         
       finish = function(config, state, progression, ...) {
