@@ -70,8 +70,11 @@ handler_cli <- function(show_after = 0.0, intrusiveness = getOption("progressr.i
     erase_progress_bar <- function(pb) {
       if (is.null(pb)) return()
       stopifnot(is.character(pb$id), is.environment(pb$envir))
-      ## FIXME: Ad-hoc erasing of progress bar for now
-      pb_width <- getOption("width", 60L) - 1L
+      pb_width <- local({
+        oopts <- options(cli.width = NULL)
+        on.exit(options(oopts))
+        cli::console_width()
+      }) - 1L
       msg <- c("\r", rep(" ", times = pb_width), "\r")
       msg <- paste(msg, collapse = "")
       cat(msg, file = stderr())
