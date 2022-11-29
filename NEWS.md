@@ -1,5 +1,12 @@
 # Version (development version)
 
+## Significant Changes
+
+   Now `with_progress()` and `without_progress()` disables the global
+   progress handler temporarily while running to avoid progress
+   updates being handled twice.  Previously, it was, technically,
+   possible to have two different progress handlers intertwined.
+
 ## New Features
 
  * Add `handler_cli()` for rendering progress updates via the **cli**
@@ -20,7 +27,7 @@
  * Using `with_progress()` while the global progress handler was
    enabled could result in errors for the **cli** handler, and
    possibly for other progression handlers developed in the future.
-   Because of this, `with_progress()`, and `without_progress()`, now
+   Because of this, `with_progress()` and `without_progress()` now
    disables the global progress handler temporarily while running.
 
 
