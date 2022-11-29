@@ -149,7 +149,18 @@ In the below examples, we will assume `handlers(global = TRUE)` is already set.
 
 ## Customizing how progress is reported
 
-The default is to present progress via `utils::txtProgressBar()`, which is available on all R installations.  To change the default, to, say, `progress_bar()` by the **[progress]** package, set:
+The default is to present progress via `utils::txtProgressBar()`, which is available on all R installations.  To change the default, to, say, `cli_progress_bar()` by the **[cli]** package, set:
+
+```r
+handlers("cli")
+```
+This progress handler will present itself as:
+```r
+> y <- slow_sum(1:10)
+■■■■■■■■■■■                     40% | P: Adding 4 ETA:  6s
+```
+
+To instead use `progress_bar()` by the **[progress]** package, set:
 
 ```r
 handlers("progress")
@@ -749,6 +760,7 @@ M: Added value 3
 
 [progressr]: https://cran.r-project.org/package=progressr
 [beepr]: https://cran.r-project.org/package=beepr
+[cli]: https://cran.r-project.org/package=cli
 [progress]: https://cran.r-project.org/package=progress
 [purrr]: https://cran.r-project.org/package=purrr
 [future]: https://cran.r-project.org/package=future
