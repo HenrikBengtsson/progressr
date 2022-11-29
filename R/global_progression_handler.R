@@ -64,6 +64,8 @@ register_global_progression_handler <- function(action = c("add", "remove", "que
 #' 
 #' @keywords internal
 global_progression_handler <- local({
+  active <- TRUE
+  
   current_progressor_uuid <- NULL
   calling_handler <- NULL
   delays <- NULL
@@ -258,6 +260,13 @@ global_progression_handler <- local({
 
 
   function(condition) {
+    if (is.logical(condition)) {
+      active <<- condition
+      return()
+    }
+    
+    if (!active) return()
+    
     debug <- getOption("progressr.global.debug", FALSE)
     
     ## Shut down progression handling?

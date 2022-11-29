@@ -4,8 +4,6 @@
 
  * Add `handler_cli()` for rendering progress updates via the **cli**
    package and its `cli::cli_progress_bar()`.
-   _Warning: This is work under construction. There are features that 
-   does not yet work, or are not yet implemented._
 
 ## Miscellaneous
 
@@ -16,6 +14,14 @@
 
  * Now all progress handlers assert that the number of active "output"
    sinks is the same on exit as on enter.
+
+## Bug Fixes
+
+ * Using `with_progress()` while the global progress handler was
+   enabled could result in errors for the **cli** handler, and
+   possibly for other progression handlers developed in the future.
+   Because of this, `with_progress()`, and `without_progress()`, now
+   disables the global progress handler temporarily while running.
 
 
 # Version 0.11.0 [2022-09-02]

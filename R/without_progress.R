@@ -8,6 +8,10 @@ without_progress <- function(expr) {
   progressr_in_globalenv("allow")
   on.exit(progressr_in_globalenv("disallow"))
 
+  ## Deactive global progression handler while using without_progress()
+  global_progression_handler(FALSE)
+  on.exit(global_progression_handler(TRUE), add = TRUE)
+
   withCallingHandlers({
     res <- withVisible(expr)
   }, progression = function(p) {

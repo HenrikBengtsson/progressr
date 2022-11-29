@@ -58,6 +58,9 @@ Returns the value of the expression.
 Report on Progress while Evaluating an R Expression
 }
 \details{
+If the global progression handler is enabled, it is temporarily disabled
+while evaluating the \code{expr} expression.
+
 \strong{IMPORTANT: This function is meant for end users only.  It should not
 be used by R packages, which only task is to \emph{signal} progress updates,
 not to decide if, when, and how progress should be reported.}
