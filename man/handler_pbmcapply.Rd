@@ -38,18 +38,17 @@ This progression handler requires the \pkg{pbmcapply} package.
 
 \section{Appearance}{
 
+Below are a few examples on how to use and customize this progress handler.
+In all cases, we use \code{handlers(global = TRUE)}.
 Since \code{style = "txt"} corresponds to using \code{\link[=handler_txtprogressbar]{handler_txtprogressbar()}}
 with \code{style = substyle}, the main usage of this handler is with
 \code{style = "ETA"} (default) for which \code{substyle} is ignored.
-Below is how this progress handler renders by default at 0\%, 30\% and 99\%
-progress:
 
-With \code{handlers(handler_pbmcapply())}:
-
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{ |                                         |   0\%, ETA NA
- |===========                           |  30\%, ETA 01:32
- |======================================|  99\%, ETA 00:01
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{handlers("pbmcapply")
+y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
 }\if{html}{\out{</div>}}
+
+\if{html}{\figure{handler_pbmcapply-default.svg}}
 }
 
 \examples{

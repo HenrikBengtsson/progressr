@@ -33,20 +33,20 @@ This progression handler requires the \pkg{cli} package.
 
 \section{Appearance}{
 
-Below is how this progress handler renders by default at 0\%, 30\% and 99\%
-progress:
+Below are a few examples on how to use and customize this progress handler.
+In all cases, we use \code{handlers(global = TRUE)}.
 
-With \code{handlers(handler_cli())}:
-
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{                                 0\% | ETA: ?
-#################               60\% | ETA: 19s
-#############################   99\% | ETA:  0s
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{handlers("cli")
+y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
 }\if{html}{\out{</div>}}
 
-\emph{Note}: The above output does neither show the colors nor UTF-8 symbols,
-since they cannot be represented in R help pages.  Instead, the output
-is illustrated using plain text, where the \verb{#} symbol corresponds to the
-"complete" symbol (green square by default).
+\if{html}{\figure{handler_cli-default.svg}}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{handlers(handler_cli(format = "\{cli::pb_spin\} \{cli::pb_bar\} \{cli::pb_percent\} \{cli::pb_status\}"))
+y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
+}\if{html}{\out{</div>}}
+
+\if{html}{\figure{handler_cli-format-1.svg}}
 }
 
 \examples{

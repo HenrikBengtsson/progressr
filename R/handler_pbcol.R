@@ -21,21 +21,36 @@
 #' This progression handler requires the \pkg{crayon} package.
 #'
 #' @section Appearance:
-#' Below is how this progress handler renders by default at 0%, 30% and 99%
-#' progress:
-#' 
-#' With `handlers(handler_pbcol())`:
-#' ```r
-#' _P:_Adding_1______________________________________]   0% -
-#' #P:#Adding_2______________________________________]  10% \
-#' #P:#Adding#99#####################################]  99% |
+#' Below are a few examples on how to use and customize this progress handler.
+#' In all cases, we use `handlers(global = TRUE)`.
+#'
+#' ```{asciicast handler_cli-default}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
+#' handlers("pbcol")
+#' y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
 #' ```
 #'
-#' _Note_: The above output does not show the colors, since they cannot
-#' be represented in R help pages.  Instead, the output is illustrated
-#' using plain text, where the `#` symbol corresponds to the
-#' "complete" background color (blue by default) and the `_` symbol
-#' correspnds to the "incomplete background color (cyan by default).
+#' ```{asciicast handler_cli-adjust-mid}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
+#' handlers(handler_pbcol(adjust = 0.5))
+#' y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
+#' ```
+#'
+#' ```{asciicast handler_cli-adjust-right-complete}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
+#' handlers(handler_pbcol(
+#'   adjust = 1,
+#'   complete = function(s) crayon::bgRed(crayon::black(s)),
+#'   incomplete = function(s) crayon::bgCyan(crayon::black(s))
+#' ))
+#' y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
+#' ```
 #'
 #' @example incl/handler_pbcol.R
 #'

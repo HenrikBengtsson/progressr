@@ -16,17 +16,18 @@
 #' This progression handler requires the \pkg{pbmcapply} package.
 #'
 #' @section Appearance:
+#' Below are a few examples on how to use and customize this progress handler.
+#' In all cases, we use `handlers(global = TRUE)`.
 #' Since `style = "txt"` corresponds to using [handler_txtprogressbar()]
 #' with `style = substyle`, the main usage of this handler is with
 #' `style = "ETA"` (default) for which `substyle` is ignored.
-#' Below is how this progress handler renders by default at 0%, 30% and 99%
-#' progress:
-#' 
-#' With `handlers(handler_pbmcapply())`:
-#' ```r
-#'  |                                         |   0%, ETA NA
-#'  |===========                           |  30%, ETA 01:32
-#'  |======================================|  99%, ETA 00:01
+#'
+#' ```{asciicast handler_pbmcapply-default}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
+#' handlers("pbmcapply")
+#' y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
 #' ```
 #'
 #' @example incl/handler_pbmcapply.R

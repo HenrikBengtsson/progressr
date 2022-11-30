@@ -12,29 +12,47 @@
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
 #'
 #' @section Appearance:
-#' Below is how this progress handler renders at 0%, 30% and 99% progress
-#' for the three different `style` values that [utils::txtProgressBar()]
-#' supports.
+#' Below are a few examples on how to use and customize this progress handler.
+#' In all cases, we use `handlers(global = TRUE)`.
 #'
-#' With `handlers(handler_txtprogressbar(style = 1L))`:
-#' ```r
-#'
-#' ====================================
-#' ==========================================================
+#' ```{asciicast handler_txtprogressbar-default}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
+#' handlers("txtprogressbar")
+#' y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
 #' ```
 #'
-#' With `handlers(handler_txtprogressbar(style = 2L))`:
-#' ```r
-#' 
-#' ====================================
-#' ==========================================================
+#' ```{asciicast handler_txtprogressbar-style-1}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
+#' handlers(handler_txtprogressbar(style = 1L))
+#' y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
 #' ```
 #'
-#' With `handlers(handler_txtprogressbar(style = 3L))`:
-#' ```r  
-#'   |                                                 |   0%
-#'   |===============                                  |  30%
-#'   |=================================================|  99%
+#' ```{asciicast handler_txtprogressbar-style-2}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
+#' handlers(handler_txtprogressbar(style = 2L))
+#' y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
+#' ```
+#'
+#' ```{asciicast handler_txtprogressbar-style-3}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
+#' handlers(handler_txtprogressbar(style = 3L))
+#' y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
+#' ```
+#'
+#' ```{asciicast handler_txtprogressbar-char}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
+#' handlers(handler_txtprogressbar(char = "#"))
+#' y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
 #' ```
 #'
 #' @example incl/handler_txtprogressbar.R

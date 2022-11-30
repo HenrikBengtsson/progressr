@@ -15,21 +15,39 @@
 #' This progression handler requires the \pkg{progress} package.
 #'
 #' @section Appearance:
-#' Below is how this progress handler renders by default at 0%, 30% and 99%
-#' progress:
-#' 
-#' With `handlers(handler_progress())`:
-#' ```r
-#' - [-------------------------------------------------]   0% 
-#' \ [====>--------------------------------------------]  10% 
-#' | [================================================>]  99% 
+#' Below are a few examples on how to use and customize this progress handler.
+#' In all cases, we use `handlers(global = TRUE)`.
+#'
+#' ```{asciicast handler_progress-default}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
+#' handlers("progress")
+#' y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
 #' ```
 #'
-#' If the progression updates have messages, they will appear like:
-#' ```r
-#' - [-----------------------------------------]   0% Starting
-#' \ [===========>----------------------------]  30% Importing
-#' | [=====================================>]  99% Summarizing
+#' ```{asciicast handler_progress-complete}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
+#' handlers(handler_progress(complete = "#"))
+#' y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
+#' ```
+#'
+#' ```{asciicast handler_progress-format-1}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
+#' handlers(handler_progress(format = ":spin [:bar] :percent :message"))
+#' y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
+#' ```
+#'
+#' ```{asciicast handler_progress-format-2}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
+#' handlers(handler_progress(format = ":percent [:bar] :eta :message"))
+#' with_progress(y <- slow_sum(1:25, message = FALSE, sticky = FALSE))
 #' ```
 #'
 #' @example incl/handler_progress.R

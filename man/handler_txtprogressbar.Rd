@@ -31,30 +31,38 @@ A progression handler for \code{\link[utils:txtProgressBar]{utils::txtProgressBa
 }
 \section{Appearance}{
 
-Below is how this progress handler renders at 0\%, 30\% and 99\% progress
-for the three different \code{style} values that \code{\link[utils:txtProgressBar]{utils::txtProgressBar()}}
-supports.
+Below are a few examples on how to use and customize this progress handler.
+In all cases, we use \code{handlers(global = TRUE)}.
 
-With \code{handlers(handler_txtprogressbar(style = 1L))}:
-
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
-====================================
-==========================================================
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{handlers("txtprogressbar")
+y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
 }\if{html}{\out{</div>}}
 
-With \code{handlers(handler_txtprogressbar(style = 2L))}:
+\if{html}{\figure{handler_txtprogressbar-default.svg}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
-====================================
-==========================================================
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{handlers(handler_txtprogressbar(style = 1L))
+y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
 }\if{html}{\out{</div>}}
 
-With \code{handlers(handler_txtprogressbar(style = 3L))}:
+\if{html}{\figure{handler_txtprogressbar-style-1.svg}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{  |                                                 |   0\%
-  |===============                                  |  30\%
-  |=================================================|  99\%
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{handlers(handler_txtprogressbar(style = 2L))
+y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
 }\if{html}{\out{</div>}}
+
+\if{html}{\figure{handler_txtprogressbar-style-2.svg}}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{handlers(handler_txtprogressbar(style = 3L))
+y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
+}\if{html}{\out{</div>}}
+
+\if{html}{\figure{handler_txtprogressbar-style-3.svg}}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{handlers(handler_txtprogressbar(char = "#"))
+y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
+}\if{html}{\out{</div>}}
+
+\if{html}{\figure{handler_txtprogressbar-char.svg}}
 }
 
 \examples{
