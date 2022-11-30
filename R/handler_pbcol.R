@@ -20,6 +20,23 @@
 #' @section Requirements:
 #' This progression handler requires the \pkg{crayon} package.
 #'
+#' @section Appearance:
+#' Below is how this progress handler renders by default at 0%, 30% and 99%
+#' progress:
+#' 
+#' With `handlers(handler_pbcol())`:
+#' ```r
+#' _P:_Adding_1______________________________________]   0% -
+#' #P:#Adding_2______________________________________]  10% \
+#' #P:#Adding#99#####################################]  99% |
+#' ```
+#'
+#' _Note_: The above output does not show the colors, since they cannot
+#' be represented in R help pages.  Instead, the output is illustrated
+#' using plain text, where the `#` symbol corresponds to the
+#' "complete" background color (blue by default) and the `_` symbol
+#' correspnds to the "incomplete background color (cyan by default).
+#'
 #' @example incl/handler_pbcol.R
 #'
 #' @importFrom utils flush.console

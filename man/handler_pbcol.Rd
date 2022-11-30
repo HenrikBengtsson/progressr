@@ -44,6 +44,25 @@ Progression Handler: Progress Reported as an ANSI Background Color in the Termin
 This progression handler requires the \pkg{crayon} package.
 }
 
+\section{Appearance}{
+
+Below is how this progress handler renders by default at 0\%, 30\% and 99\%
+progress:
+
+With \code{handlers(handler_pbcol())}:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{_P:_Adding_1______________________________________]   0\% -
+#P:#Adding_2______________________________________]  10\% \\
+#P:#Adding#99#####################################]  99\% |
+}\if{html}{\out{</div>}}
+
+\emph{Note}: The above output does not show the colors, since they cannot
+be represented in R help pages.  Instead, the output is illustrated
+using plain text, where the \verb{#} symbol corresponds to the
+"complete" background color (blue by default) and the \verb{_} symbol
+correspnds to the "incomplete background color (cyan by default).
+}
+
 \examples{
 handlers(handler_pbcol)
 with_progress({ y <- slow_sum(1:10) })

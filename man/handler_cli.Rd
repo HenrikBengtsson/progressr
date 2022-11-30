@@ -39,9 +39,14 @@ progress:
 With \code{handlers(handler_cli())}:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{                                 0\% | ETA: ?
-xxxxxxxxxxxxxxxxx               60\% | ETA: 19s
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxx   99\% | ETA:  0s
+#################               60\% | ETA: 19s
+#############################   99\% | ETA:  0s
 }\if{html}{\out{</div>}}
+
+\emph{Note}: The above output does neither show the colors nor UTF-8 symbols,
+since they cannot be represented in R help pages.  Instead, the output
+is illustrated using plain text, where the \verb{#} symbol corresponds to the
+"complete" symbol (green square by default).
 }
 
 \examples{
