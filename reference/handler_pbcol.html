@@ -189,17 +189,17 @@ rendered.</p></dd>
 In all cases, we use <code>handlers(global = TRUE)</code>.</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="../reference/handlers.html">handlers</a></span><span class="op">(</span><span class="st">"pbcol"</span><span class="op">)</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/slow_sum.html">slow_sum</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">25</span>, message <span class="op">=</span> <span class="cn">FALSE</span>, sticky <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre><p></p></div>
-<p><img src="figures/handler_cli-default.svg" alt=""></p>
+<p><img src="figures/handler_pbcol-default.svg" alt=""></p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="../reference/handlers.html">handlers</a></span><span class="op">(</span><span class="fu"><a href="../reference/handler_pbcol.html">handler_pbcol</a></span><span class="op">(</span>adjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/slow_sum.html">slow_sum</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">25</span>, message <span class="op">=</span> <span class="cn">FALSE</span>, sticky <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre><p></p></div>
-<p><img src="figures/handler_cli-adjust-mid.svg" alt=""></p>
+<p><img src="figures/handler_pbcol-adjust-mid.svg" alt=""></p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="../reference/handlers.html">handlers</a></span><span class="op">(</span><span class="fu"><a href="../reference/handler_pbcol.html">handler_pbcol</a></span><span class="op">(</span></span>
 <span>  adjust <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  complete <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">s</span><span class="op">)</span> <span class="fu">crayon</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/crayon/man/crayon.html" class="external-link">bgRed</a></span><span class="op">(</span><span class="fu">crayon</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/crayon/man/crayon.html" class="external-link">black</a></span><span class="op">(</span><span class="va">s</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  incomplete <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">s</span><span class="op">)</span> <span class="fu">crayon</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/crayon/man/crayon.html" class="external-link">bgCyan</a></span><span class="op">(</span><span class="fu">crayon</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/crayon/man/crayon.html" class="external-link">black</a></span><span class="op">(</span><span class="va">s</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/slow_sum.html">slow_sum</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">25</span>, message <span class="op">=</span> <span class="cn">FALSE</span>, sticky <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre><p></p></div>
-<p><img src="figures/handler_cli-adjust-right-complete.svg" alt=""></p>
+<p><img src="figures/handler_pbcol-adjust-right-complete.svg" alt=""></p>
     </div>
 
     <div id="ref-examples">
