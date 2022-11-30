@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.0-9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.0-9011</span>
       </span>
     </div>
 
@@ -168,13 +168,14 @@ rendered.</p></dd>
     <h2>Appearance</h2>
     
 
-<p>Below is how this progress handler renders by default at 0%, 30% and 99%
-progress:</p>
-<p>With <code>handlers(handler_cli())</code>:</p>
-<p></p><div class="sourceCode r"><pre><code>                                 0% | ETA: ?
-xxxxxxxxxxxxxxxxx               60% | ETA: 19s
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxx   99% | ETA:  0s
-</code></pre><p></p></div>
+<p>Below are a few examples on how to use and customize this progress handler.
+In all cases, we use <code>handlers(global = TRUE)</code>.</p>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="../reference/handlers.html">handlers</a></span><span class="op">(</span><span class="st">"cli"</span><span class="op">)</span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/slow_sum.html">slow_sum</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">25</span>, message <span class="op">=</span> <span class="cn">FALSE</span>, sticky <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre><p></p></div>
+<p><img src="figures/handler_cli-default.svg" alt=""></p>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="../reference/handlers.html">handlers</a></span><span class="op">(</span><span class="fu"><a href="../reference/handler_cli.html">handler_cli</a></span><span class="op">(</span>format <span class="op">=</span> <span class="st">"{cli::pb_spin} {cli::pb_bar} {cli::pb_percent} {cli::pb_status}"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/slow_sum.html">slow_sum</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">25</span>, message <span class="op">=</span> <span class="cn">FALSE</span>, sticky <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre><p></p></div>
+<p><img src="figures/handler_cli-format-1.svg" alt=""></p>
     </div>
 
     <div id="ref-examples">
