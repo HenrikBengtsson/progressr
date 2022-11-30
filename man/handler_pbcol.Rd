@@ -53,13 +53,13 @@ In all cases, we use \code{handlers(global = TRUE)}.
 y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
 }\if{html}{\out{</div>}}
 
-\if{html}{\figure{handler_cli-default.svg}}
+\if{html}{\figure{handler_pbcol-default.svg}}
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{handlers(handler_pbcol(adjust = 0.5))
 y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
 }\if{html}{\out{</div>}}
 
-\if{html}{\figure{handler_cli-adjust-mid.svg}}
+\if{html}{\figure{handler_pbcol-adjust-mid.svg}}
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{handlers(handler_pbcol(
   adjust = 1,
@@ -69,7 +69,7 @@ y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
 y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
 }\if{html}{\out{</div>}}
 
-\if{html}{\figure{handler_cli-adjust-right-complete.svg}}
+\if{html}{\figure{handler_pbcol-adjust-right-complete.svg}}
 }
 
 \examples{

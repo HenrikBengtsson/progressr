@@ -24,7 +24,7 @@
 #' Below are a few examples on how to use and customize this progress handler.
 #' In all cases, we use `handlers(global = TRUE)`.
 #'
-#' ```{asciicast handler_cli-default}
+#' ```{asciicast handler_pbcol-default}
 #' #| asciicast_at = "all",
 #' #| asciicast_knitr_output = "svg",
 #' #| asciicast_cursor = FALSE
@@ -32,7 +32,7 @@
 #' y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
 #' ```
 #'
-#' ```{asciicast handler_cli-adjust-mid}
+#' ```{asciicast handler_pbcol-adjust-mid}
 #' #| asciicast_at = "all",
 #' #| asciicast_knitr_output = "svg",
 #' #| asciicast_cursor = FALSE
@@ -40,7 +40,7 @@
 #' y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
 #' ```
 #'
-#' ```{asciicast handler_cli-adjust-right-complete}
+#' ```{asciicast handler_pbcol-adjust-right-complete}
 #' #| asciicast_at = "all",
 #' #| asciicast_knitr_output = "svg",
 #' #| asciicast_cursor = FALSE
