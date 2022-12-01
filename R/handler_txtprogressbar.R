@@ -20,7 +20,7 @@
 #' #| asciicast_knitr_output = "svg",
 #' #| asciicast_cursor = FALSE
 #' handlers("txtprogressbar")
-#' y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
+#' y <- slow_sum(1:25)
 #' ```
 #'
 #' ```{asciicast handler_txtprogressbar-style-1}
@@ -28,15 +28,7 @@
 #' #| asciicast_knitr_output = "svg",
 #' #| asciicast_cursor = FALSE
 #' handlers(handler_txtprogressbar(style = 1L))
-#' y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
-#' ```
-#'
-#' ```{asciicast handler_txtprogressbar-style-2}
-#' #| asciicast_at = "all",
-#' #| asciicast_knitr_output = "svg",
-#' #| asciicast_cursor = FALSE
-#' handlers(handler_txtprogressbar(style = 2L))
-#' y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
+#' y <- slow_sum(1:25)
 #' ```
 #'
 #' ```{asciicast handler_txtprogressbar-style-3}
@@ -44,7 +36,7 @@
 #' #| asciicast_knitr_output = "svg",
 #' #| asciicast_cursor = FALSE
 #' handlers(handler_txtprogressbar(style = 3L))
-#' y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
+#' y <- slow_sum(1:25)
 #' ```
 #'
 #' ```{asciicast handler_txtprogressbar-char}
@@ -52,7 +44,7 @@
 #' #| asciicast_knitr_output = "svg",
 #' #| asciicast_cursor = FALSE
 #' handlers(handler_txtprogressbar(char = "#"))
-#' y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
+#' y <- slow_sum(1:25)
 #' ```
 #'
 #' @example incl/handler_txtprogressbar.R

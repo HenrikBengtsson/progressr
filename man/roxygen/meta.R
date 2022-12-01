@@ -15,6 +15,12 @@ asciicast::init_knitr_engine(
     options(progressr.demo.delay = 0.15)
     options(progressr.show_after = 0.0)
     options(progressr.clear = FALSE)
+    
+    ## To simplify examples
+    options(progressr.slow_sum.stdout = FALSE)
+    options(progressr.slow_sum.message = FALSE)
+    options(progressr.slow_sum.sticky = FALSE)
+    
     handlers(global = TRUE)
   })
 )

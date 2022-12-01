@@ -27,7 +27,7 @@
 #' #| asciicast_knitr_output = "svg",
 #' #| asciicast_cursor = FALSE
 #' handlers("pbmcapply")
-#' y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
+#' y <- slow_sum(1:25)
 #' ```
 #'
 #' @example incl/handler_pbmcapply.R
