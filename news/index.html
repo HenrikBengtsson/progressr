@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.0-9014</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.0-9015</span>
       </span>
     </div>
 
@@ -141,7 +141,8 @@
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-development-version">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
-<ul><li>Using <code><a href="../reference/with_progress.html">with_progress()</a></code> while the global progress handler was enabled could result in errors for the <strong>cli</strong> handler, and possibly for other progression handlers developed in the future. Because of this, <code><a href="../reference/with_progress.html">with_progress()</a></code> and <code><a href="../reference/with_progress.html">without_progress()</a></code> now disables the global progress handler temporarily while running.</li>
+<ul><li><p>Using <code><a href="../reference/with_progress.html">with_progress()</a></code> while the global progress handler was enabled could result in errors for the <strong>cli</strong> handler, and possibly for other progression handlers developed in the future. Because of this, <code><a href="../reference/with_progress.html">with_progress()</a></code> and <code><a href="../reference/with_progress.html">without_progress()</a></code> now disables the global progress handler temporarily while running.</p></li>
+<li><p>The <code>pbmclapply()</code> handler went from 0 to 100% in one step, because we forgot to set the <code>max</code>:imum value.</p></li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -333,7 +334,7 @@
 <h2 class="page-header" data-toc-text="0.1.5" id="version-015">Version 0.1.5<a class="anchor" aria-label="anchor" href="#version-015"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-1-5">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-1-5"></a></h3>
-<ul><li><p>Add <code>withProgress2()</code>, which is a plug-in backward compatibility replacement for <code><a href="https://rdrr.io/pkg/shiny/man/withProgress.html" class="external-link">shiny::withProgress()</a></code> wrapped in <code><a href="../reference/with_progress.html">progressr::with_progress()</a></code> where the the “shiny” progression handler is by default added to the list of progression handlers used.</p></li>
+<ul><li><p>Add <code>withProgress2()</code>, which is a plug-in backward compatibility replacement for <code><a href="https://shiny.rstudio.com/reference/shiny/latest/withProgress.html" class="external-link">shiny::withProgress()</a></code> wrapped in <code><a href="../reference/with_progress.html">progressr::with_progress()</a></code> where the the “shiny” progression handler is by default added to the list of progression handlers used.</p></li>
 <li><p>Add <code>demo("mandelbrot", package = "progressr")</code>.</p></li>
 </ul></div>
 <div class="section level3">
