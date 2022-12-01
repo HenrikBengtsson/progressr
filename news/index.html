@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.0-9012</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.0-9013</span>
       </span>
     </div>
 
@@ -131,7 +131,8 @@
 </div>
 <div class="section level3">
 <h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
-<ul><li>Add <code><a href="../reference/handler_cli.html">handler_cli()</a></code> for rendering progress updates via the <strong>cli</strong> package and its <code><a href="https://cli.r-lib.org/reference/cli_progress_bar.html" class="external-link">cli::cli_progress_bar()</a></code>.</li>
+<ul><li><p>Add <code><a href="../reference/handler_cli.html">handler_cli()</a></code> for rendering progress updates via the <strong>cli</strong> package and its <code><a href="https://cli.r-lib.org/reference/cli_progress_bar.html" class="external-link">cli::cli_progress_bar()</a></code>.</p></li>
+<li><p>Now <code><a href="../reference/handler_progress.html">handler_progress()</a></code> creates a <strong>progress</strong> progress bar that is always rendered by forcing <code>progress::progress_bar$new(...,    force = TRUE)</code>.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="miscellaneous-development-version">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-development-version"></a></h3>
