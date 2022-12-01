@@ -28,7 +28,7 @@
 #' #| asciicast_at = "all",
 #' #| asciicast_knitr_output = "svg",
 #' #| asciicast_cursor = FALSE
-#' handlers(handler_cli(format = "{cli::pb_spin} {cli::pb_bar} {cli::pb_percent} {cli::pb_status}"))
+#' handlers(handler_cli(format = "{cli::pb_spin} {cli::pb_bar} {cli::pb_current}/{cli::pb_total} {cli::pb_status}"))
 #' y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
 #' ```
 #'
@@ -57,7 +57,14 @@ handler_cli <- function(show_after = 0.0, intrusiveness = getOption("progressr.i
       withCallingHandlers({
         res <- fun(...)
       }, cliMessage = function(msg) {
-        cat(conditionMessage(msg), file = stderr())
+        output <- conditionMessage(msg)
+        ## WORKAROUND: cli_progress_done() outputs a newline
+        ## at the end. This prevents us from (optionally)
+        ## clearing the line afterward
+        if (identical(fun, cli::cli_progress_done)) {
+          output <- gsub("[\n\r]+$", "", output)
+        }
+        cat(output, file = stderr())
         invokeRestart("muffleMessage")
       })
       
@@ -112,6 +119,7 @@ handler_cli <- function(show_after = 0.0, intrusiveness = getOption("progressr.i
       )
       envir <- new.env()
       args <- c(list(total = total, ..., .envir = envir), backend_args)
+      args$clear <- FALSE
       args$auto_terminate <- FALSE
       args$.auto_close <- FALSE
 
@@ -151,6 +159,8 @@ handler_cli <- function(show_after = 0.0, intrusiveness = getOption("progressr.i
 
       if (ratio >= 1.0) {
         cli_progress_done(id = pb$id, .envir = pb$envir)
+        erase_progress_bar(pb)
+        cat("\n", file = stderr())
       } else {
         set <- ratio * pb$total
         stopifnot(length(set) == 1L, is.numeric(set), is.finite(set),
@@ -213,10 +223,11 @@ handler_cli <- function(show_after = 0.0, intrusiveness = getOption("progressr.i
         make_pb(total = config$max_steps,
                 clear = config$clear, show_after = config$enable_after)
         reporter$update(config = config, state = state, progression = progression, ...)
-        if (config$clear) pb_update(pb, ratio = 1.0)
-        
-        ## Make sure 'cli' closes any sinks it has opened (is this needed?)
-        cli_progress_done(id = pb$id, .envir = pb$envir)
+        if (config$clear) {
+          pb_update(pb, ratio = 1.0)
+        } else {
+          cat("\n", file = stderr())
+        }      
         
         pb <<- NULL
       }

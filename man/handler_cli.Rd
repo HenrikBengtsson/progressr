@@ -42,7 +42,7 @@ y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
 
 \if{html}{\figure{handler_cli-default.svg}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{handlers(handler_cli(format = "\{cli::pb_spin\} \{cli::pb_bar\} \{cli::pb_percent\} \{cli::pb_status\}"))
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{handlers(handler_cli(format = "\{cli::pb_spin\} \{cli::pb_bar\} \{cli::pb_current\}/\{cli::pb_total\} \{cli::pb_status\}"))
 y <- slow_sum(1:25, message = FALSE, sticky = FALSE)
 }\if{html}{\out{</div>}}
 

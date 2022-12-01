@@ -12,7 +12,7 @@ asciicast::init_knitr_engine(
     library(progressr)
     options(width = 70)
     options(progressr.enable = TRUE)
-    options(progressr.demo.delay = 0.1)
+    options(progressr.demo.delay = 0.15)
     options(progressr.show_after = 0.0)
     options(progressr.clear = FALSE)
     handlers(global = TRUE)
