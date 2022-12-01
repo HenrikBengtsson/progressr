@@ -104,7 +104,8 @@ handler_progress <- function(format = ":spin [:bar] :percent :message", show_aft
         is.numeric(show_after), length(show_after) == 1L
       )
       args <- c(list(format = format, total = total, clear = clear,
-                     show_after = show_after, ...), backend_args)
+                     show_after = show_after, force = TRUE, ...),
+                backend_args)
       pb <<- do.call(progress_bar$new, args = args)
       pb
     }

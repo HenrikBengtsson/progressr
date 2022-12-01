@@ -11,6 +11,10 @@
 
  * Add `handler_cli()` for rendering progress updates via the **cli**
    package and its `cli::cli_progress_bar()`.
+   
+ * Now `handler_progress()` creates a **progress** progress bar that
+   is always rendered by forcing `progress::progress_bar$new(...,
+   force = TRUE)`.
 
 ## Miscellaneous
 
