@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.0-9013</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.0-9014</span>
       </span>
     </div>
 
@@ -249,6 +249,12 @@ to <code>TRUE</code>.  Alternatively, one can set argument <code>enable=TRUE</co
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (x, delay = getOption("progressr.demo.delay", 1), stdout = FALSE, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     message = TRUE, sticky = TRUE) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     if (missing(stdout)) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         stdout &lt;- getOption("progressr.slow_sum.stdout", FALSE)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     if (missing(message)) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         message &lt;- getOption("progressr.slow_sum.message", TRUE)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     if (missing(sticky)) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         sticky &lt;- getOption("progressr.slow_sum.sticky", TRUE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     p &lt;- progressor(along = x)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     sum &lt;- 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     for (kk in seq_along(x)) {</span>
@@ -274,7 +280,7 @@ to <code>TRUE</code>.  Alternatively, one can set argument <code>enable=TRUE</co
 <span class="r-out co"><span class="r-pr">#&gt;</span>     p(amount = 0)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     sum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5647d5645760&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x557e4a9fabc8&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:progressr&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span></span></span>
