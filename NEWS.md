@@ -34,6 +34,9 @@
    Because of this, `with_progress()` and `without_progress()` now
    disables the global progress handler temporarily while running.
 
+ * The `pbmclapply()` handler went from 0 to 100% in one step, because
+   we forgot to set the `max`:imum value.
+ 
 
 # Version 0.11.0 [2022-09-02]
 
