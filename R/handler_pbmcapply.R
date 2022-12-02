@@ -6,6 +6,9 @@
 #'
 #' @inheritParams handler_txtprogressbar
 #'
+#' @param char (character) The symbols to form the progress bar for
+#' [utils::txtProgressBar()].
+#'
 #' @param style (character) The progress-bar style according to
 #" [pbmcapply::progressBar()].
 #'
@@ -78,7 +81,8 @@ handler_pbmcapply <- function(char = "=", substyle = 3L, style = "ETA", file = s
       
       ## SPECIAL CASE: pbmcapply::progressBar() does not support max == min
       if (max == 0) {
-        pb <<- voidProgressBar()
+        pb <- txtProgressBar()
+        class(pb) <- c("voidProgressBar", class(pb))
       } else {
         args <- c(list(max = max, ...), backend_args)
         pb <<- do.call(progressBar, args = args)

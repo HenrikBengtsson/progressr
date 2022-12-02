@@ -203,3 +203,14 @@ serialization_size <- function(x) {
   class(size) <- "object_size"
   size
 }
+
+
+ansi_pattern <- "(?:(?:\\x{001b}\\[)|\\x{009b})(?:(?:[0-9]{1,3})?(?:(?:;[0-9]{0,3})*)?[A-M|f-m])|\\x{001b}[A-M]"
+
+has_ansi <- function(x) {
+  grepl(ansi_pattern, x, perl = TRUE, useBytes = TRUE)
+}
+
+drop_ansi <- function(x) {
+  gsub(ansi_pattern, "", x, perl = TRUE, useBytes = TRUE)
+}

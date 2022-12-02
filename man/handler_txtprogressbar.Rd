@@ -14,8 +14,9 @@ handler_txtprogressbar(
 )
 }
 \arguments{
-\item{char}{(character) The symbol to form the progress bar for
-\code{\link[utils:txtProgressBar]{utils::txtProgressBar()}}.}
+\item{char}{(character) The symbols to form the progress bar for
+\code{\link[utils:txtProgressBar]{utils::txtProgressBar()}}. Contrary to \code{txtProgressBar()}, this handler
+supports also ANSI-colored symbols.}
 
 \item{style}{(integer) The progress-bar style according to
 \code{\link[utils:txtProgressBar]{utils::txtProgressBar()}}.}
@@ -67,6 +68,12 @@ y <- slow_sum(1:25)
 }\if{html}{\out{</div>}}
 
 \if{html}{\figure{handler_txtprogressbar-char-width-2.svg}}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{handlers(handler_txtprogressbar(char = crayon::bgRed(crayon::blue("#"))))
+y <- slow_sum(1:25)
+}\if{html}{\out{</div>}}
+
+\if{html}{\figure{handler_txtprogressbar-char-ansi.svg}}
 }
 
 \examples{

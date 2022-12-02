@@ -15,6 +15,9 @@
  * Now `handler_progress()` creates a **progress** progress bar that
    is always rendered by forcing `progress::progress_bar$new(...,
    force = TRUE)`.
+   
+ * `handler_txtprogressbar()` gained support for ANSI-colored `char`
+   symbols.
 
 ## Miscellaneous
 

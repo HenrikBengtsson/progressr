@@ -15,7 +15,7 @@ handler_pbmcapply(
 )
 }
 \arguments{
-\item{char}{(character) The symbol to form the progress bar for
+\item{char}{(character) The symbols to form the progress bar for
 \code{\link[utils:txtProgressBar]{utils::txtProgressBar()}}.}
 
 \item{substyle}{(integer) The progress-bar substyle according to
