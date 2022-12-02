@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.0-9015</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.0-9018</span>
       </span>
     </div>
 
@@ -130,6 +130,7 @@
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">handler_txtprogressbar</span><span class="op">(</span></span>
+<span>  char <span class="op">=</span> <span class="st">"="</span>,</span>
 <span>  style <span class="op">=</span> <span class="fl">3L</span>,</span>
 <span>  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/showConnections.html" class="external-link">stderr</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  intrusiveness <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"progressr.intrusiveness.terminal"</span>, <span class="fl">1</span><span class="op">)</span>,</span>
@@ -140,7 +141,13 @@
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>style</dt>
+    <dl><dt>char</dt>
+<dd><p>(character) The symbols to form the progress bar for
+<code><a href="https://rdrr.io/r/utils/txtProgressBar.html" class="external-link">utils::txtProgressBar()</a></code>. Contrary to <code><a href="https://rdrr.io/r/utils/txtProgressBar.html" class="external-link">txtProgressBar()</a></code>, this handler
+supports also ANSI-colored symbols.</p></dd>
+
+
+<dt>style</dt>
 <dd><p>(integer) The progress-bar style according to
 <code><a href="https://rdrr.io/r/utils/txtProgressBar.html" class="external-link">utils::txtProgressBar()</a></code>.</p></dd>
 
@@ -181,6 +188,12 @@ In all cases, we use <code>handlers(global = TRUE)</code>.</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="../reference/handlers.html">handlers</a></span><span class="op">(</span><span class="fu"><a href="../reference/handler_txtprogressbar.html">handler_txtprogressbar</a></span><span class="op">(</span>char <span class="op">=</span> <span class="st">"#"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/slow_sum.html">slow_sum</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">25</span><span class="op">)</span></span></code></pre><p></p></div>
 <p><img src="figures/handler_txtprogressbar-char.svg" alt=""></p>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="../reference/handlers.html">handlers</a></span><span class="op">(</span><span class="fu"><a href="../reference/handler_txtprogressbar.html">handler_txtprogressbar</a></span><span class="op">(</span>char <span class="op">=</span> <span class="st">"&lt;&gt;"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/slow_sum.html">slow_sum</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">25</span><span class="op">)</span></span></code></pre><p></p></div>
+<p><img src="figures/handler_txtprogressbar-char-width-2.svg" alt=""></p>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="../reference/handlers.html">handlers</a></span><span class="op">(</span><span class="fu"><a href="../reference/handler_txtprogressbar.html">handler_txtprogressbar</a></span><span class="op">(</span>char <span class="op">=</span> <span class="fu">crayon</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/crayon/man/crayon.html" class="external-link">bgRed</a></span><span class="op">(</span><span class="fu">crayon</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/crayon/man/crayon.html" class="external-link">blue</a></span><span class="op">(</span><span class="st">"#"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/slow_sum.html">slow_sum</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">25</span><span class="op">)</span></span></code></pre><p></p></div>
+<p><img src="figures/handler_txtprogressbar-char-ansi.svg" alt=""></p>
     </div>
 
     <div id="ref-examples">
