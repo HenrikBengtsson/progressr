@@ -50,6 +50,14 @@
 #' y <- slow_sum(1:25)
 #' ```
 #'
+#' ```{asciicast handler_txtprogressbar-char-width-2}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
+#' handlers(handler_txtprogressbar(char = "<>"))
+#' y <- slow_sum(1:25)
+#' ```
+#'
 #' @example incl/handler_txtprogressbar.R
 #'
 #' @importFrom utils file_test flush.console txtProgressBar setTxtProgressBar
