@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.0-9018</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.0-9019</span>
       </span>
     </div>
 
@@ -139,6 +139,7 @@
 <h3 id="miscellaneous-development-version">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-development-version"></a></h3>
 <ul><li><p>Now <code><a href="../reference/with_progress.html">with_progress()</a></code> asserts that the number of active “output” sinks is the same on exit as on enter, and that the last one closed is the one that was created. If not, an informative error message is produced.</p></li>
 <li><p>Now all progress handlers assert that the number of active “output” sinks is the same on exit as on enter.</p></li>
+<li><p>Code that relied on the superseded <strong>crayon</strong> package has now been updated to use the <strong>cli</strong> package.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-development-version">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>

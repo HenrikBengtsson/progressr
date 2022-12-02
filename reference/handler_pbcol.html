@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.0-9018</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.0-9019</span>
       </span>
     </div>
 
@@ -132,8 +132,8 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">handler_pbcol</span><span class="op">(</span></span>
 <span>  adjust <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  pad <span class="op">=</span> <span class="fl">1L</span>,</span>
-<span>  complete <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">s</span><span class="op">)</span> <span class="fu">crayon</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/crayon/man/crayon.html" class="external-link">bgBlue</a></span><span class="op">(</span><span class="fu">crayon</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/crayon/man/crayon.html" class="external-link">white</a></span><span class="op">(</span><span class="va">s</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  incomplete <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">s</span><span class="op">)</span> <span class="fu">crayon</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/crayon/man/crayon.html" class="external-link">bgCyan</a></span><span class="op">(</span><span class="fu">crayon</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/crayon/man/crayon.html" class="external-link">white</a></span><span class="op">(</span><span class="va">s</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  complete <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">s</span><span class="op">)</span> <span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/ansi-styles.html" class="external-link">bg_blue</a></span><span class="op">(</span><span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/ansi-styles.html" class="external-link">col_white</a></span><span class="op">(</span><span class="va">s</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  incomplete <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">s</span><span class="op">)</span> <span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/ansi-styles.html" class="external-link">bg_cyan</a></span><span class="op">(</span><span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/ansi-styles.html" class="external-link">col_white</a></span><span class="op">(</span><span class="va">s</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  intrusiveness <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"progressr.intrusiveness.terminal"</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>  target <span class="op">=</span> <span class="st">"terminal"</span>,</span>
 <span>  <span class="va">...</span></span>
@@ -158,7 +158,7 @@ where padding is done by spaces.</p></dd>
 "incomplete" strings that comprise the progress bar as input and annotate
 them to reflect their two different parts.  The default is to annotation
 them with two different background colors and the same foreground color
-using the <span class="pkg">crayon</span> package.</p></dd>
+using the <span class="pkg">cli</span> package.</p></dd>
 
 
 <dt>intrusiveness</dt>
@@ -179,7 +179,7 @@ rendered.</p></dd>
     <h2>Requirements</h2>
     
 
-<p>This progression handler requires the <span class="pkg">crayon</span> package.</p>
+<p>This progression handler requires the <span class="pkg">cli</span> package.</p>
     </div>
     <div id="appearance">
     <h2>Appearance</h2>
@@ -195,8 +195,8 @@ In all cases, we use <code>handlers(global = TRUE)</code>.</p>
 <p><img src="figures/handler_pbcol-adjust-mid.svg" alt=""></p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="../reference/handlers.html">handlers</a></span><span class="op">(</span><span class="fu"><a href="../reference/handler_pbcol.html">handler_pbcol</a></span><span class="op">(</span></span>
 <span>  adjust <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  complete <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">s</span><span class="op">)</span> <span class="fu">crayon</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/crayon/man/crayon.html" class="external-link">bgRed</a></span><span class="op">(</span><span class="fu">crayon</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/crayon/man/crayon.html" class="external-link">black</a></span><span class="op">(</span><span class="va">s</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  incomplete <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">s</span><span class="op">)</span> <span class="fu">crayon</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/crayon/man/crayon.html" class="external-link">bgCyan</a></span><span class="op">(</span><span class="fu">crayon</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/crayon/man/crayon.html" class="external-link">black</a></span><span class="op">(</span><span class="va">s</span><span class="op">)</span><span class="op">)</span></span>
+<span>  complete <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">s</span><span class="op">)</span> <span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/ansi-styles.html" class="external-link">bg_red</a></span><span class="op">(</span><span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/ansi-styles.html" class="external-link">col_black</a></span><span class="op">(</span><span class="va">s</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  incomplete <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">s</span><span class="op">)</span> <span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/ansi-styles.html" class="external-link">bg_cyan</a></span><span class="op">(</span><span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/ansi-styles.html" class="external-link">col_black</a></span><span class="op">(</span><span class="va">s</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/slow_sum.html">slow_sum</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">25</span><span class="op">)</span></span></code></pre><p></p></div>
 <p><img src="figures/handler_pbcol-adjust-right-complete.svg" alt=""></p>
