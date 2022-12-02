@@ -69,7 +69,7 @@ y <- slow_sum(1:25)
 
 \if{html}{\figure{handler_txtprogressbar-char-width-2.svg}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{handlers(handler_txtprogressbar(char = crayon::bgRed(crayon::blue("#"))))
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{handlers(handler_txtprogressbar(char = cli::bg_red(cli::col_blue("#"))))
 y <- slow_sum(1:25)
 }\if{html}{\out{</div>}}
 

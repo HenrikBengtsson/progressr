@@ -28,6 +28,9 @@
 
  * Now all progress handlers assert that the number of active "output"
    sinks is the same on exit as on enter.
+   
+ * Code that relied on the superseded **crayon** package has now been
+   updated to use the **cli** package.
 
 ## Bug Fixes
 

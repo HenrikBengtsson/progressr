@@ -13,12 +13,12 @@
 #' "incomplete" strings that comprise the progress bar as input and annotate
 #' them to reflect their two different parts.  The default is to annotation
 #' them with two different background colors and the same foreground color
-#' using the \pkg{crayon} package.
+#' using the \pkg{cli} package.
 #' 
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
 #'
 #' @section Requirements:
-#' This progression handler requires the \pkg{crayon} package.
+#' This progression handler requires the \pkg{cli} package.
 #'
 #' @section Appearance:
 #' Below are a few examples on how to use and customize this progress handler.
@@ -46,8 +46,8 @@
 #' #| asciicast_cursor = FALSE
 #' handlers(handler_pbcol(
 #'   adjust = 1,
-#'   complete = function(s) crayon::bgRed(crayon::black(s)),
-#'   incomplete = function(s) crayon::bgCyan(crayon::black(s))
+#'   complete = function(s) cli::bg_red(cli::col_black(s)),
+#'   incomplete = function(s) cli::bg_cyan(cli::col_black(s))
 #' ))
 #' y <- slow_sum(1:25)
 #' ```
@@ -56,9 +56,9 @@
 #'
 #' @importFrom utils flush.console
 #' @export
-handler_pbcol <- function(adjust = 0.0, pad = 1L, complete = function(s) crayon::bgBlue(crayon::white(s)), incomplete = function(s) crayon::bgCyan(crayon::white(s)), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
+handler_pbcol <- function(adjust = 0.0, pad = 1L, complete = function(s) cli::bg_blue(cli::col_white(s)), incomplete = function(s) cli::bg_cyan(cli::col_white(s)), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
   crayon_enabled <- getOption("crayon.enabled", NULL)
-  if (is.null(crayon_enabled)) crayon_enabled <- crayon::has_color()
+  if (is.null(crayon_enabled)) crayon_enabled <- (cli::num_ansi_colors() > 1L)
 
   cat_ <- function(...) {
     cat(..., sep = "", collapse = "", file = stderr())
@@ -142,7 +142,7 @@ handler_pbcol <- function(adjust = 0.0, pad = 1L, complete = function(s) crayon:
 
 
 
-pbcol <- function(fraction = 0.0, msg = "", adjust = 0, pad = 1L, width = getOption("width") - 1L, complete = function(s) crayon::bgBlue(crayon::white(s)), incomplete = function(s) crayon::bgCyan(crayon::white(s)), spin = " ") {
+pbcol <- function(fraction = 0.0, msg = "", adjust = 0, pad = 1L, width = getOption("width") - 1L, complete = function(s) cli::bg_blue(cli::col_white(s)), incomplete = function(s) cli::bg_cyan(cli::col_white(s)), spin = " ") {
   if (length(msg) == 0L) msg <- ""
   stop_if_not(length(msg) == 1L, is.character(msg))
 
