@@ -4,6 +4,9 @@
 #'
 #' @inheritParams make_progression_handler
 #'
+#' @param char (character) The symbol to form the progress bar for
+#' [utils::txtProgressBar()].
+#'
 #' @param style (integer) The progress-bar style according to
 #' [utils::txtProgressBar()].
 #'
@@ -51,9 +54,9 @@
 #'
 #' @importFrom utils file_test flush.console txtProgressBar setTxtProgressBar
 #' @export
-handler_txtprogressbar <- function(style = 3L, file = stderr(), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
+handler_txtprogressbar <- function(char = "=", style = 3L, file = stderr(), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
   ## Additional arguments passed to the progress-handler backend
-  backend_args <- handler_backend_args(...)
+  backend_args <- handler_backend_args(char = char, style = style, ...)
 
   reporter <- local({
     pb <- NULL
@@ -95,12 +98,12 @@ handler_txtprogressbar <- function(style = 3L, file = stderr(), intrusiveness = 
       initiate = function(config, state, progression, ...) {
         if (!state$enabled || config$times == 1L) return()
         stop_if_not(is.null(pb))
-        make_pb(max = config$max_steps, style = style, file = file)
+        make_pb(max = config$max_steps, file = file)
       },
 
       update = function(config, state, progression, ...) {
         if (!state$enabled || config$times == 1L) return()
-        make_pb(max = config$max_steps, style = style, file = file)
+        make_pb(max = config$max_steps, file = file)
         if (inherits(progression, "sticky")) {
           eraseTxtProgressBar(pb)
           message(paste0(state$message, ""))

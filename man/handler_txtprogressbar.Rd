@@ -5,6 +5,7 @@
 \title{Progression Handler: Progress Reported as Plain Progress Bars (Text) in the Terminal}
 \usage{
 handler_txtprogressbar(
+  char = "=",
   style = 3L,
   file = stderr(),
   intrusiveness = getOption("progressr.intrusiveness.terminal", 1),
@@ -13,6 +14,9 @@ handler_txtprogressbar(
 )
 }
 \arguments{
+\item{char}{(character) The symbol to form the progress bar for
+\code{\link[utils:txtProgressBar]{utils::txtProgressBar()}}.}
+
 \item{style}{(integer) The progress-bar style according to
 \code{\link[utils:txtProgressBar]{utils::txtProgressBar()}}.}
 
