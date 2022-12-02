@@ -17,7 +17,7 @@
    force = TRUE)`.
    
  * `handler_txtprogressbar()` gained support for ANSI-colored `char`
-   symbols.
+   ASCII and Unicode symbols.
 
 ## Miscellaneous
 

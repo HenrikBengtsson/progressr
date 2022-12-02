@@ -63,7 +63,7 @@
 #' #| asciicast_at = "all",
 #' #| asciicast_knitr_output = "svg",
 #' #| asciicast_cursor = FALSE
-#' handlers(handler_txtprogressbar(char = cli::bg_red(cli::col_blue("#"))))
+#' handlers(handler_txtprogressbar(char = cli::col_red(cli::symbol$heart)))
 #' y <- slow_sum(1:25)
 #' ```
 #'
