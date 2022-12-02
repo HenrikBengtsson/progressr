@@ -5,6 +5,7 @@
 \title{Progression Handler: Progress Reported via 'pbmcapply' Progress Bars (Text) in the Terminal}
 \usage{
 handler_pbmcapply(
+  char = "=",
   substyle = 3L,
   style = "ETA",
   file = stderr(),
@@ -14,9 +15,13 @@ handler_pbmcapply(
 )
 }
 \arguments{
-\item{substyle}{(integer) The progress-bar substyle according to \code{\link[pbmcapply:progressBar]{pbmcapply::progressBar()}}.}
+\item{char}{(character) The symbol to form the progress bar for
+\code{\link[utils:txtProgressBar]{utils::txtProgressBar()}}.}
 
-\item{style}{(character) The progress-bar style according to \code{\link[pbmcapply:progressBar]{pbmcapply::progressBar()}}.}
+\item{substyle}{(integer) The progress-bar substyle according to
+\code{\link[pbmcapply:progressBar]{pbmcapply::progressBar()}}.}
+
+\item{style}{(character) The progress-bar style according to}
 
 \item{file}{(connection) A \link[base:connections]{base::connection} to where output should be sent.}
 

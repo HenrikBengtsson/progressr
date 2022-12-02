@@ -4,11 +4,13 @@
 #'
 #' @inheritParams make_progression_handler
 #'
-#' @param style (character) The progress-bar style according to [pbmcapply::progressBar()].
+#' @inheritParams handler_txtprogressbar
 #'
-#' @param substyle (integer) The progress-bar substyle according to [pbmcapply::progressBar()].
+#' @param style (character) The progress-bar style according to
+#" [pbmcapply::progressBar()].
 #'
-#' @param file (connection) A [base::connection] to where output should be sent.
+#' @param substyle (integer) The progress-bar substyle according to
+#' [pbmcapply::progressBar()].
 #'
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
 #'
@@ -34,9 +36,9 @@
 #'
 #' @importFrom utils file_test flush.console txtProgressBar setTxtProgressBar
 #' @export
-handler_pbmcapply <- function(substyle = 3L, style = "ETA", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
+handler_pbmcapply <- function(char = "=", substyle = 3L, style = "ETA", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
   ## Additional arguments passed to the progress-handler backend
-  backend_args <- handler_backend_args(...)
+  backend_args <- handler_backend_args(char = char, substyle = substyle, style = style, ...)
 
   if (!is_fake("handler_pbmcapply")) {
     progressBar <- pbmcapply::progressBar
@@ -109,12 +111,12 @@ handler_pbmcapply <- function(substyle = 3L, style = "ETA", file = stderr(), int
       initiate = function(config, state, progression, ...) {
         if (!state$enabled || config$times == 1L) return()
         stop_if_not(is.null(pb))
-        make_pb(max = config$max_steps, style = style, substyle = substyle, file = file)
+        make_pb(max = config$max_steps, file = file)
       },
         
       update = function(config, state, progression, ...) {
         if (!state$enabled || config$times <= 2L) return()
-        make_pb(max = config$max_steps, style = style, substyle = substyle, file = file)
+        make_pb(max = config$max_steps, file = file)
         if (inherits(progression, "sticky")) {
           eraseTxtProgressBar(pb)
           message(paste0(state$message, ""))
