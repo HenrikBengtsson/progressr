@@ -2,7 +2,7 @@
 
 ## Significant Changes
 
-   Now `with_progress()` and `without_progress()` disables the global
+ * Now `with_progress()` and `without_progress()` disables the global
    progress handler temporarily while running to avoid progress
    updates being handled twice.  Previously, it was, technically,
    possible to have two different progress handlers intertwined.
