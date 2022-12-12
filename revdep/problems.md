@@ -22,38 +22,15 @@ Run `revdep_details(, "AIPW")` for more info
       All declared Imports should be used.
     ```
 
-# baseballr
-
-<details>
-
-* Version: 1.2.0
-* GitHub: https://github.com/BillPetti/baseballr
-* Source code: https://github.com/cran/baseballr
-* Date/Publication: 2022-04-25 07:20:12 UTC
-* Number of recursive dependencies: 122
-
-Run `revdep_details(, "baseballr")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘pitchRx’ ‘progressr’
-      All declared Imports should be used.
-    ```
-
 # cSEM
 
 <details>
 
-* Version: 0.4.0
+* Version: 0.5.0
 * GitHub: https://github.com/M-E-Rademaker/cSEM
 * Source code: https://github.com/cran/cSEM
-* Date/Publication: 2021-04-19 22:00:18 UTC
-* Number of recursive dependencies: 121
+* Date/Publication: 2022-11-24 17:50:05 UTC
+* Number of recursive dependencies: 126
 
 Run `revdep_details(, "cSEM")` for more info
 
@@ -71,11 +48,11 @@ Run `revdep_details(, "cSEM")` for more info
 
 <details>
 
-* Version: 0.2.4
+* Version: 0.2.5
 * GitHub: https://github.com/dipterix/dipsaus
 * Source code: https://github.com/cran/dipsaus
-* Date/Publication: 2022-08-24 07:00:10 UTC
-* Number of recursive dependencies: 73
+* Date/Publication: 2022-10-22 07:05:06 UTC
+* Number of recursive dependencies: 72
 
 Run `revdep_details(, "dipsaus")` for more info
 
@@ -85,10 +62,10 @@ Run `revdep_details(, "dipsaus")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.4Mb
+      installed size is  6.0Mb
       sub-directories of 1Mb or more:
         doc    1.1Mb
-        libs   4.1Mb
+        libs   3.6Mb
     ```
 
 # econet
@@ -99,7 +76,7 @@ Run `revdep_details(, "dipsaus")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/econet
 * Date/Publication: 2022-04-28 00:00:02 UTC
-* Number of recursive dependencies: 64
+* Number of recursive dependencies: 63
 
 Run `revdep_details(, "econet")` for more info
 
@@ -136,10 +113,10 @@ Run `revdep_details(, "econet")` for more info
 
 <details>
 
-* Version: 0.4.1
+* Version: 0.4.3
 * GitHub: https://github.com/mdsteiner/EFAtools
 * Source code: https://github.com/cran/EFAtools
-* Date/Publication: 2022-04-24 14:40:02 UTC
+* Date/Publication: 2022-10-02 15:40:05 UTC
 * Number of recursive dependencies: 90
 
 Run `revdep_details(, "EFAtools")` for more info
@@ -152,41 +129,13 @@ Run `revdep_details(, "EFAtools")` for more info
     ```
       installed size is  7.4Mb
       sub-directories of 1Mb or more:
-        libs   6.1Mb
+        libs   6.2Mb
     ```
 
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘progress’
       All declared Imports should be used.
-    ```
-
-# EpiNow2
-
-<details>
-
-* Version: 1.3.2
-* GitHub: https://github.com/epiforecasts/EpiNow2
-* Source code: https://github.com/cran/EpiNow2
-* Date/Publication: 2020-12-14 09:00:15 UTC
-* Number of recursive dependencies: 159
-
-Run `revdep_details(, "EpiNow2")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘EpiSoon’
-    ```
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is 225.9Mb
-      sub-directories of 1Mb or more:
-        libs  224.4Mb
     ```
 
 # fabletools
@@ -197,7 +146,7 @@ Run `revdep_details(, "EpiNow2")` for more info
 * GitHub: https://github.com/tidyverts/fabletools
 * Source code: https://github.com/cran/fabletools
 * Date/Publication: 2021-11-29 05:50:02 UTC
-* Number of recursive dependencies: 101
+* Number of recursive dependencies: 102
 
 Run `revdep_details(, "fabletools")` for more info
 
@@ -205,20 +154,40 @@ Run `revdep_details(, "fabletools")` for more info
 
 ## In both
 
-*   checking package dependencies ... NOTE
+*   checking tests ...
     ```
-    Package suggested but not available for checking: ‘fable’
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > library(testthat)
+      > library(dplyr)
+      
+      Attaching package: 'dplyr'
+      
+      The following object is masked from 'package:testthat':
+    ...
+      ── Failure ('test-generate.R:12'): generate ────────────────────────────────────
+      gen_multi$index not equal to yearmonth("1979 Jan") + rep(0:23, 2).
+      'is.NA' value mismatch: 20 in current 0 in target
+      ── Failure ('test-generate.R:17'): generate ────────────────────────────────────
+      gen_complex$index not equal to yearmonth("1979 Jan") + rep(0:23, 2 * 2 * 3).
+      'is.NA' value mismatch: 120 in current 0 in target
+      
+      [ FAIL 3 | WARN 5 | SKIP 1 | PASS 292 ]
+      Error: Test failures
+      Execution halted
     ```
 
 # geocmeans
 
 <details>
 
-* Version: 0.2.2
+* Version: 0.3.1
 * GitHub: https://github.com/JeremyGelb/geocmeans
 * Source code: https://github.com/cran/geocmeans
-* Date/Publication: 2022-06-16 19:20:02 UTC
-* Number of recursive dependencies: 201
+* Date/Publication: 2022-10-16 00:23:35 UTC
+* Number of recursive dependencies: 198
 
 Run `revdep_details(, "geocmeans")` for more info
 
@@ -228,22 +197,65 @@ Run `revdep_details(, "geocmeans")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 12.7Mb
+      installed size is 13.2Mb
       sub-directories of 1Mb or more:
-        data   2.3Mb
-        doc    1.9Mb
-        libs   7.4Mb
+        data      2.3Mb
+        doc       1.7Mb
+        extdata   1.1Mb
+        libs      7.4Mb
+    ```
+
+# ISAnalytics
+
+<details>
+
+* Version: 1.8.1
+* GitHub: https://github.com/calabrialab/ISAnalytics
+* Source code: https://github.com/cran/ISAnalytics
+* Date/Publication: 2022-12-01
+* Number of recursive dependencies: 171
+
+Run `revdep_details(, "ISAnalytics")` for more info
+
+</details>
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  7.9Mb
+      sub-directories of 1Mb or more:
+        data   1.4Mb
+        doc    4.4Mb
+    ```
+
+*   checking R code for possible problems ... NOTE
+    ```
+    .sh_row_permut: no visible global function definition for ‘.’
+    .sharing_multdf_mult_key: no visible binding for global variable ‘.’
+    .sharing_multdf_single_key: no visible binding for global variable ‘.’
+    .sharing_singledf_mult_key: no visible binding for global variable ‘.’
+    .sharing_singledf_single_key: no visible binding for global variable
+      ‘.’
+    cumulative_is: no visible binding for global variable ‘is’
+    gene_frequency_fisher: no visible binding for global variable ‘.’
+    Undefined global functions or variables:
+      . is
+    Consider adding
+      importFrom("methods", "is")
+    to your NAMESPACE file (and ensure that your DESCRIPTION Imports field
+    contains 'methods').
     ```
 
 # lava
 
 <details>
 
-* Version: 1.6.10
+* Version: 1.7.0
 * GitHub: https://github.com/kkholst/lava
 * Source code: https://github.com/cran/lava
-* Date/Publication: 2021-09-02 14:50:18 UTC
-* Number of recursive dependencies: 133
+* Date/Publication: 2022-10-25 05:52:57 UTC
+* Number of recursive dependencies: 138
 
 Run `revdep_details(, "lava")` for more info
 
@@ -253,8 +265,7 @@ Run `revdep_details(, "lava")` for more info
 
 *   checking package dependencies ... NOTE
     ```
-    Packages suggested but not available for checking:
-      'gof', 'lava.tobit', 'lavaSearch2'
+    Packages suggested but not available for checking: 'gof', 'lava.tobit'
     ```
 
 # lightr
@@ -308,11 +319,11 @@ Run `revdep_details(, "metabolomicsR")` for more info
 
 <details>
 
-* Version: 1.0.1
+* Version: 1.0.2
 * GitHub: https://github.com/business-science/modeltime.ensemble
 * Source code: https://github.com/cran/modeltime.ensemble
-* Date/Publication: 2022-06-09 12:20:02 UTC
-* Number of recursive dependencies: 214
+* Date/Publication: 2022-10-18 23:02:40 UTC
+* Number of recursive dependencies: 220
 
 Run `revdep_details(, "modeltime.ensemble")` for more info
 
@@ -330,11 +341,11 @@ Run `revdep_details(, "modeltime.ensemble")` for more info
 
 <details>
 
-* Version: 0.2.1
+* Version: 0.2.2
 * GitHub: https://github.com/business-science/modeltime.resample
 * Source code: https://github.com/cran/modeltime.resample
-* Date/Publication: 2022-06-07 14:30:03 UTC
-* Number of recursive dependencies: 212
+* Date/Publication: 2022-10-18 03:00:06 UTC
+* Number of recursive dependencies: 218
 
 Run `revdep_details(, "modeltime.resample")` for more info
 
@@ -349,29 +360,6 @@ Run `revdep_details(, "modeltime.resample")` for more info
       All declared Imports should be used.
     ```
 
-# norgeo
-
-<details>
-
-* Version: 2.1.0
-* GitHub: https://github.com/helseprofil/norgeo
-* Source code: https://github.com/cran/norgeo
-* Date/Publication: 2022-02-01 16:00:17 UTC
-* Number of recursive dependencies: 82
-
-Run `revdep_details(, "norgeo")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘progressr’ ‘vcr’
-      All declared Imports should be used.
-    ```
-
 # oddsapiR
 
 <details>
@@ -380,7 +368,7 @@ Run `revdep_details(, "norgeo")` for more info
 * GitHub: https://github.com/sportsdataverse/oddsapiR
 * Source code: https://github.com/cran/oddsapiR
 * Date/Publication: 2022-06-22 19:20:02 UTC
-* Number of recursive dependencies: 108
+* Number of recursive dependencies: 112
 
 Run `revdep_details(, "oddsapiR")` for more info
 
@@ -424,7 +412,7 @@ Run `revdep_details(, "pavo")` for more info
 * GitHub: https://github.com/grunwaldlab/poppr
 * Source code: https://github.com/cran/poppr
 * Date/Publication: 2021-09-07 07:00:02 UTC
-* Number of recursive dependencies: 98
+* Number of recursive dependencies: 97
 
 Run `revdep_details(, "poppr")` for more info
 
@@ -445,7 +433,7 @@ Run `revdep_details(, "poppr")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/RAINBOWR
 * Date/Publication: 2022-01-07 13:53:11 UTC
-* Number of recursive dependencies: 149
+* Number of recursive dependencies: 150
 
 Run `revdep_details(, "RAINBOWR")` for more info
 
@@ -460,26 +448,45 @@ Run `revdep_details(, "RAINBOWR")` for more info
         libs  36.6Mb
     ```
 
-# remiod
+# receptiviti
 
 <details>
 
-* Version: 1.0.0
-* GitHub: https://github.com/xsswang/remiod
-* Source code: https://github.com/cran/remiod
-* Date/Publication: 2022-03-14 08:50:02 UTC
-* Number of recursive dependencies: 126
+* Version: 0.1.2
+* GitHub: https://github.com/Receptiviti/receptiviti-r
+* Source code: https://github.com/cran/receptiviti
+* Date/Publication: 2022-10-06 22:40:02 UTC
+* Number of recursive dependencies: 65
 
-Run `revdep_details(, "remiod")` for more info
+Run `revdep_details(, "receptiviti")` for more info
 
 </details>
 
 ## In both
 
-*   checking dependencies in R code ... NOTE
+*   checking tests ...
     ```
-    Namespace in Imports field not imported from: ‘reshape2’
-      All declared Imports should be used.
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > library(testthat)
+      > library(receptiviti)
+      > 
+      > test_check("receptiviti")
+      [ FAIL 1 | WARN 0 | SKIP 2 | PASS 13 ]
+      
+    ...
+      ── Failure ('test-receptiviti_status.R:8'): failures works ─────────────────────
+      capture.output(receptiviti_status(key = 123, secret = 123), type = "message")[2] (`actual`) not identical to "Message: 401 (1411): Unrecognized API key pair." (`expected`).
+      
+      actual vs expected
+      - "Message: 401 (1411): Unrecognized API key pair. This call will not count towards your plan."
+      + "Message: 401 (1411): Unrecognized API key pair."
+      
+      [ FAIL 1 | WARN 0 | SKIP 2 | PASS 13 ]
+      Error: Test failures
+      Execution halted
     ```
 
 # sentopics
@@ -490,7 +497,7 @@ Run `revdep_details(, "remiod")` for more info
 * GitHub: https://github.com/odelmarcelle/sentopics
 * Source code: https://github.com/cran/sentopics
 * Date/Publication: 2022-05-18 13:20:02 UTC
-* Number of recursive dependencies: 162
+* Number of recursive dependencies: 165
 
 Run `revdep_details(, "sentopics")` for more info
 
@@ -516,14 +523,43 @@ Run `revdep_details(, "sentopics")` for more info
       Note: found 3128 marked UTF-8 strings
     ```
 
+# Seurat
+
+<details>
+
+* Version: 4.3.0
+* GitHub: https://github.com/satijalab/seurat
+* Source code: https://github.com/cran/Seurat
+* Date/Publication: 2022-11-18 23:30:08 UTC
+* Number of recursive dependencies: 254
+
+Run `revdep_details(, "Seurat")` for more info
+
+</details>
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is 14.5Mb
+      sub-directories of 1Mb or more:
+        R      1.4Mb
+        libs  12.4Mb
+    ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘Signac’
+    ```
+
 # SeuratObject
 
 <details>
 
-* Version: 4.1.1
+* Version: 4.1.3
 * GitHub: https://github.com/mojaveazure/seurat-object
 * Source code: https://github.com/cran/SeuratObject
-* Date/Publication: 2022-08-29 19:50:02 UTC
+* Date/Publication: 2022-11-07 18:50:02 UTC
 * Number of recursive dependencies: 57
 
 Run `revdep_details(, "SeuratObject")` for more info
@@ -545,7 +581,7 @@ Run `revdep_details(, "SeuratObject")` for more info
 * GitHub: https://github.com/egarpor/sphunif
 * Source code: https://github.com/cran/sphunif
 * Date/Publication: 2021-09-02 07:40:02 UTC
-* Number of recursive dependencies: 73
+* Number of recursive dependencies: 74
 
 Run `revdep_details(, "sphunif")` for more info
 
@@ -555,9 +591,9 @@ Run `revdep_details(, "sphunif")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 23.9Mb
+      installed size is 24.2Mb
       sub-directories of 1Mb or more:
-        libs  23.1Mb
+        libs  23.4Mb
     ```
 
 *   checking data for non-ASCII characters ... NOTE
@@ -569,11 +605,11 @@ Run `revdep_details(, "sphunif")` for more info
 
 <details>
 
-* Version: 0.4.3.2
+* Version: 0.4.3.6
 * GitHub: https://github.com/JeremyGelb/spNetwork
 * Source code: https://github.com/cran/spNetwork
-* Date/Publication: 2022-05-14 12:00:02 UTC
-* Number of recursive dependencies: 149
+* Date/Publication: 2022-11-11 08:10:02 UTC
+* Number of recursive dependencies: 150
 
 Run `revdep_details(, "spNetwork")` for more info
 
@@ -583,11 +619,11 @@ Run `revdep_details(, "spNetwork")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 25.0Mb
+      installed size is 25.4Mb
       sub-directories of 1Mb or more:
         doc       1.0Mb
         extdata   2.6Mb
-        libs     20.0Mb
+        libs     20.4Mb
     ```
 
 # SPQR
@@ -617,11 +653,11 @@ Run `revdep_details(, "SPQR")` for more info
 
 <details>
 
-* Version: 0.2.0
+* Version: 0.3
 * GitHub: https://github.com/kkholst/targeted
 * Source code: https://github.com/cran/targeted
-* Date/Publication: 2021-10-26 14:40:02 UTC
-* Number of recursive dependencies: 77
+* Date/Publication: 2022-10-25 20:30:02 UTC
+* Number of recursive dependencies: 93
 
 Run `revdep_details(, "targeted")` for more info
 
@@ -631,9 +667,9 @@ Run `revdep_details(, "targeted")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 16.4Mb
+      installed size is 16.9Mb
       sub-directories of 1Mb or more:
-        libs  15.5Mb
+        libs  15.8Mb
     ```
 
 # vmeasur
@@ -644,7 +680,7 @@ Run `revdep_details(, "targeted")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/vmeasur
 * Date/Publication: 2021-11-11 19:00:02 UTC
-* Number of recursive dependencies: 124
+* Number of recursive dependencies: 121
 
 Run `revdep_details(, "vmeasur")` for more info
 
