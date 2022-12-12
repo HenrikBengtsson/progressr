@@ -149,7 +149,18 @@ In the below examples, we will assume `handlers(global = TRUE)` is already set.
 
 ## Customizing how progress is reported
 
-The default is to present progress via `utils::txtProgressBar()`, which is available on all R installations.  To change the default, to, say, `progress_bar()` by the **[progress]** package, set:
+The default is to present progress via `utils::txtProgressBar()`, which is available on all R installations.  To change the default, to, say, `cli_progress_bar()` by the **[cli]** package, set:
+
+```r
+handlers("cli")
+```
+This progress handler will present itself as:
+```r
+> y <- slow_sum(1:10)
+■■■■■■■■■■■                     40% | P: Adding 4 ETA:  6s
+```
+
+To instead use `progress_bar()` by the **[progress]** package, set:
 
 ```r
 handlers("progress")
@@ -383,6 +394,34 @@ my_fcn(1:5)
 ```
 
 Note how this solution does not make use of **plyr**'s `.progress` argument, because the above solution is more powerful and more flexible, e.g. we have more control on progress updates and their messages.  However, if you prefer the traditional **plyr** approach, you can use `.progress = "progressr"`, e.g. `y <- llply(..., .progress = "progressr")`.
+
+
+
+
+### The knitr package
+
+When compiling ("knitting") an knitr-based vignette, for instance, via
+`knitr::knit()`, **[knitr]** shows the progress of code chunks
+processed thus far using a progress bar.  In **knitr** (>= 1.42) [to
+be released], we can use **progressr** for this progress reporting.
+To do this, set R option `knitr.progress.fun` as:
+
+```r
+options(knitr.progress.fun = function(total, labels) {
+  p <- progressr::progressor(total, on_exit = FALSE)
+  list(
+    update = function(i) p(sprintf("chunk: %s", labels[i])),
+    done = function() p(type = "finish")
+  )
+})
+```
+
+This configures **knitr** to signal progress via the **progressr**
+framework.  To report on these, use:
+
+```r
+progressr::handlers(global = TRUE)
+```
 
 
 ## Parallel processing and progress updates
@@ -721,6 +760,7 @@ M: Added value 3
 
 [progressr]: https://cran.r-project.org/package=progressr
 [beepr]: https://cran.r-project.org/package=beepr
+[cli]: https://cran.r-project.org/package=cli
 [progress]: https://cran.r-project.org/package=progress
 [purrr]: https://cran.r-project.org/package=purrr
 [future]: https://cran.r-project.org/package=future
@@ -729,8 +769,8 @@ M: Added value 3
 [doParallel]: https://cran.r-project.org/package=doParallel
 [doFuture]: https://cran.r-project.org/package=doFuture
 [furrr]: https://cran.r-project.org/package=furrr
+[knitr]: https://cran.r-project.org/package=knitr
 [pbapply]: https://cran.r-project.org/package=pbapply
 [pbmcapply]: https://cran.r-project.org/package=pbmcapply
 [plyr]: https://cran.r-project.org/package=plyr
 [BiocParallel]: https://www.bioconductor.org/packages/BiocParallel/
-

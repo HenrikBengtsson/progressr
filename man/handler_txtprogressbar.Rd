@@ -5,6 +5,7 @@
 \title{Progression Handler: Progress Reported as Plain Progress Bars (Text) in the Terminal}
 \usage{
 handler_txtprogressbar(
+  char = "=",
   style = 3L,
   file = stderr(),
   intrusiveness = getOption("progressr.intrusiveness.terminal", 1),
@@ -13,6 +14,10 @@ handler_txtprogressbar(
 )
 }
 \arguments{
+\item{char}{(character) The symbols to form the progress bar for
+\code{\link[utils:txtProgressBar]{utils::txtProgressBar()}}. Contrary to \code{txtProgressBar()}, this handler
+supports also ANSI-colored symbols.}
+
 \item{style}{(integer) The progress-bar style according to
 \code{\link[utils:txtProgressBar]{utils::txtProgressBar()}}.}
 
@@ -31,30 +36,44 @@ A progression handler for \code{\link[utils:txtProgressBar]{utils::txtProgressBa
 }
 \section{Appearance}{
 
-Below is how this progress handler renders at 0\%, 30\% and 99\% progress
-for the three different \code{style} values that \code{\link[utils:txtProgressBar]{utils::txtProgressBar()}}
-supports.
+Below are a few examples on how to use and customize this progress handler.
+In all cases, we use \code{handlers(global = TRUE)}.
 
-With \code{handlers(handler_txtprogressbar(style = 1L))}:
-
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
-====================================
-==========================================================
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{handlers("txtprogressbar")
+y <- slow_sum(1:25)
 }\if{html}{\out{</div>}}
 
-With \code{handlers(handler_txtprogressbar(style = 2L))}:
+\if{html}{\figure{handler_txtprogressbar-default.svg}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
-====================================
-==========================================================
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{handlers(handler_txtprogressbar(style = 1L))
+y <- slow_sum(1:25)
 }\if{html}{\out{</div>}}
 
-With \code{handlers(handler_txtprogressbar(style = 3L))}:
+\if{html}{\figure{handler_txtprogressbar-style-1.svg}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{  |                                                 |   0\%
-  |===============                                  |  30\%
-  |=================================================|  99\%
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{handlers(handler_txtprogressbar(style = 3L))
+y <- slow_sum(1:25)
 }\if{html}{\out{</div>}}
+
+\if{html}{\figure{handler_txtprogressbar-style-3.svg}}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{handlers(handler_txtprogressbar(char = "#"))
+y <- slow_sum(1:25)
+}\if{html}{\out{</div>}}
+
+\if{html}{\figure{handler_txtprogressbar-char.svg}}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{handlers(handler_txtprogressbar(char = "<>"))
+y <- slow_sum(1:25)
+}\if{html}{\out{</div>}}
+
+\if{html}{\figure{handler_txtprogressbar-char-width-2.svg}}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{handlers(handler_txtprogressbar(char = cli::col_red(cli::symbol$heart)))
+y <- slow_sum(1:25)
+}\if{html}{\out{</div>}}
+
+\if{html}{\figure{handler_txtprogressbar-char-ansi.svg}}
 }
 
 \examples{

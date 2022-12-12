@@ -36,6 +36,9 @@
 #' @example incl/with_progress.R
 #'
 #' @details
+#' If the global progression handler is enabled, it is temporarily disabled
+#' while evaluating the `expr` expression.
+#'
 #' **IMPORTANT: This function is meant for end users only.  It should not
 #' be used by R packages, which only task is to _signal_ progress updates,
 #' not to decide if, when, and how progress should be reported.**
@@ -76,7 +79,11 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
     message("with_progress() ...")
     on.exit(message("with_progress() ... done"), add = TRUE)
   }
-  
+
+  ## Deactive global progression handler while using with_progress()
+  global_progression_handler(FALSE)
+  on.exit(global_progression_handler(TRUE), add = TRUE)
+
   ## FIXME: With zero handlers, progression conditions will be
   ##        passed on upstream just as without with_progress().
   ##        Is that what we want? /HB 2019-05-17
@@ -159,7 +166,7 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
 
   ## Delay standard output?
   stdout_file <- delay_stdout(delays, stdout_file = NULL)
-  on.exit(flush_stdout(stdout_file), add = TRUE)
+  on.exit(flush_stdout(stdout_file, must_work = TRUE), add = TRUE)
   
   ## Delay conditions?
   conditions <- list()
@@ -226,7 +233,7 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
   condition = function(c) {
     if (!capture_conditions || inherits(c, c("progression", "error"))) return()
     if (debug) message("- received a ", sQuote(class(c)[1]))
-    
+
     if (inherits(c, delays$conditions)) {
       ## Record
       conditions[[length(conditions) + 1L]] <<- c
