@@ -4,6 +4,10 @@
 #'
 #' @inheritParams make_progression_handler
 #'
+#' @param char (character) The symbols to form the progress bar for
+#' [utils::txtProgressBar()]. Contrary to `txtProgressBar()`, this handler
+#' supports also ANSI-colored symbols.
+#'
 #' @param style (integer) The progress-bar style according to
 #' [utils::txtProgressBar()].
 #'
@@ -12,51 +16,72 @@
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
 #'
 #' @section Appearance:
-#' Below is how this progress handler renders at 0%, 30% and 99% progress
-#' for the three different `style` values that [utils::txtProgressBar()]
-#' supports.
+#' Below are a few examples on how to use and customize this progress handler.
+#' In all cases, we use `handlers(global = TRUE)`.
 #'
-#' With `handlers(handler_txtprogressbar(style = 1L))`:
-#' ```r
-#'
-#' ====================================
-#' ==========================================================
+#' ```{asciicast handler_txtprogressbar-default}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
+#' handlers("txtprogressbar")
+#' y <- slow_sum(1:25)
 #' ```
 #'
-#' With `handlers(handler_txtprogressbar(style = 2L))`:
-#' ```r
-#' 
-#' ====================================
-#' ==========================================================
+#' ```{asciicast handler_txtprogressbar-style-1}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
+#' handlers(handler_txtprogressbar(style = 1L))
+#' y <- slow_sum(1:25)
 #' ```
 #'
-#' With `handlers(handler_txtprogressbar(style = 3L))`:
-#' ```r  
-#'   |                                                 |   0%
-#'   |===============                                  |  30%
-#'   |=================================================|  99%
+#' ```{asciicast handler_txtprogressbar-style-3}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
+#' handlers(handler_txtprogressbar(style = 3L))
+#' y <- slow_sum(1:25)
+#' ```
+#'
+#' ```{asciicast handler_txtprogressbar-char}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
+#' handlers(handler_txtprogressbar(char = "#"))
+#' y <- slow_sum(1:25)
+#' ```
+#'
+#' ```{asciicast handler_txtprogressbar-char-width-2}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
+#' handlers(handler_txtprogressbar(char = "<>"))
+#' y <- slow_sum(1:25)
+#' ```
+#'
+#' ```{asciicast handler_txtprogressbar-char-ansi}
+#' #| asciicast_at = "all",
+#' #| asciicast_knitr_output = "svg",
+#' #| asciicast_cursor = FALSE
+#' handlers(handler_txtprogressbar(char = cli::col_red(cli::symbol$heart)))
+#' y <- slow_sum(1:25)
 #' ```
 #'
 #' @example incl/handler_txtprogressbar.R
 #'
-#' @importFrom utils file_test flush.console txtProgressBar setTxtProgressBar
+#' @importFrom utils file_test flush.console setTxtProgressBar
 #' @export
-handler_txtprogressbar <- function(style = 3L, file = stderr(), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
+handler_txtprogressbar <- function(char = "=", style = 3L, file = stderr(), intrusiveness = getOption("progressr.intrusiveness.terminal", 1), target = "terminal", ...) {
   ## Additional arguments passed to the progress-handler backend
-  backend_args <- handler_backend_args(...)
+  backend_args <- handler_backend_args(char = char, style = style, ...)
 
   reporter <- local({
     pb <- NULL
-    
+
     make_pb <- function(max, ...) {
       if (!is.null(pb)) return(pb)
-      ## SPECIAL CASE: utils::txtProgressBar() does not support max == min
-      if (max == 0) {
-        pb <<- voidProgressBar()
-      } else {
-        args <- c(list(max = max, ...), backend_args)
-        pb <<- do.call(txtProgressBar, args = args)
-      }
+      args <- c(list(max = max, ...), backend_args)
+      pb <<- do.call(txtProgressBar2, args = args)
       pb
     }
 
@@ -85,12 +110,12 @@ handler_txtprogressbar <- function(style = 3L, file = stderr(), intrusiveness = 
       initiate = function(config, state, progression, ...) {
         if (!state$enabled || config$times == 1L) return()
         stop_if_not(is.null(pb))
-        make_pb(max = config$max_steps, style = style, file = file)
+        make_pb(max = config$max_steps, file = file)
       },
 
       update = function(config, state, progression, ...) {
         if (!state$enabled || config$times == 1L) return()
-        make_pb(max = config$max_steps, style = style, file = file)
+        make_pb(max = config$max_steps, file = file)
         if (inherits(progression, "sticky")) {
           eraseTxtProgressBar(pb)
           message(paste0(state$message, ""))
@@ -128,14 +153,6 @@ handler_txtprogressbar <- function(style = 3L, file = stderr(), intrusiveness = 
 }
 
 
-#' @importFrom utils txtProgressBar
-voidProgressBar <- function(...) {
-  pb <- txtProgressBar()
-  class(pb) <- c("voidProgressBar", class(pb))
-  pb
-}
-
-
 ## Erase a utils::txtProgressBar()
 eraseTxtProgressBar <- function(pb) {
   if (inherits(pb, "voidProgressBar")) return()
@@ -161,3 +178,25 @@ redrawTxtProgressBar <- function(pb) {
   setTxtProgressBar(pb, value = pb$getVal())
 }
 
+
+#' @importFrom utils txtProgressBar
+txtProgressBar2 <- function(min = 0, max = 1, ..., char) {
+  ## SPECIAL CASE: utils::txtProgressBar() does not support max == min
+  if (max == min) {
+    pb <- txtProgressBar()
+    class(pb) <- c("voidProgressBar", class(pb))
+    return(pb)
+  }
+
+  ## SPECIAL CASE: Support ANSI-colored 'char' strings
+  clean_char <- drop_ansi(char)
+  pb <- txtProgressBar(min = min, max = max, ..., char = clean_char)
+  if (clean_char != char) {
+    env <- environment(pb$up)
+    env$char <- char
+    env$nw <- nchar(clean_char)
+  }
+  
+  pb
+}
+    

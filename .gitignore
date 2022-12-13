@@ -6,4 +6,5 @@ inst/doc
 .make/*.md.rsp
 revdep/
 docs/
+man/_cache/
 .Rdump

@@ -32,6 +32,7 @@ revdep
 #----------------------------
 # R related
 #----------------------------
+^man/_cache/
 Rplots.pdf$
 ^cran-comments[.].*$
 ^vignettes/.*[.](pdf|PDF)$

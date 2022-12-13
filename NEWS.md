@@ -1,3 +1,49 @@
+# Version 0.12.0 [2022-12-12]
+
+## Significant Changes
+
+ * Now `with_progress()` and `without_progress()` disables the global
+   progress handler temporarily while running to avoid progress
+   updates being handled twice.  Previously, it was, technically,
+   possible to have two different progress handlers intertwined.
+
+## New Features
+
+ * Add `handler_cli()` for rendering progress updates via the **cli**
+   package and its `cli::cli_progress_bar()`.
+   
+ * Now `handler_progress()` creates a **progress** progress bar that
+   is always rendered by forcing `progress::progress_bar$new(...,
+   force = TRUE)`.
+   
+ * `handler_txtprogressbar()` gained support for ANSI-colored `char`
+   ASCII and Unicode symbols.
+
+## Miscellaneous
+
+ * Now `with_progress()` asserts that the number of active "output"
+   sinks is the same on exit as on enter, and that the last one closed
+   is the one that was created.  If not, an informative error message
+   is produced.
+
+ * Now all progress handlers assert that the number of active "output"
+   sinks is the same on exit as on enter.
+   
+ * Code that relied on the superseded **crayon** package has now been
+   updated to use the **cli** package.
+
+## Bug Fixes
+
+ * Using `with_progress()` while the global progress handler was
+   enabled could result in errors for the **cli** handler, and
+   possibly for other progression handlers developed in the future.
+   Because of this, `with_progress()` and `without_progress()` now
+   disables the global progress handler temporarily while running.
+
+ * The `pbmclapply()` handler went from 0 to 100% in one step, because
+   we forgot to set the `max`:imum value.
+ 
+
 # Version 0.11.0 [2022-09-02]
 
 ## New Features
