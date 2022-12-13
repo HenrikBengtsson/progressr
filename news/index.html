@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.0-9022</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.0-9001</span>
       </span>
     </div>
 
@@ -125,24 +125,28 @@
 
     <div class="section level2">
 <h2 class="page-header" data-toc-text="development version" id="version-development-version">Version (development version)<a class="anchor" aria-label="anchor" href="#version-development-version"></a></h2>
+<ul><li>…</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.12.0" id="version-0120">Version 0.12.0<a class="anchor" aria-label="anchor" href="#version-0120"></a></h2>
 <div class="section level3">
-<h3 id="significant-changes-development-version">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-development-version"></a></h3>
+<h3 id="significant-changes-0-12-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-0-12-0"></a></h3>
 <ul><li>Now <code><a href="../reference/with_progress.html">with_progress()</a></code> and <code><a href="../reference/with_progress.html">without_progress()</a></code> disables the global progress handler temporarily while running to avoid progress updates being handled twice. Previously, it was, technically, possible to have two different progress handlers intertwined.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<h3 id="new-features-0-12-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-12-0"></a></h3>
 <ul><li><p>Add <code><a href="../reference/handler_cli.html">handler_cli()</a></code> for rendering progress updates via the <strong>cli</strong> package and its <code><a href="https://cli.r-lib.org/reference/cli_progress_bar.html" class="external-link">cli::cli_progress_bar()</a></code>.</p></li>
 <li><p>Now <code><a href="../reference/handler_progress.html">handler_progress()</a></code> creates a <strong>progress</strong> progress bar that is always rendered by forcing <code>progress::progress_bar$new(...,    force = TRUE)</code>.</p></li>
 <li><p><code><a href="../reference/handler_txtprogressbar.html">handler_txtprogressbar()</a></code> gained support for ANSI-colored <code>char</code> ASCII and Unicode symbols.</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="miscellaneous-development-version">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-development-version"></a></h3>
+<h3 id="miscellaneous-0-12-0">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-12-0"></a></h3>
 <ul><li><p>Now <code><a href="../reference/with_progress.html">with_progress()</a></code> asserts that the number of active “output” sinks is the same on exit as on enter, and that the last one closed is the one that was created. If not, an informative error message is produced.</p></li>
 <li><p>Now all progress handlers assert that the number of active “output” sinks is the same on exit as on enter.</p></li>
 <li><p>Code that relied on the superseded <strong>crayon</strong> package has now been updated to use the <strong>cli</strong> package.</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="bug-fixes-development-version">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
+<h3 id="bug-fixes-0-12-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-12-0"></a></h3>
 <ul><li><p>Using <code><a href="../reference/with_progress.html">with_progress()</a></code> while the global progress handler was enabled could result in errors for the <strong>cli</strong> handler, and possibly for other progression handlers developed in the future. Because of this, <code><a href="../reference/with_progress.html">with_progress()</a></code> and <code><a href="../reference/with_progress.html">without_progress()</a></code> now disables the global progress handler temporarily while running.</p></li>
 <li><p>The <code>pbmclapply()</code> handler went from 0 to 100% in one step, because we forgot to set the <code>max</code>:imum value.</p></li>
 </ul></div>
