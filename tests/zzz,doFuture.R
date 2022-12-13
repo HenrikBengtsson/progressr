@@ -4,7 +4,7 @@ if (requireNamespace("doFuture", quietly = TRUE)) {
   library("doFuture", character.only = TRUE)
   registerDoFuture()
   
-  for (strategy in c("sequential", "multisession", "multicore")) {
+  for (strategy in future_strategies) {
     future::plan(strategy)
     print(future::plan())
     
@@ -32,6 +32,8 @@ if (requireNamespace("doFuture", quietly = TRUE)) {
     })
     
     handlers(global = FALSE)
+    
+    future::plan("sequential")
   }
 }
 

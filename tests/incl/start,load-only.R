@@ -69,6 +69,12 @@ options(progressr.times = +Inf)
 options(progressr.tests.fake_handlers = c(non_supported_progression_handlers(), "handler_beepr", "handler_notifier", "handler_progress"))
 
 
+future_strategies <- c("sequential", "multisession")
+if (.Platform$OS.type != "windows") {
+  future_strategies <- c(future_strategies, "multicore")
+}
+
+
 ## WORKAROUND: Make sure tests also work with 'covr' package
 covr <- ("covr" %in% loadedNamespaces())
 if (covr) {
