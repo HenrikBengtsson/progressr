@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.0-9020</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.0-9022</span>
       </span>
     </div>
 
@@ -127,8 +127,8 @@
 <h2 class="page-header" data-toc-text="development version" id="version-development-version">Version (development version)<a class="anchor" aria-label="anchor" href="#version-development-version"></a></h2>
 <div class="section level3">
 <h3 id="significant-changes-development-version">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-development-version"></a></h3>
-<p>Now <code><a href="../reference/with_progress.html">with_progress()</a></code> and <code><a href="../reference/with_progress.html">without_progress()</a></code> disables the global progress handler temporarily while running to avoid progress updates being handled twice. Previously, it was, technically, possible to have two different progress handlers intertwined.</p>
-</div>
+<ul><li>Now <code><a href="../reference/with_progress.html">with_progress()</a></code> and <code><a href="../reference/with_progress.html">without_progress()</a></code> disables the global progress handler temporarily while running to avoid progress updates being handled twice. Previously, it was, technically, possible to have two different progress handlers intertwined.</li>
+</ul></div>
 <div class="section level3">
 <h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
 <ul><li><p>Add <code><a href="../reference/handler_cli.html">handler_cli()</a></code> for rendering progress updates via the <strong>cli</strong> package and its <code><a href="https://cli.r-lib.org/reference/cli_progress_bar.html" class="external-link">cli::cli_progress_bar()</a></code>.</p></li>
@@ -243,7 +243,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="new-features-0-7-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-7-0"></a></h3>
-<ul><li><p><code><a href="../reference/progressor.html">progressor()</a></code> gained argument <code>enable</code> to control whether or not the progressor signals <code>progression</code> conditions. It defaults to option <code>progressr.enable</code> so that progress updates can be disabled globally. The <code>enable</code> argument makes it easy for package developers who already provide a <code>progress = TRUE/FALSE</code> argument in their functions to migrate to the <strong>progressr</strong> package without having to change their existing API, e.g. the setup becomes <code>p &lt;-    progressor(along = x, enabled = progress)</code>. The <code><a href="https://rdrr.io/pkg/htmltools/man/builder.html" class="external-link">p()</a></code> function created by <code>p &lt;- progressor(..., enable = FALSE)</code> is an empty function with near-zero overhead.</p></li>
+<ul><li><p><code><a href="../reference/progressor.html">progressor()</a></code> gained argument <code>enable</code> to control whether or not the progressor signals <code>progression</code> conditions. It defaults to option <code>progressr.enable</code> so that progress updates can be disabled globally. The <code>enable</code> argument makes it easy for package developers who already provide a <code>progress = TRUE/FALSE</code> argument in their functions to migrate to the <strong>progressr</strong> package without having to change their existing API, e.g. the setup becomes <code>p &lt;-    progressor(along = x, enabled = progress)</code>. The <code><a href="https://rstudio.github.io/htmltools/reference/builder.html" class="external-link">p()</a></code> function created by <code>p &lt;- progressor(..., enable = FALSE)</code> is an empty function with near-zero overhead.</p></li>
 <li><p>Now <code><a href="../reference/with_progress.html">with_progress()</a></code> and <code><a href="../reference/with_progress.html">without_progress()</a></code> returns the value of the evaluated expression.</p></li>
 <li><p>The progression message can now be created dynamically based on the information in the <code>progression</code> condition. Specifically, if <code>message</code> is a function, then that function will called with the <code>progression</code> condition as the first argument. This function should return a character string. Importantly, it is only when the progression handler receives the progression update and calls <code>conditionMessage(p)</code> on it that this function is called.</p></li>
 <li><p><code><a href="../reference/progressor.html">progressor()</a></code> gained argument <code>message</code> to set the default message of all progression updates, unless otherwise specified.</p></li>
