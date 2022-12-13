@@ -10,14 +10,14 @@
 |collate  |en_US.UTF-8                                                 |
 |ctype    |en_US.UTF-8                                                 |
 |tz       |America/Los_Angeles                                         |
-|date     |2022-12-11                                                  |
+|date     |2022-12-12                                                  |
 |pandoc   |2.19.2 @ /software/c4/cbi/software/pandoc-2.19.2/bin/pandoc |
 
 # Dependencies
 
 |package   |old    |new         |Δ  |
 |:---------|:------|:-----------|:--|
-|progressr |0.11.0 |0.11.0-9020 |*  |
+|progressr |0.11.0 |0.11.0-9022 |*  |
 |digest    |0.6.31 |0.6.31      |   |
 
 # Revdeps
@@ -64,7 +64,7 @@
 |mlr3               |0.14.1     |      |        |     |
 |[modeltime.ensemble](problems.md#modeltimeensemble)|1.0.2      |      |        |1    |
 |[modeltime.resample](problems.md#modeltimeresample)|0.2.2      |      |        |1    |
-|mpathsenser        |1.1.1      |      |        |     |
+|mpathsenser        |1.1.2      |      |        |     |
 |nflfastR           |4.5.0      |      |        |     |
 |nflreadr           |1.3.1      |      |        |     |
 |nflseedR           |1.1.0      |      |        |     |
