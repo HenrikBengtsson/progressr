@@ -1,7 +1,7 @@
 source("incl/start.R")
 
 if (requireNamespace("future.apply", quietly = TRUE)) {
-  for (strategy in c("sequential", "multisession", "multicore")) {
+  for (strategy in future_strategies) {
     future::plan(strategy)
     print(future::plan())
 
@@ -29,6 +29,8 @@ if (requireNamespace("future.apply", quietly = TRUE)) {
     })
     
     handlers(global = FALSE)
+    
+    future::plan("sequential")
   }
 }
 
