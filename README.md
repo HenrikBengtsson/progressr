@@ -180,10 +180,39 @@ already set.
 
 ## Customizing how progress is reported
 
+### Terminal-based progress bars
+
 The default is to present progress via `utils::txtProgressBar()`,
-which is available on all R installations.  This is rendered as:
+which is available on all R installations.  It presents itself as an
+ASCII-based horizontal progress bar in the R terminal. This is
+rendered as:
 
 ![SVG animation of the default "txtprogressbar" progress handler](vignettes/imgs/handler_txtprogressbar-default.svg)
+
+We can tweak this "txtprogressbar" handler to use red hearts for the
+bar, e.g.
+
+```r
+handlers(handler_txtprogressbar(char = cli::col_red(cli::symbol$heart)))
+```
+
+which results in:
+
+![SVG animation of the "txtprogressbar" progress handler with red hearts](vignettes/imgs/handler_txtprogressbar-char-ansi.svg)
+
+Another example is:
+
+```r
+handlers(handler_pbcol(
+      adjust = 1.0,
+    complete = function(s) cli::bg_red(cli::col_black(s)),
+  incomplete = function(s) cli::bg_cyan(cli::col_black(s))
+))
+```
+
+which results in:
+
+![SVG animation of the "pbcol" progress handler with text aligned to the right](vignettes/imgs/handler_pbcol-adjust-right-complete.svg)
 
 To change the default, to, say, `cli_progress_bar()` by the **[cli]**
 package, set:
