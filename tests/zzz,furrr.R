@@ -30,8 +30,10 @@ if (requireNamespace("furrr", quietly = TRUE)) {
     
     handlers(global = FALSE)
     
+    ## Explicitly close any PSOCK clusters to avoid 'R CMD check' NOTE
+    ## on "detritus in the temp directory" on MS Windows
     future::plan("sequential")
-  }
+  } ## for (strategy ...)
 }
 
 source("incl/end.R")
