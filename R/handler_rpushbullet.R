@@ -20,14 +20,15 @@
 handler_rpushbullet <- function(intrusiveness = getOption("progressr.intrusiveness.rpushbullet", 5), target = "gui", ..., title = "Progress update from R", recipients = NULL, email = NULL, channel = NULL, apikey = NULL, device = NULL) {
   ## Used for package testing purposes only when we want to perform
   ## everything except the last part where the backend is called
+  pbPost <- function(...) NULL
   if (!is_fake("handler_rpushbullet")) {
     pkg <- "RPushbullet"
     if (!requireNamespace(pkg, quietly = TRUE)) {
       stop("Package RPushbullet is not available")
     }
-    pbPost <- get("pbPost", mode = "function", envir = getNamespace(pkg))
-  } else {
-    pbPost <- function(...) NULL
+    if (is_rpushbullet_working()) {
+      pbPost <- get("pbPost", mode = "function", envir = getNamespace(pkg))
+    }
   }
 
   notify <- function(step, max_steps, message) {
@@ -81,3 +82,64 @@ handler_rpushbullet <- function(intrusiveness = getOption("progressr.intrusivene
   
   make_progression_handler("rpushbullet", reporter, intrusiveness = intrusiveness, target = target, ...)
 }
+attr(handler_rpushbullet, "validator") <- function() is_rpushbullet_working()
+
+
+is_rpushbullet_working <- local({
+  res <- NA
+  pkg <- "RPushbullet"
+  
+  function(quiet = TRUE) {
+    if (!is.na(res)) return(res)
+
+    ## Assert RPushbullet package
+    if (!requireNamespace(pkg, quietly = TRUE)) {
+      warning(sprintf("Package %s is not installed", sQuote(pkg)), immediate. = TRUE)
+      return(FALSE)
+    }
+
+    ## Assert internet access
+    curl <- "curl"
+    if (!requireNamespace(curl, quietly = TRUE)) {
+      warning(sprintf("Package %s is not installed", sQuote(curl)), immediate. = TRUE)
+      return(FALSE)
+    }
+    has_internet <- get("has_internet", mode = "function", envir = getNamespace(curl))
+    if (!has_internet()) {
+      warning("No internet access. The 'rpushbullet' progress handler requires working internet.", immediate. = TRUE)
+      return(FALSE)
+    }
+
+    ## Validate RPushbullet configuration with 10-second timeout
+    timeout <- 10.0
+    setTimeLimit(cpu = timeout, elapsed = timeout, transient = TRUE)
+    on.exit({
+      setTimeLimit(cpu = Inf, elapsed = Inf, transient = FALSE)
+    })
+
+    conds <- list()
+    withCallingHandlers({
+      tryCatch({
+        res <<- RPushbullet::pbValidateConf()
+      }, error = function(ex) {
+        conds <<- c(conds, list(ex))
+      })
+    }, message = function(cond) {
+       conds <<- c(conds, list(cond))
+       if (quiet) invokeRestart("muffleMessage")
+    }, warning = function(cond) {
+       conds <<- c(conds, list(cond))
+       if (quiet) invokeRestart("muffleWarning")
+    })
+
+    if (is.na(res)) res <- FALSE
+    if (!res) {
+      msg <- vapply(conds, FUN.VALUE = NA_character_, FUN = conditionMessage)
+      msg <- gsub("\n$", "", msg)
+      msg <- gsub("^", "    ", msg)
+      warning(paste(c("The 'rpushbullet' progress handler will not work, because RPushbullet is not properly configured. See help(\"pbSetup\", package = \"RPushbullet\") for instructions. RPushbullet::pbValidateConf() reported:", msg), collapse = "\n"), immediate. = TRUE)
+    }
+
+    res
+  }
+})

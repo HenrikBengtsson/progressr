@@ -137,17 +137,26 @@ handlers <- function(..., append = FALSE, on_missing = c("error", "warning", "ig
 	}
         next
       }
-
-      names[kk] <- name
+    } else {
+      name <- NULL
     }
     stop_if_not(is.function(handler), length(formals(handler)) >= 1L)
+
+    ## Validate?
+    validator <- attr(handler, "validator")
+    if (is.function(validator)) {
+      is_valid <- validator()
+      if (!is_valid) next
+    }
+
+    if (!is.null(name)) names[kk] <- name
     handlers[[kk]] <- handler
   }
   stop_if_not(is.list(handlers))
   names(handlers) <- names
 
   ## Drop non-existing handlers
-  keep <- vapply(handlers, FUN = is.function, FUN.VALUE = FALSE)
+  keep <- vapply(handlers, FUN.VALUE = FALSE, FUN = is.function)
   handlers <- handlers[keep]
 
   if (append) {
