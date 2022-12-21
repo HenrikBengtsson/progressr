@@ -1,7 +1,10 @@
 # Version (development version)
 
- * ...
+## New Features
 
+ * Add `handler_rpushbullet()` for reporting on progress via the
+   Pushbullet Messaging Service using the **RPushbullet** package.
+   
 
 # Version 0.12.0 [2022-12-12]
 
