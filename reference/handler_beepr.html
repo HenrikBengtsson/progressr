@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.0-9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.0-9013</span>
       </span>
     </div>
 
@@ -133,6 +133,7 @@
 <span>  initiate <span class="op">=</span> <span class="fl">2L</span>,</span>
 <span>  update <span class="op">=</span> <span class="fl">10L</span>,</span>
 <span>  finish <span class="op">=</span> <span class="fl">11L</span>,</span>
+<span>  interrupt <span class="op">=</span> <span class="fl">9L</span>,</span>
 <span>  intrusiveness <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"progressr.intrusiveness.auditory"</span>, <span class="fl">5</span><span class="op">)</span>,</span>
 <span>  target <span class="op">=</span> <span class="st">"audio"</span>,</span>
 <span>  <span class="va">...</span></span>
@@ -141,9 +142,10 @@
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>initiate, update, finish</dt>
-<dd><p>(integer) Indices of <code><a href="https://rdrr.io/pkg/beepr/man/beep.html" class="external-link">beepr::beep()</a></code> sounds to
-play when progress starts, is updated, and completes.  For silence, use <code>NA_integer_</code>.</p></dd>
+    <dl><dt>initiate, update, finish, interrupt</dt>
+<dd><p>(integer) Indices of <code><a href="https://rdrr.io/pkg/beepr/man/beep.html" class="external-link">beepr::beep()</a></code>
+sounds to play when progress starts, is updated, completes, or is
+interrupted.  For silence, use <code>NA_integer_</code>.</p></dd>
 
 
 <dt>intrusiveness</dt>

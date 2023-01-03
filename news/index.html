@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.0-9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.0-9013</span>
       </span>
     </div>
 
@@ -127,7 +127,8 @@
 <h2 class="page-header" data-toc-text="development version" id="version-development-version">Version (development version)<a class="anchor" aria-label="anchor" href="#version-development-version"></a></h2>
 <div class="section level3">
 <h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
-<ul><li>Add <code><a href="../reference/handler_rpushbullet.html">handler_rpushbullet()</a></code> for reporting on progress via the Pushbullet Messaging Service using the <strong>RPushbullet</strong> package.</li>
+<ul><li><p>Add <code><a href="../reference/handler_rpushbullet.html">handler_rpushbullet()</a></code> for reporting on progress via the Pushbullet Messaging Service using the <strong>RPushbullet</strong> package.</p></li>
+<li><p>Now also <strong>beepr</strong>, <strong>debug</strong>, <strong>filesize</strong>, <strong>notifier</strong>, <strong>rpushbullet</strong>, <strong>shiny</strong>, <strong>tkprogressbar</strong>, and <strong>winprogressbar</strong> handlers report on interrupts.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-development-version">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
@@ -517,7 +518,7 @@
 <h2 class="page-header" data-toc-text="0.0.0-9001" id="version-000-9001">Version 0.0.0-9001<a class="anchor" aria-label="anchor" href="#version-000-9001"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-0-0-9001">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-0-9001"></a></h3>
-<ul><li><p>Add progress update handlers based on <code><a href="https://rdrr.io/r/utils/txtProgressBar.html" class="external-link">utils::txtProgressBar()</a></code>, <code><a href="https://rdrr.io/r/tcltk/tkProgressBar.html" class="external-link">tcltk::tkProgressBar()</a></code>, <code>cat("\a")</code>, <code><a href="https://rdrr.io/pkg/progress/man/progress_bar.html" class="external-link">progress::progress_bar()</a></code>, <code><a href="https://rdrr.io/pkg/beepr/man/beep.html" class="external-link">beepr::beep()</a></code>, and <code>notifier::notify()</code>.</p></li>
+<ul><li><p>Add progress update handlers based on <code><a href="https://rdrr.io/r/utils/txtProgressBar.html" class="external-link">utils::txtProgressBar()</a></code>, <code><a href="https://rdrr.io/r/tcltk/tkProgressBar.html" class="external-link">tcltk::tkProgressBar()</a></code>, <code>cat("\a")</code>, <code><a href="https://rdrr.io/pkg/progress/man/progress_bar.html" class="external-link">progress::progress_bar()</a></code>, <code><a href="https://rdrr.io/pkg/beepr/man/beep.html" class="external-link">beepr::beep()</a></code>, and <code><a href="https://rdrr.io/pkg/notifier/man/notify.html" class="external-link">notifier::notify()</a></code>.</p></li>
 <li><p>Add <code><a href="../reference/with_progress.html">with_progress()</a></code>.</p></li>
 <li><p>Add options <code>progressr.handlers</code> for settings default progress handlers.</p></li>
 <li><p>Add <code>progressr.times</code> for controlling the number of times progress updates are rendered.</p></li>
