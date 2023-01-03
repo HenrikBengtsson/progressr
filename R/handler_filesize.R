@@ -26,7 +26,7 @@
 #' @export
 handler_filesize <- function(file = "default.progress", intrusiveness = getOption("progressr.intrusiveness.file", 5), target = "file", ...) {
   reporter <- local({
-    set_file_size <- function(config, state, progression) {
+    set_file_size <- function(config, state, progression, message = state$message) {
       ratio <- if (config$max_steps == 0) 1 else state$step / config$max_steps
       size <- round(100 * ratio)
       current_size <- file.size(file)
@@ -38,7 +38,7 @@ handler_filesize <- function(file = "default.progress", intrusiveness = getOptio
       nhead <- nchar(head)
       tail <- sprintf(" [%d%%]", round(100 * ratio))
       ntail <- nchar(tail)
-      mid <- paste0(state$message, "")
+      mid <- paste0(message, "")
       nmid <- nchar(mid)
       padding <- size - (nhead + nmid + ntail)
       if (padding <= 0) {
@@ -55,6 +55,11 @@ handler_filesize <- function(file = "default.progress", intrusiveness = getOptio
     list(
       initiate = function(config, state, progression, ...) {
         set_file_size(config = config, state = state, progression = progression)
+      },
+      
+      interrupt = function(config, state, progression, ...) {
+        msg <- getOption("progressr.interrupt.message", "interrupt detected")
+        set_file_size(config = config, state = state, progression = progression, message = msg)
       },
       
       update = function(config, state, progression, ...) {
