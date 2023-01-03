@@ -6,7 +6,8 @@
    Pushbullet Messaging Service using the **RPushbullet** package.
    
  * Now also **beepr**, **debug**, **filesize**, **notifier**,
-   **rpushbullet**, and **shiny** handlers report on interrupts.
+   **rpushbullet**, **shiny**, **tkprogressbar** handlers report on
+   interrupts.
 
 ## Bug Fixes
 
