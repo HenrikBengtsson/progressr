@@ -66,6 +66,11 @@ handler_rpushbullet <- function(intrusiveness = getOption("progressr.intrusivene
         notify(step = state$step, max_steps = config$max_steps, message = state$message)
       },
         
+      interrupt = function(config, state, progression, ...) {
+        msg <- getOption("progressr.interrupt.message", "interrupt detected")
+        notify(step = state$step, max_steps = config$max_steps, message = msg)
+      },
+
       update = function(config, state, progression, ...) {
         if (!state$enabled || progression$amount == 0 || config$times <= 2L) return()
         notify(step = state$step, max_steps = config$max_steps, message = state$message)

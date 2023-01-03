@@ -5,7 +5,7 @@
  * Add `handler_rpushbullet()` for reporting on progress via the
    Pushbullet Messaging Service using the **RPushbullet** package.
    
- * The **notifier** handler reports on interrupts.
+ * The **notifier** and **rpushbullet** handlers report on interrupts.
 
 ## Bug Fixes
 
