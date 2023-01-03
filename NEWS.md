@@ -5,8 +5,8 @@
  * Add `handler_rpushbullet()` for reporting on progress via the
    Pushbullet Messaging Service using the **RPushbullet** package.
    
- * Now also **beepr**, **debug**, **filesize**, **notifier**, and
-   **rpushbullet** handlers report on interrupts.
+ * Now also **beepr**, **debug**, **filesize**, **notifier**,
+   **rpushbullet**, and **shiny** handlers report on interrupts.
 
 ## Bug Fixes
 

@@ -550,8 +550,7 @@ handler_backend_args <- function(...) {
 
 # Map progression message to optional target arguments
 # Currently used by handler_shiny() and handler_winprogressbar()
-message_to_backend_targets <- function(progression, inputs) {
-  message <- progression$message
+message_to_backend_targets <- function(progression, inputs, message = progression$message) {
   if (length(message) == 0) return(list())
 
   args <- list()
