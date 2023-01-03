@@ -5,13 +5,13 @@
  * Add `handler_rpushbullet()` for reporting on progress via the
    Pushbullet Messaging Service using the **RPushbullet** package.
    
- * Now also **beepr**, **debug**, **filesize**, **notifier**,
-   **rpushbullet**, **shiny**, **tkprogressbar**, and
-   **winprogressbar** handlers report on interrupts.
+ * Now also 'beepr', 'debug', 'filesize', 'notifier', 'rpushbullet',
+   'shiny', 'tkprogressbar', and 'winprogressbar' handlers report on
+   interrupts.
 
 ## Bug Fixes
 
- * The **cli** handler would output a newline when completed.
+ * The 'cli' handler would output a newline when completed.
 
 
 # Version 0.12.0 [2022-12-12]
