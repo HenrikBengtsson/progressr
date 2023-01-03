@@ -224,7 +224,9 @@ handler_cli <- function(show_after = 0.0, intrusiveness = getOption("progressr.i
         reporter$update(config = config, state = state, progression = progression, ...)
         if (config$clear) {
           pb_update(pb, ratio = 1.0)
-        }      
+        } else {
+          cat(file = stderr(), "\n")
+        }
         
         pb <<- NULL
       }
