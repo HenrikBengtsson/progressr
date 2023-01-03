@@ -68,9 +68,9 @@ handler_winprogressbar <- function(intrusiveness = getOption("progressr.intrusiv
     pb_config <- NULL
     
     ## Update winProgressBar
-    update_pb <- function(state, progression) {
+    update_pb <- function(state, progression, ...) {
       ## Update 'title' and 'label' (optional)
-      args <- message_to_backend_targets(progression, inputs = inputs)
+      args <- message_to_backend_targets(progression, inputs = inputs, ...)
       for (name in names(args)) pb_config[[name]] <<- args[[name]]
 
       ## Update progress bar
@@ -120,6 +120,12 @@ handler_winprogressbar <- function(intrusiveness = getOption("progressr.intrusiv
         pb_config
       },
         
+      interrupt = function(config, state, progression, ...) {
+        if (!state$enabled) return()
+        msg <- getOption("progressr.interrupt.message", "interrupt detected")
+        update_pb(state, progression, message = msg)
+      },
+
       update = function(config, state, progression, ...) {
         if (!state$enabled || config$times <= 2L) return()
         update_pb(state, progression)
