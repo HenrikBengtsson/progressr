@@ -32,7 +32,8 @@ handler_notifier <- function(intrusiveness = getOption("progressr.intrusiveness.
     ratio <- if (max_steps == 0) 1 else step / max_steps
     ratio <- sprintf("%.0f%%", 100*ratio)
     msg <- paste(c("", message), collapse = "")
-    notifier_notify(sprintf("[%s] %s", ratio, msg))
+    msg <- sprintf("[%s] %s", ratio, msg)
+    notifier_notify(msg)
   }
 
   reporter <- local({
@@ -43,6 +44,11 @@ handler_notifier <- function(intrusiveness = getOption("progressr.intrusiveness.
         finished <<- FALSE
       },
       
+      interrupt = function(config, state, progression, ...) {
+        msg <- getOption("progressr.interrupt.message", "interrupt detected")
+        notify(step = state$step, max_steps = config$max_steps, message = msg)
+      },
+
       initiate = function(config, state, progression, ...) {
         if (!state$enabled || config$times == 1L) return()
         notify(step = state$step, max_steps = config$max_steps, message = state$message)
