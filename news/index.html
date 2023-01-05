@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.0-9014</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.0-9015</span>
       </span>
     </div>
 
@@ -129,6 +129,7 @@
 <h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
 <ul><li><p>Add <code><a href="../reference/handler_rpushbullet.html">handler_rpushbullet()</a></code> for reporting on progress via the Pushbullet Messaging Service using the <strong>RPushbullet</strong> package.</p></li>
 <li><p>Now also ‘beepr’, ‘debug’, ‘filesize’, ‘notifier’, ‘rpushbullet’, ‘shiny’, ‘tkprogressbar’, and ‘winprogressbar’ handlers report on interrupts.</p></li>
+<li><p>Now progress updates of type “finish” supports also updating the progress state, e.g. you can do <code>p(amount = 1.0, type = "finish")</code> whereas previously you had to do <code>p(amount = 1.0)</code> and then <code>p(type    = "finish")</code> resulting in two progress conditions being signaled.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-development-version">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
