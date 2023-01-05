@@ -536,7 +536,7 @@ progressr::handlers(global = TRUE)
 ```
 
 
-### Replace any cli progress bars with progressr progress updates
+### Replace any cli progress bars with progressr updates
 
 The **cli** package is used for progress reporting by many several
 packages, notably tidyverse package.  For instance, in **purrr**, you
