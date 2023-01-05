@@ -71,16 +71,22 @@ handler_cli <- function(show_after = 0.0, intrusiveness = getOption("progressr.i
       invisible(res)
     }
 
-    cli_progress_bar <- function(...) {
-      cli_progress_call(cli::cli_progress_bar, ...)
+    cli_progress_bar <- function(total, ...) {
+      ## WORKAROUND: Do no not involve 'cli' when total = 0
+      if (total == 0) return(NA_character_)
+      cli_progress_call(cli::cli_progress_bar, total = total, ...)
     }
 
-    cli_progress_update <- function(...) {
-      cli_progress_call(cli::cli_progress_update, ...)
+    cli_progress_update <- function(id, ..., .envir) {
+      ## WORKAROUND: Do no not involve 'cli' when total = 0
+      if (.envir$total == 0) return(id)
+      cli_progress_call(cli::cli_progress_update, id = id, ..., .envir = .envir)
     }
 
-    cli_progress_done <- function(...) {
-      cli_progress_call(cli::cli_progress_done, ...)
+    cli_progress_done <- function(id, ..., .envir) {
+      ## WORKAROUND: Do no not involve 'cli' when total = 0
+      if (.envir$total == 0) return(id)
+      cli_progress_call(cli::cli_progress_done, id = id, ..., .envir = .envir)
     }
 
     erase_progress_bar <- function(pb) {
@@ -102,9 +108,9 @@ handler_cli <- function(show_after = 0.0, intrusiveness = getOption("progressr.i
       cli_progress_update(id = pb$id, inc = 0, .envir = pb$envir)
     }
   } else {
-    cli_progress_bar <- function(...) "id-dummy"
-    cli_progress_update <- function(...) "id-dummy"
-    cli_progress_done <- function(...) "id-dummy"
+    cli_progress_bar <- function(total, ...) "id-dummy"
+    cli_progress_update <- function(id, ..., .envir) "id-dummy"
+    cli_progress_done <- function(id, ..., .envir) "id-dummy"
     erase_progress_bar <- function(pb) NULL
     redraw_progress_bar <- function(pb) NULL
   }
@@ -118,6 +124,7 @@ handler_cli <- function(show_after = 0.0, intrusiveness = getOption("progressr.i
         is.numeric(total), length(total) == 1L, is.finite(total)
       )
       envir <- new.env()
+      envir$total <- total
       args <- c(list(total = total, ..., .envir = envir), backend_args)
       args$clear <- FALSE
       args$auto_terminate <- FALSE
@@ -136,7 +143,7 @@ handler_cli <- function(show_after = 0.0, intrusiveness = getOption("progressr.i
     pb_tick <- function(pb, delta = 0, message = NULL, ...) {
       if (is.null(pb)) return()
       stopifnot(
-        is.character(pb$id), length(pb$id) == 1L, !is.na(pb$id),
+        is.character(pb$id), length(pb$id) == 1L,
         is.numeric(delta), length(delta) == 1L, is.finite(delta),
         is.environment(pb$envir)
       )

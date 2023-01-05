@@ -18,6 +18,10 @@
 
  * The 'cli' handler would output a newline when completed.
  
+ * The 'cli' handler did not handle zero-length progressors resulting
+   in `Error in rep(chr_complete, complete_len) : invalid 'times'
+   argument` when the progressor completed.
+
 
 # Version 0.12.0 [2022-12-12]
 
