@@ -236,7 +236,7 @@ This progress handler will present itself as:
 
 To set the default progress handler, or handlers, in all your R
 sessions, call `progressr::handlers(...)` in your
-<code>~/.Rprofile</code> file.
+<code>~/.Rprofile</code> startup file.
 
 
 
@@ -531,6 +531,43 @@ framework.  To report on these, use:
 ```r
 progressr::handlers(global = TRUE)
 ```
+
+
+### Replace any cli progress bars with progressr progress updates
+
+The **cli** package is used for progress reporting by many several
+packages, notably tidyverse package.  For instance, in **purrr**, you
+can do:
+
+```r
+y <- purrr::map(1:100, \(x) Sys.sleep(0.1), .progress = TRUE)
+```
+
+to render a traditional **cli** progress bar as `map()` is iterating
+over the elements.  Instead of using the built-in **cli** progress
+bar, we can customize **cli** to report on progress via **progressr**
+instead.  To do this, set R option `cli.progress_handlers` as:
+
+```r
+options(cli.progress_handlers = "progressr")
+```
+
+To make this the default in all your R session, set it in your
+<code>~/.Rprofile</code> startup file.
+
+With this option set, **cli** will now report on progress according to
+your `progressr::handlers()` settings.  For example, with:
+
+```r
+progressr::handlers(c("beepr", "rstudio"))
+```
+
+will report on progress using **beepr** and the RStudio Console
+progress panel.
+
+_Comment_: This requires **cli** (> 3.5.0), because there is a
+[bug](https://github.com/r-lib/cli/issues/558) in **cli** (<= 3.5.0)
+resulting in progress being reported too fast.
 
 
 ## Parallel processing and progress updates

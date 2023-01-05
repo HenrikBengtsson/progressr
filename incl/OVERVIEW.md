@@ -525,7 +525,7 @@ progressr::handlers(global = TRUE)
 ```
 
 
-### Replace any 'cli' progress bars with 'progressr' progress updates
+### Replace any cli progress bars with progressr progress updates
 
 The **cli** package is used for progress reporting by many several
 packages, notably tidyverse package.  For instance, in **purrr**, you
@@ -557,6 +557,9 @@ progressr::handlers(c("beepr", "rstudio"))
 will report on progress using **beepr** and the RStudio Console
 progress panel.
 
+_Comment_: This requires **cli** (> 3.5.0), because there is a
+[bug](https://github.com/r-lib/cli/issues/558) in **cli** (<= 3.5.0)
+resulting in progress being reported too fast.
 
 
 ## Parallel processing and progress updates
