@@ -17,7 +17,7 @@
 ## Bug Fixes
 
  * The 'cli' handler would output a newline when completed.
-
+ 
 
 # Version 0.12.0 [2022-12-12]
 
