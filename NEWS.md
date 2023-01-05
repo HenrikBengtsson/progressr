@@ -8,6 +8,11 @@
  * Now also 'beepr', 'debug', 'filesize', 'notifier', 'rpushbullet',
    'shiny', 'tkprogressbar', and 'winprogressbar' handlers report on
    interrupts.
+   
+ * Now progress updates of type "finish" supports also updating the
+   progress state, e.g. you can do `p(amount = 1.0, type = "finish")`
+   whereas previously you had to do `p(amount = 1.0)` and then `p(type
+   = "finish")` resulting in two progress conditions being signaled.
 
 ## Bug Fixes
 
