@@ -17,12 +17,12 @@
 
 |package   |old    |new         |Δ  |
 |:---------|:------|:-----------|:--|
-|progressr |0.12.0 |0.12.0-9014 |*  |
+|progressr |0.12.0 |0.12.0-9020 |*  |
 |digest    |0.6.31 |0.6.31      |   |
 
 # Revdeps
 
-## All (69)
+## All (70)
 
 |package            |version    |error |warning |note |
 |:------------------|:----------|:-----|:-------|:----|
@@ -31,7 +31,7 @@
 |baseballr          |1.3.0      |      |        |     |
 |bayesmove          |0.2.1      |      |        |     |
 |bbotk              |0.7.2      |      |        |     |
-|beer               |1.2.0      |      |        |     |
+|beer               |1.2.0      |-1    |        |     |
 |bolasso            |0.2.0      |      |        |     |
 |canaper            |1.0.0      |      |        |     |
 |cfbfastR           |1.9.0      |      |        |     |
@@ -70,6 +70,7 @@
 |nflseedR           |1.2.0      |      |        |     |
 |nlrx               |0.4.3      |      |        |     |
 |[oddsapiR](problems.md#oddsapir)|0.0.2      |      |        |2    |
+|opentripplanner    |0.5        |      |        |     |
 |[pavo](problems.md#pavo)|2.8.0      |      |1       |     |
 |plnr               |2022.11.23 |      |        |     |
 |[poppr](problems.md#poppr)|2.9.3      |      |        |1    |
