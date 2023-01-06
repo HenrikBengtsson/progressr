@@ -10,19 +10,19 @@
 |collate  |en_US.UTF-8                                                 |
 |ctype    |en_US.UTF-8                                                 |
 |tz       |America/Los_Angeles                                         |
-|date     |2022-12-12                                                  |
+|date     |2023-01-06                                                  |
 |pandoc   |2.19.2 @ /software/c4/cbi/software/pandoc-2.19.2/bin/pandoc |
 
 # Dependencies
 
 |package   |old    |new         |Δ  |
 |:---------|:------|:-----------|:--|
-|progressr |0.11.0 |0.11.0-9022 |*  |
+|progressr |0.12.0 |0.12.0-9014 |*  |
 |digest    |0.6.31 |0.6.31      |   |
 
 # Revdeps
 
-## All (68)
+## All (69)
 
 |package            |version    |error |warning |note |
 |:------------------|:----------|:-----|:-------|:----|
@@ -39,7 +39,7 @@
 |[dipsaus](problems.md#dipsaus)|0.2.5      |      |        |1    |
 |easyalluvial       |0.3.1      |      |        |     |
 |[econet](problems.md#econet)|1.0.0      |      |1       |     |
-|[EFAtools](problems.md#efatools)|0.4.3      |      |        |2    |
+|[EFAtools](problems.md#efatools)|0.4.4      |      |        |2    |
 |elevatr            |0.4.2      |      |        |     |
 |epwshiftr          |0.1.3      |      |        |     |
 |[fabletools](problems.md#fabletools)|0.3.2      |1     |        |     |
@@ -65,11 +65,11 @@
 |[modeltime.ensemble](problems.md#modeltimeensemble)|1.0.2      |      |        |1    |
 |[modeltime.resample](problems.md#modeltimeresample)|0.2.2      |      |        |1    |
 |mpathsenser        |1.1.2      |      |        |     |
-|nflfastR           |4.5.0      |      |        |     |
-|nflreadr           |1.3.1      |      |        |     |
-|nflseedR           |1.1.0      |      |        |     |
+|nflfastR           |4.5.1      |      |        |     |
+|nflreadr           |1.3.2      |      |        |     |
+|nflseedR           |1.2.0      |      |        |     |
 |nlrx               |0.4.3      |      |        |     |
-|[oddsapiR](problems.md#oddsapir)|0.0.1      |      |        |1    |
+|[oddsapiR](problems.md#oddsapir)|0.0.2      |      |        |2    |
 |[pavo](problems.md#pavo)|2.8.0      |      |1       |     |
 |plnr               |2022.11.23 |      |        |     |
 |[poppr](problems.md#poppr)|2.9.3      |      |        |1    |
@@ -77,7 +77,7 @@
 |[RAINBOWR](problems.md#rainbowr)|0.1.29     |      |        |1    |
 |rainette           |0.3.0      |      |        |     |
 |rangeMapper        |2.0.3      |      |        |     |
-|[receptiviti](problems.md#receptiviti)|0.1.2      |1     |        |     |
+|receptiviti        |0.1.3      |      |        |     |
 |remiod             |1.0.2      |      |        |     |
 |[sentopics](problems.md#sentopics)|0.7.1      |      |        |3    |
 |[Seurat](problems.md#seurat)|4.3.0      |      |        |2    |
@@ -88,6 +88,7 @@
 |[sphunif](problems.md#sphunif)|1.0.1      |      |        |2    |
 |[spNetwork](problems.md#spnetwork)|0.4.3.6    |      |        |1    |
 |[SPQR](problems.md#spqr)|0.1.0      |      |        |1    |
+|[squat](problems.md#squat)|0.1.0      |      |        |1    |
 |survex             |0.2.2      |      |        |     |
 |[targeted](problems.md#targeted)|0.3        |      |        |1    |
 |terrainr           |0.7.2      |      |        |     |
