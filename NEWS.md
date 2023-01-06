@@ -5,7 +5,8 @@
  * Now the 'shiny' handler is enabled by default. Previously, it was
    only enabled in interactive mode, which makes little sense if the
    Shiny application runs in non-interactive mode, e.g. on a Shiny
-   server.  The 'shiny' handler can be disabled by setting R option
+   server. For similar reasons, the 'filesize' handler is enabled by
+   default. These handlers can be disabled by setting R option
    `progressr.enable` to FALSE.
 
 ## New Features
