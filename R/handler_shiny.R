@@ -29,7 +29,7 @@
 #'
 #' @keywords internal
 #' @export
-handler_shiny <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), target = "gui", inputs = list(message = NULL, detail = "message"), ...) {
+handler_shiny <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), target = "gui", inputs = list(message = NULL, detail = "message"), enable = getOption("progressr.enable", TRUE), ...) {
   stop_if_not(
     is.list(inputs),
     !is.null(names(inputs)),
@@ -74,5 +74,5 @@ handler_shiny <- function(intrusiveness = getOption("progressr.intrusiveness.gui
     )
   })
   
-  make_progression_handler("shiny", reporter, intrusiveness = intrusiveness, target = target, ...)
+  make_progression_handler("shiny", reporter, intrusiveness = intrusiveness, target = target, enable = enable, ...)
 }

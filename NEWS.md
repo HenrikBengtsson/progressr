@@ -1,5 +1,13 @@
 # Version (development version)
 
+## Significant Changes
+
+ * Now the 'shiny' handler is enabled by default. Previously, it was
+   only enabled in interactive mode, which makes little sense if the
+   Shiny application runs in non-interactive mode, e.g. on a Shiny
+   server.  The 'shiny' handler can be disabled by setting R option
+   `progressr.enable` to FALSE.
+
 ## New Features
 
  * Add `handler_rpushbullet()` for reporting on progress via the
