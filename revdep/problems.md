@@ -113,11 +113,11 @@ Run `revdep_details(, "econet")` for more info
 
 <details>
 
-* Version: 0.4.3
+* Version: 0.4.4
 * GitHub: https://github.com/mdsteiner/EFAtools
 * Source code: https://github.com/cran/EFAtools
-* Date/Publication: 2022-10-02 15:40:05 UTC
-* Number of recursive dependencies: 90
+* Date/Publication: 2023-01-06 14:50:40 UTC
+* Number of recursive dependencies: 91
 
 Run `revdep_details(, "EFAtools")` for more info
 
@@ -276,7 +276,7 @@ Run `revdep_details(, "lava")` for more info
 * GitHub: https://github.com/ropensci/lightr
 * Source code: https://github.com/cran/lightr
 * Date/Publication: 2022-05-14 13:50:02 UTC
-* Number of recursive dependencies: 76
+* Number of recursive dependencies: 77
 
 Run `revdep_details(, "lightr")` for more info
 
@@ -364,10 +364,10 @@ Run `revdep_details(, "modeltime.resample")` for more info
 
 <details>
 
-* Version: 0.0.1
+* Version: 0.0.2
 * GitHub: https://github.com/sportsdataverse/oddsapiR
 * Source code: https://github.com/cran/oddsapiR
-* Date/Publication: 2022-06-22 19:20:02 UTC
+* Date/Publication: 2023-01-05 18:10:02 UTC
 * Number of recursive dependencies: 112
 
 Run `revdep_details(, "oddsapiR")` for more info
@@ -375,6 +375,12 @@ Run `revdep_details(, "oddsapiR")` for more info
 </details>
 
 ## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘purrr’
+      All declared Imports should be used.
+    ```
 
 *   checking data for non-ASCII characters ... NOTE
     ```
@@ -448,47 +454,6 @@ Run `revdep_details(, "RAINBOWR")` for more info
         libs  36.6Mb
     ```
 
-# receptiviti
-
-<details>
-
-* Version: 0.1.2
-* GitHub: https://github.com/Receptiviti/receptiviti-r
-* Source code: https://github.com/cran/receptiviti
-* Date/Publication: 2022-10-06 22:40:02 UTC
-* Number of recursive dependencies: 65
-
-Run `revdep_details(, "receptiviti")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > library(testthat)
-      > library(receptiviti)
-      > 
-      > test_check("receptiviti")
-      [ FAIL 1 | WARN 0 | SKIP 2 | PASS 13 ]
-      
-    ...
-      ── Failure ('test-receptiviti_status.R:8'): failures works ─────────────────────
-      capture.output(receptiviti_status(key = 123, secret = 123), type = "message")[2] (`actual`) not identical to "Message: 401 (1411): Unrecognized API key pair." (`expected`).
-      
-      actual vs expected
-      - "Message: 401 (1411): Unrecognized API key pair. This call will not count towards your plan."
-      + "Message: 401 (1411): Unrecognized API key pair."
-      
-      [ FAIL 1 | WARN 0 | SKIP 2 | PASS 13 ]
-      Error: Test failures
-      Execution halted
-    ```
-
 # sentopics
 
 <details>
@@ -531,7 +496,7 @@ Run `revdep_details(, "sentopics")` for more info
 * GitHub: https://github.com/satijalab/seurat
 * Source code: https://github.com/cran/Seurat
 * Date/Publication: 2022-11-18 23:30:08 UTC
-* Number of recursive dependencies: 254
+* Number of recursive dependencies: 259
 
 Run `revdep_details(, "Seurat")` for more info
 
@@ -649,6 +614,30 @@ Run `revdep_details(, "SPQR")` for more info
       All declared Imports should be used.
     ```
 
+# squat
+
+<details>
+
+* Version: 0.1.0
+* GitHub: NA
+* Source code: https://github.com/cran/squat
+* Date/Publication: 2022-12-22 11:20:02 UTC
+* Number of recursive dependencies: 123
+
+Run `revdep_details(, "squat")` for more info
+
+</details>
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is 18.7Mb
+      sub-directories of 1Mb or more:
+        data   1.1Mb
+        libs  16.7Mb
+    ```
+
 # targeted
 
 <details>
@@ -657,7 +646,7 @@ Run `revdep_details(, "SPQR")` for more info
 * GitHub: https://github.com/kkholst/targeted
 * Source code: https://github.com/cran/targeted
 * Date/Publication: 2022-10-25 20:30:02 UTC
-* Number of recursive dependencies: 93
+* Number of recursive dependencies: 94
 
 Run `revdep_details(, "targeted")` for more info
 
