@@ -80,13 +80,15 @@ handler_pbmcapply <- function(char = "=", substyle = 3L, style = "ETA", file = s
       if (!is.null(pb)) return(pb)
       
       ## SPECIAL CASE: pbmcapply::progressBar() does not support max == min
+      ## (its 'min' argument defaults to 0)
       if (max == 0) {
-        pb <- txtProgressBar()
-        class(pb) <- c("voidProgressBar", class(pb))
+        pb_tmp <- txtProgressBar()
+        class(pb_tmp) <- c("voidProgressBar", class(pb_tmp))
       } else {
         args <- c(list(max = max, ...), backend_args)
-        pb <<- do.call(progressBar, args = args)
+        pb_tmp <- do.call(progressBar, args = args)
       }
+      pb <<- pb_tmp
       
       pb
     }
@@ -121,6 +123,7 @@ handler_pbmcapply <- function(char = "=", substyle = 3L, style = "ETA", file = s
       update = function(config, state, progression, ...) {
         if (!state$enabled || config$times <= 2L) return()
         make_pb(max = config$max_steps, file = file)
+        stop_if_not(!is.null(pb))
         if (inherits(progression, "sticky")) {
           eraseTxtProgressBar(pb)
           message(paste0(state$message, ""))

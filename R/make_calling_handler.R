@@ -4,7 +4,7 @@ make_calling_handler <- function(handlers) {
       finished <- FALSE
       for (kk in seq_along(handlers)) {
         handler <- handlers[[kk]]
-        finished <- finished || handler(p)
+        if (handler(p)) finished <- TRUE
       }
       finished
     }

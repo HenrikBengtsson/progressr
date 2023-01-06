@@ -1,5 +1,14 @@
 # Version (development version)
 
+## Significant Changes
+
+ * Now the 'shiny' handler is enabled by default. Previously, it was
+   only enabled in interactive mode, which makes little sense if the
+   Shiny application runs in non-interactive mode, e.g. on a Shiny
+   server. For similar reasons, the 'filesize' handler is enabled by
+   default. These handlers can be disabled by setting R option
+   `progressr.enable` to FALSE.
+
 ## New Features
 
  * Add `handler_rpushbullet()` for reporting on progress via the
@@ -8,10 +17,23 @@
  * Now also 'beepr', 'debug', 'filesize', 'notifier', 'rpushbullet',
    'shiny', 'tkprogressbar', and 'winprogressbar' handlers report on
    interrupts.
+   
+ * Now progress updates of type "finish" supports also updating the
+   progress state, e.g. you can do `p(amount = 1.0, type = "finish")`
+   whereas previously you had to do `p(amount = 1.0)` and then `p(type
+   = "finish")` resulting in two progress conditions being signaled.
 
 ## Bug Fixes
 
+ * When using multiple progression handlers, it would only be first one
+   that was updated as the progressor completed, whereas any following
+   ones would not receive that last update.
+ 
  * The 'cli' handler would output a newline when completed.
+ 
+ * The 'cli' handler did not handle zero-length progressors resulting
+   in `Error in rep(chr_complete, complete_len) : invalid 'times'
+   argument` when the progressor completed.
 
 
 # Version 0.12.0 [2022-12-12]

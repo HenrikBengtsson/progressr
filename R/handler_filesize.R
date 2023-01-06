@@ -24,7 +24,7 @@
 #'
 #' @importFrom utils file_test
 #' @export
-handler_filesize <- function(file = "default.progress", intrusiveness = getOption("progressr.intrusiveness.file", 5), target = "file", ...) {
+handler_filesize <- function(file = "default.progress", intrusiveness = getOption("progressr.intrusiveness.file", 5), target = "file", enable = getOption("progressr.enable", TRUE), ...) {
   reporter <- local({
     set_file_size <- function(config, state, progression, message = state$message) {
       ratio <- if (config$max_steps == 0) 1 else state$step / config$max_steps
@@ -76,5 +76,5 @@ handler_filesize <- function(file = "default.progress", intrusiveness = getOptio
     )
   })
   
-  make_progression_handler("filesize", reporter, intrusiveness = intrusiveness, target = target, ...)
+  make_progression_handler("filesize", reporter, intrusiveness = intrusiveness, target = target, enable = enable, ...)
 }
