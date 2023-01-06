@@ -2,12 +2,12 @@
 
 ## Significant Changes
 
- * Now the 'shiny' handler is enabled by default. Previously, it was
-   only enabled in interactive mode, which makes little sense if the
-   Shiny application runs in non-interactive mode, e.g. on a Shiny
-   server. For similar reasons, the 'filesize' handler is enabled by
-   default. These handlers can be disabled by setting R option
-   `progressr.enable` to FALSE.
+ * Now the 'shiny' and 'filesize' handlers are enabled by
+   default. Previously, they were only enabled in interactive mode,
+   but as these are frequently used also in non-interactive mode, it's
+   less confusing if they're always enabled, e.g. Shiny applications
+   are often run via a Shiny servers. These handlers can be disabled
+   by setting R option `progressr.enable` to FALSE.
 
 ## New Features
 
