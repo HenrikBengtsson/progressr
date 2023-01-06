@@ -16,6 +16,10 @@
 
 ## Bug Fixes
 
+ * When using multiple progression handlers, it would only be first one
+   that was updated as the progressor completed, whereas any following
+   ones would not receive that last update.
+ 
  * The 'cli' handler would output a newline when completed.
  
  * The 'cli' handler did not handle zero-length progressors resulting
