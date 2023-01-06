@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.0-9017</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.0-9019</span>
       </span>
     </div>
 
@@ -126,6 +126,10 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="development version" id="version-development-version">Version (development version)<a class="anchor" aria-label="anchor" href="#version-development-version"></a></h2>
 <div class="section level3">
+<h3 id="significant-changes-development-version">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-development-version"></a></h3>
+<ul><li>Now the ‘shiny’ handler is enabled by default. Previously, it was only enabled in interactive mode, which makes little sense if the Shiny application runs in non-interactive mode, e.g. on a Shiny server. The ‘shiny’ handler can be disabled by setting R option <code>progressr.enable</code> to FALSE.</li>
+</ul></div>
+<div class="section level3">
 <h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
 <ul><li><p>Add <code><a href="../reference/handler_rpushbullet.html">handler_rpushbullet()</a></code> for reporting on progress via the Pushbullet Messaging Service using the <strong>RPushbullet</strong> package.</p></li>
 <li><p>Now also ‘beepr’, ‘debug’, ‘filesize’, ‘notifier’, ‘rpushbullet’, ‘shiny’, ‘tkprogressbar’, and ‘winprogressbar’ handlers report on interrupts.</p></li>
@@ -133,7 +137,8 @@
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-development-version">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
-<ul><li><p>The ‘cli’ handler would output a newline when completed.</p></li>
+<ul><li><p>When using multiple progression handlers, it would only be first one that was updated as the progressor completed, whereas any following ones would not receive that last update.</p></li>
+<li><p>The ‘cli’ handler would output a newline when completed.</p></li>
 <li><p>The ‘cli’ handler did not handle zero-length progressors resulting in <code>Error in rep(chr_complete, complete_len) : invalid 'times'    argument</code> when the progressor completed.</p></li>
 </ul></div>
 </div>
