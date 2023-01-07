@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.0-9019</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.0-9021</span>
       </span>
     </div>
 
@@ -127,7 +127,8 @@
 <h2 class="page-header" data-toc-text="development version" id="version-development-version">Version (development version)<a class="anchor" aria-label="anchor" href="#version-development-version"></a></h2>
 <div class="section level3">
 <h3 id="significant-changes-development-version">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-development-version"></a></h3>
-<ul><li>Now the ‘shiny’ handler is enabled by default. Previously, it was only enabled in interactive mode, which makes little sense if the Shiny application runs in non-interactive mode, e.g. on a Shiny server. The ‘shiny’ handler can be disabled by setting R option <code>progressr.enable</code> to FALSE.</li>
+<ul><li><p>Now the ‘shiny’ and ‘filesize’ handlers are enabled by default. Previously, they were only enabled in interactive mode, but as these are frequently used also in non-interactive mode, it’s less confusing if they’re always enabled, e.g. Shiny applications are often run via a Shiny servers. These handlers can be disabled by setting R option <code>progressr.enable</code> to FALSE.</p></li>
+<li><p>Option <code>progressr.intrusiveness.auditory</code> has been renamed to <code>progressr.intrusiveness.audio</code>.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
