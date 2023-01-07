@@ -7,7 +7,7 @@
 handler_ascii_alert(
   symbol = "\\a",
   file = stderr(),
-  intrusiveness = getOption("progressr.intrusiveness.auditory", 5),
+  intrusiveness = getOption("progressr.intrusiveness.audio", 5),
   target = c("terminal", "audio"),
   ...
 )

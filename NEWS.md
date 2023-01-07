@@ -8,6 +8,9 @@
    less confusing if they're always enabled, e.g. Shiny applications
    are often run via a Shiny servers. These handlers can be disabled
    by setting R option `progressr.enable` to FALSE.
+   
+ * Option `progressr.intrusiveness.auditory` has been renamed to
+   `progressr.intrusiveness.audio`.
 
 ## New Features
 

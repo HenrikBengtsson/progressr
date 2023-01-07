@@ -14,7 +14,7 @@
 #' @example incl/handler_ascii_alert.R
 #'
 #' @export
-handler_ascii_alert <- function(symbol = "\a", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.auditory", 5.0), target = c("terminal", "audio"), ...) {
+handler_ascii_alert <- function(symbol = "\a", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.audio", 5.0), target = c("terminal", "audio"), ...) {
   reporter <- local({
     list(
       hide   = function(...) NULL,

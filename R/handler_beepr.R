@@ -16,7 +16,7 @@
 #' This progression handler requires the \pkg{beepr} package.
 #'
 #' @export
-handler_beepr <- function(initiate = 2L, update = 10L,  finish = 11L, interrupt = 9L, intrusiveness = getOption("progressr.intrusiveness.auditory", 5.0), target = "audio", ...) {
+handler_beepr <- function(initiate = 2L, update = 10L,  finish = 11L, interrupt = 9L, intrusiveness = getOption("progressr.intrusiveness.audio", 5.0), target = "audio", ...) {
   ## Used for package testing purposes only when we want to perform
   ## everything except the last part where the backend is called
   if (!is_fake("handler_beepr")) {

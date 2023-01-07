@@ -9,7 +9,7 @@ handler_beepr(
   update = 10L,
   finish = 11L,
   interrupt = 9L,
-  intrusiveness = getOption("progressr.intrusiveness.auditory", 5),
+  intrusiveness = getOption("progressr.intrusiveness.audio", 5),
   target = "audio",
   ...
 )
