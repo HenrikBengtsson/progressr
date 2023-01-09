@@ -556,7 +556,7 @@ handlers(handler_progress(complete = "#"))
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">progressr</span><span class="fu">::</span><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"beepr"</span>, <span class="st">"rstudio"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>will report on progress using <strong>beepr</strong> and the RStudio Console progress panel.</p>
-<p><em>Comment</em>: This requires <strong>cli</strong> (&gt; 3.5.0), because there is a <a href="https://github.com/r-lib/cli/issues/558" class="external-link">bug</a> in <strong>cli</strong> (&lt;= 3.5.0) resulting in progress being reported too fast.</p>
+<p><em>Comment</em>: Currently, the above approach does <em>not</em> work with <code>progressr::handlers("cli")</code>, but it’s on the roadmap to get it fixed.</p>
 </div>
 </div>
 <div class="section level2">
