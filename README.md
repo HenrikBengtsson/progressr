@@ -536,17 +536,18 @@ progressr::handlers(global = TRUE)
 ### Replace any cli progress bars with progressr updates
 
 The **cli** package is used for progress reporting by many several
-packages, notably tidyverse package.  For instance, in **purrr**, you
+packages, notably tidyverse packages.  For instance, in **purrr**, you
 can do:
 
 ```r
 y <- purrr::map(1:100, \(x) Sys.sleep(0.1), .progress = TRUE)
 ```
 
-to render a traditional **cli** progress bar as `map()` is iterating
-over the elements.  Instead of using the built-in **cli** progress
-bar, we can customize **cli** to report on progress via **progressr**
-instead.  To do this, set R option `cli.progress_handlers` as:
+to report on progress via the **cli** package as `map()` is iterating
+over the elements.  Now, instead of using the default, built-in
+**cli** progress bar, we can customize **cli** to report on progress
+via **progressr** instead.  To do this, set R option
+`cli.progress_handlers` as:
 
 ```r
 options(cli.progress_handlers = "progressr")
