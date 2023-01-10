@@ -569,6 +569,13 @@ progress panel.
 To make **cli** report via **progressr** in all your R session, set
 the above R option in your <code>~/.Rprofile</code> startup file.
 
+_Note:_ A **cli** progress bar can have a "name", which can be
+specfied in **purrr** function via argument `.progress`,
+e.g. `.progress = "processing"`.  This name is then displayed in front
+of the progress bar.  However, because the **progressr** framework
+does not have a concept of progress "name", they are silently ignored
+when using `options(cli.progress_handlers = "progressr")`.
+
 
 
 ## Parallel processing and progress updates
