@@ -26,7 +26,7 @@ progression calling handler functions."><!-- mathjax --><script src="https://cdn
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.0-9022</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.0-9023</span>
       </span>
     </div>
 
@@ -157,7 +157,7 @@ progression calling handler functions.</p>
 
 
 <dt>reporter</dt>
-<dd><p>(environment) A reporter environment.</p></dd>
+<dd><p>(list) A named list of reporter functions.</p></dd>
 
 
 <dt>handler</dt>
@@ -219,11 +219,74 @@ are still to be documented.  Until then, see the source code of existing
 handlers for how it is used, e.g. <code><a href="handler_txtprogressbar.html">progressr::handler_txtprogressbar</a></code>.
 Please use with care as things might change.</p>
     </div>
+    <div id="reporter-functions">
+    <h2>Reporter functions</h2>
+    
+
+<p>The <code>reporter</code> argument should be a named list of zero or more of the
+following functions:</p><ul><li><p><code>initiate</code></p></li>
+<li><p><code>update</code></p></li>
+<li><p><code>finish</code></p></li>
+</ul><p>These functions are called whenever a <a href="progression.html">progression</a> condition of type
+<code>"initiate"</code>, <code>"update"</code>, or <code>"finish"</code> are received, but only if the
+condition is for the progression that is currently handled.
+These functions are called with the following arguments (in order):</p><ul><li><p><code>config</code> - a named list of the configuration of the progression handler:
+<code>max_steps</code> (integer),
+<code>interval</code> (numeric),
+<code>enable_after</code> (numeric),
+<code>auto_finish</code> (logical),
+<code>clear</code> (logical),
+<code>target</code> (character vector)</p></li>
+<li><p><code>state</code> - a named list of the current progress state after accounting
+for the most recent <code>progression</code> condition:
+<code>step</code> (integer), <code>message</code> (character),
+<code>delta</code> (integer),
+<code>enabled</code> (logical),
+<code>timestamps</code> (POSIXct vector)</p></li>
+<li><p><code>progression</code> - a <a href="progression.html">progression</a> condition</p></li>
+<li><p>... - not used (reserved for future needs)</p></li>
+</ul><p>In addition to the above functions, the following functions:</p><ul><li><p><code>hide</code></p></li>
+<li><p><code>unhide</code></p></li>
+<li><p><code>reset</code></p></li>
+<li><p><code>interrupt</code></p></li>
+</ul><p>are called whenever the handler "should" hide or unhide the rendered
+progress, or reset it, or when an interrupt is detected.  In these cases,
+the <code>progression</code> argument is of class <code>control_progression</code>.</p>
+    </div>
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p><code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">base::withCallingHandlers()</a></code>.</p></div>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Create a progression handler that reports on the current progress</span></span></span>
+<span class="r-in"><span><span class="co">## step, the relative change, and the current progress message. This</span></span></span>
+<span class="r-in"><span><span class="co">## is only reported on positive progressions updated</span></span></span>
+<span class="r-in"><span><span class="va">my_handler</span> <span class="op">&lt;-</span> <span class="fu">make_progression_handler</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"my"</span>, reporter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  update <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">config</span>, <span class="va">state</span>, <span class="va">progression</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="kw">if</span> <span class="op">(</span><span class="va">progression</span><span class="op">$</span><span class="va">amount</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"step = %d (+%g): message = %s"</span>,</span></span>
+<span class="r-in"><span>                      <span class="va">state</span><span class="op">$</span><span class="va">step</span>,</span></span>
+<span class="r-in"><span>                      <span class="va">progression</span><span class="op">$</span><span class="va">amount</span>,</span></span>
+<span class="r-in"><span>                      <span class="fu"><a href="https://rdrr.io/r/base/sQuote.html" class="external-link">sQuote</a></span><span class="op">(</span><span class="va">state</span><span class="op">$</span><span class="va">message</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">}</span></span></span>
+<span class="r-in"><span>  <span class="op">}</span></span></span>
+<span class="r-in"><span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="handlers.html">handlers</a></span><span class="op">(</span><span class="va">my_handler</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="with_progress.html">with_progress</a></span><span class="op">(</span><span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="slow_sum.html">slow_sum</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 2</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 4</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> M: Added value 5</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
