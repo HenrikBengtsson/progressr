@@ -47,7 +47,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.0-9021</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.0-9022</span>
       </span>
     </div>
 
@@ -551,12 +551,11 @@ handlers(handler_progress(complete = "#"))
 <p>to render a traditional <strong>cli</strong> progress bar as <code><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map()</a></code> is iterating over the elements. Instead of using the built-in <strong>cli</strong> progress bar, we can customize <strong>cli</strong> to report on progress via <strong>progressr</strong> instead. To do this, set R option <code>cli.progress_handlers</code> as:</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>cli.progress_handlers <span class="op">=</span> <span class="st">"progressr"</span><span class="op">)</span></span></code></pre></div>
-<p>To make this the default in all your R session, set it in your <code>~/.Rprofile</code> startup file.</p>
 <p>With this option set, <strong>cli</strong> will now report on progress according to your <code><a href="reference/handlers.html">progressr::handlers()</a></code> settings. For example, with:</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">progressr</span><span class="fu">::</span><span class="fu"><a href="reference/handlers.html">handlers</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"beepr"</span>, <span class="st">"rstudio"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>will report on progress using <strong>beepr</strong> and the RStudio Console progress panel.</p>
-<p><em>Comment</em>: Currently, the above approach does <em>not</em> work with <code>progressr::handlers("cli")</code>, but it’s on the roadmap to get it fixed.</p>
+<p>To make <strong>cli</strong> report via <strong>progressr</strong> in all your R session, set the above R option in your <code>~/.Rprofile</code> startup file.</p>
 </div>
 </div>
 <div class="section level2">

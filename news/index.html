@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.0-9021</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.0-9022</span>
       </span>
     </div>
 
@@ -141,6 +141,7 @@
 <ul><li><p>When using multiple progression handlers, it would only be first one that was updated as the progressor completed, whereas any following ones would not receive that last update.</p></li>
 <li><p>The ‘cli’ handler would output a newline when completed.</p></li>
 <li><p>The ‘cli’ handler did not handle zero-length progressors resulting in <code>Error in rep(chr_complete, complete_len) : invalid 'times'    argument</code> when the progressor completed.</p></li>
+<li><p>The ‘cli’ handler did not work when the <strong>cli</strong> package was configured to report on progress via <strong>progressr</strong>, i.e. when setting <code>options(cli.progress_handlers = "progressr")</code>.</p></li>
 </ul></div>
 </div>
     <div class="section level2">
