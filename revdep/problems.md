@@ -183,11 +183,11 @@ Run `revdep_details(, "fabletools")` for more info
 
 <details>
 
-* Version: 0.3.1
+* Version: 0.3.2
 * GitHub: https://github.com/JeremyGelb/geocmeans
 * Source code: https://github.com/cran/geocmeans
-* Date/Publication: 2022-10-16 00:23:35 UTC
-* Number of recursive dependencies: 198
+* Date/Publication: 2023-01-08 21:40:02 UTC
+* Number of recursive dependencies: 197
 
 Run `revdep_details(, "geocmeans")` for more info
 
@@ -197,12 +197,11 @@ Run `revdep_details(, "geocmeans")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 13.2Mb
+      installed size is 14.4Mb
       sub-directories of 1Mb or more:
-        data      2.3Mb
         doc       1.7Mb
-        extdata   1.1Mb
-        libs      7.4Mb
+        extdata   3.0Mb
+        libs      8.1Mb
     ```
 
 # ISAnalytics
@@ -245,27 +244,6 @@ Run `revdep_details(, "ISAnalytics")` for more info
       importFrom("methods", "is")
     to your NAMESPACE file (and ensure that your DESCRIPTION Imports field
     contains 'methods').
-    ```
-
-# lava
-
-<details>
-
-* Version: 1.7.0
-* GitHub: https://github.com/kkholst/lava
-* Source code: https://github.com/cran/lava
-* Date/Publication: 2022-10-25 05:52:57 UTC
-* Number of recursive dependencies: 138
-
-Run `revdep_details(, "lava")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Packages suggested but not available for checking: 'gof', 'lava.tobit'
     ```
 
 # lightr
@@ -574,7 +552,7 @@ Run `revdep_details(, "sphunif")` for more info
 * GitHub: https://github.com/JeremyGelb/spNetwork
 * Source code: https://github.com/cran/spNetwork
 * Date/Publication: 2022-11-11 08:10:02 UTC
-* Number of recursive dependencies: 150
+* Number of recursive dependencies: 149
 
 Run `revdep_details(, "spNetwork")` for more info
 

@@ -10,14 +10,14 @@
 |collate  |en_US.UTF-8                                                 |
 |ctype    |en_US.UTF-8                                                 |
 |tz       |America/Los_Angeles                                         |
-|date     |2023-01-06                                                  |
+|date     |2023-01-09                                                  |
 |pandoc   |2.19.2 @ /software/c4/cbi/software/pandoc-2.19.2/bin/pandoc |
 
 # Dependencies
 
 |package   |old    |new         |Δ  |
 |:---------|:------|:-----------|:--|
-|progressr |0.12.0 |0.12.0-9020 |*  |
+|progressr |0.12.0 |0.12.0-9022 |*  |
 |digest    |0.6.31 |0.6.31      |   |
 
 # Revdeps
@@ -31,7 +31,7 @@
 |baseballr          |1.3.0      |      |        |     |
 |bayesmove          |0.2.1      |      |        |     |
 |bbotk              |0.7.2      |      |        |     |
-|beer               |1.2.0      |-1    |        |     |
+|beer               |1.2.0      |      |        |     |
 |bolasso            |0.2.0      |      |        |     |
 |canaper            |1.0.0      |      |        |     |
 |cfbfastR           |1.9.0      |      |        |     |
@@ -47,13 +47,13 @@
 |ffsimulator        |1.2.2      |      |        |     |
 |funGp              |0.3.0      |      |        |     |
 |fxTWAPLS           |0.1.2      |      |        |     |
-|[geocmeans](problems.md#geocmeans)|0.3.1      |      |        |1    |
+|[geocmeans](problems.md#geocmeans)|0.3.2      |      |        |1    |
 |gtfs2emis          |0.1.0      |      |        |     |
 |gtfs2gps           |2.1-0      |      |        |     |
 |hoopR              |1.8.0      |      |        |     |
 |[ISAnalytics](problems.md#isanalytics)|1.8.1      |      |        |2    |
 |isopam             |1.1.0      |      |        |     |
-|[lava](problems.md#lava)|1.7.0      |      |        |1    |
+|lava               |1.7.1      |      |        |     |
 |[lightr](problems.md#lightr)|1.7.0      |      |        |2    |
 |lmtp               |1.3.1      |      |        |     |
 |LWFBrook90R        |0.5.0      |      |        |     |
