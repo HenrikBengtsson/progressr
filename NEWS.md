@@ -37,6 +37,10 @@
  * The 'cli' handler did not handle zero-length progressors resulting
    in `Error in rep(chr_complete, complete_len) : invalid 'times'
    argument` when the progressor completed.
+   
+ * The 'cli' handler did not work when the **cli** package was
+   configured to report on progress via **progressr**, i.e. when
+   setting `options(cli.progress_handlers = "progressr")`.
 
 
 # Version 0.12.0 [2022-12-12]

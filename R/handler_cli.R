@@ -53,7 +53,7 @@ handler_cli <- function(show_after = 0.0, intrusiveness = getOption("progressr.i
     cli_progress_call <- function(fun, ...) {
       opts <- cli_freeze_color_options()
       on.exit(options(opts), add = TRUE)
-      
+
       withCallingHandlers({
         res <- fun(...)
       }, cliMessage = function(msg) {
@@ -67,20 +67,26 @@ handler_cli <- function(show_after = 0.0, intrusiveness = getOption("progressr.i
         cat(output, file = stderr())
         invokeRestart("muffleMessage")
       })
-      
+
       invisible(res)
     }
 
     cli_progress_bar <- function(total, ...) {
       ## WORKAROUND: Do no not involve 'cli' when total = 0
       if (total == 0) return(NA_character_)
+
+      ## Make sure to always use the built-in 'cli' handler, no matter
+      ## what 'cli.progress_handlers*' options might be set
+      opts2 <- options(cli.progress_handlers_only = "cli")
+      on.exit(options(opts2), add = TRUE)
+
       cli_progress_call(cli::cli_progress_bar, total = total, ...)
     }
 
-    cli_progress_update <- function(id, ..., .envir) {
+    cli_progress_update <- function(id, ..., force = TRUE, .envir) {
       ## WORKAROUND: Do no not involve 'cli' when total = 0
       if (.envir$total == 0) return(id)
-      cli_progress_call(cli::cli_progress_update, id = id, ..., .envir = .envir)
+      cli_progress_call(cli::cli_progress_update, id = id, ..., force = force, .envir = .envir)
     }
 
     cli_progress_done <- function(id, ..., .envir) {
@@ -109,7 +115,7 @@ handler_cli <- function(show_after = 0.0, intrusiveness = getOption("progressr.i
     }
   } else {
     cli_progress_bar <- function(total, ...) "id-dummy"
-    cli_progress_update <- function(id, ..., .envir) "id-dummy"
+    cli_progress_update <- function(id, ..., force = TRUE, .envir) "id-dummy"
     cli_progress_done <- function(id, ..., .envir) "id-dummy"
     erase_progress_bar <- function(pb) NULL
     redraw_progress_bar <- function(pb) NULL

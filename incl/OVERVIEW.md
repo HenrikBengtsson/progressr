@@ -544,9 +544,6 @@ instead.  To do this, set R option `cli.progress_handlers` as:
 options(cli.progress_handlers = "progressr")
 ```
 
-To make this the default in all your R session, set it in your
-<code>~/.Rprofile</code> startup file.
-
 With this option set, **cli** will now report on progress according to
 your `progressr::handlers()` settings.  For example, with:
 
@@ -557,8 +554,9 @@ progressr::handlers(c("beepr", "rstudio"))
 will report on progress using **beepr** and the RStudio Console
 progress panel.
 
-_Comment_: Currently, the above approach does _not_ work with
-`progressr::handlers("cli")`, but it's on the roadmap to get it fixed.
+To make **cli** report via **progressr** in all your R session, set
+the above R option in your <code>~/.Rprofile</code> startup file.
+
 
 
 ## Parallel processing and progress updates
