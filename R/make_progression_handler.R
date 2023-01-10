@@ -7,7 +7,7 @@
 #'
 #' @param name (character) Name of progression handler.
 #'
-#' @param reporter (environment) A reporter environment.
+#' @param reporter (list) A named list of reporter functions.
 #'
 #' @param handler (function) Function take a [progression] condition
 #'   as the first argument.
@@ -44,6 +44,52 @@
 #' are still to be documented.  Until then, see the source code of existing
 #' handlers for how it is used, e.g. `progressr::handler_txtprogressbar`.
 #' Please use with care as things might change.
+#'
+#' @section Reporter functions:
+#' The `reporter` argument should be a named list of zero or more of the
+#' following functions:
+#'
+#' * `initiate`
+#' * `update`
+#' * `finish`
+#'
+#' These functions are called whenever a [progression] condition of type
+#' `"initiate"`, `"update"`, or `"finish"` are received, but only if the
+#' condition is for the progression that is currently handled.
+#' These functions are called with the following arguments (in order):
+#'
+#' * `config` - a named list of the configuration of the progression handler:
+#'              `max_steps` (integer),
+#"              `times` (integer),
+#'              `interval` (numeric),
+#'              `enable_after` (numeric),
+#'              `auto_finish` (logical),
+#'              `clear` (logical),
+#'              `target` (character vector)
+#'
+#' * `state` - a named list of the current progress state after accounting
+#'             for the most recent `progression` condition:
+#'             `step` (integer), `message` (character),
+#'             `delta` (integer),
+#'             `enabled` (logical),
+#'             `timestamps` (POSIXct vector)
+#'
+#' * `progression` - a [progression] condition
+#'
+#' * \ldots - not used (reserved for future needs)
+#' 
+#' In addition to the above functions, the following functions:
+#'
+#' * `hide`
+#' * `unhide`
+#' * `reset`
+#' * `interrupt`
+#'
+#' are called whenever the handler "should" hide or unhide the rendered
+#' progress, or reset it, or when an interrupt is detected.  In these cases,
+#' the `progression` argument is of class `control_progression`.
+#'
+#' @example incl/make_progression_handler.R
 #'
 #' @seealso
 #' [base::withCallingHandlers()].
@@ -273,8 +319,11 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
   }
 
   finish_reporter <- function(p) {
-    args <- reporter_args(progression = p)
     debug <- getOption("progressr.debug", FALSE)
+
+    if (active && !finished) update_progress(p, debug = debug)
+
+    args <- reporter_args(progression = p)
     if (debug) {
       mprintf("finish_reporter() ...")
       mstr(args)
@@ -283,6 +332,7 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
     ## Signal 'finish' if active and not already finished
     ## because it could already have been auto-finished before
     if (active && !finished) {
+      update_progress(p, debug = debug)
       nsinks <- sink.number()
       do.call(reporter$finish, args = args)
       stop_if_not(sink.number() == nsinks)
@@ -326,7 +376,52 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
     }
     res
   }
-  
+
+  ## Used by type == "update" and type == "finish"
+  update_progress <- function(p, debug = FALSE) {
+    if (!active) {
+      if (debug) message("- cannot 'update' handler, because it is not active")
+      return(invisible(finished))
+    }
+    if (debug) mstr(list(step=step, "p$amount"=p[["amount"]], "p$step"=p[["step"]], max_steps=max_steps))
+    if (!is.null(p[["step"]])) {
+      ## Infer effective 'amount' from previous 'step' and p$step
+      p[["amount"]] <- p[["step"]] - step
+    }
+    step <<- min(max(step + p[["amount"]], 0L), max_steps)
+    stop_if_not(step >= 0L)
+    msg <- conditionMessage(p)
+    if (length(msg) > 0) message <<- msg
+    if (step > 0) timestamps[step] <<- Sys.time()
+    if (debug) mstr(list(finished = finished, step = step, milestones = milestones, prev_milestone = prev_milestone, interval = interval))
+    .validate_internal_state("type=update")
+
+    ## Only update if a new milestone step has been reached ...
+    ## ... or if we want to send a zero-amount update
+    if ((length(milestones) > 0L && step >= milestones[1]) ||
+        p[["amount"]] == 0) {
+      skip <- FALSE
+      if (interval > 0 && step > 0) {
+        dt <- difftime(timestamps[step], timestamps[max(prev_milestone, 1L)], units = "secs")
+        skip <- (dt < interval)
+        if (debug) mstr(list(dt = dt, timestamps[step], timestamps[prev_milestone], skip = skip))
+      }
+      if (!skip) {
+        if (debug) mstr(list(milestones = milestones))
+        update_reporter(p)
+        if (p[["amount"]] > 0) prev_milestone <<- step
+      }
+      if (p[["amount"]] > 0) {
+        milestones <<- milestones[milestones > step]
+        if (auto_finish && step == max_steps) {
+          if (debug) mstr(list(type = "finish (auto)", milestones = milestones))
+          finish_reporter(p)
+        }
+      }
+    }
+  } ## update_progress()
+
+
   if (is.null(handler)) {
     handler <- function(p) {
       stop_if_not(inherits(p, "progression"))
@@ -432,46 +527,7 @@ make_progression_handler <- function(name, reporter = list(), handler = NULL, en
         finish_reporter(p)
         .validate_internal_state("type=finish")
       } else if (type == "update") {
-        if (!active) {
-          if (debug) message("- cannot 'update' handler, because it is not active")
-          return(invisible(finished))
-        }
-        if (debug) mstr(list(step=step, "p$amount"=p[["amount"]], "p$step"=p[["step"]], max_steps=max_steps))
-        if (!is.null(p[["step"]])) {
-          ## Infer effective 'amount' from previous 'step' and p$step
-          p[["amount"]] <- p[["step"]] - step
-        }
-        step <<- min(max(step + p[["amount"]], 0L), max_steps)
-        stop_if_not(step >= 0L)
-        msg <- conditionMessage(p)
-        if (length(msg) > 0) message <<- msg
-        if (step > 0) timestamps[step] <<- Sys.time()
-        if (debug) mstr(list(finished = finished, step = step, milestones = milestones, prev_milestone = prev_milestone, interval = interval))
-        .validate_internal_state("type=update")
-
-        ## Only update if a new milestone step has been reached ...
-        ## ... or if we want to send a zero-amount update
-        if ((length(milestones) > 0L && step >= milestones[1]) ||
-            p[["amount"]] == 0) {
-          skip <- FALSE
-          if (interval > 0 && step > 0) {
-            dt <- difftime(timestamps[step], timestamps[max(prev_milestone, 1L)], units = "secs")
-            skip <- (dt < interval)
-            if (debug) mstr(list(dt = dt, timestamps[step], timestamps[prev_milestone], skip = skip))
-          }
-          if (!skip) {
-            if (debug) mstr(list(milestones = milestones))
-            update_reporter(p)
-            if (p[["amount"]] > 0) prev_milestone <<- step
-          }
-          if (p[["amount"]] > 0) {
-            milestones <<- milestones[milestones > step]
-            if (auto_finish && step == max_steps) {
-              if (debug) mstr(list(type = "finish (auto)", milestones = milestones))
-              finish_reporter(p)
-            }
-          }
-        }
+        update_progress(p, debug = debug)
         .validate_internal_state(sprintf("handler(type=%s) ... end", type))
       } else {
         ## Was this meant to be a 'control_progression' condition?
@@ -550,8 +606,7 @@ handler_backend_args <- function(...) {
 
 # Map progression message to optional target arguments
 # Currently used by handler_shiny() and handler_winprogressbar()
-message_to_backend_targets <- function(progression, inputs) {
-  message <- progression$message
+message_to_backend_targets <- function(progression, inputs, message = progression$message) {
   if (length(message) == 0) return(list())
 
   args <- list()

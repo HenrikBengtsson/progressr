@@ -24,9 +24,9 @@
 #'
 #' @importFrom utils file_test
 #' @export
-handler_filesize <- function(file = "default.progress", intrusiveness = getOption("progressr.intrusiveness.file", 5), target = "file", ...) {
+handler_filesize <- function(file = "default.progress", intrusiveness = getOption("progressr.intrusiveness.file", 5), target = "file", enable = getOption("progressr.enable", TRUE), ...) {
   reporter <- local({
-    set_file_size <- function(config, state, progression) {
+    set_file_size <- function(config, state, progression, message = state$message) {
       ratio <- if (config$max_steps == 0) 1 else state$step / config$max_steps
       size <- round(100 * ratio)
       current_size <- file.size(file)
@@ -38,7 +38,7 @@ handler_filesize <- function(file = "default.progress", intrusiveness = getOptio
       nhead <- nchar(head)
       tail <- sprintf(" [%d%%]", round(100 * ratio))
       ntail <- nchar(tail)
-      mid <- paste0(state$message, "")
+      mid <- paste0(message, "")
       nmid <- nchar(mid)
       padding <- size - (nhead + nmid + ntail)
       if (padding <= 0) {
@@ -57,6 +57,11 @@ handler_filesize <- function(file = "default.progress", intrusiveness = getOptio
         set_file_size(config = config, state = state, progression = progression)
       },
       
+      interrupt = function(config, state, progression, ...) {
+        msg <- getOption("progressr.interrupt.message", "interrupt detected")
+        set_file_size(config = config, state = state, progression = progression, message = msg)
+      },
+      
       update = function(config, state, progression, ...) {
         set_file_size(config = config, state = state, progression = progression)
       },
@@ -71,5 +76,5 @@ handler_filesize <- function(file = "default.progress", intrusiveness = getOptio
     )
   })
   
-  make_progression_handler("filesize", reporter, intrusiveness = intrusiveness, target = target, ...)
+  make_progression_handler("filesize", reporter, intrusiveness = intrusiveness, target = target, enable = enable, ...)
 }

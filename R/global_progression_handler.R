@@ -261,6 +261,7 @@ global_progression_handler <- local({
 
   function(condition) {
     if (is.logical(condition)) {
+      stop_if_not(length(condition) == 1L, !is.na(condition))
       active <<- condition
       return()
     }

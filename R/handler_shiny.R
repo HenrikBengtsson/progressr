@@ -29,7 +29,7 @@
 #'
 #' @keywords internal
 #' @export
-handler_shiny <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), target = "gui", inputs = list(message = NULL, detail = "message"), ...) {
+handler_shiny <- function(intrusiveness = getOption("progressr.intrusiveness.gui", 1), target = "gui", inputs = list(message = NULL, detail = "message"), enable = getOption("progressr.enable", TRUE), ...) {
   stop_if_not(
     is.list(inputs),
     !is.null(names(inputs)),
@@ -53,6 +53,16 @@ handler_shiny <- function(intrusiveness = getOption("progressr.intrusiveness.gui
   
   reporter <- local({
     list(
+      interrupt = function(config, state, progression, ...) {
+        msg <- getOption("progressr.interrupt.message", "interrupt detected")
+        amount <- if (config$max_steps == 0) 1 else progression$amount / config$max_steps
+        args <- c(
+          list(amount = amount),
+          message_to_backend_targets(progression, inputs = inputs, message = msg)
+        )
+        do.call(shiny::incProgress, args = args)
+      },
+      
       update = function(config, state, progression, ...) {
         amount <- if (config$max_steps == 0) 1 else progression$amount / config$max_steps
         args <- c(
@@ -64,5 +74,5 @@ handler_shiny <- function(intrusiveness = getOption("progressr.intrusiveness.gui
     )
   })
   
-  make_progression_handler("shiny", reporter, intrusiveness = intrusiveness, target = target, ...)
+  make_progression_handler("shiny", reporter, intrusiveness = intrusiveness, target = target, enable = enable, ...)
 }

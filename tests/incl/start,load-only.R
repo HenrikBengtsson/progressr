@@ -69,7 +69,7 @@ options(progressr.times = +Inf)
 options(progressr.tests.fake_handlers = c(non_supported_progression_handlers(), "handler_beepr", "handler_notifier", "handler_progress"))
 
 
-future_strategies <- c("sequential", "multisession")
+future_strategies <- c("multisession", "sequential")
 if (.Platform$OS.type != "windows") {
   future_strategies <- c(future_strategies, "multicore")
 }

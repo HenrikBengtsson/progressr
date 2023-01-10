@@ -8,7 +8,7 @@ if (requireNamespace("cli", quietly = TRUE)) {
 
 message("handler_cli() ...")
 
-for (x in list(1:10, 1L, integer(0))) {
+for (x in list(integer(0), 1:10, 1L)) {
   message("length(x): ", length(x))
   with_progress({
     progress <- progressor(along = x)

@@ -4,8 +4,9 @@
 #'
 #' @inheritParams make_progression_handler
 #'
-#' @param initiate,update,finish (integer) Indices of [beepr::beep()] sounds to
-#'  play when progress starts, is updated, and completes.  For silence, use `NA_integer_`.
+#' @param initiate,update,finish,interrupt (integer) Indices of [beepr::beep()]
+#' sounds to play when progress starts, is updated, completes, or is
+#' interrupted.  For silence, use `NA_integer_`.
 #'
 #' @param \ldots Additional arguments passed to [make_progression_handler()].
 #'
@@ -15,7 +16,7 @@
 #' This progression handler requires the \pkg{beepr} package.
 #'
 #' @export
-handler_beepr <- function(initiate = 2L, update = 10L,  finish = 11L, intrusiveness = getOption("progressr.intrusiveness.auditory", 5.0), target = "audio", ...) {
+handler_beepr <- function(initiate = 2L, update = 10L,  finish = 11L, interrupt = 9L, intrusiveness = getOption("progressr.intrusiveness.audio", 5.0), target = "audio", ...) {
   ## Used for package testing purposes only when we want to perform
   ## everything except the last part where the backend is called
   if (!is_fake("handler_beepr")) {
@@ -38,6 +39,10 @@ handler_beepr <- function(initiate = 2L, update = 10L,  finish = 11L, intrusiven
 	beep(initiate)
       },
         
+      interrupt = function(config, state, progression, ...) {
+        beep(interrupt)
+      },
+      
       update = function(config, state, progression, ...) {
         if (!state$enabled || progression$amount == 0 || config$times <= 2L) return()
         beep(update)

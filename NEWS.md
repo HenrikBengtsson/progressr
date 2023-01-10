@@ -1,3 +1,48 @@
+# Version 0.13.0 [2023-01-09]
+
+## Significant Changes
+
+ * Now the 'shiny' and 'filesize' handlers are enabled by
+   default. Previously, they were only enabled in interactive mode,
+   but as these are frequently used also in non-interactive mode, it's
+   less confusing if they're always enabled, e.g. Shiny applications
+   are often run via a Shiny servers. These handlers can be disabled
+   by setting R option `progressr.enable` to FALSE.
+   
+ * Option `progressr.intrusiveness.auditory` has been renamed to
+   `progressr.intrusiveness.audio`.
+
+## New Features
+
+ * Add `handler_rpushbullet()` for reporting on progress via the
+   Pushbullet Messaging Service using the **RPushbullet** package.
+   
+ * Now also 'beepr', 'debug', 'filesize', 'notifier', 'rpushbullet',
+   'shiny', 'tkprogressbar', and 'winprogressbar' handlers report on
+   interrupts.
+   
+ * Now progress updates of type "finish" supports also updating the
+   progress state, e.g. you can do `p(amount = 1.0, type = "finish")`
+   whereas previously you had to do `p(amount = 1.0)` and then `p(type
+   = "finish")` resulting in two progress conditions being signaled.
+
+## Bug Fixes
+
+ * When using multiple progression handlers, it would only be first one
+   that was updated as the progressor completed, whereas any following
+   ones would not receive that last update.
+ 
+ * The 'cli' handler would output a newline when completed.
+ 
+ * The 'cli' handler did not handle zero-length progressors resulting
+   in `Error in rep(chr_complete, complete_len) : invalid 'times'
+   argument` when the progressor completed.
+   
+ * The 'cli' handler did not work when the **cli** package was
+   configured to report on progress via **progressr**, i.e. when
+   setting `options(cli.progress_handlers = "progressr")`.
+
+
 # Version 0.12.0 [2022-12-12]
 
 ## Significant Changes
