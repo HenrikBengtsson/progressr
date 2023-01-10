@@ -21,7 +21,7 @@ make_progression_handler(
 \arguments{
 \item{name}{(character) Name of progression handler.}
 
-\item{reporter}{(environment) A reporter environment.}
+\item{reporter}{(list) A named list of reporter functions.}
 
 \item{handler}{(function) Function take a \link{progression} condition
 as the first argument.}
@@ -65,6 +65,73 @@ The inner details of progression handlers and how to use this function
 are still to be documented.  Until then, see the source code of existing
 handlers for how it is used, e.g. \code{progressr::handler_txtprogressbar}.
 Please use with care as things might change.
+}
+\section{Reporter functions}{
+
+The \code{reporter} argument should be a named list of zero or more of the
+following functions:
+\itemize{
+\item \code{initiate}
+\item \code{update}
+\item \code{finish}
+}
+
+These functions are called whenever a \link{progression} condition of type
+\code{"initiate"}, \code{"update"}, or \code{"finish"} are received, but only if the
+condition is for the progression that is currently handled.
+These functions are called with the following arguments (in order):
+\itemize{
+\item \code{config} - a named list of the configuration of the progression handler:
+\code{max_steps} (integer),
+\code{interval} (numeric),
+\code{enable_after} (numeric),
+\code{auto_finish} (logical),
+\code{clear} (logical),
+\code{target} (character vector)
+\item \code{state} - a named list of the current progress state after accounting
+for the most recent \code{progression} condition:
+\code{step} (integer), \code{message} (character),
+\code{delta} (integer),
+\code{enabled} (logical),
+\code{timestamps} (POSIXct vector)
+\item \code{progression} - a \link{progression} condition
+\item \ldots - not used (reserved for future needs)
+}
+
+In addition to the above functions, the following functions:
+\itemize{
+\item \code{hide}
+\item \code{unhide}
+\item \code{reset}
+\item \code{interrupt}
+}
+
+are called whenever the handler "should" hide or unhide the rendered
+progress, or reset it, or when an interrupt is detected.  In these cases,
+the \code{progression} argument is of class \code{control_progression}.
+}
+
+\examples{
+## Create a progression handler that reports on the current progress
+## step, the relative change, and the current progress message. This
+## is only reported on positive progressions updated
+my_handler <- make_progression_handler(name = "my", reporter = list(
+  update = function(config, state, progression, ...) {
+    if (progression$amount > 0) {
+      message(sprintf("step = \%d (+\%g): message = \%s",
+                      state$step,
+                      progression$amount,
+                      sQuote(state$message)))
+    }
+  }
+))
+
+handlers(my_handler)
+
+with_progress({
+  y <- slow_sum(1:5)
+})
+
 }
 \seealso{
 \code{\link[base:conditions]{base::withCallingHandlers()}}.

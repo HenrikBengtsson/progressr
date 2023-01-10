@@ -7,7 +7,7 @@
 #'
 #' @param name (character) Name of progression handler.
 #'
-#' @param reporter (environment) A reporter environment.
+#' @param reporter (list) A named list of reporter functions.
 #'
 #' @param handler (function) Function take a [progression] condition
 #'   as the first argument.
@@ -44,6 +44,52 @@
 #' are still to be documented.  Until then, see the source code of existing
 #' handlers for how it is used, e.g. `progressr::handler_txtprogressbar`.
 #' Please use with care as things might change.
+#'
+#' @section Reporter functions:
+#' The `reporter` argument should be a named list of zero or more of the
+#' following functions:
+#'
+#' * `initiate`
+#' * `update`
+#' * `finish`
+#'
+#' These functions are called whenever a [progression] condition of type
+#' `"initiate"`, `"update"`, or `"finish"` are received, but only if the
+#' condition is for the progression that is currently handled.
+#' These functions are called with the following arguments (in order):
+#'
+#' * `config` - a named list of the configuration of the progression handler:
+#'              `max_steps` (integer),
+#"              `times` (integer),
+#'              `interval` (numeric),
+#'              `enable_after` (numeric),
+#'              `auto_finish` (logical),
+#'              `clear` (logical),
+#'              `target` (character vector)
+#'
+#' * `state` - a named list of the current progress state after accounting
+#'             for the most recent `progression` condition:
+#'             `step` (integer), `message` (character),
+#'             `delta` (integer),
+#'             `enabled` (logical),
+#'             `timestamps` (POSIXct vector)
+#'
+#' * `progression` - a [progression] condition
+#'
+#' * \ldots - not used (reserved for future needs)
+#' 
+#' In addition to the above functions, the following functions:
+#'
+#' * `hide`
+#' * `unhide`
+#' * `reset`
+#' * `interrupt`
+#'
+#' are called whenever the handler "should" hide or unhide the rendered
+#' progress, or reset it, or when an interrupt is detected.  In these cases,
+#' the `progression` argument is of class `control_progression`.
+#'
+#' @example incl/make_progression_handler.R
 #'
 #' @seealso
 #' [base::withCallingHandlers()].
