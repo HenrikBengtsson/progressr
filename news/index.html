@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.0-9023</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.13.0</span>
       </span>
     </div>
 
@@ -124,20 +124,20 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="development version" id="version-development-version">Version (development version)<a class="anchor" aria-label="anchor" href="#version-development-version"></a></h2>
+<h2 class="page-header" data-toc-text="0.13.0" id="version-0130">Version 0.13.0<a class="anchor" aria-label="anchor" href="#version-0130"></a></h2>
 <div class="section level3">
-<h3 id="significant-changes-development-version">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-development-version"></a></h3>
+<h3 id="significant-changes-0-13-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-0-13-0"></a></h3>
 <ul><li><p>Now the ‘shiny’ and ‘filesize’ handlers are enabled by default. Previously, they were only enabled in interactive mode, but as these are frequently used also in non-interactive mode, it’s less confusing if they’re always enabled, e.g. Shiny applications are often run via a Shiny servers. These handlers can be disabled by setting R option <code>progressr.enable</code> to FALSE.</p></li>
 <li><p>Option <code>progressr.intrusiveness.auditory</code> has been renamed to <code>progressr.intrusiveness.audio</code>.</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<h3 id="new-features-0-13-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-13-0"></a></h3>
 <ul><li><p>Add <code><a href="../reference/handler_rpushbullet.html">handler_rpushbullet()</a></code> for reporting on progress via the Pushbullet Messaging Service using the <strong>RPushbullet</strong> package.</p></li>
 <li><p>Now also ‘beepr’, ‘debug’, ‘filesize’, ‘notifier’, ‘rpushbullet’, ‘shiny’, ‘tkprogressbar’, and ‘winprogressbar’ handlers report on interrupts.</p></li>
 <li><p>Now progress updates of type “finish” supports also updating the progress state, e.g. you can do <code>p(amount = 1.0, type = "finish")</code> whereas previously you had to do <code>p(amount = 1.0)</code> and then <code>p(type    = "finish")</code> resulting in two progress conditions being signaled.</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="bug-fixes-development-version">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
+<h3 id="bug-fixes-0-13-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-13-0"></a></h3>
 <ul><li><p>When using multiple progression handlers, it would only be first one that was updated as the progressor completed, whereas any following ones would not receive that last update.</p></li>
 <li><p>The ‘cli’ handler would output a newline when completed.</p></li>
 <li><p>The ‘cli’ handler did not handle zero-length progressors resulting in <code>Error in rep(chr_complete, complete_len) : invalid 'times'    argument</code> when the progressor completed.</p></li>
