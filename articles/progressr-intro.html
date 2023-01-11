@@ -47,7 +47,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.13.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.13.0-9000</span>
       </span>
     </div>
 
@@ -674,6 +674,13 @@ Console progress panel.</p>
 <p>To make <strong>cli</strong> report via <strong>progressr</strong> in
 all your R session, set the above R option in your
 <code>~/.Rprofile</code> startup file.</p>
+<p><em>Note:</em> A <strong>cli</strong> progress bar can have a “name”,
+which can be specfied in <strong>purrr</strong> function via argument
+<code>.progress</code>, e.g. <code>.progress = "processing"</code>. This
+name is then displayed in front of the progress bar. However, because
+the <strong>progressr</strong> framework does not have a concept of
+progress “name”, they are silently ignored when using
+<code>options(cli.progress_handlers = "progressr")</code>.</p>
 </div>
 </div>
 <div class="section level2">
