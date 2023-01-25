@@ -230,10 +230,10 @@ To have progress being reported on also then, set R options
 <span class="option">progressr.enable</span> or environment variable <code class="env">R_PROGRESSR_ENABLE</code>
 to <code>TRUE</code>.  Alternatively, one can set argument <code>enable=TRUE</code> when calling
 <code>with_progress()</code>.  For example,</p>
-<p></p><div class="sourceCode sh"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> Rscript <span class="at">-e</span> <span class="st">"library(progressr)"</span> <span class="at">-e</span> <span class="st">"with_progress(slow_sum(1:5))"</span></span></code></pre><p></p></div>
+<p></p><div class="sourceCode sh"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">$</span> Rscript <span class="at">-e</span> <span class="st">"library(progressr)"</span> <span class="at">-e</span> <span class="st">"with_progress(slow_sum(1:5))"</span></span></code></pre><p></p></div>
 <p>will <em>not</em> report on progress, whereas:</p>
-<p></p><div class="sourceCode sh"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> export R_PROGRESSR_ENABLE=TRUE</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> Rscript <span class="at">-e</span> <span class="st">"library(progressr)"</span> <span class="at">-e</span> <span class="st">"with_progress(slow_sum(1:5))"</span></span></code></pre><p></p></div>
+<p></p><div class="sourceCode sh"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">$</span> export R_PROGRESSR_ENABLE=TRUE</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="ex">$</span> Rscript <span class="at">-e</span> <span class="st">"library(progressr)"</span> <span class="at">-e</span> <span class="st">"with_progress(slow_sum(1:5))"</span></span></code></pre><p></p></div>
 <p>will.</p>
     </div>
     <div id="see-also">
@@ -280,7 +280,7 @@ to <code>TRUE</code>.  Alternatively, one can set argument <code>enable=TRUE</co
 <span class="r-out co"><span class="r-pr">#&gt;</span>     p(amount = 0)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     sum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55761a37c258&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5649910de0a8&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:progressr&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span></span></span>
