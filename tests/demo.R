@@ -1,9 +1,7 @@
 source("incl/start.R")
 
 library(future)
-supportedStrategies <- function(...) {
-  setdiff(future:::supportedStrategies(), "multiprocess")
-}
+supportedStrategies <- future:::supportedStrategies()
 
 isWin32 <- FALSE
 availCores <- 2L
