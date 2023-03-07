@@ -1,7 +1,20 @@
 source("incl/start.R")
 
 library(future)
-supportedStrategies <- future:::supportedStrategies()
+
+supportedStrategies <- function(cores = NA_integer_, excl = "cluster", ...) {
+  strategies <- future:::supportedStrategies(...)
+  strategies <- setdiff(strategies, excl)
+  if (!is.na(cores)) {
+    if (cores == 1L) {
+      strategies <- setdiff(strategies, c("multicore", "multisession"))
+    } else if (cores > 1L) {
+      strategies <- setdiff(strategies, "sequential")
+    }
+  }
+  
+  strategies
+}
 
 isWin32 <- FALSE
 availCores <- 2L
