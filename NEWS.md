@@ -1,6 +1,8 @@
 # Version (development version)
 
- * ...
+## Miscellaneous
+
+ * The `progressr.options` help page is now listed in the help index.
 
 
 # Version 0.13.0 [2023-01-09]
