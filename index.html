@@ -47,7 +47,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.13.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.13.0-9002</span>
       </span>
     </div>
 
@@ -529,7 +529,7 @@ handlers(handler_progress(complete = "#"))
 <div class="section level3">
 <h3 id="the-knitr-package">The knitr package<a class="anchor" aria-label="anchor" href="#the-knitr-package"></a>
 </h3>
-<p>When compiling (“knitting”) an knitr-based vignette, for instance, via <code><a href="https://rdrr.io/pkg/knitr/man/knit.html" class="external-link">knitr::knit()</a></code>, <strong><a href="https://cran.r-project.org/package=knitr" class="external-link">knitr</a></strong> shows the progress of code chunks processed thus far using a progress bar. In <strong>knitr</strong> (&gt;= 1.42), we can use <strong>progressr</strong> for this progress reporting. To do this, set R option <code>knitr.progress.fun</code> as:</p>
+<p>When compiling (“knitting”) an knitr-based vignette, for instance, via <code><a href="https://rdrr.io/pkg/knitr/man/knit.html" class="external-link">knitr::knit()</a></code>, <strong><a href="https://cran.r-project.org/package=knitr" class="external-link">knitr</a></strong> shows the progress of code chunks processed thus far using a progress bar. In <strong>knitr</strong> (&gt;= 1.42) [to be released as of 2022-12-12], we can use <strong>progressr</strong> for this progress reporting. To do this, set R option <code>knitr.progress.fun</code> as:</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>knitr.progress.fun <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">total</span>, <span class="va">labels</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">progressr</span><span class="fu">::</span><span class="fu"><a href="reference/progressor.html">progressor</a></span><span class="op">(</span><span class="va">total</span>, on_exit <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
@@ -740,11 +740,11 @@ handlers(handler_progress(complete = "#"))
 </h2>
 <p>Because this project is under active development, the progressr API is currently kept at a very minimum. This will allow for the framework and the API to evolve while minimizing the risk for breaking code that depends on it. The roadmap for developing the API is roughly:</p>
 <ul class="task-list">
-<li><p><input type="checkbox" disabled checked>Provide minimal API for producing progress updates, i.e. <code><a href="reference/progressor.html">progressor()</a></code>, <code><a href="reference/with_progress.html">with_progress()</a></code>, <code><a href="reference/handlers.html">handlers()</a></code></p></li>
-<li><p><input type="checkbox" disabled checked>Add support for global progress handlers removing the need for the user having to specify <code><a href="reference/with_progress.html">with_progress()</a></code>, i.e. <code>handlers(global = TRUE)</code> and <code>handlers(global = FALSE)</code></p></li>
-<li><p><input type="checkbox" disabled>Make it possible to create a progressor also in the global environment (see ‘Known issues’ below)</p></li>
-<li><p><input type="checkbox" disabled>Add support for nested progress updates</p></li>
-<li><p><input type="checkbox" disabled>Add API to allow users and package developers to design additional progression handlers</p></li>
+<li><p><input type="checkbox" checked>Provide minimal API for producing progress updates, i.e. <code><a href="reference/progressor.html">progressor()</a></code>, <code><a href="reference/with_progress.html">with_progress()</a></code>, <code><a href="reference/handlers.html">handlers()</a></code></p></li>
+<li><p><input type="checkbox" checked>Add support for global progress handlers removing the need for the user having to specify <code><a href="reference/with_progress.html">with_progress()</a></code>, i.e. <code>handlers(global = TRUE)</code> and <code>handlers(global = FALSE)</code></p></li>
+<li><p><input type="checkbox">Make it possible to create a progressor also in the global environment (see ‘Known issues’ below)</p></li>
+<li><p><input type="checkbox">Add support for nested progress updates</p></li>
+<li><p><input type="checkbox">Add API to allow users and package developers to design additional progression handlers</p></li>
 </ul>
 <p>For a more up-to-date view on what features might be added, see <a href="https://github.com/HenrikBengtsson/progressr/issues" class="external-link uri">https://github.com/HenrikBengtsson/progressr/issues</a>.</p>
 </div>
