@@ -109,6 +109,8 @@ handler_pbmcapply <- function(char = "=", substyle = 3L, style = "ETA", file = s
       },
 
       interrupt = function(config, state, progression, ...) {
+        eraseTxtProgressBar(pb)
+        redrawTxtProgressBar(pb)
         msg <- getOption("progressr.interrupt.message", "interrupt detected")
         msg <- paste(c("", msg, ""), collapse = "\n")
         cat(msg, file = file)
