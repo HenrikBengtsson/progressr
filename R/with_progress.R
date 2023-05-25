@@ -233,9 +233,14 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
       calling_handler(control_progression("interrupt"))
     })
   },
-  
+
+  error = function(e) {
+    ## Don't handle errors
+  },
+
   condition = function(c) {
-    if (!capture_conditions || inherits(c, "error")) return()
+    if (!capture_conditions) return()
+    
     if (debug) message("- received a ", sQuote(class(c)[1]))
 
     if (inherits(c, delays$conditions)) {
