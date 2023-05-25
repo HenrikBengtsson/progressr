@@ -6,8 +6,9 @@
 
 ## Bug Fixes
 
- * The 'cli' handler did not always redraw the progress bar if there
-   was an interrupt.
+ * The 'cli', 'progress', and 'txtprogressbar' handlers did not redraw
+   the progress bar if there was an interrupt, which made it a hit or
+   miss whether it was displayed after the interruption.
  
 
 # Version 0.13.0 [2023-01-09]
