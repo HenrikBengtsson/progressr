@@ -275,13 +275,7 @@ global_progression_handler <- local({
       if (isTRUE(getOption("progressr.interrupts", TRUE))) {
         ## Create progress message saying why the progress was interrupted
         msg <- sprintf("Progress interrupted by %s condition", class(condition)[1])
-        if (inherits(condition, "interrupt")) {
-          msg <- getOption("progressr.interrupt.message", msg)
-        } else {
-          msg <- getOption("progressr.error.message", msg)
-        }
         msg <- paste(c(msg, conditionMessage(condition)), collapse = ": ")
-
         suspendInterrupts({
           interrupt_calling_handler(control_progression("interrupt", message = msg), debug = debug)
         })

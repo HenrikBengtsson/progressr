@@ -257,7 +257,6 @@ update_package_options <- function(debug = FALSE) {
   update_package_option("interval", mode = "numeric", default = 0.0, debug = debug)
   update_package_option("times", mode = "numeric", default = +Inf, debug = debug)
   update_package_option("interrupts", mode = "logical", default = TRUE, debug = debug)
-  update_package_option("interrupt.message", mode = "character", default = NULL, debug = debug)
 
   ## Life-cycle, e.g. deprecation an defunct
   update_package_option("lifecycle.progress", mode = "character", default = "deprecated", debug = debug)
