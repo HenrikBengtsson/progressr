@@ -1,5 +1,16 @@
 # Version (development version)
 
+## New Features
+
+ * Progress reporting may be terminated by an interrupt (e.g. user
+   presses Ctrl-C, or the process is interrupted externally), or a
+   run-time error.  When this happens, the most recent progress update
+   is preserved (e.g. a progress bar in the terminal remains), and an
+   informative message is displayed (if the progress handler supported
+   it). In previous versions, the preservation of the progress and the
+   output of the message happend on for interrupts. In this version,
+   this happens also for errors.
+
 ## Miscellaneous
 
  * The `progressr.options` help page is now listed in the help index.
