@@ -106,7 +106,7 @@ handler_txtprogressbar <- function(char = "=", style = 3L, file = stderr(), intr
         eraseTxtProgressBar(pb)
         redrawTxtProgressBar(pb)
         
-        msg <- getOption("progressr.interrupt.message", "interrupt detected")
+        msg <- conditionMessage(progression)
         msg <- paste(c("", msg, ""), collapse = "\n")
         cat(msg, file = file)
       },

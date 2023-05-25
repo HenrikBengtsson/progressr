@@ -117,7 +117,7 @@ handler_pbcol <- function(adjust = 0.0, pad = 1L, complete = function(s) cli::bg
         erase_progress_bar()
         ratio <- if (config$max_steps == 0) 1 else state$step / config$max_steps
         redraw_progress_bar(ratio = ratio, message = state$message, spin = spinner[spin_state+1L])
-        msg <- getOption("progressr.interrupt.message", "interrupt detected")
+        msg <- conditionMessage(progression)
         msg <- paste(c("", msg, ""), collapse = "\n")
         cat_(msg)
       },

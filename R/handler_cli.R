@@ -207,7 +207,7 @@ handler_cli <- function(show_after = 0.0, intrusiveness = getOption("progressr.i
           redraw_progress_bar(pb)
         }, error = identity)
         
-        msg <- getOption("progressr.interrupt.message", "interrupt detected")
+        msg <- conditionMessage(progression)
         msg <- paste(c("", msg, ""), collapse = "\n")
         cat(msg, file = stderr())
       },

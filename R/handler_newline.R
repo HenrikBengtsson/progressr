@@ -17,7 +17,7 @@ handler_newline <- function(symbol = "\n", file = stderr(), intrusiveness = getO
       hide     = function(...) NULL,
       unhide   = function(...) NULL,
       interrupt = function(config, state, progression, ...) {
-        msg <- getOption("progressr.interrupt.message", "interrupt detected")
+        msg <- conditionMessage(progression)
         msg <- paste(c("", msg, ""), collapse = "\n")
         cat(msg, file = file)
       },

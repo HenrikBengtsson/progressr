@@ -231,8 +231,9 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
           conditions <<- flush_conditions(conditions)
         }
       }
-  
-      calling_handler(control_progression("interrupt"))
+
+      msg <- getOption("progressr.interrupt.message", "interrupt detected")
+      calling_handler(control_progression("interrupt", message = msg))
     })
   },
 

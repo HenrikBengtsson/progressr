@@ -20,7 +20,7 @@ handler_ascii_alert <- function(symbol = "\a", file = stderr(), intrusiveness = 
       hide   = function(...) NULL,
       unhide = function(...) NULL,
       interrupt = function(config, state, progression, ...) {
-        msg <- getOption("progressr.interrupt.message", "interrupt detected")
+        msg <- conditionMessage(progression)
         msg <- paste(c("", msg, ""), collapse = "\n")
         cat(msg, file = file)
       },

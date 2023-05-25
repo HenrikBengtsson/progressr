@@ -58,7 +58,7 @@ handler_filesize <- function(file = "default.progress", intrusiveness = getOptio
       },
       
       interrupt = function(config, state, progression, ...) {
-        msg <- getOption("progressr.interrupt.message", "interrupt detected")
+        msg <- conditionMessage(progression)
         set_file_size(config = config, state = state, progression = progression, message = msg)
       },
       
