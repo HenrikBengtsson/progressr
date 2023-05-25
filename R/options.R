@@ -244,7 +244,15 @@ update_package_options <- function(debug = FALSE) {
 
   ## make_progression_handler() arguments
   update_package_option("clear", mode = "logical", default = TRUE, debug = debug)
-  update_package_option("enable", mode = "logical", default = interactive(), debug = debug)
+
+  ## Special case: Support R_PROGRESSR_ENABLE=interactive
+  value <- Sys.getenv("R_PROGRESSR_ENABLE", "")
+  if (value == "interactive") {
+    options(progressr.enable = interactive())
+  } else {
+    update_package_option("enable", mode = "logical", default = interactive(), debug = debug)
+  }
+
   update_package_option("enable_after", mode = "numeric", default = 0.0, debug = debug)
   update_package_option("interval", mode = "numeric", default = 0.0, debug = debug)
   update_package_option("times", mode = "numeric", default = +Inf, debug = debug)
