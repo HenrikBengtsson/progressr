@@ -4,6 +4,11 @@
 
  * The `progressr.options` help page is now listed in the help index.
 
+## Bug Fixes
+
+ * The 'cli' handler did not always redraw the progress bar if there
+   was an interrupt.
+ 
 
 # Version 0.13.0 [2023-01-09]
 

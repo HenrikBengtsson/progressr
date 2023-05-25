@@ -199,6 +199,14 @@ handler_cli <- function(show_after = 0.0, intrusiveness = getOption("progressr.i
       interrupt = function(config, state, progression, ...) {
         if (is.null(pb)) return()
         stopifnot(is.character(pb$id), is.environment(pb$envir))
+
+        ## WORKAROUND: At times, we might get 'Error in
+        ## del_from:length(app$styles) : NA/NaN argument'.
+        tryCatch({
+          erase_progress_bar(pb)
+          redraw_progress_bar(pb)
+        }, error = identity)
+        
         msg <- getOption("progressr.interrupt.message", "interrupt detected")
         msg <- paste(c("", msg, ""), collapse = "\n")
         cat(msg, file = stderr())
