@@ -189,7 +189,9 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
   capture_conditions <- TRUE
   withCallingHandlers({
     res <- withVisible(expr)
-  }, progression = function(p) {
+  },
+  
+  progression = function(p) {
     progression_counter <<- progression_counter + 1
     if (debug) message(sprintf("- received a %s (n=%g)", sQuote(class(p)[1]), progression_counter))
     
@@ -209,6 +211,7 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
     
     calling_handler(p)
   },
+
   interrupt = function(c) {
     ## Ignore interrupts?
     if (!interrupts) return()
@@ -230,8 +233,9 @@ with_progress <- function(expr, handlers = progressr::handlers(), cleanup = TRUE
       calling_handler(control_progression("interrupt"))
     })
   },
+  
   condition = function(c) {
-    if (!capture_conditions || inherits(c, c("progression", "error"))) return()
+    if (!capture_conditions || inherits(c, "error")) return()
     if (debug) message("- received a ", sQuote(class(c)[1]))
 
     if (inherits(c, delays$conditions)) {
