@@ -2,8 +2,7 @@
 % Please edit documentation in R/withProgressShiny.R
 \name{withProgressShiny}
 \alias{withProgressShiny}
-\title{Use Progressr in Shiny Apps: Plug-in Backward-Compatible Replacement for shiny::withProgress()
-A plug-in, backward-compatible replacement for \code{\link[shiny:withProgress]{shiny::withProgress()}}.}
+\title{Use Progressr in Shiny Apps: Plug-in Backward-Compatible Replacement for shiny::withProgress()}
 \usage{
 withProgressShiny(
   expr,
@@ -35,7 +34,6 @@ whereas the 'detail' component is updated using any message.}
 The value of \link[shiny:withProgress]{shiny::withProgress}.
 }
 \description{
-Use Progressr in Shiny Apps: Plug-in Backward-Compatible Replacement for shiny::withProgress()
 A plug-in, backward-compatible replacement for \code{\link[shiny:withProgress]{shiny::withProgress()}}.
 }
 \section{Requirements}{
