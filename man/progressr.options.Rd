@@ -9,9 +9,10 @@
 \alias{progressr.delay_conditions}
 \alias{progressr.enable}
 \alias{progressr.enable_after}
+\alias{progressr.interrupts}
 \alias{progressr.interval}
 \alias{progressr.intrusiveness}
-\alias{progressr.intrusiveness.auditory}
+\alias{progressr.intrusiveness.audio}
 \alias{progressr.intrusiveness.debug}
 \alias{progressr.intrusiveness.file}
 \alias{progressr.intrusiveness.gui}
@@ -50,7 +51,7 @@ If TRUE, any output, typically visual, produced by a reporter will be cleared/re
 \item{\option{progressr.enable}:}{
 (logical)
 If FALSE, then progress is not reported.
-(Default: TRUE)
+(Default: TRUE in interactive mode, otherwise FALSE)
 }
 
 \item{\option{progressr.enable_after}:}{
@@ -73,16 +74,16 @@ The minimum time (in seconds) between successive progression updates from this h
 
 \item{\option{progressr.intrusiveness}:}{
 (numeric)
-A non-negative scalar on how intrusive (disruptive) the reporter to the user. This multiplicative scalar applies to the \emph{interval} and \emph{times} parameters. (Default: \code{1.0})\cr\preformatted{\\describe\{
-  \\item\{\option{progressr.intrusiveness.auditory}:\}\{(numeric) intrusiveness for auditory progress handlers (Default: `5.0`)\}
-  \\item\{\option{progressr.intrusiveness.file}:\}\{(numeric) intrusiveness for file-based progress handlers (Default: `5.0`)\}
-  \\item\{\option{progressr.intrusiveness.gui}:\}\{(numeric) intrusiveness for graphical-user-interface progress handlers (Default: `1.0`)\}
-  \\item\{\option{progressr.intrusiveness.notifier}:\}\{(numeric) intrusiveness for progress handlers that creates notifications (Default: `10.0`)\}
-  \\item\{\option{progressr.intrusiveness.terminal}:\}\{(numeric) intrusiveness for progress handlers that outputs to the terminal (Default: `1.0`)\}
-  \\item\{\option{progressr.intrusiveness.debug}:\}\{(numeric) intrusiveness for "debug" progress handlers (Default: `0.0`)\}
-\}
-}
+A non-negative scalar on how intrusive (disruptive) the reporter to the user. This multiplicative scalar applies to the \emph{interval} and \emph{times} parameters. (Default: \code{1.0})\cr
 
+\describe{
+\item{\option{progressr.intrusiveness.audio}:}{(numeric) intrusiveness for auditory progress handlers (Default: \code{5.0})}
+\item{\option{progressr.intrusiveness.file}:}{(numeric) intrusiveness for file-based progress handlers (Default: \code{5.0})}
+\item{\option{progressr.intrusiveness.gui}:}{(numeric) intrusiveness for graphical-user-interface progress handlers (Default: \code{1.0})}
+\item{\option{progressr.intrusiveness.notifier}:}{(numeric) intrusiveness for progress handlers that creates notifications (Default: \code{10.0})}
+\item{\option{progressr.intrusiveness.terminal}:}{(numeric) intrusiveness for progress handlers that outputs to the terminal (Default: \code{1.0})}
+\item{\option{progressr.intrusiveness.debug}:}{(numeric) intrusiveness for "debug" progress handlers (Default: \code{0.0})}
+}
 }
 }
 }
@@ -94,6 +95,24 @@ A non-negative scalar on how intrusive (disruptive) the reporter to the user. Th
 \item{\option{progressr.delay_conditions}:}{
 (character vector)
 condition classes to be captured and relayed at the end after any captured standard output is relayed. (Default: \code{c("condition")})
+}
+
+\item{\option{progressr.delay_stdout}:}{
+(logical)
+If TRUE, standard output is captured and relayed at the end just before any captured conditions are relayed. (Default: TRUE)
+}
+}
+}
+
+\section{Options for controlling interrupts}{
+
+
+\describe{
+\item{\option{progressr.interrupts}:}{
+(logical)
+Controls whether interrupts should be detected or not.
+If FALSE, then interrupts are not detected and progress information
+is generated. (Default: \code{TRUE})
 }
 
 \item{\option{progressr.delay_stdout}:}{
@@ -133,4 +152,3 @@ For example, if \code{R_PROGRESSR_ENABLE_AFTER = "2.0"}, then option
 \seealso{
 To set \R options when \R starts (even before the \pkg{progressr} package is loaded), see the \link[base]{Startup} help page.  The \href{https://cran.r-project.org/package=startup}{\pkg{startup}} package provides a friendly mechanism for configuring \R at startup.
 }
-\keyword{internal}

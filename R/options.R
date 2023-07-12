@@ -29,7 +29,7 @@
 #'   \item{\option{progressr.enable}:}{
 #'     (logical)
 #'     If FALSE, then progress is not reported.
-#'     (Default: TRUE)
+#'     (Default: TRUE in interactive mode, otherwise FALSE)
 #'   }
 #'
 #'   \item{\option{progressr.enable_after}:}{
@@ -54,14 +54,14 @@
 #'     (numeric)
 #'     A non-negative scalar on how intrusive (disruptive) the reporter to the user. This multiplicative scalar applies to the _interval_ and _times_ parameters. (Default: `1.0`)\cr
 #'   
-#'     \describe{
-#'       \item{\option{progressr.intrusiveness.auditory}:}{(numeric) intrusiveness for auditory progress handlers (Default: `5.0`)}
-#'       \item{\option{progressr.intrusiveness.file}:}{(numeric) intrusiveness for file-based progress handlers (Default: `5.0`)}
-#'       \item{\option{progressr.intrusiveness.gui}:}{(numeric) intrusiveness for graphical-user-interface progress handlers (Default: `1.0`)}
-#'       \item{\option{progressr.intrusiveness.notifier}:}{(numeric) intrusiveness for progress handlers that creates notifications (Default: `10.0`)}
-#'       \item{\option{progressr.intrusiveness.terminal}:}{(numeric) intrusiveness for progress handlers that outputs to the terminal (Default: `1.0`)}
-#'       \item{\option{progressr.intrusiveness.debug}:}{(numeric) intrusiveness for "debug" progress handlers (Default: `0.0`)}
-#'     }
+#'    \describe{
+#'      \item{\option{progressr.intrusiveness.audio}:}{(numeric) intrusiveness for auditory progress handlers (Default: `5.0`)}
+#'      \item{\option{progressr.intrusiveness.file}:}{(numeric) intrusiveness for file-based progress handlers (Default: `5.0`)}
+#'      \item{\option{progressr.intrusiveness.gui}:}{(numeric) intrusiveness for graphical-user-interface progress handlers (Default: `1.0`)}
+#'      \item{\option{progressr.intrusiveness.notifier}:}{(numeric) intrusiveness for progress handlers that creates notifications (Default: `10.0`)}
+#'      \item{\option{progressr.intrusiveness.terminal}:}{(numeric) intrusiveness for progress handlers that outputs to the terminal (Default: `1.0`)}
+#'      \item{\option{progressr.intrusiveness.debug}:}{(numeric) intrusiveness for "debug" progress handlers (Default: `0.0`)}
+#'    }
 #'   }
 #' }
 #'
@@ -71,6 +71,22 @@
 #'   \item{\option{progressr.delay_conditions}:}{
 #'     (character vector)
 #'     condition classes to be captured and relayed at the end after any captured standard output is relayed. (Default: `c("condition")`)
+#'   }
+#'
+#'   \item{\option{progressr.delay_stdout}:}{
+#'     (logical)
+#'     If TRUE, standard output is captured and relayed at the end just before any captured conditions are relayed. (Default: TRUE)
+#'   }
+#' }
+#'
+#' @section Options for controlling interrupts:
+#'
+#' \describe{
+#'   \item{\option{progressr.interrupts}:}{
+#'     (logical)
+#'     Controls whether interrupts should be detected or not.
+#'     If FALSE, then interrupts are not detected and progress information
+#'     is generated. (Default: `TRUE`)
 #'   }
 #'
 #'   \item{\option{progressr.delay_stdout}:}{
@@ -111,9 +127,10 @@
 #' progressr.demo.delay
 #' progressr.delay_stdout progressr.delay_conditions
 #' progressr.enable progressr.enable_after
+#' progressr.interrupts
 #' progressr.interval
 #' progressr.intrusiveness
-#' progressr.intrusiveness.auditory
+#' progressr.intrusiveness.audio
 #' progressr.intrusiveness.debug
 #' progressr.intrusiveness.file
 #' progressr.intrusiveness.gui
@@ -122,7 +139,6 @@
 #' progressr.handlers
 #' progressr.times
 #'
-#' @keywords internal
 #' @name progressr.options
 NULL
 
@@ -228,10 +244,19 @@ update_package_options <- function(debug = FALSE) {
 
   ## make_progression_handler() arguments
   update_package_option("clear", mode = "logical", default = TRUE, debug = debug)
-  update_package_option("enable", mode = "logical", default = interactive(), debug = debug)
+
+  ## Special case: Support R_PROGRESSR_ENABLE=interactive
+  value <- Sys.getenv("R_PROGRESSR_ENABLE", "")
+  if (value == "interactive") {
+    options(progressr.enable = interactive())
+  } else {
+    update_package_option("enable", mode = "logical", default = interactive(), debug = debug)
+  }
+
   update_package_option("enable_after", mode = "numeric", default = 0.0, debug = debug)
   update_package_option("interval", mode = "numeric", default = 0.0, debug = debug)
   update_package_option("times", mode = "numeric", default = +Inf, debug = debug)
+  update_package_option("interrupts", mode = "logical", default = TRUE, debug = debug)
 
   ## Life-cycle, e.g. deprecation an defunct
   update_package_option("lifecycle.progress", mode = "character", default = "deprecated", debug = debug)

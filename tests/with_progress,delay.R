@@ -23,18 +23,18 @@ record_output <- function(expr, envir = parent.frame()) {
 
 message("*** with_progress() - delaying output ...")
 
-x <- 1:5
+x <- 1:10
 
 ## Record truth
 output_truth <- record_output({
- y_truth <- slow_sum(x, stdout=TRUE, message=TRUE)
+  y_truth <- slow_sum(x, stdout = TRUE, message = TRUE, sticky = TRUE)
 })
 
 for (delay in c(FALSE, TRUE)) {
   message(sprintf("- with_progress() - delay = %s ...", delay))
   output <- record_output({
     with_progress({
-      y <- slow_sum(x, stdout=TRUE, message=TRUE)
+      y <- slow_sum(x, stdout = TRUE, message = TRUE, sticky = TRUE)
     }, delay_stdout = delay,
       delay_conditions = if (delay) "condition" else character(0L))
   })

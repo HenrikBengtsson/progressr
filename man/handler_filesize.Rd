@@ -8,6 +8,7 @@ handler_filesize(
   file = "default.progress",
   intrusiveness = getOption("progressr.intrusiveness.file", 5),
   target = "file",
+  enable = getOption("progressr.enable", TRUE),
   ...
 )
 }
@@ -19,6 +20,8 @@ handler_filesize(
 
 \item{target}{(character vector) Specifies where progression updates are
 rendered.}
+
+\item{enable}{(logical) If FALSE, then progress is not reported.}
 
 \item{\ldots}{Additional arguments passed to \code{\link[=make_progression_handler]{make_progression_handler()}}.}
 }

@@ -33,12 +33,14 @@ hpaste <- function(..., sep = "", collapse = ", ", lastCollapse = NULL, maxHead 
 # More efficient than the default utils::capture.output()
 #' @importFrom utils capture.output
 capture_output <- function(expr, envir = parent.frame(), ...) {
+  nsinks <- sink.number()
   res <- eval({
     file <- rawConnection(raw(0L), open = "w")
     on.exit(close(file))
     capture.output(expr, file = file)
     rawToChar(rawConnectionValue(file))
   }, envir = envir, enclos = baseenv())
+  stop_if_not(sink.number() == nsinks)
   unlist(strsplit(res, split = "\n", fixed = TRUE), use.names = FALSE)
 }
 
@@ -200,4 +202,15 @@ serialization_size <- function(x) {
   size <- length(serialize(x, connection = NULL, xdr = TRUE))
   class(size) <- "object_size"
   size
+}
+
+
+ansi_pattern <- "(?:(?:\\x{001b}\\[)|\\x{009b})(?:(?:[0-9]{1,3})?(?:(?:;[0-9]{0,3})*)?[A-M|f-m])|\\x{001b}[A-M]"
+
+has_ansi <- function(x) {
+  grepl(ansi_pattern, x, perl = TRUE, useBytes = TRUE)
+}
+
+drop_ansi <- function(x) {
+  gsub(ansi_pattern, "", x, perl = TRUE, useBytes = TRUE)
 }

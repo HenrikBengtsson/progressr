@@ -64,6 +64,8 @@ register_global_progression_handler <- function(action = c("add", "remove", "que
 #' 
 #' @keywords internal
 global_progression_handler <- local({
+  active <- TRUE
+  
   current_progressor_uuid <- NULL
   calling_handler <- NULL
   delays <- NULL
@@ -86,6 +88,25 @@ global_progression_handler <- local({
     delays <<- use_delays(handlers)
 
     calling_handler <<- make_calling_handler(handlers)
+  }
+
+  interrupt_calling_handler <- function(progression, debug = FALSE) {
+    if (is.null(calling_handler)) return()
+    
+    ## Don't capture conditions that are produced by progression handlers
+    capture_conditions <<- FALSE
+    on.exit(capture_conditions <<- TRUE)
+  
+    ## Any buffered output to flush?
+    if (isTRUE(attr(delays$terminal, "flush"))) {
+      if (length(conditions) > 0L || has_buffered_stdout(stdout_file)) {
+        calling_handler(control_progression("hide"))
+        stdout_file <<- flush_stdout(stdout_file, close = FALSE)
+        conditions <<- flush_conditions(conditions)
+      }
+    }
+  
+    calling_handler(progression)
   }
 
   finish <- function(progression = control_progression("shutdown"), debug = FALSE) {
@@ -200,11 +221,13 @@ global_progression_handler <- local({
         ## progress has been completed
         amount <- progression$amount
         if (!is.numeric(amount) || amount > 0) {
-          warning(sprintf("[progressr]: Received a progression %s request (amount=%g) but is not listening to this progressor. This can happen when code signals more progress updates than it configured the progressor to do. When the progressor completes all steps, it shuts down resulting in the global progression handler to no longer listen to it", sQuote(type), amount))
+          msg <- conditionMessage(progression)
+          if (length(msg) == 0) msg <- "character(0)"
+          warning(sprintf("Received a progression %s request (amount=%g; msg=%s) but is not listening to this progressor. This can happen when code signals more progress updates than it configured the progressor to do. When the progressor completes all steps, it shuts down resulting in the global progression handler to no longer listen to it. To troubleshoot this, try with progressr::handlers(\"debug\")", sQuote(type), amount, sQuote(msg)))
         }
         return()
       }
-      
+
       if (debug) message(" - update progression handlers")
       if (!is.null(calling_handler)) {
         stdout_file <<- delay_stdout(delays, stdout_file = stdout_file)
@@ -237,10 +260,27 @@ global_progression_handler <- local({
 
 
   function(condition) {
+    if (is.logical(condition)) {
+      stop_if_not(length(condition) == 1L, !is.na(condition))
+      active <<- condition
+      return()
+    }
+    
+    if (!active) return()
+    
     debug <- getOption("progressr.global.debug", FALSE)
     
     ## Shut down progression handling?
     if (inherits(condition, c("interrupt", "error"))) {
+      if (isTRUE(getOption("progressr.interrupts", TRUE))) {
+        ## Create progress message saying why the progress was interrupted
+        msg <- sprintf("Progress interrupted by %s condition", class(condition)[1])
+        msg <- paste(c(msg, conditionMessage(condition)), collapse = ": ")
+        suspendInterrupts({
+          interrupt_calling_handler(control_progression("interrupt", message = msg), debug = debug)
+        })
+      }
+
       suspendInterrupts({
         progression <- control_progression("shutdown")
         finished <- finish(debug = debug)
@@ -295,58 +335,6 @@ if (getRversion() < "4.0.0") {
 }
 
 
-
-buffer_stdout <- function() {
-  stdout_file <- rawConnection(raw(0L), open = "w")
-  sink(stdout_file, type = "output", split = FALSE)
-  attr(stdout_file, "sink_index") <- sink.number(type = "output")
-  stdout_file
-} ## buffer_stdout()
-
-flush_stdout <- function(stdout_file, close = TRUE, must_work = FALSE) {
-  if (is.null(stdout_file)) return(NULL)
-
-  ## Can we close the sink we opened?
-  ## It could be that a progressor completes while there is a surrounding
-  ## sink active, e.g. an active capture.output(), or when signalled within
-  ## a sequential future.  Because of this, we might not be able to flush
-  ## close the sink here.
-  sink_index <- attr(stdout_file, "sink_index")
-  if (sink_index != sink.number("output")) {
-    if (must_work) {
-      stop(sprintf("[progressr] Cannot flush stdout because the current sink index (%d) is out of sync with the sink we want to close (%d)", sink.number("output"), sink_index))
-    }
-    return(stdout_file)
-  }
-  
-  sink(split = FALSE, type = "output")
-  stdout <- rawToChar(rawConnectionValue(stdout_file))
-  if (length(stdout) > 0) cat(stdout, file = stdout())
-  close(stdout_file)
-  stdout_file <- NULL
-  if (!close) stdout_file <- buffer_stdout()
-  stdout_file
-} ## flush_stdout()
-
-has_buffered_stdout <- function(stdout_file) {
-  !is.null(stdout_file) && (length(rawConnectionValue(stdout_file)) > 0L)
-}
-
-flush_conditions <- function(conditions) {
-  for (c in conditions) {
-    if (inherits(c, "message")) {
-      message(c)
-    } else if (inherits(c, "warning")) {
-      warning(c)
-    } else if (inherits(c, "condition")) {
-      signalCondition(c)
-    }
-  }
-  list()
-} ## flush_conditions()
- 
-
-
 as_progression_handler <- function(handlers, drop = TRUE) {
   ## FIXME(?)
   if (!is.list(handlers)) handlers <- list(handlers)
@@ -373,65 +361,4 @@ as_progression_handler <- function(handlers, drop = TRUE) {
   }
 
   handlers
-}
-
-
-
-use_delays <- function(handlers, terminal = NULL, stdout = NULL, conditions = NULL) {
-  ## Do we need to buffer terminal output?
-  if (is.null(terminal)) {
-    delay <- vapply(handlers, FUN = function(h) {
-      env <- environment(h)
-      any(env$target == "terminal")
-    }, FUN.VALUE = NA)
-    terminal <- any(delay, na.rm = TRUE)
-    
-    ## If buffering output, does all handlers support intermediate flushing?
-    if (terminal) {
-      flush <- vapply(handlers, FUN = function(h) {
-        env <- environment(h)
-        if (!any(env$target == "terminal")) return(TRUE)
-        !inherits(env$reporter$hide, "null_function")
-      }, FUN.VALUE = NA)
-      attr(terminal, "flush") <- all(flush, na.rm = TRUE)
-    }
-  }
-
-  if (is.null(stdout)) {
-    stdout <- getOption("progressr.delay_stdout", terminal)
-  }
-
-  if (is.null(conditions)) {
-    conditions <- getOption("progressr.delay_conditions", {
-      if (terminal) c("condition") else character(0L)
-    })
-  }
-
-  list(terminal = terminal, stdout = stdout, conditions = conditions)
-}
-
-
-delay_stdout <- function(delays, stdout_file) {
-  ## Delay standard output?
-  if (is.null(stdout_file) && delays$stdout) {
-    stdout_file <- buffer_stdout()
-  }
-  stdout_file
-}
-
-
-make_calling_handler <- function(handlers) {
-  if (length(handlers) > 1L) {
-    calling_handler <- function(p) {
-      finished <- FALSE
-      for (kk in seq_along(handlers)) {
-        handler <- handlers[[kk]]
-        finished <- finished || handler(p)
-      }
-      finished
-    }
-  } else {
-    calling_handler <- handlers[[1]]
-  }
-  calling_handler
 }

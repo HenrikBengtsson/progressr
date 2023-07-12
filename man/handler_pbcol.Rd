@@ -7,8 +7,8 @@
 handler_pbcol(
   adjust = 0,
   pad = 1L,
-  complete = function(s) crayon::bgBlue(crayon::white(s)),
-  incomplete = function(s) crayon::bgCyan(crayon::white(s)),
+  complete = function(s) cli::bg_blue(cli::col_white(s)),
+  incomplete = function(s) cli::bg_cyan(cli::col_white(s)),
   intrusiveness = getOption("progressr.intrusiveness.terminal", 1),
   target = "terminal",
   ...
@@ -26,7 +26,7 @@ where padding is done by spaces.}
 "incomplete" strings that comprise the progress bar as input and annotate
 them to reflect their two different parts.  The default is to annotation
 them with two different background colors and the same foreground color
-using the \pkg{crayon} package.}
+using the \pkg{cli} package.}
 
 \item{intrusiveness}{(numeric) A non-negative scalar on how intrusive
 (disruptive) the reporter to the user.}
@@ -41,7 +41,35 @@ Progression Handler: Progress Reported as an ANSI Background Color in the Termin
 }
 \section{Requirements}{
 
-This progression handler requires the \pkg{crayon} package.
+This progression handler requires the \pkg{cli} package.
+}
+
+\section{Appearance}{
+
+Below are a few examples on how to use and customize this progress handler.
+In all cases, we use \code{handlers(global = TRUE)}.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{handlers("pbcol")
+y <- slow_sum(1:25)
+}\if{html}{\out{</div>}}
+
+\if{html}{\figure{handler_pbcol-default.svg}}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{handlers(handler_pbcol(adjust = 0.5))
+y <- slow_sum(1:25)
+}\if{html}{\out{</div>}}
+
+\if{html}{\figure{handler_pbcol-adjust-mid.svg}}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{handlers(handler_pbcol(
+  adjust = 1,
+  complete = function(s) cli::bg_red(cli::col_black(s)),
+  incomplete = function(s) cli::bg_cyan(cli::col_black(s))
+))
+y <- slow_sum(1:25)
+}\if{html}{\out{</div>}}
+
+\if{html}{\figure{handler_pbcol-adjust-right-complete.svg}}
 }
 
 \examples{

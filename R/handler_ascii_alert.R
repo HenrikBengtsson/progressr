@@ -14,11 +14,16 @@
 #' @example incl/handler_ascii_alert.R
 #'
 #' @export
-handler_ascii_alert <- function(symbol = "\a", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.auditory", 5.0), target = c("terminal", "audio"), ...) {
+handler_ascii_alert <- function(symbol = "\a", file = stderr(), intrusiveness = getOption("progressr.intrusiveness.audio", 5.0), target = c("terminal", "audio"), ...) {
   reporter <- local({
     list(
       hide   = function(...) NULL,
       unhide = function(...) NULL,
+      interrupt = function(config, state, progression, ...) {
+        msg <- conditionMessage(progression)
+        msg <- paste(c("", msg, ""), collapse = "\n")
+        cat(msg, file = file)
+      },
       update = function(config, state, progression, ...) {
         if (state$enabled && progression$amount != 0) cat(file = file, symbol)
       }

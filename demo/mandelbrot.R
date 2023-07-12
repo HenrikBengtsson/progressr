@@ -84,7 +84,7 @@ with_progress({
       ## Emulate slowness
       delay(fit)
   
-      p(sprintf("Tile #%d by %d", ii, Sys.getpid()))
+      p(sprintf("Tile #%d (PID %d)", ii, Sys.getpid()))
       
       message(" done")
       fit

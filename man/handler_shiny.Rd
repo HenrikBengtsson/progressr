@@ -8,6 +8,7 @@ handler_shiny(
   intrusiveness = getOption("progressr.intrusiveness.gui", 1),
   target = "gui",
   inputs = list(message = NULL, detail = "message"),
+  enable = getOption("progressr.enable", TRUE),
   ...
 )
 }
@@ -22,9 +23,11 @@ rendered.}
 elements 'message' and 'detail' should be updated.  Valid sources are
 \code{"message"}, \code{"sticky_message"} and \code{"non_sticky_message"}, where
 \code{"message"} is short for \code{c("non_sticky_message", "sticky_message")}. For
-example, \code{inputs = list(message = "sticky-message", detail = "message")}
+example, \code{inputs = list(message = "sticky_message", detail = "message")}
 will update the Shiny 'message' component from sticky messages only,
 whereas the 'detail' component is updated using any message.}
+
+\item{enable}{(logical) If FALSE, then progress is not reported.}
 
 \item{\ldots}{Additional arguments passed to \code{\link[=make_progression_handler]{make_progression_handler()}}.}
 }

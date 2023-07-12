@@ -36,6 +36,22 @@
 #'
 #' @return A function of class `progressor`.
 #'
+#' @details
+#' A `progressor` function can only be created inside a local environment,
+#' e.g. inside a function, within a `local()` call, or within a
+#' `with_progress()` call.  Notably, it _cannot_ be create at the top level,
+#' e.g. immediately at the R prompt or outside a local environment in an
+#' R script.  If attempted, an informative error message is produced, e.g.
+#'
+#' ```r
+#' > p <- progressr::progressor(100)
+#' Error in progressr::progressor(100) : 
+#'   A progressor must not be created in the global environment unless
+#' wrapped in a with_progress() or without_progress() call. Alternatively,
+#' create it inside a function or in a local() environment to make sure
+#' there is a finite life span of the progressor
+#' ```
+#'
 #' @export
 progressor <- local({
   progressor_count <- 0L
@@ -116,14 +132,6 @@ progressor <- local({
     }
     environment(fcn) <- progressor_envir
     
-    if (initiate) {
-      fcn(
-        type = "initiate",
-        steps = steps,
-        auto_finish = auto_finish
-      )
-    }
-
     ## Is there already be an active '...progressr'?
     ## If so, make sure it is finished and then remove it
     if (exists("...progressor", mode = "function", envir = envir)) {
@@ -141,7 +149,16 @@ progressor <- local({
       rm("...progressor", envir = envir)
     }
 
-    ## Add on.exit(...progressor(type = "finish"))
+    ## Initiate?
+    if (initiate) {
+      fcn(
+        type = "initiate",
+        steps = steps,
+        auto_finish = auto_finish
+      )
+    }
+
+    ## Add on.exit(...progressor(type = "finish"))?
     if (on_exit) {
       assign("...progressor", value = fcn, envir = envir)
       lockBinding("...progressor", env = envir)

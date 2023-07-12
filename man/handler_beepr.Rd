@@ -8,14 +8,16 @@ handler_beepr(
   initiate = 2L,
   update = 10L,
   finish = 11L,
-  intrusiveness = getOption("progressr.intrusiveness.auditory", 5),
+  interrupt = 9L,
+  intrusiveness = getOption("progressr.intrusiveness.audio", 5),
   target = "audio",
   ...
 )
 }
 \arguments{
-\item{initiate, update, finish}{(integer) Indices of \code{\link[beepr:beep]{beepr::beep()}} sounds to
-play when progress starts, is updated, and completes.  For silence, use \code{NA_integer_}.}
+\item{initiate, update, finish, interrupt}{(integer) Indices of \code{\link[beepr:beep]{beepr::beep()}}
+sounds to play when progress starts, is updated, completes, or is
+interrupted.  For silence, use \code{NA_integer_}.}
 
 \item{intrusiveness}{(numeric) A non-negative scalar on how intrusive
 (disruptive) the reporter to the user.}

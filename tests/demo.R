@@ -1,7 +1,20 @@
 source("incl/start.R")
 
 library(future)
-supportedStrategies <- function(...) future:::supportedStrategies()
+
+supportedStrategies <- function(cores = NA_integer_, excl = "cluster", ...) {
+  strategies <- future:::supportedStrategies(...)
+  strategies <- setdiff(strategies, excl)
+  if (!is.na(cores)) {
+    if (cores == 1L) {
+      strategies <- setdiff(strategies, c("multicore", "multisession"))
+    } else if (cores > 1L) {
+      strategies <- setdiff(strategies, "sequential")
+    }
+  }
+  
+  strategies
+}
 
 isWin32 <- FALSE
 availCores <- 2L
@@ -23,6 +36,11 @@ if (!isWin32) {
       message(sprintf("- plan('%s') ...", strategy))
       plan(strategy)
       demo("mandelbrot", package = "progressr", ask = FALSE)
+      
+      ## Explicitly close any PSOCK clusters to avoid 'R CMD check' NOTE
+      ## on "detritus in the temp directory" on MS Windows
+      plan(sequential)
+      
       message(sprintf("- plan('%s') ... DONE", strategy))
     }
   

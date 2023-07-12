@@ -12,6 +12,7 @@ with_progress(
   delay_terminal = NULL,
   delay_stdout = NULL,
   delay_conditions = NULL,
+  interrupts = getOption("progressr.interrupts", TRUE),
   interval = NULL,
   enable = NULL
 )
@@ -37,6 +38,14 @@ at the end just before any captured conditions are relayed.}
 classes to be captured and relayed at the end after any captured
 standard output is relayed.}
 
+\item{interrupts}{Controls whether interrupts should be detected or not.
+If TRUE and a interrupt is signaled, progress handlers are asked to
+report on the current amount progress when the evaluation was terminated
+by the interrupt, e.g. when a user pressed Ctrl-C in an interactive session,
+or a batch process was interrupted because it ran out of time.
+Note that it's optional for a progress handler to support this and only
+some do.}
+
 \item{interval}{(numeric) The minimum time (in seconds) between
 successive progression updates from handlers.}
 
@@ -51,7 +60,10 @@ Returns the value of the expression.
 Report on Progress while Evaluating an R Expression
 }
 \details{
-\emph{IMPORTANT: This function is meant for end users only.  It should not
+If the global progression handler is enabled, it is temporarily disabled
+while evaluating the \code{expr} expression.
+
+\strong{IMPORTANT: This function is meant for end users only.  It should not
 be used by R packages, which only task is to \emph{signal} progress updates,
 not to decide if, when, and how progress should be reported.}
 
@@ -73,10 +85,14 @@ When running R from the command line, R runs in a non-interactive mode
 To have progress being reported on also then, set R options
 \option{progressr.enable} or environment variable \env{R_PROGRESSR_ENABLE}
 to \code{TRUE}.  Alternatively, one can set argument \code{enable=TRUE} when calling
-\code{with_progress()}.  For example,\if{html}{\out{<div class="sourceCode sh">}}\preformatted{$ Rscript -e "library(progressr)" -e "with_progress(slow_sum(1:5))"
+\code{with_progress()}.  For example,
+
+\if{html}{\out{<div class="sourceCode sh">}}\preformatted{$ Rscript -e "library(progressr)" -e "with_progress(slow_sum(1:5))"
 }\if{html}{\out{</div>}}
 
-will \emph{not} report on progress, whereas:\if{html}{\out{<div class="sourceCode sh">}}\preformatted{$ export R_PROGRESSR_ENABLE=TRUE
+will \emph{not} report on progress, whereas:
+
+\if{html}{\out{<div class="sourceCode sh">}}\preformatted{$ export R_PROGRESSR_ENABLE=TRUE
 $ Rscript -e "library(progressr)" -e "with_progress(slow_sum(1:5))"
 }\if{html}{\out{</div>}}
 

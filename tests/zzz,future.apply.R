@@ -1,7 +1,7 @@
 source("incl/start.R")
 
 if (requireNamespace("future.apply", quietly = TRUE)) {
-  for (strategy in c("sequential", "multisession", "multicore")) {
+  for (strategy in future_strategies) {
     future::plan(strategy)
     print(future::plan())
 
@@ -29,7 +29,11 @@ if (requireNamespace("future.apply", quietly = TRUE)) {
     })
     
     handlers(global = FALSE)
-  }
+    
+    ## Explicitly close any PSOCK clusters to avoid 'R CMD check' NOTE
+    ## on "detritus in the temp directory" on MS Windows
+    future::plan("sequential")
+  } ## for (strategy ...)
 }
 
 source("incl/end.R")
