@@ -10,14 +10,14 @@
 |collate  |en_US.UTF-8                                               |
 |ctype    |en_US.UTF-8                                               |
 |tz       |America/Los_Angeles                                       |
-|date     |2023-08-09                                                |
+|date     |2023-08-10                                                |
 |pandoc   |3.1.6 @ /software/c4/cbi/software/pandoc-3.1.6/bin/pandoc |
 
 # Dependencies
 
 |package   |old    |new         |Δ  |
 |:---------|:------|:-----------|:--|
-|progressr |0.13.0 |0.12.0-9022 |*  |
+|progressr |0.13.0 |0.13.0-9013 |*  |
 |digest    |0.6.33 |0.6.33      |   |
 
 # Revdeps
@@ -29,7 +29,7 @@
 |[AIPW](problems.md#aipw)|0.6.3.2    |      |        |1    |
 |[AlpsNMR](problems.md#alpsnmr)|4.2.0      |1     |        |     |
 |antaresEditObject  |0.5.1      |      |        |     |
-|[baseballr](problems.md#baseballr)|1.5.0      |1     |        |     |
+|baseballr          |1.5.0      |      |        |     |
 |bayesmove          |0.2.1      |      |        |     |
 |bbotk              |0.7.2      |      |        |     |
 |beer               |1.4.0      |      |        |     |
@@ -48,7 +48,7 @@
 |[EpiNow2](problems.md#epinow2)|1.3.5      |      |        |2    |
 |epwshiftr          |0.1.3      |      |        |     |
 |fabletools         |0.3.3      |      |        |     |
-|[fastRhockey](problems.md#fastrhockey)|0.4.0      |1     |        |     |
+|fastRhockey        |0.4.0      |      |        |     |
 |[fdacluster](problems.md#fdacluster)|0.3.0      |      |        |1    |
 |ffsimulator        |1.2.3      |      |        |     |
 |funGp              |0.3.2      |      |        |     |
@@ -102,7 +102,7 @@
 |[squat](problems.md#squat)|0.2.1      |      |        |1    |
 |survex             |1.0.0      |      |        |     |
 |[targeted](problems.md#targeted)|0.3        |      |        |2    |
-|[terrainr](problems.md#terrainr)|0.7.4      |1     |        |     |
+|terrainr           |0.7.4      |      |        |     |
 |tidyfit            |0.6.4      |      |        |     |
 |tidySEM            |0.2.4      |      |        |     |
 |[vmeasur](problems.md#vmeasur)|0.1.4      |      |1       |     |

@@ -42,14 +42,14 @@ Run `revdep_details(, "AlpsNMR")` for more info
     ```
     Error(s) in re-building vignettes:
     --- re-building ‘Vig01-introduction-to-alpsnmr.Rmd’ using rmarkdown
-    
-    Quitting from lines 95-99 [load-samples] (Vig01-introduction-to-alpsnmr.Rmd)
-    Error: processing vignette 'Vig01-introduction-to-alpsnmr.Rmd' failed with diagnostics:
-    cannot open the connection
-    --- failed re-building ‘Vig01-introduction-to-alpsnmr.Rmd’
-    
-    --- re-building ‘Vig01b-introduction-to-alpsnmr-old-api.Rmd’ using rmarkdown
     ! LuaTeX error .../texlive/texmf-dist/scripts/oberdiek/oberdiek.luatex.lua:55: b
+    ad argument #1 to 'insert' (table expected, got nil)
+    stack traceback:
+    	[C]: in function 'insert'
+    	.../texlive/texmf-dist/scripts/oberdiek/oberdiek.luatex.lua:55: in main chunk
+    	[C]: in function 'dofile'
+    	[string "\directlua "]:6: in main chunk.
+    l.139   }
     ...
     LaTeX failed to compile /c4/home/henrik/repositories/progressr/revdep/checks/AlpsNMR/new/AlpsNMR.Rcheck/vign_test/AlpsNMR/vignettes/Vig02-handling-metadata-and-annotations.tex. See https://yihui.org/tinytex/r/#debugging for debugging tips. See Vig02-handling-metadata-and-annotations.log for more info.
     --- failed re-building ‘Vig02-handling-metadata-and-annotations.Rmd’
@@ -58,47 +58,6 @@ Run `revdep_details(, "AlpsNMR")` for more info
       ‘Vig01-introduction-to-alpsnmr.Rmd’
       ‘Vig01b-introduction-to-alpsnmr-old-api.Rmd’
       ‘Vig02-handling-metadata-and-annotations.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
-# baseballr
-
-<details>
-
-* Version: 1.5.0
-* GitHub: https://github.com/BillPetti/baseballr
-* Source code: https://github.com/cran/baseballr
-* Date/Publication: 2023-03-21 17:30:06 UTC
-* Number of recursive dependencies: 120
-
-Run `revdep_details(, "baseballr")` for more info
-
-</details>
-
-## In both
-
-*   checking re-building of vignette outputs ... ERROR
-    ```
-    Error(s) in re-building vignettes:
-      ...
-    --- re-building ‘baseballr.Rmd’ using rmarkdown
-    --- finished re-building ‘baseballr.Rmd’
-    
-    --- re-building ‘ncaa_scraping.Rmd’ using rmarkdown
-    --- finished re-building ‘ncaa_scraping.Rmd’
-    
-    --- re-building ‘plotting_statcast.Rmd’ using rmarkdown
-    --- finished re-building ‘plotting_statcast.Rmd’
-    ...
-    Quitting from lines 45-48 [load-statcast] (using_statcast_pitch_data.Rmd)
-    Error: processing vignette 'using_statcast_pitch_data.Rmd' failed with diagnostics:
-    Timeout was reached: [] Operation timed out after 10000 milliseconds with 0 out of 0 bytes received
-    --- failed re-building ‘using_statcast_pitch_data.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘using_statcast_pitch_data.Rmd’
     
     Error: Vignette re-building failed.
     Execution halted
@@ -252,38 +211,6 @@ Run `revdep_details(, "EpiNow2")` for more info
 *   checking for GNU extensions in Makefiles ... NOTE
     ```
     GNU make is a SystemRequirements.
-    ```
-
-# fastRhockey
-
-<details>
-
-* Version: 0.4.0
-* GitHub: https://github.com/sportsdataverse/fastRhockey
-* Source code: https://github.com/cran/fastRhockey
-* Date/Publication: 2022-10-25 20:55:15 UTC
-* Number of recursive dependencies: 115
-
-Run `revdep_details(, "fastRhockey")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... ERROR
-    ```
-    Packages required but not available:
-      'cli', 'data.table', 'dplyr', 'glue', 'httr', 'janitor', 'jsonlite',
-      'lubridate', 'magrittr', 'purrr', 'Rcpp', 'RcppParallel', 'rlang',
-      'rvest', 'stringr', 'tibble', 'tidyr'
-    
-    Packages suggested but not available for checking:
-      'crayon', 'curl', 'DBI', 'furrr', 'future', 'ggplot2', 'ggrepel',
-      'qs', 'rmarkdown', 'RSQLite', 'stringi', 'testthat', 'usethis',
-      'xml2'
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
     ```
 
 # fdacluster
@@ -769,47 +696,6 @@ Run `revdep_details(, "targeted")` for more info
       installed size is 16.8Mb
       sub-directories of 1Mb or more:
         libs  15.7Mb
-    ```
-
-# terrainr
-
-<details>
-
-* Version: 0.7.4
-* GitHub: https://github.com/ropensci/terrainr
-* Source code: https://github.com/cran/terrainr
-* Date/Publication: 2023-02-16 18:10:02 UTC
-* Number of recursive dependencies: 95
-
-Run `revdep_details(, "terrainr")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > library(testthat)
-      > library(terrainr)
-      > 
-      > test_check("terrainr")
-      Starting 2 test processes
-      [ FAIL 1 | WARN 0 | SKIP 24 | PASS 22 ]
-    ...
-       4.     └─terrainr::hit_national_map_api(...)
-       5.       └─httr::GET(url, agent, query = c(bbox_arg, query_arg))
-       6.         └─httr:::request_perform(req, hu$handle$handle)
-       7.           ├─httr:::request_fetch(req$output, req$url, handle)
-       8.           └─httr:::request_fetch.write_memory(req$output, req$url, handle)
-       9.             └─curl::curl_fetch_memory(url, handle = handle)
-      
-      [ FAIL 1 | WARN 0 | SKIP 24 | PASS 22 ]
-      Error: Test failures
-      Execution halted
     ```
 
 # vmeasur
