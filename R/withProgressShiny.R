@@ -1,8 +1,10 @@
-#' Use Progressr in Shiny Apps: Plug-in Backward Compatibility Replacement for shiny::withProgress()
+#' Use Progressr in Shiny Apps: Plug-in Backward-Compatible Replacement for shiny::withProgress()
+#'
+#' A plug-in, backward-compatible replacement for [shiny::withProgress()].
 #'
 #' @inheritParams handler_shiny
 #'
-#' @param expr,\ldots,env,quoted Arguments passed to [shiny::withProgress] as is.
+#' @param expr,\ldots,env,quoted Arguments passed to [shiny::withProgress()] as is.
 #'
 #' @param message,detail (character string) The message and the detail message to be passed to [shiny::withProgress()].
 #' 

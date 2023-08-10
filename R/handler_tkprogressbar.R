@@ -105,7 +105,7 @@ handler_tkprogressbar <- function(intrusiveness = getOption("progressr.intrusive
         
       interrupt = function(config, state, progression, ...) {
         if (!state$enabled) return()
-        msg <- getOption("progressr.interrupt.message", "interrupt detected")
+        msg <- conditionMessage(progression)
         update_pb(state, progression, message = msg)
       },
 
