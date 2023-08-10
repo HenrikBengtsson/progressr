@@ -151,7 +151,11 @@ handler_progress <- function(format = ":spin [:bar] :percent :message", show_aft
 
       interrupt = function(config, state, progression, ...) {
         if (is.null(pb)) return()
-        msg <- getOption("progressr.interrupt.message", "interrupt detected")
+
+        erase_progress_bar(pb)
+        redraw_progress_bar(pb)
+        
+        msg <- conditionMessage(progression)
         msg <- paste(c("", msg, ""), collapse = "\n")
         cat(msg, file = stderr())
       },

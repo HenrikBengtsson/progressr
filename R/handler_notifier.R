@@ -45,7 +45,7 @@ handler_notifier <- function(intrusiveness = getOption("progressr.intrusiveness.
       },
       
       interrupt = function(config, state, progression, ...) {
-        msg <- getOption("progressr.interrupt.message", "interrupt detected")
+        msg <- conditionMessage(progression)
         notify(step = state$step, max_steps = config$max_steps, message = msg)
       },
 

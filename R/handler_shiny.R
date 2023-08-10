@@ -54,7 +54,7 @@ handler_shiny <- function(intrusiveness = getOption("progressr.intrusiveness.gui
   reporter <- local({
     list(
       interrupt = function(config, state, progression, ...) {
-        msg <- getOption("progressr.interrupt.message", "interrupt detected")
+        msg <- conditionMessage(progression)
         amount <- if (config$max_steps == 0) 1 else progression$amount / config$max_steps
         args <- c(
           list(amount = amount),

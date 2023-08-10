@@ -54,7 +54,7 @@ register_global_progression_handler <- function(action = c("add", "remove", "que
 
 #' A Global Calling Handler For 'progression':s
 #'
-#' @param progression A [progression] conditions.
+#' @param condition A logical scalar or a condition object.
 #'
 #' @return Nothing.
 #'
@@ -90,7 +90,7 @@ global_progression_handler <- local({
     calling_handler <<- make_calling_handler(handlers)
   }
 
-  interrupt_calling_handler <- function(progression = control_progression("interrupt"), debug = FALSE) {
+  interrupt_calling_handler <- function(progression, debug = FALSE) {
     if (is.null(calling_handler)) return()
     
     ## Don't capture conditions that are produced by progression handlers
@@ -272,10 +272,12 @@ global_progression_handler <- local({
     
     ## Shut down progression handling?
     if (inherits(condition, c("interrupt", "error"))) {
-      if (inherits(condition, "interrupt") &&
-          isTRUE(getOption("progressr.interrupts", TRUE))) {
+      if (isTRUE(getOption("progressr.interrupts", TRUE))) {
+        ## Create progress message saying why the progress was interrupted
+        msg <- sprintf("Progress interrupted by %s condition", class(condition)[1])
+        msg <- paste(c(msg, conditionMessage(condition)), collapse = ": ")
         suspendInterrupts({
-          interrupt_calling_handler(debug = debug)
+          interrupt_calling_handler(control_progression("interrupt", message = msg), debug = debug)
         })
       }
 

@@ -20,19 +20,19 @@ jobs:
           - {os: windows-latest, r: 'release'  }
           - {os: macOS-latest,   r: 'devel'    }
           - {os: macOS-latest,   r: 'release'  }
-          - {os: ubuntu-20.04,   r: 'devel'    }
-          - {os: ubuntu-20.04,   r: 'release'  }
-          - {os: ubuntu-20.04,   r: 'oldrel'   }
-          - {os: ubuntu-20.04,   r: 'oldrel-1' }
-          - {os: ubuntu-20.04,   r: 'oldrel-2' }
-          - {os: ubuntu-20.04,   r: '3.5'      }
-          - {os: ubuntu-20.04,   r: 'release'  , language: ko,    label: ko    }
-          - {os: ubuntu-20.04,   r: 'release'  , language: zh_CN, label: zh_CN }
-          - {os: ubuntu-20.04,   r: 'release'  , language: zh_TW, label: zh_TW }
+          - {os: ubuntu-22.04,   r: 'devel'    }
+          - {os: ubuntu-22.04,   r: 'release'  }
+          - {os: ubuntu-22.04,   r: 'oldrel'   }
+          - {os: ubuntu-22.04,   r: 'oldrel-1' }
+          - {os: ubuntu-22.04,   r: 'oldrel-2' }
+          - {os: ubuntu-22.04,   r: '3.5'      }
+          - {os: ubuntu-22.04,   r: 'release'  , language: ko,    label: ko    }
+          - {os: ubuntu-22.04,   r: 'release'  , language: zh_CN, label: zh_CN }
+          - {os: ubuntu-22.04,   r: 'release'  , language: zh_TW, label: zh_TW }
  
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      RSPM: https://packagemanager.rstudio.com/cran/__linux__/focal/latest
+      RSPM: https://packagemanager.rstudio.com/cran/__linux__/jammy/latest
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       ## R CMD check
       _R_CHECK_CRAN_INCOMING_: false
@@ -100,7 +100,7 @@ jobs:
         shell: Rscript {0}
 
       - name: Check
-        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", if (.Platform$OS.type == "windows" && getRversion() >= "4.2.0") "--no-multiarch"), error_on = "note", check_dir = "check")
+        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", if (.Platform$OS.type == "windows" && getRversion() >= "4.2.0") "--no-multiarch"), check_dir = "check")
         shell: Rscript {0}
 
       - name: Upload check results
