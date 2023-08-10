@@ -1,4 +1,4 @@
-# Version (development version)
+# Version 0.14.0 [2023-08-10]
 
 ## New Features
 
@@ -8,7 +8,7 @@
    is preserved (e.g. a progress bar in the terminal remains), and an
    informative message is displayed (if the progress handler supported
    it). In previous versions, the preservation of the progress and the
-   output of the message happend only for interrupts. In this version,
+   output of the message happened only for interrupts. In this version,
    this happens also for errors.
 
 ## Miscellaneous
