@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.13.0-9013</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.14.0</span>
       </span>
     </div>
 
@@ -136,17 +136,17 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="development version" id="version-development-version">Version (development version)<a class="anchor" aria-label="anchor" href="#version-development-version"></a></h2>
+<h2 class="page-header" data-toc-text="0.14.0" id="version-0140">Version 0.14.0<a class="anchor" aria-label="anchor" href="#version-0140"></a></h2>
 <div class="section level3">
-<h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
-<ul><li>Progress reporting may be terminated by an interrupt (e.g. user presses Ctrl-C, or the process is interrupted externally), or a run-time error. When this happens, the most recent progress update is preserved (e.g. a progress bar in the terminal remains), and an informative message is displayed (if the progress handler supported it). In previous versions, the preservation of the progress and the output of the message happend only for interrupts. In this version, this happens also for errors.</li>
+<h3 id="new-features-0-14-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-14-0"></a></h3>
+<ul><li>Progress reporting may be terminated by an interrupt (e.g. user presses Ctrl-C, or the process is interrupted externally), or a run-time error. When this happens, the most recent progress update is preserved (e.g. a progress bar in the terminal remains), and an informative message is displayed (if the progress handler supported it). In previous versions, the preservation of the progress and the output of the message happened only for interrupts. In this version, this happens also for errors.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="miscellaneous-development-version">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-development-version"></a></h3>
+<h3 id="miscellaneous-0-14-0">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-14-0"></a></h3>
 <ul><li>The <code>progressr.options</code> help page is now listed in the help index.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="bug-fixes-development-version">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
+<h3 id="bug-fixes-0-14-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-14-0"></a></h3>
 <ul><li>The ‘cli’, ‘pbcol’, ‘pbmclapply’, ‘progress’, and ‘txtprogressbar’ handlers did not redraw the progress bar if there was an interrupt, which made it a hit or miss whether it was displayed after the interruption.</li>
 </ul></div>
 </div>

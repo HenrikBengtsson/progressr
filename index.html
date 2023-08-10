@@ -47,7 +47,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.13.0-9013</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.14.0</span>
       </span>
     </div>
 
@@ -752,11 +752,11 @@ handlers(handler_progress(complete = "#"))
 </h2>
 <p>Because this project is under active development, the progressr API is currently kept at a very minimum. This will allow for the framework and the API to evolve while minimizing the risk for breaking code that depends on it. The roadmap for developing the API is roughly:</p>
 <ul class="task-list">
-<li><p><input type="checkbox" checked>Provide minimal API for producing progress updates, i.e. <code><a href="reference/progressor.html">progressor()</a></code>, <code><a href="reference/with_progress.html">with_progress()</a></code>, <code><a href="reference/handlers.html">handlers()</a></code></p></li>
-<li><p><input type="checkbox" checked>Add support for global progress handlers removing the need for the user having to specify <code><a href="reference/with_progress.html">with_progress()</a></code>, i.e. <code>handlers(global = TRUE)</code> and <code>handlers(global = FALSE)</code></p></li>
-<li><p><input type="checkbox">Make it possible to create a progressor also in the global environment (see ‘Known issues’ below)</p></li>
-<li><p><input type="checkbox">Add support for nested progress updates</p></li>
-<li><p><input type="checkbox">Add API to allow users and package developers to design additional progression handlers</p></li>
+<li><p><label><input type="checkbox" checked>Provide minimal API for producing progress updates, i.e. <code><a href="reference/progressor.html">progressor()</a></code>, <code><a href="reference/with_progress.html">with_progress()</a></code>, <code><a href="reference/handlers.html">handlers()</a></code></label></p></li>
+<li><p><label><input type="checkbox" checked>Add support for global progress handlers removing the need for the user having to specify <code><a href="reference/with_progress.html">with_progress()</a></code>, i.e. <code>handlers(global = TRUE)</code> and <code>handlers(global = FALSE)</code></label></p></li>
+<li><p><label><input type="checkbox">Make it possible to create a progressor also in the global environment (see ‘Known issues’ below)</label></p></li>
+<li><p><label><input type="checkbox">Add support for nested progress updates</label></p></li>
+<li><p><label><input type="checkbox">Add API to allow users and package developers to design additional progression handlers</label></p></li>
 </ul>
 <p>For a more up-to-date view on what features might be added, see <a href="https://github.com/HenrikBengtsson/progressr/issues" class="external-link uri">https://github.com/HenrikBengtsson/progressr/issues</a>.</p>
 </div>
