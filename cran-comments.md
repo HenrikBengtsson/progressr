@@ -6,6 +6,10 @@ I've verified this submission has no negative impact on any of the 82 reverse pa
 
 Thank you
 
+## Resubmission
+
+Updated version fixing an R CMD check WARNING reported by R-devel on Debian.
+
 
 ## Notes not sent to CRAN
 

@@ -54,7 +54,7 @@ register_global_progression_handler <- function(action = c("add", "remove", "que
 
 #' A Global Calling Handler For 'progression':s
 #'
-#' @param progression A [progression] conditions.
+#' @param condition A logical scalar or a condition object.
 #'
 #' @return Nothing.
 #'

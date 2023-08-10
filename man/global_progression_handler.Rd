@@ -7,7 +7,7 @@
 global_progression_handler(condition)
 }
 \arguments{
-\item{progression}{A \link{progression} conditions.}
+\item{condition}{A logical scalar or a condition object.}
 }
 \value{
 Nothing.
