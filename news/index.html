@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">progressr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.14.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.14.0-9001</span>
       </span>
     </div>
 
@@ -136,7 +136,7 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.14.0" id="version-0140">Version 0.14.0<a class="anchor" aria-label="anchor" href="#version-0140"></a></h2>
+<h2 class="page-header" data-toc-text="0.14.0" id="version-0140">Version 0.14.0<small>2023-08-10</small><a class="anchor" aria-label="anchor" href="#version-0140"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-14-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-14-0"></a></h3>
 <ul><li>Progress reporting may be terminated by an interrupt (e.g. user presses Ctrl-C, or the process is interrupted externally), or a run-time error. When this happens, the most recent progress update is preserved (e.g. a progress bar in the terminal remains), and an informative message is displayed (if the progress handler supported it). In previous versions, the preservation of the progress and the output of the message happened only for interrupts. In this version, this happens also for errors.</li>
@@ -323,7 +323,7 @@
 <div class="section level3">
 <h3 id="bug-fixes-0-6-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-6-0"></a></h3>
 <ul><li><p>Limiting the frequency of progress reporting via handler arguments <code>times</code>, <code>interval</code> or <code>intrusiveness</code> did not work and was effectively ignored.</p></li>
-<li><p>The <code>progress</code> handler, which uses <code><a href="https://rdrr.io/pkg/progress/man/progress_bar.html" class="external-link">progress::progress_bar()</a></code>, did not support colorization of the <code>format</code> string when done by the <code>crayon</code> package.</p></li>
+<li><p>The <code>progress</code> handler, which uses <code><a href="http://r-lib.github.io/progress/reference/progress_bar.html" class="external-link">progress::progress_bar()</a></code>, did not support colorization of the <code>format</code> string when done by the <code>crayon</code> package.</p></li>
 <li><p><code><a href="../reference/handlers.html">handlers()</a></code> did not return invisible (as documented).</p></li>
 <li><p>Argument <code>target</code> was ignored for all handler functions.</p></li>
 <li><p>Argument <code>interval</code> was ignored for <code><a href="../reference/handler_debug.html">handler_debug()</a></code>.</p></li>
@@ -419,7 +419,7 @@
 <div class="section level3">
 <h3 id="bug-fixes-0-1-2">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-1-2"></a></h3>
 <ul><li>
-<code>with_progress(..., delay_conditions = "condition")</code>, introduced in <strong>progressr</strong> 0.1.0, would also capture conditions produced by progression handlers, e.g. <code><a href="https://rdrr.io/pkg/progress/man/progress_bar.html" class="external-link">progress::progress_bar()</a></code> output would not be displayed until the very end.</li>
+<code>with_progress(..., delay_conditions = "condition")</code>, introduced in <strong>progressr</strong> 0.1.0, would also capture conditions produced by progression handlers, e.g. <code><a href="http://r-lib.github.io/progress/reference/progress_bar.html" class="external-link">progress::progress_bar()</a></code> output would not be displayed until the very end.</li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -483,7 +483,7 @@
 <ul><li><p>Add argument <code>enable_after</code> for progression handlers.</p></li>
 <li><p>Now <code>with_progress(..., cleanup = TRUE)</code> will signal a generic “shutdown” progression at the end that will trigger all progression handlers to finish up regardless of all steps have been take or not.</p></li>
 <li><p>Now progressions originating from an unknown source are ignored.</p></li>
-<li><p>The default output format of the <code><a href="https://rdrr.io/pkg/progress/man/progress_bar.html" class="external-link">progress::progress_bar()</a></code> progression handler is now <code>":percent :bar :message"</code>.</p></li>
+<li><p>The default output format of the <code><a href="http://r-lib.github.io/progress/reference/progress_bar.html" class="external-link">progress::progress_bar()</a></code> progression handler is now <code>":percent :bar :message"</code>.</p></li>
 <li><p>The <code><a href="https://rdrr.io/r/tcltk/tkProgressBar.html" class="external-link">tcltk::tkProgressBar()</a></code> progression handler now displays the progression message.</p></li>
 <li><p>Now the <code>progression</code> condition itself is passed to the progression reporter functions.</p></li>
 <li><p>Add ‘debug_handler’ for prototyping and debugging purposes.</p></li>
@@ -554,7 +554,7 @@
 <h2 class="page-header" data-toc-text="0.0.0-9001" id="version-000-9001">Version 0.0.0-9001<a class="anchor" aria-label="anchor" href="#version-000-9001"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-0-0-9001">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-0-9001"></a></h3>
-<ul><li><p>Add progress update handlers based on <code><a href="https://rdrr.io/r/utils/txtProgressBar.html" class="external-link">utils::txtProgressBar()</a></code>, <code><a href="https://rdrr.io/r/tcltk/tkProgressBar.html" class="external-link">tcltk::tkProgressBar()</a></code>, <code>cat("\a")</code>, <code><a href="https://rdrr.io/pkg/progress/man/progress_bar.html" class="external-link">progress::progress_bar()</a></code>, <code><a href="https://rdrr.io/pkg/beepr/man/beep.html" class="external-link">beepr::beep()</a></code>, and <code>notifier::notify()</code>.</p></li>
+<ul><li><p>Add progress update handlers based on <code><a href="https://rdrr.io/r/utils/txtProgressBar.html" class="external-link">utils::txtProgressBar()</a></code>, <code><a href="https://rdrr.io/r/tcltk/tkProgressBar.html" class="external-link">tcltk::tkProgressBar()</a></code>, <code>cat("\a")</code>, <code><a href="http://r-lib.github.io/progress/reference/progress_bar.html" class="external-link">progress::progress_bar()</a></code>, <code><a href="https://rdrr.io/pkg/beepr/man/beep.html" class="external-link">beepr::beep()</a></code>, and <code>notifier::notify()</code>.</p></li>
 <li><p>Add <code><a href="../reference/with_progress.html">with_progress()</a></code>.</p></li>
 <li><p>Add options <code>progressr.handlers</code> for settings default progress handlers.</p></li>
 <li><p>Add <code>progressr.times</code> for controlling the number of times progress updates are rendered.</p></li>
