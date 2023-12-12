@@ -617,8 +617,35 @@ my_fcn(1:5)
 ### foreach() with doFuture
 
 Here is an example that uses `foreach()` of the **[foreach]** package
-to parallelize on the local machine (via **[doFuture]**) while at the
-same time signaling progression updates:
+together with `%dofuture%` of the **[doFuture]** package to
+parallelize while reporting on progress.  This example parallelizes on
+the local machine, it works alsof for remote machines:
+
+```r
+library(doFuture)    ## %dofuture%
+plan(multisession)
+
+library(progressr)
+handlers(global = TRUE)
+handlers("progress", "beepr")
+
+my_fcn <- function(xs) {
+  p <- progressor(along = xs)
+  foreach(x = xs) %dofuture% {
+    Sys.sleep(6.0-x)
+    p(sprintf("x=%g", x))
+    sqrt(x)
+  }
+}
+
+my_fcn(1:5)
+# / [================>-----------------------------]  40% x=2
+```
+
+
+For existing code using the traditional `%dopar%` operators of the
+**[foreach]** package, we can register the **[doFuture]** adaptor and
+use the same **progressr** as above to progress updates;
 
 ```r
 library(doFuture)
